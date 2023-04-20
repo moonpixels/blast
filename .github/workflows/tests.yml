@@ -49,5 +49,8 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
 
+      - name: Compile assets
+        run: npm install && npm run build
+
       - name: Run tests
         run: vendor/bin/pest
