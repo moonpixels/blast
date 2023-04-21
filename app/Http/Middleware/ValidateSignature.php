@@ -8,10 +8,8 @@ class ValidateSignature extends Middleware
 {
     /**
      * The names of the query string parameters that should be ignored.
-     *
-     * @var array<int, string>
      */
-    protected $except = [
+    protected array $except = [
         // 'fbclid',
         // 'utm_campaign',
         // 'utm_content',
