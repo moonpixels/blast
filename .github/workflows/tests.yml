@@ -1,4 +1,4 @@
-name: Unit tests
+name: Tests
 
 on:
   push:
@@ -8,11 +8,11 @@ on:
     types: [ created ]
 
 concurrency:
-  group: unit-tests-${{ github.ref }}
+  group: tests-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  tests:
+  unit:
     runs-on: ubuntu-22.04
 
     services:
@@ -41,7 +41,7 @@ jobs:
           coverage: xdebug
 
       - name: Install dependencies
-        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
+        run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader --no-dev
 
       - name: Prepare environment
         run: cp .env.example .env
