@@ -1,4 +1,4 @@
-name: Unit tests
+name: Tests
 
 on:
   push:
@@ -8,11 +8,11 @@ on:
     types: [ created ]
 
 concurrency:
-  group: unit-tests-${{ github.ref }}
+  group: tests-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  tests:
+  unit:
     runs-on: ubuntu-22.04
 
     services:

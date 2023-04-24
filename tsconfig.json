@@ -15,7 +15,11 @@
     },
     "skipLibCheck": true,
     "strict": true,
-    "target": "ESNext"
+    "target": "ESNext",
+    "types": [
+      "vite/client",
+      "unplugin-vue-define-options/macros-global"
+    ]
   },
   "include": [
     "resources/js/**/*.ts",
