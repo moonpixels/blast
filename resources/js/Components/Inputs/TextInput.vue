@@ -12,7 +12,7 @@
             :value="modelValue"
             class="block mt-1 w-full truncate border-0 p-0 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:ring-0 sm:text-sm bg-transparent"
             v-bind="{...attrs}"
-            @input="$emit('update:modelValue', $event.target.value)"
+            @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         />
 
         <InputErrorMessage v-if="error" class="mt-1 pt-1 border-t border-zinc-900/20 dark:border-white/20">
@@ -54,11 +54,7 @@ const attrs = useAttrs()
 const input = ref<HTMLInputElement>()
 
 const inputMode = computed(() => {
-    if (attrs.inputmode) {
-        return attrs.inputmode
-    }
-
-    switch (props.type) {
+    switch (attrs.inputmode ?? props.type) {
         case 'email':
             return 'email'
         case 'number':

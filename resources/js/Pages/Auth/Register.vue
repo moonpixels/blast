@@ -1,7 +1,7 @@
 <template>
-    <AppHead :title="$t('auth.register_meta_title')"/>
+    <AppHead :title="$t('auth.register_meta_title')" />
 
-    <AuthHeader :title="$t('auth.register_title')"/>
+    <AuthHeader :title="$t('auth.register_title')" />
 
     <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
         <form class="space-y-4" @submit.prevent="submit">
@@ -65,6 +65,8 @@ interface RegistrationForm {
     name: string,
     email: string,
     password: string,
+
+    [key: string]: unknown,
 }
 
 const registrationForm = useForm<RegistrationForm>({
