@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "allowJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -17,13 +18,17 @@
     "strict": true,
     "target": "ESNext",
     "types": [
+      "node",
       "vite/client",
-      "unplugin-vue-define-options/macros-global"
+      "unplugin-vue-define-options/macros-global",
+      "cypress"
     ]
   },
   "include": [
     "resources/js/**/*.ts",
     "resources/js/**/*.d.ts",
-    "resources/js/**/*.vue"
+    "resources/js/**/*.vue",
+    "**/*.ts",
+    "**/*.d.ts"
   ]
 }
