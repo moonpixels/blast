@@ -60,6 +60,5 @@ jobs:
         with:
           start: php artisan serve --port=8000
           install: false
-          group: ${{ github.ref }}
           config: baseUrl=http://localhost:8000
           wait-on: 'http://localhost:8000'
