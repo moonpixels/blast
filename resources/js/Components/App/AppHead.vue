@@ -1,11 +1,11 @@
 <template>
-    <Head>
-        <title>
-            {{ title }}
-        </title>
+  <Head>
+    <title>
+      {{ title }}
+    </title>
 
-        <slot/>
-    </Head>
+    <slot />
+  </Head>
 </template>
 
 <script lang="ts" setup>
@@ -14,12 +14,12 @@ import { computed } from 'vue'
 import { trans } from 'laravel-vue-i18n'
 
 interface Props {
-    title: string
+  title: string
 }
 
 const props = defineProps<Props>()
 
 const title = computed(() => {
-    return `${props.title} - Blast` ?? trans('app.application_title')
+  return `${props.title} - Blast` ?? trans('app.application_title')
 })
 </script>

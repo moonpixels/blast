@@ -19,3 +19,6 @@ yarn-error.log
 /.vscode
 .DS_Store
 lang/php_*.json
+/tests/cypress/videos
+/tests/cypress/screenshots
+/tests/cypress/support/routes.json
