@@ -7,10 +7,13 @@ export default defineConfig({
   screenshotsFolder: 'tests/cypress/screenshots',
   fixturesFolder: 'tests/cypress/fixture',
   downloadsFolder: 'tests/cypress/downloads',
+  env: {
+    SWAP_ENV: true,
+  },
   e2e: {
-    setupNodeEvents(on: Cypress.PluginEvents) {
+    setupNodeEvents(on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions): void {
       on('before:run', () => {
-        if (fs.existsSync('.env.cypress')) {
+        if (fs.existsSync('.env.cypress') && config.env.SWAP_ENV) {
           fs.renameSync('.env', '.env.backup')
           fs.renameSync('.env.cypress', '.env')
           setAppKey('.env.backup', '.env')
@@ -18,7 +21,7 @@ export default defineConfig({
       })
 
       on('after:run', () => {
-        if (fs.existsSync('.env.backup')) {
+        if (fs.existsSync('.env.backup') && config.env.SWAP_ENV) {
           fs.renameSync('.env', '.env.cypress')
           fs.renameSync('.env.backup', '.env')
           setAppKey('.env.example', '.env.cypress')
