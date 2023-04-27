@@ -4,6 +4,8 @@ declare global {
       waitForSpecToFinish(): Chainable<any>
 
       assertRedirect(path: string): Chainable<any>
+
+      getFormInput(label: string): Chainable<any>
     }
   }
 }
@@ -23,6 +25,16 @@ Cypress.Commands.add('waitForSpecToFinish', waitForSpecToFinish)
 /**
  * Assert that the current URL matches the given path.
  */
-Cypress.Commands.add('assertRedirect', (path: string) => {
+Cypress.Commands.add('assertRedirect', (path) => {
   cy.location('pathname').should('eq', `/${path}`.replace(/^\/\//, '/'))
+})
+
+/**
+ * Get the form field with the given label.
+ */
+Cypress.Commands.add('getFormInput', (label) => {
+  return cy.contains('label', label).then(($label) => {
+    const id = $label.prop('for')
+    return cy.get(`#${id}`)
+  })
 })

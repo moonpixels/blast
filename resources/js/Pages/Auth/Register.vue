@@ -4,7 +4,7 @@
   <AuthHeader :title="$t('auth.register_title')" />
 
   <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
-    <form class="space-y-4" @submit.prevent="submit">
+    <form class="space-y-4" data-cy="register-form" @submit.prevent="submit">
       <TextInput
         v-model="registrationForm.name"
         :error="registrationForm.errors.name"
@@ -33,13 +33,13 @@
         @input="registrationForm.clearErrors('password')"
       />
 
-      <PrimaryButton :loading="registrationForm.processing" class="w-full" type="submit">
+      <PrimaryButton :loading="registrationForm.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('auth.register_button') }}
       </PrimaryButton>
     </form>
 
     <div>
-      <Link :href="route('login')">
+      <Link :href="route('login')" data-cy="login-link">
         <SecondaryButton class="w-full">
           {{ $t('auth.register_login_link') }}
         </SecondaryButton>
