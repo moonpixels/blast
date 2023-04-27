@@ -24,7 +24,6 @@ jobs:
           MYSQL_DATABASE: testing
           MYSQL_USER: blast
           MYSQL_PASSWORD: password
-          MYSQL_HOST: 127.0.0.1
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -52,9 +51,6 @@ jobs:
       - name: Generate key
         run: php artisan key:generate
 
-      - name: Start server
-        run: php artisan serve --port=8000 &
-
       - name: Compile assets
         run: npm install && npm run build
 
@@ -64,6 +60,7 @@ jobs:
       - name: Run tests
         uses: cypress-io/github-action@v5
         with:
+          start: php artisan serve --port=8000
           install: false
           config: baseUrl=http://localhost:8000
           wait-on: 'http://localhost:8000'
