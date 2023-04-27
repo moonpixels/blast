@@ -60,9 +60,7 @@ jobs:
       - name: Run tests
         uses: cypress-io/github-action@v5
         with:
-          env: {
-            SWAP_ENV: false
-          }
+          env: SWAP_ENV=false
           start: php artisan serve --port=8000
           install: false
           config: baseUrl=http://localhost:8000
