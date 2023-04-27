@@ -46,7 +46,7 @@ jobs:
       - name: Prepare environment
         run: |
           cp .env.cypress .env
-          sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+          echo "DB_HOST=127.0.0.1" >> .env
 
       - name: Generate key
         run: php artisan key:generate
