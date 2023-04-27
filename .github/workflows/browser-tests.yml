@@ -60,7 +60,7 @@ jobs:
       - name: Run tests
         uses: cypress-io/github-action@v5
         with:
-          start: php artisan serve --port=8000
+          start: npm start
           install: false
           config: baseUrl=http://localhost:8000
           wait-on: 'http://localhost:8000'
