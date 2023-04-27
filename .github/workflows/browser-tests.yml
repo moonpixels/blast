@@ -44,7 +44,7 @@ jobs:
         run: composer install --no-progress --no-interaction --prefer-dist --optimize-autoloader
 
       - name: Prepare environment
-        run: cp .github/.env.cypress .env
+        run: cp .env.cypress .env
 
       - name: Generate key
         run: php artisan key:generate
