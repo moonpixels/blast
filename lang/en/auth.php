@@ -22,4 +22,11 @@ return [
     'register_button' => 'Create account',
     'register_login_link' => 'Already have an account? Login here',
     'register_disabled' => 'Registration is currently disabled',
+
+    'login_meta_title' => 'Login',
+    'login_title' => 'Log in to Blast',
+    'login_button' => 'Log in',
+    'login_register_link' => 'Don\'t have an account? Register here',
+    'login_forgot_password_link' => 'Forgot your password?',
+    'login_remember' => 'Remember me',
 ];
