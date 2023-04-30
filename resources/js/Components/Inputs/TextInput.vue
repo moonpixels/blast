@@ -53,7 +53,9 @@ const attrs = useAttrs()
 
 const input = ref<HTMLInputElement>()
 
-const inputMode = computed<string>(() => {
+type HTMLInputMode = 'search' | 'text' | 'none' | 'email' | 'tel' | 'url' | 'numeric' | 'decimal'
+
+const inputMode = computed<HTMLInputMode>(() => {
   switch (attrs.inputmode ?? props.type) {
     case 'email':
       return 'email'
