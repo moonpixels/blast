@@ -1,6 +1,6 @@
 <template>
-  <div :class="[error ? 'border-rose-500 dark:border-rose-600 focus-within:border-rose-500 dark:focus-within:border-rose-600 focus-within:ring-rose-500 dark:focus-within:ring-rose-600' : 'border-zinc-900/20 dark:border-white/20 focus-within:border-violet-600 dark:focus-within:border-violet-500 focus-within:ring-violet-600 dark:focus-within:ring-violet-500', 'rounded-md bg-white shadow-sm dark:bg-zinc-950 border px-3 py-2 focus-within:ring-1']">
-    <label :for="id" class="block text-xs font-medium text-zinc-500 dark:text-zinc-400">
+  <div :class="[error ? 'border-rose-500 dark:border-rose-600 focus-within:border-rose-500 dark:focus-within:border-rose-600 focus-within:ring-rose-500 dark:focus-within:ring-rose-600' : 'border-zinc-900/20 dark:border-white/20 focus-within:border-violet-500 dark:focus-within:border-violet-600 focus-within:ring-violet-500 dark:focus-within:ring-violet-600', 'rounded-md bg-white shadow-sm dark:bg-zinc-950 border px-3 py-2 focus-within:ring-1']">
+    <label :for="id" class="block text-xs font-medium text-zinc-700 dark:text-zinc-200">
       {{ label }}
     </label>
 
@@ -15,7 +15,7 @@
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
     />
 
-    <InputErrorMessage v-if="error" class="mt-1 pt-1 border-t border-zinc-900/20 dark:border-white/20">
+    <InputErrorMessage v-if="error" class="pt-1 border-t border-zinc-900/20 dark:border-white/20">
       {{ error }}
     </InputErrorMessage>
   </div>
@@ -31,8 +31,8 @@ defineOptions({
 })
 
 interface Props {
-  id: string
-  type: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url'
+  id?: string
+  type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url'
   error?: string
   label: string
   modelValue: any
@@ -53,7 +53,9 @@ const attrs = useAttrs()
 
 const input = ref<HTMLInputElement>()
 
-const inputMode = computed(() => {
+type HTMLInputMode = 'search' | 'text' | 'none' | 'email' | 'tel' | 'url' | 'numeric' | 'decimal'
+
+const inputMode = computed<HTMLInputMode>(() => {
   switch (attrs.inputmode ?? props.type) {
     case 'email':
       return 'email'
@@ -70,15 +72,15 @@ const inputMode = computed(() => {
   }
 })
 
-function focus() {
+function focus(): void {
   input.value?.focus()
 }
 
-function select() {
+function select(): void {
   input.value?.select()
 }
 
-function setSelectionRange(start: number, end: number) {
+function setSelectionRange(start: number, end: number): void {
   input.value?.setSelectionRange(start, end)
 }
 

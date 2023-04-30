@@ -80,8 +80,7 @@ describe('Register', () => {
     })
   })
 
-  // TODO: Implement this test once the login page is implemented.
-  it.skip('should have a link to the login page', () => {
+  it('should have a link to the login page', () => {
     cy.get('[data-cy="login-link"]').should('have.attr', 'href')
       .and('contain', '/login')
 

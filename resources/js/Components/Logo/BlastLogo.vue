@@ -2,7 +2,7 @@
   <svg
     :viewBox="type === 'full' ? '0 0 1172 412' : '0 0 378 412'"
     aria-label="Blast logo"
-    class="text-zinc-900 dark:text-zinc-100"
+    class="text-zinc-900 dark:text-white"
     xmlns="http://www.w3.org/2000/svg"
   >
     <g fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">

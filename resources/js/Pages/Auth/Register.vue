@@ -29,7 +29,8 @@
         :error="registrationForm.errors.password"
         :label="$t('common.password')"
         autocomplete="new-password"
-        required type="password"
+        required
+        type="password"
         @input="registrationForm.clearErrors('password')"
       />
 
