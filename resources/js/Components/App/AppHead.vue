@@ -19,7 +19,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const title = computed(() => {
+const title = computed<string>(() => {
   return `${props.title} - Blast` ?? trans('app.application_title')
 })
 </script>

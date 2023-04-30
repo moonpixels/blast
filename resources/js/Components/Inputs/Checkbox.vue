@@ -5,7 +5,7 @@
         :id="id"
         ref="input"
         v-model="checked"
-        :aria-describedby="`${id}-description`"
+        :aria-describedby="description ? `${id}-description` : null"
         :value="value"
         class="h-4 w-4 rounded border-zinc-900/20 dark:border-white/20 text-violet-500 dark:text-violet-600 dark:checked:bg-violet-600 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-violet-500 dark:focus:ring-violet-600 focus:ring-offset-2 focus:ring-offset-zinc-50 dark:focus:ring-offset-zinc-900"
         type="checkbox"
@@ -22,7 +22,7 @@
         {{ description }}
       </p>
 
-      <InputErrorMessage v-if="error" class="mt-1">
+      <InputErrorMessage v-if="error">
         {{ error }}
       </InputErrorMessage>
     </div>
@@ -59,7 +59,7 @@ const emit = defineEmits<{
 
 const input = ref<HTMLInputElement>()
 
-const checked = computed({
+const checked = computed<Boolean>({
   get() {
     return props.value && Array.isArray(props.modelValue)
       ? props.modelValue.includes(props.value)
@@ -81,7 +81,7 @@ const checked = computed({
   },
 })
 
-function focus() {
+function focus(): void {
   input.value?.focus()
 }
 </script>

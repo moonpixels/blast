@@ -15,7 +15,7 @@
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
     />
 
-    <InputErrorMessage v-if="error" class="mt-1 pt-1 border-t border-zinc-900/20 dark:border-white/20">
+    <InputErrorMessage v-if="error" class="pt-1 border-t border-zinc-900/20 dark:border-white/20">
       {{ error }}
     </InputErrorMessage>
   </div>
@@ -53,7 +53,7 @@ const attrs = useAttrs()
 
 const input = ref<HTMLInputElement>()
 
-const inputMode = computed(() => {
+const inputMode = computed<string>(() => {
   switch (attrs.inputmode ?? props.type) {
     case 'email':
       return 'email'
@@ -70,15 +70,15 @@ const inputMode = computed(() => {
   }
 })
 
-function focus() {
+function focus(): void {
   input.value?.focus()
 }
 
-function select() {
+function select(): void {
   input.value?.select()
 }
 
-function setSelectionRange(start: number, end: number) {
+function setSelectionRange(start: number, end: number): void {
   input.value?.setSelectionRange(start, end)
 }
 
