@@ -1,4 +1,4 @@
-describe('Reset Password', () => {
+describe('Reset password', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
