@@ -1,13 +1,19 @@
 <?php
 
 use App\Models\User;
+use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
 });
 
 it('shows the login page', function () {
-    $this->get(route('login'))->assertOk();
+    $this->get(route('login'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Auth/Login')
+            ->where('status', null)
+        );
 });
 
 it('does not show the login page when authenticated', function () {
@@ -23,7 +29,7 @@ it('logs in a user', function () {
     $this->assertAuthenticatedAs($this->user);
 });
 
-it('validates the required fields have been provided', function () {
+it('does not log the user in when the required fields are missing', function () {
     $this->post(route('login'))->assertInvalid([
         'email',
         'password',

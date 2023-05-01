@@ -2,6 +2,13 @@ describe('Register', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
+    cy.create({
+      model: 'App\\Models\\User',
+      attributes: {
+        email: 'existing-user@example.com',
+      },
+    })
+
     cy.visit({ route: 'register' })
 
     cy.get('[data-cy="register-form"]').as('registerForm').within(() => {
@@ -13,49 +20,47 @@ describe('Register', () => {
   })
 
   it('should allow visitors to register for an account', () => {
-    cy.get('@nameInput').type('John Doe')
-    cy.get('@emailInput').type('john.doe@example.com')
-    cy.get('@passwordInput').type('password')
-
-    cy.get('@submitButton').click()
+    cy.get('@registerForm').within(() => {
+      cy.get('@nameInput').type('John Doe')
+      cy.get('@emailInput').type('john.doe@example.com')
+      cy.get('@passwordInput').type('password')
+      cy.get('@submitButton').click()
+    })
 
     cy.assertRedirect('dashboard')
   })
 
-  it('should display registration errors', () => {
-    // Required fields (browser validation)
+  it('should show an error if the name is invalid', () => {
+    // Missing name
     cy.get('@registerForm').within(() => {
-      cy.get('@submitButton').click()
-      cy.get('input:invalid').should('have.length', 3)
-
-      cy.get('@nameInput').type('John Doe')
-      cy.get('@submitButton').click()
-      cy.get('input:invalid').should('have.length', 2)
-
       cy.get('@emailInput').type('john.doe@example.com')
+      cy.get('@passwordInput').type('password')
+
       cy.get('@submitButton').click()
       cy.get('input:invalid').should('have.length', 1)
-    })
 
-    // Required fields (server validation)
-    cy.get('@registerForm').within(() => {
       cy.get('@nameInput').clear().invoke('removeAttr', 'required')
-      cy.get('@emailInput').clear().invoke('removeAttr', 'required')
-      cy.get('@passwordInput').clear().invoke('removeAttr', 'required')
-
       cy.get('@submitButton').click()
-
-      cy.get('[data-cy="input-error-message"]').should('have.length', 3)
-      cy.get('[data-cy="input-error-message"]').eq(0).should('contain', 'The name field is required.')
-      cy.get('[data-cy="input-error-message"]').eq(1).should('contain', 'The email field is required.')
-      cy.get('[data-cy="input-error-message"]').eq(2).should('contain', 'The password field is required.')
+      cy.get('[data-cy="input-error-message"]').should('contain', 'The name field is required.')
     })
+  })
 
-    // Invalid email
+  it('should show an error if the email is invalid', () => {
+    // Missing email
     cy.get('@registerForm').within(() => {
       cy.get('@nameInput').type('John Doe')
       cy.get('@passwordInput').type('password')
 
+      cy.get('@submitButton').click()
+      cy.get('input:invalid').should('have.length', 1)
+
+      cy.get('@emailInput').clear().invoke('removeAttr', 'required')
+      cy.get('@submitButton').click()
+      cy.get('[data-cy="input-error-message"]').should('contain', 'The email field is required.')
+    })
+
+    // Invalid email
+    cy.get('@registerForm').within(() => {
       cy.get('@emailInput').type('invalid-email')
       cy.get('@submitButton').click()
       cy.get('input:invalid').should('have.length', 1)
@@ -64,16 +69,28 @@ describe('Register', () => {
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', 'The email field must be a valid email address.')
 
-      cy.get('@emailInput').clear().type('invalid-email@')
+      cy.get('@emailInput').clear().type('existing-user@example.com')
       cy.get('@submitButton').click()
-      cy.get('[data-cy="input-error-message"]').should('contain', 'The email field must be a valid email address.')
+      cy.get('[data-cy="input-error-message"]').should('contain', 'The email has already been taken.')
+    })
+  })
+
+  it('should show an error if the password is invalid', () => {
+    // Missing password
+    cy.get('@registerForm').within(() => {
+      cy.get('@nameInput').type('John Doe')
+      cy.get('@emailInput').type('john.doe@example.com')
+
+      cy.get('@submitButton').click()
+      cy.get('input:invalid').should('have.length', 1)
+
+      cy.get('@passwordInput').clear().invoke('removeAttr', 'required')
+      cy.get('@submitButton').click()
+      cy.get('[data-cy="input-error-message"]').should('contain', 'The password field is required.')
     })
 
     // Invalid password
     cy.get('@registerForm').within(() => {
-      cy.get('@nameInput').clear().type('John Doe')
-      cy.get('@emailInput').clear().type('john.doe@example.com')
-
       cy.get('@passwordInput').clear().type('short')
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', 'The password must be at least 8 characters.')
