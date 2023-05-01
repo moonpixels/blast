@@ -38,4 +38,9 @@ return [
     'reset_password_meta_title' => 'Set new password',
     'reset_password_title' => 'Set new password',
     'reset_password_button' => 'Update password',
+
+    'confirm_password_meta_title' => 'Confirm your password',
+    'confirm_password_title' => 'Confirm your password',
+    'confirm_password_text' => 'Please confirm your password before continuing.',
+    'confirm_password_button' => 'Confirm password',
 ];

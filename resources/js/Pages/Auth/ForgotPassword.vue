@@ -1,14 +1,14 @@
 <template>
   <AppHead :title="$t('auth.forgot_password_meta_title')" />
 
-  <AuthHeader :title="$t('auth.forgot_password_title')" />
-
-  <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
-    <p v-if="resetEmailSent" class="text-sm" data-cy="success-message">
+  <AuthHeader :title="$t('auth.forgot_password_title')">
+    <p v-if="resetEmailSent" data-cy="success-message">
       {{ $t('auth.forgot_password_success', { email: forgotPasswordForm.email }) }}
     </p>
+  </AuthHeader>
 
-    <form v-else class="space-y-4" data-cy="forgot-password-form" @submit.prevent="submit">
+  <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
+    <form v-if="! resetEmailSent" class="space-y-4" data-cy="forgot-password-form" @submit.prevent="submit">
       <TextInput
         v-model="forgotPasswordForm.email"
         :error="forgotPasswordForm.errors.email"
