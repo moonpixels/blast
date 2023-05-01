@@ -1,16 +1,19 @@
 <template>
-  <div :class="[error ? 'border-rose-500 dark:border-rose-600 focus-within:border-rose-500 dark:focus-within:border-rose-600 focus-within:ring-rose-500 dark:focus-within:ring-rose-600' : 'border-zinc-900/20 dark:border-white/20 focus-within:border-violet-500 dark:focus-within:border-violet-600 focus-within:ring-violet-500 dark:focus-within:ring-violet-600', 'rounded-md bg-white shadow-sm dark:bg-zinc-950 border px-3 py-2 focus-within:ring-1']">
-    <label :for="id" class="block text-xs font-medium text-zinc-700 dark:text-zinc-200">
+  <div :class="[disabledClasses, error ? 'border-rose-500 dark:border-rose-600 focus-within:border-rose-500 dark:focus-within:border-rose-600 focus-within:ring-rose-500 dark:focus-within:ring-rose-600' : 'border-zinc-900/20 dark:border-white/20 focus-within:border-violet-500 dark:focus-within:border-violet-600 focus-within:ring-violet-500 dark:focus-within:ring-violet-600', 'rounded-md bg-white shadow-sm dark:bg-zinc-950 border px-3 py-2 focus-within:ring-1']">
+    <label
+      :class="[disabledClasses, 'block text-xs font-medium text-zinc-700 dark:text-zinc-200']"
+      :for="id"
+    >
       {{ label }}
     </label>
 
     <input
       :id="id"
       ref="input"
+      :class="[disabledClasses, 'block mt-1 w-full truncate border-0 p-0 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:ring-0 sm:text-sm bg-transparent']"
       :inputmode="inputMode"
       :type="type"
       :value="modelValue"
-      class="block mt-1 w-full truncate border-0 p-0 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:ring-0 sm:text-sm bg-transparent"
       v-bind="{...attrs}"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
     />
@@ -70,6 +73,10 @@ const inputMode = computed<HTMLInputMode>(() => {
     default:
       return 'text'
   }
+})
+
+const disabledClasses = computed<string>(() => {
+  return attrs.disabled !== undefined ? 'cursor-not-allowed opacity-75' : ''
 })
 
 function focus(): void {

@@ -59,7 +59,7 @@ const emit = defineEmits<{
 
 const input = ref<HTMLInputElement>()
 
-const checked = computed<Boolean>({
+const checked = computed<boolean>({
   get() {
     return props.value && Array.isArray(props.modelValue)
       ? props.modelValue.includes(props.value)

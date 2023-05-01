@@ -1,13 +1,18 @@
 <?php
 
 use App\Models\User;
+use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
     $this->userData = User::factory()->make()->only(['name', 'email', 'password']);
 });
 
 it('shows the registration page', function () {
-    $this->get(route('register'))->assertOk();
+    $this->get(route('register'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Auth/Register')
+        );
 });
 
 it('does not show the registration page when authenticated', function () {
@@ -47,7 +52,7 @@ it('validates the required fields have been provided', function () {
     assertUserNotInDatabase($this->userData);
 });
 
-it('validates the email is available', function () {
+it('does not register a user when the required fields are missing', function () {
     User::factory()->create([
         'email' => $this->userData['email'],
     ]);
@@ -59,7 +64,7 @@ it('validates the email is available', function () {
     assertUserNotInDatabase($this->userData);
 });
 
-it('validates the email is valid', function () {
+it('does not register a user when the email is invalid', function () {
     $this->userData['email'] = 'invalid-email';
 
     $this->post(route('register'), $this->userData)->assertInvalid([
@@ -69,7 +74,7 @@ it('validates the email is valid', function () {
     assertUserNotInDatabase($this->userData);
 });
 
-it('validates the password is not too short', function () {
+it('does not register a user when the password is too short', function () {
     $this->userData['password'] = fake()->password(1, 7);
 
     $this->post(route('register'), $this->userData)->assertInvalid([

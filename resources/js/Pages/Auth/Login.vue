@@ -5,6 +5,10 @@
 
   <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
     <form class="space-y-4" data-cy="login-form" @submit.prevent="submit">
+      <p class="text-sm text-emerald-600 dark:text-emerald-500" data-cy="status-message">
+        {{ status }}
+      </p>
+
       <TextInput
         v-model="loginForm.email"
         :error="loginForm.errors.email"
@@ -66,6 +70,12 @@ import Checkbox from '@/Components/Inputs/Checkbox.vue'
 defineOptions({
   layout: AuthLayout,
 })
+
+interface Props {
+  status: string | null
+}
+
+defineProps<Props>()
 
 type LoginForm = {
   email: string,

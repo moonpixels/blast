@@ -29,4 +29,13 @@ return [
     'login_register_link' => 'Don\'t have an account? Register here',
     'login_forgot_password_link' => 'Forgot your password?',
     'login_remember' => 'Remember me',
+
+    'forgot_password_meta_title' => 'Reset your password',
+    'forgot_password_title' => 'Reset your password',
+    'forgot_password_button' => 'Reset password',
+    'forgot_password_success' => 'We sent a password reset link to :email. Please allow a few minutes for it to arrive.',
+
+    'reset_password_meta_title' => 'Set new password',
+    'reset_password_title' => 'Set new password',
+    'reset_password_button' => 'Update password',
 ];
