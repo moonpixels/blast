@@ -4,28 +4,28 @@
   <AuthHeader :title="$t('auth.reset_password_title')" />
 
   <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
-    <form class="space-y-4" data-cy="reset-password-form" @submit.prevent="submit">
+    <form class="space-y-6" data-cy="reset-password-form" @submit.prevent="submit">
       <TextInput
-        v-model="resetPasswordForm.email"
-        :error="resetPasswordForm.errors.email"
+        v-model="form.email"
+        :error="form.errors.email"
         :label="$t('common.email')"
         autocomplete="email"
         required
         type="email"
-        @input="resetPasswordForm.clearErrors('email')"
+        @input="form.clearErrors('email')"
       />
 
       <TextInput
-        v-model="resetPasswordForm.password"
-        :error="resetPasswordForm.errors.password"
+        v-model="form.password"
+        :error="form.errors.password"
         :label="$t('common.new_password')"
         autocomplete="new-password"
         required
         type="password"
-        @input="resetPasswordForm.clearErrors('password')"
+        @input="form.clearErrors('password')"
       />
 
-      <PrimaryButton :loading="resetPasswordForm.processing" class="w-full" data-cy="submit-button" type="submit">
+      <PrimaryButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('auth.forgot_password_button') }}
       </PrimaryButton>
     </form>
@@ -57,13 +57,13 @@ type ResetPasswordForm = {
   password: string,
 }
 
-const resetPasswordForm = useForm<ResetPasswordForm>({
+const form = useForm<ResetPasswordForm>({
   token: props.token,
   email: props.email,
   password: '',
 })
 
 function submit(): void {
-  resetPasswordForm.post(route('password.update'))
+  form.post(route('password.update'))
 }
 </script>

@@ -1,7 +1,7 @@
 declare global {
   namespace Cypress {
     interface Chainable<Subject> {
-      login(attributes?: LoginAttributes | Record<string, string>): Chainable<any>
+      login(attributes?: LoginAttributes): Chainable<any>
 
       currentUser(): Chainable<any>
 

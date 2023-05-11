@@ -35,7 +35,7 @@ it('does not show the reset password page when authenticated', function () {
     $this->actingAs($this->user)->get(route('password.reset', [
         'token' => $this->token,
         'email' => $this->user->email,
-    ]))->assertRedirect(route('dashboard'));
+    ]))->assertRedirect(route('links'));
 });
 
 it('resets a user password', function () {

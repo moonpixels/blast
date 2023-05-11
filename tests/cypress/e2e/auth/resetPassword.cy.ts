@@ -44,7 +44,7 @@ describe('Reset password', () => {
       cy.get('[data-cy="submit-button"]').click()
     })
 
-    cy.assertRedirect('dashboard')
+    cy.assertRedirect('links')
   })
 
   it('should show an error if the password reset token is invalid', () => {

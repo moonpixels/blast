@@ -8,18 +8,18 @@
   </AuthHeader>
 
   <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
-    <form class="space-y-4" data-cy="confirm-password-form" @submit.prevent="submit">
+    <form class="space-y-6" data-cy="confirm-password-form" @submit.prevent="submit">
       <TextInput
-        v-model="confirmPasswordForm.password"
-        :error="confirmPasswordForm.errors.password"
+        v-model="form.password"
+        :error="form.errors.password"
         :label="$t('common.password')"
         autocomplete="current-password"
         required
         type="password"
-        @input="confirmPasswordForm.clearErrors('password')"
+        @input="form.clearErrors('password')"
       />
 
-      <PrimaryButton :loading="confirmPasswordForm.processing" class="w-full" data-cy="submit-button" type="submit">
+      <PrimaryButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('auth.confirm_password_button') }}
       </PrimaryButton>
     </form>
@@ -38,21 +38,15 @@ defineOptions({
   layout: AuthLayout,
 })
 
-interface Props {
-  password: string,
-}
-
-const props = defineProps<Props>()
-
 type ConfirmPasswordForm = {
   password: string,
 }
 
-const confirmPasswordForm = useForm<ConfirmPasswordForm>({
+const form = useForm<ConfirmPasswordForm>({
   password: '',
 })
 
 function submit(): void {
-  confirmPasswordForm.post(route('password.confirm'))
+  form.post(route('password.confirm'))
 }
 </script>

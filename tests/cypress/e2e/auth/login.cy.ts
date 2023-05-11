@@ -1,4 +1,9 @@
+import { getOtpCodeForUser } from '../../support/functions'
+import { User } from '@/types'
+
 describe('Login', () => {
+  let tfaUser: User
+
   beforeEach(() => {
     cy.refreshDatabase()
 
@@ -7,6 +12,16 @@ describe('Login', () => {
       attributes: {
         email: 'john.doe@example.com',
       },
+    })
+
+    cy.create({
+      model: 'App\\Models\\User',
+      attributes: {
+        email: 'john.doe+tfa@example.com',
+      },
+      state: ['withTwoFactorAuthentication'],
+    }).then((model) => {
+      tfaUser = model
     })
 
     cy.visit({ route: 'login' })
@@ -27,7 +42,7 @@ describe('Login', () => {
       cy.get('@submitButton').click()
     })
 
-    cy.assertRedirect('dashboard')
+    cy.assertRedirect('links')
   })
 
   it('should show an error if the email is invalid', () => {
@@ -96,5 +111,138 @@ describe('Login', () => {
     cy.get('[data-cy="forgot-password-link"]').click()
 
     cy.assertRedirect('forgot-password')
+  })
+
+  it('should allow users to login with two-factor authentication', () => {
+    cy.get('@loginForm').within(() => {
+      cy.get('@emailInput').type('john.doe+tfa@example.com')
+      cy.get('@passwordInput').type('password')
+      cy.get('@submitButton').click()
+    })
+
+    cy.assertRedirect('two-factor-challenge')
+
+    cy.get('[data-cy="2fa-challenge-form"]').within(() => {
+      getOtpCodeForUser(tfaUser).then((otpCode) => {
+        cy.getFormInput('Two-factor code').type(otpCode)
+      })
+      cy.get('[data-cy="submit-button"]').click()
+    })
+
+    cy.assertRedirect('links')
+  })
+
+  it('should allow users to login with two-factor recovery codes', () => {
+    cy.get('@loginForm').within(() => {
+      cy.get('@emailInput').type('john.doe+tfa@example.com')
+      cy.get('@passwordInput').type('password')
+      cy.get('@submitButton').click()
+    })
+
+    cy.assertRedirect('two-factor-challenge')
+
+    cy.get('[data-cy="switch-mode-button"]').click()
+
+    cy.get('[data-cy="2fa-recovery-form"]').within(() => {
+      cy.getFormInput('Recovery code').type('recovery-code')
+      cy.get('[data-cy="submit-button"]').click()
+    })
+
+    cy.assertRedirect('links')
+  })
+
+  it('should show an error if the two-factor code is invalid', () => {
+    cy.get('@loginForm').within(() => {
+      cy.get('@emailInput').type('john.doe+tfa@example.com')
+      cy.get('@passwordInput').type('password')
+      cy.get('@submitButton').click()
+    })
+
+    cy.assertRedirect('two-factor-challenge')
+
+    // Missing two-factor code
+    cy.get('[data-cy="2fa-challenge-form"]').within(() => {
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('input:invalid').should('have.length', 1)
+
+      cy.getFormInput('Two-factor code').clear().invoke('removeAttr', 'required')
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('[data-cy="input-error-message"]').should('contain', 'The provided two factor authentication code was invalid.')
+    })
+
+    // Invalid two-factor code
+    cy.get('[data-cy="2fa-challenge-form"]').within(() => {
+      cy.getFormInput('Two-factor code').type('invalid-code')
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('[data-cy="input-error-message"]').should('contain', 'The provided two factor authentication code was invalid.')
+    })
+  })
+
+  it('should show an error if the two-factor recovery code is invalid', () => {
+    cy.get('@loginForm').within(() => {
+      cy.get('@emailInput').type('john.doe+tfa@example.com')
+      cy.get('@passwordInput').type('password')
+      cy.get('@submitButton').click()
+    })
+
+    cy.assertRedirect('two-factor-challenge')
+
+    cy.get('[data-cy="switch-mode-button"]').click()
+
+    // Missing two-factor recovery code
+    cy.get('[data-cy="2fa-recovery-form"]').within(() => {
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('input:invalid').should('have.length', 1)
+
+      cy.getFormInput('Recovery code').clear().invoke('removeAttr', 'required')
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('[data-cy="input-error-message"]').should('contain', 'The provided two factor authentication code was invalid.')
+    })
+
+    // Invalid two-factor recovery code
+    cy.get('[data-cy="2fa-recovery-form"]').within(() => {
+      cy.getFormInput('Recovery code').type('invalid-code')
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('[data-cy="input-error-message"]').should('contain', 'The provided two factor recovery code was invalid.')
+    })
+  })
+
+  it('should show an error if the two-factor recovery code is used twice', () => {
+    cy.get('@loginForm').within(() => {
+      cy.get('@emailInput').type('john.doe+tfa@example.com')
+      cy.get('@passwordInput').type('password')
+      cy.get('@submitButton').click()
+    })
+
+    cy.assertRedirect('two-factor-challenge')
+
+    cy.get('[data-cy="switch-mode-button"]').click()
+
+    cy.get('[data-cy="2fa-recovery-form"]').within(() => {
+      cy.getFormInput('Recovery code').type('recovery-code')
+      cy.get('[data-cy="submit-button"]').click()
+    })
+
+    cy.assertRedirect('links')
+
+    cy.logout()
+    cy.visit({ route: 'login' })
+
+    cy.get('@loginForm').within(() => {
+      cy.getFormInput('Email').type('john.doe+tfa@example.com')
+      cy.getFormInput('Password').type('password')
+      cy.get('@submitButton').click()
+    })
+
+    cy.assertRedirect('two-factor-challenge')
+
+    cy.get('[data-cy="switch-mode-button"]').click()
+
+    cy.get('[data-cy="2fa-recovery-form"]').within(() => {
+      cy.getFormInput('Recovery code').type('recovery-code')
+      cy.get('[data-cy="submit-button"]').click()
+
+      cy.get('[data-cy="input-error-message"]').should('contain', 'The provided two factor recovery code was invalid.')
+    })
   })
 })

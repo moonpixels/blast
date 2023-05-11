@@ -8,31 +8,31 @@
   </AuthHeader>
 
   <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
-    <form class="space-y-4" data-cy="login-form" @submit.prevent="submit">
+    <form class="space-y-6" data-cy="login-form" @submit.prevent="submit">
       <TextInput
-        v-model="loginForm.email"
-        :error="loginForm.errors.email"
+        v-model="form.email"
+        :error="form.errors.email"
         :label="$t('common.email')"
         autocomplete="email"
         required
         type="email"
-        @input="loginForm.clearErrors('email')"
+        @input="form.clearErrors('email')"
       />
 
       <TextInput
-        v-model="loginForm.password"
-        :error="loginForm.errors.password"
+        v-model="form.password"
+        :error="form.errors.password"
         :label="$t('common.password')"
         autocomplete="current-password"
         required
         type="password"
-        @input="loginForm.clearErrors('password')"
+        @input="form.clearErrors('password')"
       />
 
       <div class="flex items-center justify-between">
         <Checkbox
-          v-model="loginForm.remember"
-          :error="loginForm.errors.remember"
+          v-model="form.remember"
+          :error="form.errors.remember"
           :label="$t('auth.login_remember')"
         />
 
@@ -41,7 +41,7 @@
         </InternalLink>
       </div>
 
-      <PrimaryButton :loading="loginForm.processing" class="w-full" data-cy="submit-button" type="submit">
+      <PrimaryButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('auth.login_button') }}
       </PrimaryButton>
     </form>
@@ -83,13 +83,13 @@ type LoginForm = {
   remember: boolean,
 }
 
-const loginForm = useForm<LoginForm>({
+const form = useForm<LoginForm>({
   email: '',
   password: '',
   remember: false,
 })
 
 function submit(): void {
-  loginForm.post(route('login'))
+  form.post(route('login'))
 }
 </script>

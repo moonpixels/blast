@@ -17,14 +17,14 @@ it('shows the login page', function () {
 });
 
 it('does not show the login page when authenticated', function () {
-    $this->actingAs($this->user)->get(route('login'))->assertRedirect(route('dashboard'));
+    $this->actingAs($this->user)->get(route('login'))->assertRedirect(config('fortify.home'));
 });
 
 it('logs in a user', function () {
     $this->post(route('login'), [
         'email' => $this->user->email,
         'password' => 'password',
-    ])->assertRedirect(route('dashboard'));
+    ])->assertRedirect(config('fortify.home'));
 
     $this->assertAuthenticatedAs($this->user);
 });
@@ -61,12 +61,12 @@ it('remembers the user', function () {
         'email' => $this->user->email,
         'password' => 'password',
         'remember' => true,
-    ])->assertRedirect(route('dashboard'));
+    ])->assertRedirect(config('fortify.home'));
 
     $this->assertAuthenticatedAs($this->user);
     $this->assertNotNull($this->user->remember_token);
 });
 
 it('redirects unauthenticated users to to login page', function () {
-    $this->get(route('dashboard'))->assertRedirect(route('login'));
+    $this->get(config('fortify.home'))->assertRedirect(route('login'));
 });

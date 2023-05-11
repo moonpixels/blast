@@ -9,7 +9,7 @@ describe('Confirm password', () => {
       },
     })
 
-    cy.login({ email: 'john.doe@example.com' })
+    cy.login({ attributes: { email: 'john.doe@example.com' } })
     cy.visit({ route: 'password.confirm' })
 
     cy.get('[data-cy="confirm-password-form"]').as('confirmPasswordForm').within(() => {
@@ -24,7 +24,7 @@ describe('Confirm password', () => {
       cy.get('@submitButton').click()
     })
 
-    cy.assertRedirect('dashboard')
+    cy.assertRedirect('links')
   })
 
   it('should show an error if the password is invalid', () => {

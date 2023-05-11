@@ -3,23 +3,23 @@
 
   <AuthHeader :title="$t('auth.forgot_password_title')">
     <p v-if="resetEmailSent" data-cy="success-message">
-      {{ $t('auth.forgot_password_success', { email: forgotPasswordForm.email }) }}
+      {{ $t('auth.forgot_password_success', { email: form.email }) }}
     </p>
   </AuthHeader>
 
   <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
-    <form v-if="! resetEmailSent" class="space-y-4" data-cy="forgot-password-form" @submit.prevent="submit">
+    <form v-if="! resetEmailSent" class="space-y-6" data-cy="forgot-password-form" @submit.prevent="submit">
       <TextInput
-        v-model="forgotPasswordForm.email"
-        :error="forgotPasswordForm.errors.email"
+        v-model="form.email"
+        :error="form.errors.email"
         :label="$t('common.email')"
         autocomplete="email"
         required
         type="email"
-        @input="forgotPasswordForm.clearErrors('email')"
+        @input="form.clearErrors('email')"
       />
 
-      <PrimaryButton :loading="forgotPasswordForm.processing" class="w-full" data-cy="submit-button" type="submit">
+      <PrimaryButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('auth.forgot_password_button') }}
       </PrimaryButton>
     </form>
@@ -43,14 +43,14 @@ type ForgotPasswordForm = {
   email: string,
 }
 
-const forgotPasswordForm = useForm<ForgotPasswordForm>({
+const form = useForm<ForgotPasswordForm>({
   email: '',
 })
 
 const resetEmailSent = ref<boolean>(false)
 
 function submit(): void {
-  forgotPasswordForm.post(route('password.request'), {
+  form.post(route('password.request'), {
     onSuccess: () => {
       resetEmailSent.value = true
     },

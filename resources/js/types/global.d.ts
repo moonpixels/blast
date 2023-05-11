@@ -2,7 +2,7 @@ import { PageProps as InertiaPageProps } from '@inertiajs/core'
 import { AxiosInstance } from 'axios'
 import ziggyRoute, { Config as ZiggyConfig } from 'ziggy-js'
 import { PageProps as AppPageProps } from './'
-import { trans } from 'laravel-vue-i18n'
+import { trans, transChoice } from 'laravel-vue-i18n'
 
 declare global {
   interface Window {
@@ -13,6 +13,7 @@ declare global {
   const Ziggy: ZiggyConfig
   const defineOptions: typeof import('unplugin-vue-define-options/macros-global').defineOptions
   const $t: typeof trans
+  const $tChoice: typeof transChoice
 }
 
 declare module 'vue' {
@@ -20,6 +21,7 @@ declare module 'vue' {
     route: typeof ziggyRoute
     defineOptions: typeof import('unplugin-vue-define-options/macros-global').defineOptions
     $t: typeof trans
+    $tChoice: typeof transChoice
   }
 }
 
