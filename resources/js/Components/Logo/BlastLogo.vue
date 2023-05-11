@@ -24,7 +24,7 @@
 
 <script lang="ts" setup>
 interface Props {
-  type: 'full' | 'logomark'
+  type?: 'full' | 'logomark'
 }
 
 withDefaults(defineProps<Props>(), {

@@ -27,7 +27,7 @@ describe('Register', () => {
       cy.get('@submitButton').click()
     })
 
-    cy.assertRedirect('dashboard')
+    cy.assertRedirect('links')
   })
 
   it('should show an error if the name is invalid', () => {

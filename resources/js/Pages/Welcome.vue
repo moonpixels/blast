@@ -1,12 +1,23 @@
 <template>
-  <div>
-    <h1 class="text-2xl font-bold">Welcome to Laravel</h1>
-    <p class="text-gray-500">Laravel {{ laravelVersion }}</p>
-    <p class="text-gray-500">PHP {{ phpVersion }}</p>
+  <div class="flex items-center gap-4 p-6">
+    <Link :href="route('login')">
+      <PrimaryButton>
+        {{ $t('auth.login_button') }}
+      </PrimaryButton>
+    </Link>
+
+    <Link :href="route('register')">
+      <PrimaryButton>
+        {{ $t('auth.register_button') }}
+      </PrimaryButton>
+    </Link>
   </div>
 </template>
 
 <script lang="ts" setup>
+import { Link } from '@inertiajs/vue3'
+import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
+
 defineProps<{
   laravelVersion: string;
   phpVersion: string;

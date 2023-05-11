@@ -6,6 +6,8 @@ declare global {
       assertRedirect(path: string): Chainable<any>
 
       getFormInput(label: string): Chainable<any>
+
+      confirmPassword(password: string): Chainable<any>
     }
   }
 }
@@ -37,4 +39,18 @@ Cypress.Commands.add('getFormInput', (label) => {
     const id = $label.prop('for')
     return cy.get(`#${id}`)
   })
+})
+
+/**
+ * Go to the password confirmation page and confirm the password.
+ */
+Cypress.Commands.add('confirmPassword', (password: string) => {
+  cy.visit({ route: 'password.confirm' })
+
+  cy.get('[data-cy="confirm-password-form"]').within(() => {
+    cy.getFormInput('Password').type(password)
+    cy.get('[data-cy="submit-button"]').click()
+  })
+
+  cy.get('[data-cy="confirm-password-form"]').should('not.exist')
 })

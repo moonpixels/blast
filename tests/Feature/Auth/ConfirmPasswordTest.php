@@ -4,7 +4,7 @@ use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
+    $this->user = User::factory()->withTwoFactorAuthentication()->create();
 
     $this->actingAs($this->user);
 });
@@ -26,7 +26,7 @@ it('does not show the confirm password page to guests', function () {
 it('confirms the password', function () {
     $this->post(route('password.confirm'), [
         'password' => 'password',
-    ])->assertRedirect(route('dashboard'));
+    ])->assertRedirect(config('fortify.home'));
 
     $this->assertTrue(session()->has('auth.password_confirmed_at'));
 });

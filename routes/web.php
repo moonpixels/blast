@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Web\AccountSettingsController;
+use App\Http\Controllers\Web\LinksController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,7 +25,13 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard/Show');
-    })->name('dashboard');
+    Route::controller(LinksController::class)->group(function () {
+        Route::get('/links', 'index')->name('links');
+    });
+
+    Route::controller(AccountSettingsController::class)
+        ->middleware(['password.confirm'])
+        ->group(function () {
+            Route::get('/settings/account', 'edit')->name('account-settings');
+        });
 });

@@ -4,37 +4,37 @@
   <AuthHeader :title="$t('auth.register_title')" />
 
   <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
-    <form class="space-y-4" data-cy="register-form" @submit.prevent="submit">
+    <form class="space-y-6" data-cy="register-form" @submit.prevent="submit">
       <TextInput
-        v-model="registrationForm.name"
-        :error="registrationForm.errors.name"
+        v-model="form.name"
+        :error="form.errors.name"
         :label="$t('common.full_name')"
         autocomplete="name"
         required
-        @input="registrationForm.clearErrors('name')"
+        @input="form.clearErrors('name')"
       />
 
       <TextInput
-        v-model="registrationForm.email"
-        :error="registrationForm.errors.email"
+        v-model="form.email"
+        :error="form.errors.email"
         :label="$t('common.email')"
         autocomplete="email"
         required
         type="email"
-        @input="registrationForm.clearErrors('email')"
+        @input="form.clearErrors('email')"
       />
 
       <TextInput
-        v-model="registrationForm.password"
-        :error="registrationForm.errors.password"
+        v-model="form.password"
+        :error="form.errors.password"
         :label="$t('common.password')"
         autocomplete="new-password"
         required
         type="password"
-        @input="registrationForm.clearErrors('password')"
+        @input="form.clearErrors('password')"
       />
 
-      <PrimaryButton :loading="registrationForm.processing" class="w-full" data-cy="submit-button" type="submit">
+      <PrimaryButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('auth.register_button') }}
       </PrimaryButton>
     </form>
@@ -68,13 +68,13 @@ type RegistrationForm = {
   password: string,
 }
 
-const registrationForm = useForm<RegistrationForm>({
+const form = useForm<RegistrationForm>({
   name: '',
   email: '',
   password: '',
 })
 
 function submit(): void {
-  registrationForm.post(route('register'))
+  form.post(route('register'))
 }
 </script>

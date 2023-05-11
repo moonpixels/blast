@@ -18,7 +18,7 @@ it('show the forgot password page', function () {
 });
 
 it('does not show the forgot password page when authenticated', function () {
-    $this->actingAs($this->user)->get(route('password.request'))->assertRedirect(route('dashboard'));
+    $this->actingAs($this->user)->get(route('password.request'))->assertRedirect(config('fortify.home'));
 });
 
 it('sends a forgot password email', function () {

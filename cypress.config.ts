@@ -25,6 +25,7 @@ export default defineConfig({
         }
       })
     },
+    experimentalRunAllSpecs: true,
     baseUrl: 'http://localhost',
     specPattern: 'tests/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
     supportFile: 'tests/cypress/support/e2e.ts',

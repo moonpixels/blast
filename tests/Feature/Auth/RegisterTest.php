@@ -18,7 +18,7 @@ it('shows the registration page', function () {
 it('does not show the registration page when authenticated', function () {
     $user = User::factory()->create();
 
-    $this->actingAs($user)->get(route('register'))->assertRedirect(route('dashboard'));
+    $this->actingAs($user)->get(route('register'))->assertRedirect(config('fortify.home'));
 });
 
 it('does not show the registration page when registration is disabled', function () {
@@ -28,7 +28,7 @@ it('does not show the registration page when registration is disabled', function
 });
 
 it('registers a new user', function () {
-    $this->post(route('register'), $this->userData)->assertRedirect(route('dashboard'));
+    $this->post(route('register'), $this->userData)->assertRedirect(config('fortify.home'));
 
     assertUserInDatabase($this->userData);
     $this->assertAuthenticatedAs(User::whereEmail($this->userData['email'])->first());

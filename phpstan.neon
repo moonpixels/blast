@@ -6,3 +6,4 @@ parameters:
     - app/
   level: 9
   checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
