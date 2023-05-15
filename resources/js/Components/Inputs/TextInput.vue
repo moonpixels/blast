@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="[disabledClasses, error ? 'border-rose-500 dark:border-rose-600 focus-within:border-rose-500 dark:focus-within:border-rose-600 focus-within:ring-rose-500 dark:focus-within:ring-rose-600' : 'border-zinc-900/20 dark:border-white/20 focus-within:border-violet-500 dark:focus-within:border-violet-600 focus-within:ring-violet-500 dark:focus-within:ring-violet-600', 'rounded-md bg-white shadow-sm dark:bg-zinc-950 border px-3 py-2 focus-within:ring-1']"
+    :class="[disabledClasses, borderClasses, backgroundClasses, 'rounded-md shadow-sm border px-3 py-2 focus-within:ring-1']"
   >
     <label
       :class="[disabledClasses, 'block text-xs font-medium']"
@@ -41,6 +41,7 @@ interface Props {
   error?: string
   label: string
   modelValue: any
+  inverse?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -79,6 +80,18 @@ const inputMode = computed<HTMLInputMode>(() => {
 
 const disabledClasses = computed<string>(() => {
   return attrs.disabled !== undefined ? 'cursor-not-allowed opacity-75' : ''
+})
+
+const borderClasses = computed<string>(() => {
+  return props.error
+    ? 'border-rose-500 dark:border-rose-600 focus-within:border-rose-500 dark:focus-within:border-rose-600 focus-within:ring-rose-500 dark:focus-within:ring-rose-600'
+    : 'border-zinc-900/20 dark:border-white/20 focus-within:border-violet-500 dark:focus-within:border-violet-600 focus-within:ring-violet-500 dark:focus-within:ring-violet-600'
+})
+
+const backgroundClasses = computed<string>(() => {
+  return props.inverse
+    ? 'bg-zinc-50 dark:bg-zinc-900'
+    : 'bg-white dark:bg-zinc-950'
 })
 
 function focus(): void {
