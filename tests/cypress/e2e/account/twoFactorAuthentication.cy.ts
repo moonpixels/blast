@@ -60,14 +60,18 @@ describe('Two factor authentication', () => {
       cy.get('[data-cy="submit-button"]').click()
 
       cy.get('[data-cy="disable-2fa-button"]').should('exist')
-    }).should('contain', 'Enabled')
+    })
+
+    cy.get('@2faForm').should('contain', 'Enabled')
   })
 
   it('should allow users to disable two factor authentication', () => {
     cy.get('@2faForm').within(() => {
       cy.get('[data-cy="disable-2fa-button"]').click()
       cy.get('[data-cy="enable-2fa-button"]').should('exist')
-    }).should('contain', 'Disabled')
+    })
+
+    cy.get('@2faForm').should('contain', 'Disabled')
   })
 
   it('should show an error if the two factor code is invalid', () => {
