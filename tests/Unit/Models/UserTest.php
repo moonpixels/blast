@@ -25,6 +25,12 @@ it('gives the status of two-factor authentication', function () {
     expect($this->user->two_factor_enabled)->toBeFalse();
 });
 
-it('gives the user\'s initials', function () {
+it('generates initials for the user', function () {
+    expect($this->user->initials)->toBe('JD');
+
+    $this->user->name = 'John';
+    expect($this->user->initials)->toBe('J');
+
+    $this->user->name = 'John William Doe';
     expect($this->user->initials)->toBe('JD');
 });
