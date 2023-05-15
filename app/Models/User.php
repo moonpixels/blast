@@ -88,9 +88,15 @@ class User extends Authenticatable
     protected function initials(): Attribute
     {
         return Attribute::make(
-            get: fn () => collect(explode(' ', $this->name))
-                ->map(fn ($word) => Str::upper(mb_substr($word, 0, 1)))
-                ->implode('')
+            get: function () {
+                $letters = collect(explode(' ', $this->name))
+                    ->map(fn ($word) => Str::substr($word, 0, 1))
+                    ->map(fn ($letter) => Str::upper($letter));
+
+                return $letters->count() > 1
+                    ? $letters->first().$letters->last()
+                    : $letters->first();
+            }
         );
     }
 }
