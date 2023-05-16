@@ -8,7 +8,7 @@ describe('Reset password', () => {
         email: 'john.doe@example.com',
       },
     }).then((user) => {
-      cy.php(`Illuminate\\Support\\Facades\\Password::createToken(App\\Models\\User::find(${user.id}))`)
+      cy.php(`Illuminate\\Support\\Facades\\Password::createToken(App\\Models\\User::find('${user.id}'))`)
         .then((token) => {
           cy.visit({
             route: 'password.reset',
