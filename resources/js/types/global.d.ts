@@ -11,7 +11,6 @@ declare global {
 
   const route: typeof ziggyRoute
   const Ziggy: ZiggyConfig
-  const defineOptions: typeof import('unplugin-vue-define-options/macros-global').defineOptions
   const $t: typeof trans
   const $tChoice: typeof transChoice
 }
@@ -19,7 +18,6 @@ declare global {
 declare module 'vue' {
   interface ComponentCustomProperties {
     route: typeof ziggyRoute
-    defineOptions: typeof import('unplugin-vue-define-options/macros-global').defineOptions
     $t: typeof trans
     $tChoice: typeof transChoice
   }
