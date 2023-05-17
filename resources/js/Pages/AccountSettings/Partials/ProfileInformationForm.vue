@@ -1,9 +1,9 @@
 <template>
   <TwoColumnForm
-    :description="$t('auth.personal_info_settings_description')"
-    :title="$t('auth.personal_info_settings_title')"
+    :description="$t('auth.profile_info_settings_description')"
+    :title="$t('auth.profile_info_settings_title')"
   >
-    <form class="max-w-md space-y-6" data-cy="personal-info-form" @submit.prevent="submit">
+    <form class="max-w-md space-y-6" data-cy="profile-information-form" @submit.prevent="submit">
       <TextInput
         v-model="form.name"
         :error="form.errors.name"
@@ -24,7 +24,7 @@
       />
 
       <PrimaryButton :loading="form.processing" data-cy="submit-button" type="submit">
-        {{ $t('auth.personal_info_settings_button') }}
+        {{ $t('auth.profile_info_settings_button') }}
       </PrimaryButton>
     </form>
   </TwoColumnForm>
@@ -34,7 +34,7 @@
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import TwoColumnForm from '@/Components/Forms/TwoColumnForm.vue'
 import TextInput from '@/Components/Inputs/TextInput.vue'
-import PersonalInfoForm from '@/Pages/AccountSettings/Partials/PersonalInfoForm.vue'
+import ProfileInfoForm from '@/Pages/AccountSettings/Partials/ProfileInformationForm.vue'
 import { useForm } from '@inertiajs/vue3'
 import { User } from '@/types'
 
@@ -44,15 +44,19 @@ interface Props {
 
 const props = defineProps<Props>()
 
-type PersonalInfoForm = {
+type ProfileInfoForm = {
   name: string,
   email: string,
 }
 
-const form = useForm<PersonalInfoForm>({
+const form = useForm<ProfileInfoForm>({
   name: props.user.name,
   email: props.user.email,
 })
 
-function submit(): void {}
+function submit(): void {
+  form.put(route('user-profile-information.update'), {
+    preserveScroll: true
+  })
+}
 </script>

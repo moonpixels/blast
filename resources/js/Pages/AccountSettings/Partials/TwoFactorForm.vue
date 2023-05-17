@@ -67,7 +67,7 @@
           <form class="space-y-4 mt-4" @submit.prevent="confirmCode">
             <TextInput
               v-model="form.code"
-              :error="form.errors.confirmTwoFactorAuthentication?.code"
+              :error="form.errors.code"
               :label="$t('common.two_factor_code')"
               autocomplete="one-time-code"
               inverse
@@ -88,7 +88,7 @@
 <script lang="ts" setup>
 import { User } from '@/types'
 import TwoColumnForm from '@/Components/Forms/TwoColumnForm.vue'
-import { InertiaForm, router, useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/vue/24/outline'
 import Badge from '@/Components/Badges/Badge.vue'
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
@@ -112,20 +112,14 @@ type TwoFactorForm = {
   code: string
 }
 
-interface TwoFactorInertiaForm extends InertiaForm<TwoFactorForm> {
-  errors: Partial<Record<keyof TwoFactorForm, string>> & {
-    confirmTwoFactorAuthentication?: {
-      code?: string
-    }
-  }
-}
-
 const form = useForm<TwoFactorForm>({
   code: '',
-}) as TwoFactorInertiaForm
+})
+
+const forceShowSetup = ref<boolean>(false)
 
 const showSetup = computed<boolean>(() => {
-  return props.status === 'two-factor-authentication-enabled' || form.hasErrors
+  return props.status === 'two-factor-authentication-enabled' || form.hasErrors || forceShowSetup.value
 })
 
 function enableTwoFactor(): void {
@@ -158,8 +152,12 @@ function disableTwoFactor(): void {
 
 function confirmCode(): void {
   form.post(route('two-factor.confirm'), {
+    errorBag: 'confirmTwoFactorAuthentication',
     preserveScroll: true,
-    only: ['auth.user', 'status', 'errors']
+    only: ['auth.user', 'status', 'errors'],
+    onError: () => {
+      forceShowSetup.value = true
+    }
   })
 }
 </script>

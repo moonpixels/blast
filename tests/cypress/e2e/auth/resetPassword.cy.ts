@@ -1,13 +1,10 @@
+import { createUser } from '../../support/functions'
+
 describe('Reset password', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    cy.create({
-      model: 'App\\Models\\User',
-      attributes: {
-        email: 'john.doe@example.com',
-      },
-    }).then((user) => {
+    createUser().then((user) => {
       cy.php(`Illuminate\\Support\\Facades\\Password::createToken(App\\Models\\User::find('${user.id}'))`)
         .then((token) => {
           cy.visit({

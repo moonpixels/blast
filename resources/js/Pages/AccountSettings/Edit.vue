@@ -31,7 +31,7 @@ import { PageProps, User } from '@/types'
 import TwoColumnFormContainer from '@/Components/Forms/TwoColumnFormContainer.vue'
 import PasswordForm from '@/Pages/AccountSettings/Partials/PasswordForm.vue'
 import TwoFactorForm from '@/Pages/AccountSettings/Partials/TwoFactorForm.vue'
-import PersonalInfoForm from '@/Pages/AccountSettings/Partials/PersonalInfoForm.vue'
+import PersonalInfoForm from '@/Pages/AccountSettings/Partials/ProfileInformationForm.vue'
 
 defineOptions({
   layout: AppLayout,

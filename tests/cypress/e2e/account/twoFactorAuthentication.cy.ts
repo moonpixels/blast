@@ -1,5 +1,5 @@
 import { User } from '@/types'
-import { getOtpCodeForUser } from '../../support/functions'
+import { createUser, getOtpCodeForUser } from '../../support/functions'
 
 describe('Two factor authentication', () => {
   let user: User
@@ -15,22 +15,13 @@ describe('Two factor authentication', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    cy.create({
-      model: 'App\\Models\\User',
-      attributes: {
-        email: 'john.doe@example.com',
-      },
-    }).then((model) => {
+    createUser().then((model) => {
       user = model
     })
 
-    cy.create({
-      model: 'App\\Models\\User',
-      attributes: {
-        email: 'john.doe+tfa@example.com',
-      },
-      state: ['withTwoFactorAuthentication'],
-    }).then((model) => {
+    createUser({
+      email: 'john.doe+tfa@example.com',
+    }, ['withTwoFactorAuthentication']).then((model) => {
       tfaUser = model
     })
 
