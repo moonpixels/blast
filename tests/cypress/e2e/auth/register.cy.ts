@@ -1,13 +1,10 @@
+import { createUser } from '../../support/functions'
+
 describe('Register', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    cy.create({
-      model: 'App\\Models\\User',
-      attributes: {
-        email: 'existing-user@example.com',
-      },
-    })
+    createUser({ email: 'existing-user@example.com' })
 
     cy.visit({ route: 'register' })
 

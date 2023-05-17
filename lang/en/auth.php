@@ -59,9 +59,9 @@ return [
     'settings_meta_title' => 'Account settings',
     'settings_title' => 'Account settings',
 
-    'personal_info_settings_title' => 'Personal information',
-    'personal_info_settings_description' => 'Update your account\'s personal information and email address.',
-    'personal_info_settings_button' => 'Update information',
+    'profile_info_settings_title' => 'Profile information',
+    'profile_info_settings_description' => 'Update your account\'s profile information and email address.',
+    'profile_info_settings_button' => 'Update information',
 
     'password_settings_title' => 'Password',
     'password_settings_description' => 'Update your account\'s password.',

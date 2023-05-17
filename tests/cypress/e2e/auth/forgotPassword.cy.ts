@@ -1,13 +1,10 @@
+import { createUser } from '../../support/functions'
+
 describe('Forgot password', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    cy.create({
-      model: 'App\\Models\\User',
-      attributes: {
-        email: 'john.doe@example.com',
-      },
-    })
+    createUser()
 
     cy.visit({ route: 'password.request' })
 

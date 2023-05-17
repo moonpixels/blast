@@ -1,13 +1,10 @@
+import { createUser } from '../../support/functions'
+
 describe('Confirm password', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    cy.create({
-      model: 'App\\Models\\User',
-      attributes: {
-        email: 'john.doe@example.com',
-      },
-    })
+    createUser()
 
     cy.login({ attributes: { email: 'john.doe@example.com' } })
     cy.visit({ route: 'password.confirm' })
