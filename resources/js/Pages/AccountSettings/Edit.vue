@@ -1,9 +1,9 @@
 <template>
-  <AppHead :title="$t('auth.settings_meta_title')" />
+  <AppHead :title="$t('account.settings_meta_title')" />
 
   <ConstrainedContainer>
     <h1 class="text-xl font-semibold text-zinc-900 dark:text-white" data-cy="confirm-password-title">
-      {{ $t('auth.settings_title') }}
+      {{ $t('account.settings_title') }}
     </h1>
 
     <TwoColumnFormContainer>
@@ -46,6 +46,6 @@ interface Props {
 defineProps<Props>()
 
 const user = computed<User>(() => {
-  return usePage<PageProps>().props.auth.user
+  return usePage<PageProps<{}>>().props.user
 })
 </script>

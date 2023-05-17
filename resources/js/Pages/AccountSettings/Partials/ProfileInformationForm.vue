@@ -1,7 +1,7 @@
 <template>
   <TwoColumnForm
-    :description="$t('auth.profile_info_settings_description')"
-    :title="$t('auth.profile_info_settings_title')"
+    :description="$t('account.profile_info_settings_description')"
+    :title="$t('account.profile_info_settings_title')"
   >
     <form class="max-w-md space-y-6" data-cy="profile-information-form" @submit.prevent="submit">
       <TextInput
@@ -24,7 +24,7 @@
       />
 
       <PrimaryButton :loading="form.processing" data-cy="submit-button" type="submit">
-        {{ $t('auth.profile_info_settings_button') }}
+        {{ $t('account.profile_info_settings_button') }}
       </PrimaryButton>
     </form>
   </TwoColumnForm>

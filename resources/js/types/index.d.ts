@@ -1,3 +1,5 @@
+import { PageProps as InertiaPageProps } from '@inertiajs/core'
+
 export interface User {
   id: number
   name: string
@@ -6,9 +8,15 @@ export interface User {
   initials: string
 }
 
-export type PageProps<T extends Record<string, unknown> = Record<string, unknown>> =
-  T & {
-  auth: {
-    user: User
+export interface FlashMessage {
+  title: string
+  message: string
+}
+
+export type PageProps<T extends InertiaPageProps = InertiaPageProps> = T & {
+  user: User
+  flash: {
+    success?: FlashMessage
+    error?: FlashMessage
   }
 }

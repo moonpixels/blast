@@ -3,8 +3,6 @@
     <title>
       {{ title }}
     </title>
-
-    <slot />
   </Head>
 </template>
 

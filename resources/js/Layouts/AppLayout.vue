@@ -118,6 +118,8 @@
   <main class="py-10 space-y-10">
     <slot />
   </main>
+
+  <FlashNotification />
 </template>
 
 <script lang="ts" setup>
@@ -131,9 +133,10 @@ import { XMarkIcon } from '@heroicons/vue/20/solid'
 import { trans, transChoice } from 'laravel-vue-i18n'
 import { computed } from 'vue'
 import { PageProps, User } from '@/types'
+import FlashNotification from '@/Components/Notifications/FlashMessages.vue'
 
 const user = computed<User>(() => {
-  return usePage<PageProps>().props.auth.user
+  return usePage<PageProps<{}>>().props.user
 })
 
 interface NavLink {
