@@ -1,7 +1,7 @@
 <template>
   <TwoColumnForm
-    :description="$t('auth.2fa_settings_description')"
-    :title="$t('auth.2fa_settings_title')"
+    :description="$t('account.2fa_settings_description')"
+    :title="$t('account.2fa_settings_title')"
     data-cy="2fa-form"
   >
     <div class="max-w-md space-y-10 border-zinc-900/20 dark:border-white/20 rounded-md bg-white shadow-sm dark:bg-zinc-950 border p-3">
@@ -23,31 +23,31 @@
           data-cy="disable-2fa-button"
           @click="disableTwoFactor"
         >
-          {{ $t('auth.2fa_settings_button_disable') }}
+          {{ $t('account.2fa_settings_button_disable') }}
         </SecondaryButton>
 
         <PrimaryButton v-else :loading="loading" data-cy="enable-2fa-button" @click="enableTwoFactor">
-          {{ $t('auth.2fa_settings_button_enable') }}
+          {{ $t('account.2fa_settings_button_enable') }}
         </PrimaryButton>
       </div>
 
       <template v-else>
         <article>
           <h3 class="text-sm text-zinc-900 dark:text-white font-medium">
-            {{ $t('auth.2fa_settings_qr_code') }}
+            {{ $t('account.2fa_settings_qr_code') }}
           </h3>
           <p class="text-sm mt-1">
-            {{ $t('auth.2fa_settings_qr_code_description') }}
+            {{ $t('account.2fa_settings_qr_code_description') }}
           </p>
           <div class="mt-4" data-cy="2fa-qr-code" v-html="twoFactorQrCode" />
         </article>
 
         <article>
           <h3 class="text-sm text-zinc-900 dark:text-white font-medium">
-            {{ $t('auth.2fa_settings_recovery_codes') }}
+            {{ $t('account.2fa_settings_recovery_codes') }}
           </h3>
           <p class="text-sm mt-1">
-            {{ $t('auth.2fa_settings_recovery_codes_description') }}
+            {{ $t('account.2fa_settings_recovery_codes_description') }}
           </p>
           <ul
             class="mt-4 rounded border border-zinc-900/20 dark:border-white/20 bg-zinc-50 dark:bg-zinc-900 p-3 text-xs font-mono select-all"
@@ -59,10 +59,10 @@
 
         <article>
           <h3 class="text-sm text-zinc-900 dark:text-white font-medium">
-            {{ $t('auth.2fa_settings_confirm_code') }}
+            {{ $t('account.2fa_settings_confirm_code') }}
           </h3>
           <p class="text-sm mt-1">
-            {{ $t('auth.2fa_settings_confirm_code_description') }}
+            {{ $t('account.2fa_settings_confirm_code_description') }}
           </p>
           <form class="space-y-4 mt-4" @submit.prevent="confirmCode">
             <TextInput
@@ -76,7 +76,7 @@
             />
 
             <PrimaryButton :loading="form.processing" data-cy="submit-button" type="submit">
-              {{ $t('auth.2fa_settings_button_confirm') }}
+              {{ $t('account.2fa_settings_button_confirm') }}
             </PrimaryButton>
           </form>
         </article>
@@ -140,7 +140,7 @@ function disableTwoFactor(): void {
   router.visit(route('two-factor.disable'), {
     method: 'delete',
     preserveScroll: true,
-    only: ['auth.user'],
+    only: ['user'],
     onStart: () => {
       loading.value = true
     },
@@ -154,7 +154,7 @@ function confirmCode(): void {
   form.post(route('two-factor.confirm'), {
     errorBag: 'confirmTwoFactorAuthentication',
     preserveScroll: true,
-    only: ['auth.user', 'status', 'errors'],
+    only: ['user', 'status', 'errors'],
     onError: () => {
       forceShowSetup.value = true
     }

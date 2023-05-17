@@ -1,7 +1,7 @@
 <template>
   <TwoColumnForm
-    :description="$t('auth.password_settings_description')"
-    :title="$t('auth.password_settings_title')"
+    :description="$t('account.password_settings_description')"
+    :title="$t('account.password_settings_title')"
   >
     <form class="max-w-md space-y-6" data-cy="password-form" @submit.prevent="submit">
       <TextInput
@@ -25,7 +25,7 @@
       />
 
       <PrimaryButton :loading="form.processing" data-cy="submit-button" type="submit">
-        {{ $t('auth.password_settings_button') }}
+        {{ $t('account.password_settings_button') }}
       </PrimaryButton>
     </form>
   </TwoColumnForm>

@@ -23,6 +23,8 @@ describe('Profile information', () => {
       cy.get('@emailInput').clear().type('new.email@example.com')
       cy.get('@submitButton').click()
     })
+
+    cy.get('[data-cy="success-notification"]').should('contain', 'Profile updated')
   })
 
   it('should show an error if the name is invalid', () => {

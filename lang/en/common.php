@@ -18,4 +18,5 @@ return [
     'disabled' => 'Disabled',
     'two_factor_code' => 'Two-factor code',
     'recovery_code' => 'Recovery code',
+    'close' => 'Close',
 ];

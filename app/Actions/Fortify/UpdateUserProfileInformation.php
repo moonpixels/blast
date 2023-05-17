@@ -30,5 +30,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'name' => $input['name'],
             'email' => $input['email'],
         ])->save();
+
+        session()->flash('success', [
+            'title' => __('account.profile_info_update_success.title'),
+            'message' => __('account.profile_info_update_success.message'),
+        ]);
     }
 }
