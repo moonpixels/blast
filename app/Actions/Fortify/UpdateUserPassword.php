@@ -26,5 +26,10 @@ class UpdateUserPassword implements UpdatesUserPasswords
         $user->forceFill([
             'password' => Hash::make($input['password']),
         ])->save();
+
+        session()->flash('success', [
+            'title' => __('account.password_update_success.title'),
+            'message' => __('account.password_update_success.message'),
+        ]);
     }
 }

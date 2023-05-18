@@ -3,11 +3,9 @@
 use App\Models\User;
 
 beforeEach(function () {
-    $this->user = User::factory()->withTwoFactorAuthentication()->create();
+    $this->user = User::factory()->create();
 
     $this->actingAs($this->user);
-
-    withoutPasswordConfirmation();
 });
 
 it('updates the users name', function () {
