@@ -19,7 +19,9 @@ it('updates a users password', function () {
         'password' => 'new-password',
     ]);
 
-    expect(Hash::check('new-password', $this->user->password))->toBeTrue();
+    expect(Hash::check('new-password', $this->user->password))->toBeTrue()
+        ->and(session('success.title'))->toBe(__('account.password_update_success.title'))
+        ->and(session('success.message'))->toBe(__('account.password_update_success.message'));
 });
 
 it('does not update a users password if the current password is invalid', function () {

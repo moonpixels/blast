@@ -15,6 +15,10 @@ return [
     'password_settings_title' => 'Password',
     'password_settings_description' => 'Update your account\'s password.',
     'password_settings_button' => 'Update password',
+    'password_update_success' => [
+        'title' => 'Password updated',
+        'message' => 'Your password has been updated successfully.',
+    ],
 
     '2fa_settings_title' => 'Two-factor authentication',
     '2fa_settings_description' => 'Add an extra layer of security to your account using two-factor authentication.',

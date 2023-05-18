@@ -54,5 +54,12 @@ const form = useForm<PasswordForm>({
   password: '',
 })
 
-function submit(): void {}
+function submit(): void {
+  form.put(route('user-password.update'), {
+    preserveScroll: true,
+    onSuccess: () => {
+      form.reset()
+    },
+  })
+}
 </script>
