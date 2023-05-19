@@ -35,7 +35,7 @@ it('does not show the reset password page when authenticated', function () {
     $this->actingAs($this->user)->get(route('password.reset', [
         'token' => $this->token,
         'email' => $this->user->email,
-    ]))->assertRedirect(route('links'));
+    ]))->assertRedirectToRoute('links.index');
 });
 
 it('resets a user password', function () {
@@ -44,7 +44,7 @@ it('resets a user password', function () {
         'email' => $this->user->email,
         'password' => 'new-password',
     ])
-        ->assertRedirect(route('login'))
+        ->assertRedirectToRoute('login')
         ->assertSessionHas('status', __('passwords.reset'));
 
     $this->assertTrue(Hash::check('new-password', $this->user->fresh()->password));

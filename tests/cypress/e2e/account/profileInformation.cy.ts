@@ -8,7 +8,7 @@ describe('Profile information', () => {
 
     cy.login({ attributes: { email: 'john.doe@example.com' } })
     cy.confirmPassword('password')
-    cy.visit({ route: 'account-settings' })
+    cy.visit({ route: 'account-settings.show' })
 
     cy.get('[data-cy="profile-information-form"]').as('profileInformationForm').within(() => {
       cy.getFormInput('Full name').as('nameInput')

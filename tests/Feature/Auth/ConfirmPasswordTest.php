@@ -20,7 +20,7 @@ it('shows the confirm password page', function () {
 it('does not show the confirm password page to guests', function () {
     $this->post(route('logout'));
 
-    $this->get(route('password.confirm'))->assertRedirect(route('login'));
+    $this->get(route('password.confirm'))->assertRedirectToRoute('login');
 });
 
 it('confirms the password', function () {
@@ -50,7 +50,7 @@ it('does not confirm the password when the user is not authenticated', function 
 
     $this->post(route('password.confirm'), [
         'password' => 'password',
-    ])->assertRedirect(route('login'));
+    ])->assertRedirectToRoute('login');
 
     $this->assertFalse(session()->has('auth.password_confirmed_at'));
 });

@@ -9,7 +9,7 @@ describe('Two factor authentication', () => {
     cy.logout()
     cy.login({ attributes: { email: user.email } })
     cy.confirmPassword('password')
-    cy.visit({ route: 'account-settings' })
+    cy.visit({ route: 'account-settings.show' })
   }
 
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe('Two factor authentication', () => {
 
     cy.login({ attributes: { email: 'john.doe+tfa@example.com' } })
     cy.confirmPassword('password')
-    cy.visit({ route: 'account-settings' })
+    cy.visit({ route: 'account-settings.show' })
 
     cy.get('[data-cy="2fa-form"]').as('2faForm')
   })

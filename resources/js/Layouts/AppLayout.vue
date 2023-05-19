@@ -31,7 +31,7 @@
                     <XMarkIcon class="h-6 w-6" />
                   </PopoverButton>
 
-                  <Link :href="route('links')" @click="close">
+                  <Link :href="route('links.index')" @click="close">
                     <span class="sr-only">{{ $t('common.go_home') }}</span>
                     <BlastLogo class="h-8 w-8" type="logomark" />
                   </Link>
@@ -55,7 +55,7 @@
           <!-- Logo -->
           <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div class="flex flex-shrink-0 items-center">
-              <Link :href="route('links')">
+              <Link :href="route('links.index')">
                 <span class="sr-only">{{ $t('common.go_home') }}</span>
                 <BlastLogo class="block h-7 w-auto sm:hidden" type="logomark" />
                 <BlastLogo class="hidden h-7 w-auto sm:block" />
@@ -73,7 +73,7 @@
                   class="flex rounded-full bg-white dark:bg-zinc-950 text-sm transition-all ease-in-out focus:outline-none focus:ring-2 focus:ring-violet-500 dark:focus:ring-violet-600 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-zinc-950"
                 >
                   <span class="sr-only">{{ $t('common.open_menu') }}</span>
-                  <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-400 dark:bg-gray-500">
+                  <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-500">
                     <span class="text-sm font-medium leading-none text-white">
                       {{ user.initials }}
                     </span>
@@ -82,7 +82,7 @@
               </template>
 
               <template #menuItems>
-                <MenuItemLink :href="route('account-settings')">
+                <MenuItemLink :href="route('account-settings.show')">
                   {{ $t('app.user_menu.account_settings') }}
                 </MenuItemLink>
                 <MenuItemLink :href="route('logout')" as="button" method="post">
@@ -148,12 +148,12 @@ interface NavLink {
 const links = computed<NavLink[]>(() => [
   {
     name: transChoice('links.links', 2),
-    href: route('links'),
+    href: route('links.index'),
     route: '/links',
   },
   {
     name: trans('common.settings'),
-    href: route('account-settings'),
+    href: route('account-settings.show'),
     route: '/settings',
   },
 ])

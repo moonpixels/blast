@@ -17,6 +17,8 @@
         :two-factor-recovery-codes="twoFactorRecoveryCodes"
         :user="user"
       />
+
+      <DeleteForm :user="user" />
     </TwoColumnFormContainer>
   </ConstrainedContainer>
 </template>
@@ -32,6 +34,7 @@ import TwoColumnFormContainer from '@/Components/Forms/TwoColumnFormContainer.vu
 import PasswordForm from '@/Pages/AccountSettings/Partials/PasswordForm.vue'
 import TwoFactorForm from '@/Pages/AccountSettings/Partials/TwoFactorForm.vue'
 import PersonalInfoForm from '@/Pages/AccountSettings/Partials/ProfileInformationForm.vue'
+import DeleteForm from '@/Pages/AccountSettings/Partials/DeleteForm.vue'
 
 defineOptions({
   layout: AppLayout,

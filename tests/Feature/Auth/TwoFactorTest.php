@@ -11,7 +11,7 @@ it('shows the two-factor challenge page on login when enabled', function () {
     $this->post(route('login'), [
         'email' => $this->tfaUser->email,
         'password' => 'password',
-    ])->assertRedirect(route('two-factor.login'));
+    ])->assertRedirectToRoute('two-factor.login');
 });
 
 it('does not show the two-factor challenge page on login when disabled', function () {
