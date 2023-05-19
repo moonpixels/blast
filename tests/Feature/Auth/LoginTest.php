@@ -68,5 +68,5 @@ it('remembers the user', function () {
 });
 
 it('redirects unauthenticated users to to login page', function () {
-    $this->get(config('fortify.home'))->assertRedirect(route('login'));
+    $this->get(config('fortify.home'))->assertRedirectToRoute('login');
 });

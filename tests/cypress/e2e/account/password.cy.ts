@@ -8,7 +8,7 @@ describe('Password', () => {
 
     cy.login({ attributes: { email: 'john.doe@example.com' } })
     cy.confirmPassword('password')
-    cy.visit({ route: 'account-settings' })
+    cy.visit({ route: 'account-settings.show' })
 
     cy.get('[data-cy="password-form"]').as('passwordForm').within(() => {
       cy.getFormInput('Current password').as('currentPasswordInput')

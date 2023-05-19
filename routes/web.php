@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Web\AccountSettingsController;
+use App\Http\Controllers\Web\CurrentUserController;
 use App\Http\Controllers\Web\LinksController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -24,14 +25,25 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::controller(LinksController::class)->group(function () {
-        Route::get('/links', 'index')->name('links');
-    });
-
-    Route::controller(AccountSettingsController::class)
-        ->middleware(['password.confirm'])
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Links...
+    Route::controller(LinksController::class)
+        ->name('links.')
         ->group(function () {
-            Route::get('/settings/account', 'edit')->name('account-settings');
+            Route::get('/links', 'index')->name('index');
+        });
+
+    // Account settings...
+    Route::controller(AccountSettingsController::class)
+        ->name('account-settings.')
+        ->group(function () {
+            Route::get('/account/settings', 'show')->name('show');
+        });
+
+    // Current user...
+    Route::controller(CurrentUserController::class)
+        ->name('current-user.')
+        ->group(function () {
+            Route::delete('/user', 'destroy')->name('destroy');
         });
 });
