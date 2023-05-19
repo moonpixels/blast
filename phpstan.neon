@@ -4,6 +4,7 @@ includes:
 parameters:
   paths:
     - app/
-  level: 9
+  level: 7
+  inferPrivatePropertyTypeFromConstructor: true
   checkMissingIterableValueType: false
   checkGenericClassInNonGenericObjectType: false
