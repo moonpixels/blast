@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Web\AccountSettingsController;
+use App\Http\Controllers\Web\CurrentTeamController;
 use App\Http\Controllers\Web\CurrentUserController;
-use App\Http\Controllers\Web\LinksController;
+use App\Http\Controllers\Web\LinkController;
+use App\Http\Controllers\Web\TeamController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -27,7 +29,7 @@ Route::get('/', function () {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     // Links...
-    Route::controller(LinksController::class)
+    Route::controller(LinkController::class)
         ->name('links.')
         ->group(function () {
             Route::get('/links', 'index')->name('index');
@@ -45,5 +47,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('current-user.')
         ->group(function () {
             Route::delete('/user', 'destroy')->name('destroy');
+        });
+
+    // Teams...
+    Route::controller(TeamController::class)
+        ->name('teams.')
+        ->group(function () {
+            Route::get('/teams/{team}', 'show')->name('show');
+            Route::post('/teams', 'store')->name('store');
+            Route::put('/teams/{team}', 'update')->name('update');
+            Route::delete('/teams/{team}', 'destroy')->name('destroy');
+        });
+
+    // Current team...
+    Route::controller(CurrentTeamController::class)
+        ->name('current-team.')
+        ->group(function () {
+            Route::put('/current-team', 'update')->name('update');
         });
 });

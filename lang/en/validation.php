@@ -25,6 +25,7 @@ return [
     'ascii' => 'The :attribute field must only contain single-byte alphanumeric characters and symbols.',
     'before' => 'The :attribute field must be a date before :date.',
     'before_or_equal' => 'The :attribute field must be a date before or equal to :date.',
+    'belongs_to_team' => 'The :attribute field must contain a valid team ID that you belong to.',
     'between' => [
         'array' => 'The :attribute field must have between :min and :max items.',
         'file' => 'The :attribute field must be between :min and :max kilobytes.',

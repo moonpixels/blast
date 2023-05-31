@@ -12,7 +12,7 @@
         <div
           v-if="show"
           :data-cy="success ? 'success-notification' : 'error-notification'"
-          class="pointer-events-auto origin-bottom w-full max-w-sm overflow-hidden rounded-md bg-white dark:bg-zinc-950 shadow-md border border-zinc-900/20 dark:border-white/20"
+          class="pointer-events-auto relative origin-bottom w-full max-w-sm overflow-hidden rounded-md bg-white dark:bg-zinc-950 shadow-md border border-zinc-900/20 dark:border-white/20"
         >
           <div class="p-4">
             <div class="flex items-start">
@@ -35,6 +35,14 @@
               </div>
             </div>
           </div>
+
+          <span
+            :key="notificationId"
+            :style="{ width: `${loadingBarWidth}%` }"
+            aria-hidden="true"
+            class="absolute w-full h-0.5 bg-violet-500 dark:bg-violet-600 bottom-0 transition-all ease-linear duration-[5000ms]"
+          >
+          </span>
         </div>
       </transition>
     </div>
@@ -44,11 +52,18 @@
 <script lang="ts" setup>
 import { computed, ref, watch } from 'vue'
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid'
-import { usePage } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
 import { FlashMessage, PageProps } from '@/types'
 import DismissButton from '@/Components/Buttons/DismissButton.vue'
+import { nanoid } from 'nanoid'
 
-const show = ref(false)
+const show = ref<boolean>(false)
+
+const notificationId = ref<string>(nanoid())
+
+const loadingBarWidth = ref<number>(100)
+
+let timeout: ReturnType<typeof setTimeout>
 
 const success = computed<FlashMessage | undefined>(() => {
   return usePage<PageProps>().props.flash.success
@@ -62,12 +77,30 @@ const flash = computed<FlashMessage | undefined>(() => {
   return success.value || error.value
 })
 
+function reset(): void {
+  show.value = false
+  clearTimeout(timeout)
+  loadingBarWidth.value = 100
+  notificationId.value = nanoid()
+}
+
 watch(flash, (value) => {
   if (value) {
+    reset()
     show.value = true
+
     setTimeout(() => {
-      show.value = false
-    }, 5000)
+      loadingBarWidth.value = 0
+
+      timeout = setTimeout(() => {
+        show.value = false
+        loadingBarWidth.value = 100
+      }, 5000)
+    }, 50)
   }
+})
+
+router.on('start', () => {
+  reset()
 })
 </script>

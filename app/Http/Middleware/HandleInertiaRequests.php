@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\Inertia\UserResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,7 +30,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'user' => fn () => $request->user()
-                ? $request->user()->only(['id', 'name', 'email', 'two_factor_enabled', 'initials'])
+                ? new UserResource($request->user())
                 : null,
 
             'flash' => [
