@@ -18,7 +18,7 @@
         :user="user"
       />
 
-      <DeleteForm :user="user" />
+      <DeleteForm />
     </TwoColumnFormContainer>
   </ConstrainedContainer>
 </template>
