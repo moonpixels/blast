@@ -7,7 +7,7 @@ use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 beforeEach(function () {
-    $this->action = new CreateNewUser;
+    $this->action = app(CreateNewUser::class);
 
     $this->userData = User::factory()->make()->only(['name', 'email', 'password']);
 });
@@ -27,7 +27,8 @@ it('creates a new user', function () {
             'email' => $this->userData['email'],
         ])
         ->and($user->password)->not()->toBe($this->userData['password'])
-        ->and(Hash::check($this->userData['password'], $user->password))->toBeTrue();
+        ->and(Hash::check($this->userData['password'], $user->password))->toBeTrue()
+        ->and($user->personalTeam()->exists())->toBeTrue();
 });
 
 it('does not create a user when the required fields are missing', function () {

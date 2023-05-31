@@ -20,4 +20,5 @@ return [
     'recovery_code' => 'Recovery code',
     'close' => 'Close',
     'cancel' => 'Cancel',
+    'remove' => 'Remove',
 ];

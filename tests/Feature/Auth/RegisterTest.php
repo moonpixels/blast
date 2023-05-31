@@ -31,6 +31,13 @@ it('registers a new user', function () {
     $this->post(route('register'), $this->userData)->assertRedirect(config('fortify.home'));
 
     assertUserInDatabase($this->userData);
+
+    $this->assertDatabaseHas('teams', [
+        'owner_id' => User::whereEmail($this->userData['email'])->first()->id,
+        'name' => __('teams.personal_team_name'),
+        'personal_team' => true,
+    ]);
+
     $this->assertAuthenticatedAs(User::whereEmail($this->userData['email'])->first());
 });
 

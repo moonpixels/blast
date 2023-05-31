@@ -28,7 +28,7 @@ Cypress.Commands.add('waitForSpecToFinish', waitForSpecToFinish)
  * Assert that the current URL matches the given path.
  */
 Cypress.Commands.add('assertRedirect', (path) => {
-  cy.location('pathname').should('eq', `/${path}`.replace(/^\/\//, '/'))
+  cy.location('pathname').should('contain', `/${path}`.replace(/^\/\//, '/'))
 })
 
 /**

@@ -11,8 +11,12 @@ use BaconQrCode\Writer;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
@@ -56,6 +60,79 @@ class User extends Authenticatable
         'two_factor_enabled',
         'initials',
     ];
+
+    /**
+     * Get the teams that the user owns.
+     */
+    public function ownedTeams(): HasMany
+    {
+        return $this->hasMany(Team::class, 'owner_id');
+    }
+
+    /**
+     * Get user's current team.
+     */
+    public function currentTeam(): BelongsTo
+    {
+        if (! $this->current_team_id) {
+            $this->switchTeam($this->personalTeam());
+        }
+
+        return $this->belongsTo(Team::class, 'current_team_id');
+    }
+
+    /**
+     * Switch the user's current team.
+     */
+    public function switchTeam(Team $team): bool
+    {
+        if ($this->belongsToTeam($team)) {
+            $this->update([
+                'current_team_id' => $team->id,
+            ]);
+
+            $this->setRelation('currentTeam', $team);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine if the user belongs to the given team.
+     */
+    public function belongsToTeam(Team $team): bool
+    {
+        return $team->owner_id === $this->id || $team->users()->where('user_id', $this->id)->exists();
+    }
+
+    /**
+     * Get the user's personal team.
+     */
+    public function personalTeam(): Team
+    {
+        return $this->ownedTeams->where('personal_team', true)->first();
+    }
+
+    /**
+     * Get all the user's teams including owned teams.
+     */
+    public function allTeams(): Collection
+    {
+        return $this->teams->merge($this->ownedTeams);
+    }
+
+    /**
+     * Get all the teams that the user is a member of.
+     */
+    public function teams(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class)
+            ->using(TeamMembership::class)
+            ->withTimestamps()
+            ->as('team_membership');
+    }
 
     /**
      * Get the QR code SVG of the user's two-factor authentication QR code URL.

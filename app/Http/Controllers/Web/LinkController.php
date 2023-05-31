@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class LinksController extends Controller
+class LinkController extends Controller
 {
     /**
      * Show a list of links.

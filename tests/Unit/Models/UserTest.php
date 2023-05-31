@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Team;
 use App\Models\User;
 
 beforeEach(function () {
@@ -33,4 +34,33 @@ it('generates initials for the user', function () {
 
     $this->user->name = 'John William Doe';
     expect($this->user->initials)->toBe('JD');
+});
+
+it('can switch the user to another team', function () {
+    $team = Team::factory()->for($this->user, 'owner')->create();
+
+    $this->user->switchTeam($team);
+
+    expect($this->user->current_team_id)->toBe($team->id);
+});
+
+it('does not switch the users team if they do not belong to it', function () {
+    $team = Team::factory()->create();
+
+    $this->user->switchTeam($team);
+
+    expect($this->user->current_team_id)->toBe($this->user->personalTeam()->id);
+});
+
+it('can determine if a user belongs to a team', function () {
+    $ownedTeam = Team::factory()->for($this->user, 'owner')->create();
+
+    $memberTeam = Team::factory()->create();
+    $memberTeam->users()->attach($this->user);
+
+    $nonMemberTeam = Team::factory()->create();
+
+    expect($this->user->belongsToTeam($ownedTeam))->toBeTrue()
+        ->and($this->user->belongsToTeam($memberTeam))->toBeTrue()
+        ->and($this->user->belongsToTeam($nonMemberTeam))->toBeFalse();
 });

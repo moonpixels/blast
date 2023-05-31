@@ -2,7 +2,7 @@
   <AppHead :title="$t('account.settings_meta_title')" />
 
   <ConstrainedContainer>
-    <h1 class="text-xl font-semibold text-zinc-900 dark:text-white" data-cy="confirm-password-title">
+    <h1 class="text-xl font-semibold text-zinc-900 dark:text-white">
       {{ $t('account.settings_title') }}
     </h1>
 
