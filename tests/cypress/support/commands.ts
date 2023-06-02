@@ -1,6 +1,7 @@
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
-    interface Chainable<Subject> {
+    interface Chainable {
       waitForSpecToFinish(): Chainable<any>
 
       assertRedirect(path: string): Chainable<any>

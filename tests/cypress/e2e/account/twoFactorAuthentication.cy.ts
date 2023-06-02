@@ -3,7 +3,6 @@ import { createUser, getOtpCodeForUser } from '../../support/functions'
 
 describe('Two factor authentication', () => {
   let user: User
-  let tfaUser: User
 
   function loginUser(user: User): void {
     cy.logout()
@@ -19,11 +18,12 @@ describe('Two factor authentication', () => {
       user = model
     })
 
-    createUser({
-      email: 'john.doe+tfa@example.com',
-    }, ['withTwoFactorAuthentication']).then((model) => {
-      tfaUser = model
-    })
+    createUser(
+      {
+        email: 'john.doe+tfa@example.com',
+      },
+      ['withTwoFactorAuthentication']
+    )
 
     cy.login({ attributes: { email: 'john.doe+tfa@example.com' } })
     cy.confirmPassword('password')
@@ -77,14 +77,20 @@ describe('Two factor authentication', () => {
 
       cy.getFormInput('Two-factor code').clear().invoke('removeAttr', 'required')
       cy.get('[data-cy="submit-button"]').click()
-      cy.get('[data-cy="input-error-message"]').should('contain', 'The provided two factor authentication code was invalid.')
+      cy.get('[data-cy="input-error-message"]').should(
+        'contain',
+        'The provided two factor authentication code was invalid.'
+      )
     })
 
     // Invalid two-factor code
     cy.get('@2faForm').within(() => {
       cy.getFormInput('Two-factor code').type('123456')
       cy.get('[data-cy="submit-button"]').click()
-      cy.get('[data-cy="input-error-message"]').should('contain', 'The provided two factor authentication code was invalid.')
+      cy.get('[data-cy="input-error-message"]').should(
+        'contain',
+        'The provided two factor authentication code was invalid.'
+      )
     })
   })
 })

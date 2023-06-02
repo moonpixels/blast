@@ -1,6 +1,6 @@
 <template>
   <Link
-    class="underline decoration-dashed underline-offset-2 transition-all ease-in-out duration-200 hover:text-zinc-900 dark:hover:text-white"
+    class="underline decoration-dashed underline-offset-2 transition-all duration-200 ease-in-out hover:text-zinc-900 dark:hover:text-white"
     v-bind="$props"
   >
     <slot />
@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 import { InertiaLinkProps, Link } from '@inertiajs/vue3'
 
-interface Props extends InertiaLinkProps {}
+type Props = InertiaLinkProps
 
 defineProps<Props>()
 </script>

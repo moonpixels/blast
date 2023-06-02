@@ -7,7 +7,7 @@
     </p>
   </AuthHeader>
 
-  <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
+  <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" data-cy="login-form" @submit.prevent="submit">
       <TextInput
         v-model="form.email"
@@ -30,13 +30,9 @@
       />
 
       <div class="flex items-center justify-between">
-        <Checkbox
-          v-model="form.remember"
-          :error="form.errors.remember"
-          :label="$t('auth.login_remember')"
-        />
+        <Checkbox v-model="form.remember" :error="form.errors.remember" :label="$t('auth.login_remember')" />
 
-        <InternalLink :href="route('password.request')" class="no-underline text-sm" data-cy="forgot-password-link">
+        <InternalLink :href="route('password.request')" class="text-sm no-underline" data-cy="forgot-password-link">
           {{ $t('auth.login_forgot_password_link') }}
         </InternalLink>
       </div>
@@ -78,9 +74,9 @@ interface Props {
 defineProps<Props>()
 
 type LoginForm = {
-  email: string,
-  password: string,
-  remember: boolean,
+  email: string
+  password: string
+  remember: boolean
 }
 
 const form = useForm<LoginForm>({

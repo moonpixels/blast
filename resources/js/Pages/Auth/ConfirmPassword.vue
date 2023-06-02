@@ -7,7 +7,7 @@
     </p>
   </AuthHeader>
 
-  <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
+  <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" data-cy="confirm-password-form" @submit.prevent="submit">
       <TextInput
         v-model="form.password"
@@ -39,7 +39,7 @@ defineOptions({
 })
 
 type ConfirmPasswordForm = {
-  password: string,
+  password: string
 }
 
 const form = useForm<ConfirmPasswordForm>({

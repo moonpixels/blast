@@ -3,7 +3,7 @@
 
   <AuthHeader :title="$t('auth.reset_password_title')" />
 
-  <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
+  <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" data-cy="reset-password-form" @submit.prevent="submit">
       <TextInput
         v-model="form.email"
@@ -52,9 +52,9 @@ interface Props {
 const props = defineProps<Props>()
 
 type ResetPasswordForm = {
-  token: string,
-  email: string,
-  password: string,
+  token: string
+  email: string
+  password: string
 }
 
 const form = useForm<ResetPasswordForm>({

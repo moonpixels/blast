@@ -10,24 +10,12 @@
     "moduleResolution": "Node",
     "noEmit": true,
     "paths": {
-      "@/*": [
-        "./resources/js/*"
-      ]
+      "@/*": ["./resources/js/*"]
     },
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext",
-    "types": [
-      "node",
-      "vite/client",
-      "cypress"
-    ]
+    "types": ["node", "vite/client", "cypress"]
   },
-  "include": [
-    "resources/js/**/*.ts",
-    "resources/js/**/*.d.ts",
-    "resources/js/**/*.vue",
-    "**/*.ts",
-    "**/*.d.ts"
-  ]
+  "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts", "resources/js/**/*.vue", "**/*.ts", "**/*.d.ts"]
 }

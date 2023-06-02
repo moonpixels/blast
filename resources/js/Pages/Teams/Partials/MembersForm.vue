@@ -1,15 +1,10 @@
 <template>
-  <TwoColumnForm
-    :description="$t('teams.members_section.description')"
-    :title="$t('teams.members_section.title')"
-  >
+  <TwoColumnForm :description="$t('teams.members_section.description')" :title="$t('teams.members_section.title')">
     <Alert v-if="team.personal_team" data-cy="personal-team-alert">
       {{ $t('teams.members_section.personal_team_text') }}
     </Alert>
 
-    <p v-else class="text-sm">
-      Team members stuff will go here.
-    </p>
+    <p v-else class="text-sm">Team members stuff will go here.</p>
   </TwoColumnForm>
 </template>
 

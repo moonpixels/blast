@@ -10,11 +10,13 @@ describe('Password', () => {
     cy.confirmPassword('password')
     cy.visit({ route: 'account-settings.show' })
 
-    cy.get('[data-cy="password-form"]').as('passwordForm').within(() => {
-      cy.getFormInput('Current password').as('currentPasswordInput')
-      cy.getFormInput('New password').as('newPasswordInput')
-      cy.get('[data-cy="submit-button"]').as('submitButton')
-    })
+    cy.get('[data-cy="password-form"]')
+      .as('passwordForm')
+      .within(() => {
+        cy.getFormInput('Current password').as('currentPasswordInput')
+        cy.getFormInput('New password').as('newPasswordInput')
+        cy.get('[data-cy="submit-button"]').as('submitButton')
+      })
   })
 
   it('should allow users to update their password', () => {
@@ -49,14 +51,16 @@ describe('Password', () => {
       cy.get('@currentPasswordInput').clear().invoke('removeAttr', 'required')
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', 'The current password field is required.')
-
     })
 
     // Invalid current password
     cy.get('@passwordForm').within(() => {
       cy.get('@currentPasswordInput').type('wrong-password')
       cy.get('@submitButton').click()
-      cy.get('[data-cy="input-error-message"]').should('contain', 'The provided password does not match your current password.')
+      cy.get('[data-cy="input-error-message"]').should(
+        'contain',
+        'The provided password does not match your current password.'
+      )
     })
   })
 

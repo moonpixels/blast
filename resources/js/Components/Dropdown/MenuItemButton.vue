@@ -1,7 +1,10 @@
 <template>
   <MenuItem v-slot="{ active, close }">
     <button
-      :class="[active ? 'transition-all ease-in-out bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white' : '', 'block relative group w-full text-left px-4 py-2 text-sm rounded']"
+      :class="[
+        active ? 'bg-zinc-100 text-zinc-900 transition-all ease-in-out dark:bg-zinc-800 dark:text-white' : '',
+        'group relative block w-full rounded px-4 py-2 text-left text-sm',
+      ]"
       type="button"
     >
       <slot v-bind="{ active, close }" />

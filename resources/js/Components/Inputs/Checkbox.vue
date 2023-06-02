@@ -7,9 +7,9 @@
         v-model="checked"
         :aria-describedby="description ? `${id}-description` : undefined"
         :value="value"
-        class="h-4 w-4 rounded border-zinc-900/20 dark:border-white/20 text-violet-500 dark:text-violet-600 dark:checked:bg-violet-600 bg-white dark:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-violet-500 dark:focus:ring-violet-600 focus:ring-offset-2 focus:ring-offset-zinc-50 dark:focus:ring-offset-zinc-900"
+        class="h-4 w-4 rounded border-zinc-900/20 bg-white text-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-zinc-50 dark:border-white/20 dark:bg-zinc-800 dark:text-violet-600 dark:checked:bg-violet-600 dark:focus:ring-violet-600 dark:focus:ring-offset-zinc-900"
         type="checkbox"
-        v-bind="{...$attrs}"
+        v-bind="{ ...$attrs }"
       />
     </div>
 
@@ -72,7 +72,7 @@ const checked = computed<boolean>({
       } else {
         emit(
           'update:modelValue',
-          props.modelValue.filter((v: any) => v !== props.value),
+          props.modelValue.filter((v: any) => v !== props.value)
         )
       }
     } else {

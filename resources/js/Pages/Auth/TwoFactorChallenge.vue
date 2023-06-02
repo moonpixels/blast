@@ -7,7 +7,7 @@
     </p>
   </AuthHeader>
 
-  <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
+  <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form v-if="recoveryMode" class="space-y-6" data-cy="2fa-recovery-form" @submit.prevent="submit">
       <TextInput
         v-model="recoveryForm.recovery_code"
@@ -62,7 +62,7 @@ defineOptions({
 const recoveryMode = ref<boolean>(false)
 
 type TwoFactorChallengeForm = {
-  code: string,
+  code: string
 }
 
 const challengeForm = useForm<TwoFactorChallengeForm>({
@@ -70,8 +70,8 @@ const challengeForm = useForm<TwoFactorChallengeForm>({
 })
 
 type TwoFactorRecoveryForm = {
-  recovery_code: string,
-  code?: string,
+  recovery_code: string
+  code?: string
 }
 
 const recoveryForm = useForm<TwoFactorRecoveryForm>({

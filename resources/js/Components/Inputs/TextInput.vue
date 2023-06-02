@@ -1,26 +1,31 @@
 <template>
   <div
-    :class="[disabledClasses, borderClasses, backgroundClasses, 'rounded-md shadow-sm border px-3 py-2 focus-within:ring-1']"
+    :class="[
+      disabledClasses,
+      borderClasses,
+      backgroundClasses,
+      'rounded-md border px-3 py-2 shadow-sm focus-within:ring-1',
+    ]"
   >
-    <label
-      :class="[disabledClasses, 'block text-xs font-medium']"
-      :for="id"
-    >
+    <label :class="[disabledClasses, 'block text-xs font-medium']" :for="id">
       {{ label }}
     </label>
 
     <input
       :id="id"
       ref="input"
-      :class="[disabledClasses, 'block mt-1 w-full truncate border-0 p-0 text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:ring-0 sm:text-sm bg-transparent']"
+      :class="[
+        disabledClasses,
+        'mt-1 block w-full truncate border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-400 focus:ring-0 dark:text-zinc-100 dark:placeholder-zinc-500 sm:text-sm',
+      ]"
       :inputmode="inputMode"
       :type="type"
       :value="modelValue"
-      v-bind="{...attrs}"
+      v-bind="{ ...attrs }"
       @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
     />
 
-    <InputErrorMessage v-if="error" class="pt-1 border-t border-zinc-900/20 dark:border-white/20">
+    <InputErrorMessage v-if="error" class="border-t border-zinc-900/20 pt-1 dark:border-white/20">
       {{ error }}
     </InputErrorMessage>
   </div>
@@ -89,9 +94,7 @@ const borderClasses = computed<string>(() => {
 })
 
 const backgroundClasses = computed<string>(() => {
-  return props.inverse
-    ? 'bg-zinc-50 dark:bg-zinc-900'
-    : 'bg-white dark:bg-zinc-950'
+  return props.inverse ? 'bg-zinc-50 dark:bg-zinc-900' : 'bg-white dark:bg-zinc-950'
 })
 
 function focus(): void {

@@ -1,8 +1,11 @@
 <template>
   <MenuItem v-slot="{ active, close }">
     <Link
-      :class="[active ? 'transition-all ease-in-out bg-zinc-100 text-zinc-900 dark:bg-zinc-800 dark:text-white' : '', 'block relative group w-full text-left px-4 py-2 text-sm rounded']"
-      v-bind="{...attrs, ...$props}"
+      :class="[
+        active ? 'bg-zinc-100 text-zinc-900 transition-all ease-in-out dark:bg-zinc-800 dark:text-white' : '',
+        'group relative block w-full rounded px-4 py-2 text-left text-sm',
+      ]"
+      v-bind="{ ...attrs, ...$props }"
     >
       <span aria-hidden="true" class="absolute inset-0" @click="close" />
       <slot />
@@ -19,8 +22,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-interface Props extends InertiaLinkProps {
-}
+type Props = InertiaLinkProps
 
 defineProps<Props>()
 

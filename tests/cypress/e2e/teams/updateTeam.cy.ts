@@ -13,10 +13,12 @@ describe('Update team', () => {
       cy.get('a').contains('Team').click()
     })
 
-    cy.get('[data-cy="general-settings-form"]').as('generalSettingsForm').within(() => {
-      cy.getFormInput('Team name').as('nameInput')
-      cy.get('[data-cy="submit-button"]').as('submitButton')
-    })
+    cy.get('[data-cy="general-settings-form"]')
+      .as('generalSettingsForm')
+      .within(() => {
+        cy.getFormInput('Team name').as('nameInput')
+        cy.get('[data-cy="submit-button"]').as('submitButton')
+      })
   })
 
   it('should allow users to update a team', () => {

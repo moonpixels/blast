@@ -45,8 +45,8 @@ interface Props {
 const props = defineProps<Props>()
 
 type ProfileInfoForm = {
-  name: string,
-  email: string,
+  name: string
+  email: string
 }
 
 const form = useForm<ProfileInfoForm>({
@@ -56,7 +56,7 @@ const form = useForm<ProfileInfoForm>({
 
 function submit(): void {
   form.put(route('user-profile-information.update'), {
-    preserveScroll: true
+    preserveScroll: true,
   })
 }
 </script>

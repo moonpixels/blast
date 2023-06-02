@@ -1,8 +1,5 @@
 <template>
-  <TwoColumnForm
-    :description="$t('teams.general_section.description')"
-    :title="$t('teams.general_section.title')"
-  >
+  <TwoColumnForm :description="$t('teams.general_section.description')" :title="$t('teams.general_section.title')">
     <form class="max-w-md space-y-6" data-cy="general-settings-form" @submit.prevent="submit">
       <TextInput
         v-model="form.name"
@@ -34,7 +31,7 @@ interface Props {
 const props = defineProps<Props>()
 
 type ProfileInfoForm = {
-  name: string,
+  name: string
 }
 
 const form = useForm<ProfileInfoForm>({
