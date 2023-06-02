@@ -5,8 +5,8 @@ describe('Reset password', () => {
     cy.refreshDatabase()
 
     createUser().then((user) => {
-      cy.php(`Illuminate\\Support\\Facades\\Password::createToken(App\\Models\\User::find('${user.id}'))`)
-        .then((token) => {
+      cy.php(`Illuminate\\Support\\Facades\\Password::createToken(App\\Models\\User::find('${user.id}'))`).then(
+        (token) => {
           cy.visit({
             route: 'password.reset',
             parameters: {
@@ -16,14 +16,17 @@ describe('Reset password', () => {
               email: user.email,
             },
           })
-        })
+        }
+      )
     })
 
-    cy.get('[data-cy="reset-password-form"]').as('resetPasswordForm').within(() => {
-      cy.getFormInput('Email').as('emailInput')
-      cy.getFormInput('New password').as('passwordInput')
-      cy.get('[data-cy="submit-button"]').as('submitButton')
-    })
+    cy.get('[data-cy="reset-password-form"]')
+      .as('resetPasswordForm')
+      .within(() => {
+        cy.getFormInput('Email').as('emailInput')
+        cy.getFormInput('New password').as('passwordInput')
+        cy.get('[data-cy="submit-button"]').as('submitButton')
+      })
   })
 
   it('should allow users to reset their password', () => {
@@ -90,7 +93,7 @@ describe('Reset password', () => {
 
       cy.get('@emailInput').clear().type('not-registered@example.com')
       cy.get('@submitButton').click()
-      cy.get('[data-cy="input-error-message"]').should('contain', 'We can\'t find a user with that email address.')
+      cy.get('[data-cy="input-error-message"]').should('contain', "We can't find a user with that email address.")
     })
   })
 

@@ -1,5 +1,5 @@
 <template>
-  <div aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end py-4 px-6 sm:py-6">
+  <div aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-6 py-4 sm:py-6">
     <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
       <transition
         enter-active-class="transition ease-out duration-200"
@@ -12,7 +12,7 @@
         <div
           v-if="show"
           :data-cy="success ? 'success-notification' : 'error-notification'"
-          class="pointer-events-auto relative origin-bottom w-full max-w-sm overflow-hidden rounded-md bg-white dark:bg-zinc-950 shadow-md border border-zinc-900/20 dark:border-white/20"
+          class="pointer-events-auto relative w-full max-w-sm origin-bottom overflow-hidden rounded-md border border-zinc-900/20 bg-white shadow-md dark:border-white/20 dark:bg-zinc-950"
         >
           <div class="p-4">
             <div class="flex items-start">
@@ -40,7 +40,7 @@
             :key="notificationId"
             :style="{ width: `${loadingBarWidth}%` }"
             aria-hidden="true"
-            class="absolute w-full h-0.5 bg-violet-500 dark:bg-violet-600 bottom-0 transition-all ease-linear duration-[5000ms]"
+            class="absolute bottom-0 h-0.5 w-full bg-violet-500 transition-all duration-[5000ms] ease-linear dark:bg-violet-600"
           >
           </span>
         </div>

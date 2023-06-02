@@ -1,13 +1,10 @@
 <template>
-  <TwoColumnForm
-    :description="$t('teams.delete_section.description')"
-    :title="$t('teams.delete_section.title')"
-  >
+  <TwoColumnForm :description="$t('teams.delete_section.description')" :title="$t('teams.delete_section.title')">
     <Alert v-if="team.personal_team" data-cy="personal-team-alert">
       {{ $t('teams.delete_section.personal_team_text') }}
     </Alert>
 
-    <div v-else class="flex items-center h-full">
+    <div v-else class="flex h-full items-center">
       <DangerButton data-cy="delete-team-button" @click="showModal = true">
         {{ $t('teams.delete_section.form_button') }}
       </DangerButton>

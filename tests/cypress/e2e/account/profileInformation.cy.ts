@@ -10,11 +10,13 @@ describe('Profile information', () => {
     cy.confirmPassword('password')
     cy.visit({ route: 'account-settings.show' })
 
-    cy.get('[data-cy="profile-information-form"]').as('profileInformationForm').within(() => {
-      cy.getFormInput('Full name').as('nameInput')
-      cy.getFormInput('Email').as('emailInput')
-      cy.get('[data-cy="submit-button"]').as('submitButton')
-    })
+    cy.get('[data-cy="profile-information-form"]')
+      .as('profileInformationForm')
+      .within(() => {
+        cy.getFormInput('Full name').as('nameInput')
+        cy.getFormInput('Email').as('emailInput')
+        cy.get('[data-cy="submit-button"]').as('submitButton')
+      })
   })
 
   it('should allow users to update their profile information', () => {

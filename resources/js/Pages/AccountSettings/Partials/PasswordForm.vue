@@ -45,8 +45,8 @@ interface Props {
 const props = defineProps<Props>()
 
 type PasswordForm = {
-  current_password: string,
-  password: string,
+  current_password: string
+  password: string
 }
 
 const form = useForm<PasswordForm>({

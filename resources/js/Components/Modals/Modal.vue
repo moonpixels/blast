@@ -26,22 +26,22 @@
               leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <DialogPanel
-                class="relative transform overflow-hidden rounded-lg bg-white dark:bg-zinc-950 border border-zinc-900/20 dark:border-white/20 text-left shadow-lg transition-all sm:my-8 sm:w-full sm:max-w-lg"
-                v-bind="{...attrs}"
+                class="relative transform overflow-hidden rounded-lg border border-zinc-900/20 bg-white text-left shadow-lg transition-all dark:border-white/20 dark:bg-zinc-950 sm:my-8 sm:w-full sm:max-w-lg"
+                v-bind="{ ...attrs }"
               >
                 <div class="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
                   <DismissButton @click="$emit('close')" />
                 </div>
 
-                <div class="bg-white dark:bg-zinc-950 p-4 sm:p-6">
-                  <DialogTitle as="h3" class="text-base font-semibold leading-7 text-zinc-900 dark:text-white mb-4">
+                <div class="bg-white p-4 dark:bg-zinc-950 sm:p-6">
+                  <DialogTitle as="h3" class="mb-4 text-base font-semibold leading-7 text-zinc-900 dark:text-white">
                     {{ title }}
                   </DialogTitle>
 
                   <slot name="body" />
                 </div>
 
-                <div class="bg-zinc-50 dark:bg-zinc-900 px-4 py-3 sm:px-6 flex flex-row-reverse gap-3">
+                <div class="flex flex-row-reverse gap-3 bg-zinc-50 px-4 py-3 dark:bg-zinc-900 sm:px-6">
                   <slot name="footer" />
                 </div>
               </DialogPanel>

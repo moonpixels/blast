@@ -1,6 +1,6 @@
 <template>
   <TwoColumnForm :description="$t('account.delete_account_description')" :title="$t('account.delete_account_title')">
-    <div class="flex items-center h-full">
+    <div class="flex h-full items-center">
       <DangerButton data-cy="delete-account-button" @click="showModal = true">
         {{ $t('account.delete_account_button') }}
       </DangerButton>

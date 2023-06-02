@@ -8,12 +8,14 @@ describe('Register', () => {
 
     cy.visit({ route: 'register' })
 
-    cy.get('[data-cy="register-form"]').as('registerForm').within(() => {
-      cy.getFormInput('Full name').as('nameInput')
-      cy.getFormInput('Email').as('emailInput')
-      cy.getFormInput('Password').as('passwordInput')
-      cy.get('[data-cy="submit-button"]').as('submitButton')
-    })
+    cy.get('[data-cy="register-form"]')
+      .as('registerForm')
+      .within(() => {
+        cy.getFormInput('Full name').as('nameInput')
+        cy.getFormInput('Email').as('emailInput')
+        cy.getFormInput('Password').as('passwordInput')
+        cy.get('[data-cy="submit-button"]').as('submitButton')
+      })
   })
 
   it('should allow visitors to register for an account', () => {
@@ -95,8 +97,7 @@ describe('Register', () => {
   })
 
   it('should have a link to the login page', () => {
-    cy.get('[data-cy="login-link"]').should('have.attr', 'href')
-      .and('contain', '/login')
+    cy.get('[data-cy="login-link"]').should('have.attr', 'href').and('contain', '/login')
 
     cy.get('[data-cy="login-link"]').click()
 

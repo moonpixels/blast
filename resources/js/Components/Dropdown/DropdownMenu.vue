@@ -14,7 +14,7 @@
     >
       <MenuItems
         :class="[sizeClasses]"
-        class="absolute right-0 z-10 mt-2 p-1.5 origin-top-right rounded-md border border-zinc-900/20 dark:border-white/20 bg-white dark:bg-zinc-950 shadow-md focus:outline-none"
+        class="absolute right-0 z-10 mt-2 origin-top-right rounded-md border border-zinc-900/20 bg-white p-1.5 shadow-md focus:outline-none dark:border-white/20 dark:bg-zinc-950"
       >
         <slot name="menuItems" />
       </MenuItems>

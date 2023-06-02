@@ -1,6 +1,6 @@
 declare global {
   namespace Cypress {
-    interface Chainable<Subject> {
+    interface Chainable {
       login(attributes?: LoginAttributes): Chainable<any>
 
       currentUser(): Chainable<any>
@@ -13,20 +13,18 @@ declare global {
 
       create(request: CreateRequest): Chainable<any>
 
-      visit(options: Partial<VisitOptions> & {
-        route: string,
-        parameters?: Record<string, any>,
-      }): Chainable<any>
+      visit(
+        options: Partial<VisitOptions> & {
+          route: string
+          parameters?: Record<string, any>
+        }
+      ): Chainable<any>
 
       refreshDatabase(options?: object): Chainable<any>
 
       seed(seederClass: string): Chainable<any>
 
-      artisan(
-        command: string,
-        parameters: Record<string, string>,
-        options: { log: boolean },
-      ): Chainable<any>
+      artisan(command: string, parameters: Record<string, string>, options: { log: boolean }): Chainable<any>
 
       php(command: string): Chainable<any>
     }

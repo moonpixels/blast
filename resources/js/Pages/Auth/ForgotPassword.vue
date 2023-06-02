@@ -7,8 +7,8 @@
     </p>
   </AuthHeader>
 
-  <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
-    <form v-if="! resetEmailSent" class="space-y-6" data-cy="forgot-password-form" @submit.prevent="submit">
+  <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
+    <form v-if="!resetEmailSent" class="space-y-6" data-cy="forgot-password-form" @submit.prevent="submit">
       <TextInput
         v-model="form.email"
         :error="form.errors.email"
@@ -40,7 +40,7 @@ defineOptions({
 })
 
 type ForgotPasswordForm = {
-  email: string,
+  email: string
 }
 
 const form = useForm<ForgotPasswordForm>({

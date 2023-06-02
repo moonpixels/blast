@@ -6,7 +6,7 @@
       {{ title }}
     </h2>
 
-    <div class="text-sm text-center mt-2">
+    <div class="mt-2 text-center text-sm">
       <slot />
     </div>
   </div>

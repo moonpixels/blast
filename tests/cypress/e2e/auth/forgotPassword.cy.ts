@@ -8,10 +8,12 @@ describe('Forgot password', () => {
 
     cy.visit({ route: 'password.request' })
 
-    cy.get('[data-cy="forgot-password-form"]').as('forgotPasswordForm').within(() => {
-      cy.getFormInput('Email').as('emailInput')
-      cy.get('[data-cy="submit-button"]').as('submitButton')
-    })
+    cy.get('[data-cy="forgot-password-form"]')
+      .as('forgotPasswordForm')
+      .within(() => {
+        cy.getFormInput('Email').as('emailInput')
+        cy.get('[data-cy="submit-button"]').as('submitButton')
+      })
   })
 
   it('should allow users to request a password reset', () => {
@@ -47,7 +49,7 @@ describe('Forgot password', () => {
 
       cy.get('@emailInput').clear().type('not-registered@example.com')
       cy.get('@submitButton').click()
-      cy.get('[data-cy="input-error-message"]').should('contain', 'We can\'t find a user with that email address.')
+      cy.get('[data-cy="input-error-message"]').should('contain', "We can't find a user with that email address.")
     })
   })
 })

@@ -9,20 +9,25 @@ describe('Login', () => {
 
     createUser()
 
-    createUser({
-      email: 'john.doe+tfa@example.com'
-    }, ['withTwoFactorAuthentication']).then((user) => {
+    createUser(
+      {
+        email: 'john.doe+tfa@example.com',
+      },
+      ['withTwoFactorAuthentication']
+    ).then((user) => {
       tfaUser = user
     })
 
     cy.visit({ route: 'login' })
 
-    cy.get('[data-cy="login-form"]').as('loginForm').within(() => {
-      cy.getFormInput('Email').as('emailInput')
-      cy.getFormInput('Password').as('passwordInput')
-      cy.getFormInput('Remember me').as('rememberMeInput')
-      cy.get('[data-cy="submit-button"]').as('submitButton')
-    })
+    cy.get('[data-cy="login-form"]')
+      .as('loginForm')
+      .within(() => {
+        cy.getFormInput('Email').as('emailInput')
+        cy.getFormInput('Password').as('passwordInput')
+        cy.getFormInput('Remember me').as('rememberMeInput')
+        cy.get('[data-cy="submit-button"]').as('submitButton')
+      })
   })
 
   it('should allow users to login', () => {
@@ -87,8 +92,7 @@ describe('Login', () => {
   })
 
   it('should have a link to the registration page', () => {
-    cy.get('[data-cy="register-link"]').should('have.attr', 'href')
-      .and('contain', '/register')
+    cy.get('[data-cy="register-link"]').should('have.attr', 'href').and('contain', '/register')
 
     cy.get('[data-cy="register-link"]').click()
 
@@ -96,8 +100,7 @@ describe('Login', () => {
   })
 
   it('should have a link to the password reset page', () => {
-    cy.get('[data-cy="forgot-password-link"]').should('have.attr', 'href')
-      .and('contain', '/forgot-password')
+    cy.get('[data-cy="forgot-password-link"]').should('have.attr', 'href').and('contain', '/forgot-password')
 
     cy.get('[data-cy="forgot-password-link"]').click()
 
@@ -158,14 +161,20 @@ describe('Login', () => {
 
       cy.getFormInput('Two-factor code').clear().invoke('removeAttr', 'required')
       cy.get('[data-cy="submit-button"]').click()
-      cy.get('[data-cy="input-error-message"]').should('contain', 'The provided two factor authentication code was invalid.')
+      cy.get('[data-cy="input-error-message"]').should(
+        'contain',
+        'The provided two factor authentication code was invalid.'
+      )
     })
 
     // Invalid two-factor code
     cy.get('[data-cy="2fa-challenge-form"]').within(() => {
       cy.getFormInput('Two-factor code').type('invalid-code')
       cy.get('[data-cy="submit-button"]').click()
-      cy.get('[data-cy="input-error-message"]').should('contain', 'The provided two factor authentication code was invalid.')
+      cy.get('[data-cy="input-error-message"]').should(
+        'contain',
+        'The provided two factor authentication code was invalid.'
+      )
     })
   })
 
@@ -187,7 +196,10 @@ describe('Login', () => {
 
       cy.getFormInput('Recovery code').clear().invoke('removeAttr', 'required')
       cy.get('[data-cy="submit-button"]').click()
-      cy.get('[data-cy="input-error-message"]').should('contain', 'The provided two factor authentication code was invalid.')
+      cy.get('[data-cy="input-error-message"]').should(
+        'contain',
+        'The provided two factor authentication code was invalid.'
+      )
     })
 
     // Invalid two-factor recovery code

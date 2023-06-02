@@ -1,6 +1,6 @@
 <template>
   <button
-    class="inline-flex rounded text-zinc-500 dark:text-zinc-400 transition-all ease-in-out duration-200 hover:text-zinc-900 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-violet-500 dark:focus:ring-violet-600 focus:ring-offset-2 focus:ring-offset-zinc-50 dark:focus:ring-offset-zinc-900 disabled:bg-violet-400 dark:disabled:bg-violet-400"
+    class="inline-flex rounded text-zinc-500 transition-all duration-200 ease-in-out hover:text-zinc-900 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-zinc-50 disabled:bg-violet-400 dark:text-zinc-400 dark:hover:text-white dark:focus:ring-violet-600 dark:focus:ring-offset-zinc-900 dark:disabled:bg-violet-400"
     type="button"
   >
     <span class="sr-only">

@@ -5,17 +5,11 @@ Cypress.Laravel = {
   routes: {},
 
   route: (name, parameters = {}) => {
-    assert(
-      Cypress.Laravel.routes.hasOwnProperty(name),
-      `Laravel route "${name}" does not exist.`,
-    )
+    assert(Object.hasOwn(Cypress.Laravel.routes, name), `Laravel route "${name}" does not exist.`)
 
     return ((uri) => {
       Object.keys(parameters).forEach((parameter) => {
-        uri = uri.replace(
-          new RegExp(`{${parameter}}`),
-          parameters[parameter],
-        )
+        uri = uri.replace(new RegExp(`{${parameter}}`), parameters[parameter])
       })
 
       return uri
@@ -177,7 +171,7 @@ Cypress.Commands.add('refreshDatabase', (options = {}) => {
  * Seed the database.
  */
 Cypress.Commands.add('seed', (seederClass = '') => {
-  let options: { '--class'?: string } = {}
+  const options: { '--class'?: string } = {}
 
   if (seederClass) {
     options['--class'] = seederClass
@@ -196,7 +190,7 @@ Cypress.Commands.add('artisan', (command, parameters = {}, options = { log: true
       message: (() => {
         let message = command
 
-        for (let key in parameters) {
+        for (const key in parameters) {
           message += ` ${key}="${parameters[key]}"`
         }
 

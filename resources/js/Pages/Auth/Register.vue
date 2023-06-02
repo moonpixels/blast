@@ -3,7 +3,7 @@
 
   <AuthHeader :title="$t('auth.register_title')" />
 
-  <div class="mt-10 sm:w-full sm:max-w-sm sm:mx-auto space-y-10">
+  <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" data-cy="register-form" @submit.prevent="submit">
       <TextInput
         v-model="form.name"
@@ -63,9 +63,9 @@ defineOptions({
 })
 
 type RegistrationForm = {
-  name: string,
-  email: string,
-  password: string,
+  name: string
+  email: string
+  password: string
 }
 
 const form = useForm<RegistrationForm>({

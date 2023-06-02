@@ -9,10 +9,12 @@ describe('Confirm password', () => {
     cy.login({ attributes: { email: 'john.doe@example.com' } })
     cy.visit({ route: 'password.confirm' })
 
-    cy.get('[data-cy="confirm-password-form"]').as('confirmPasswordForm').within(() => {
-      cy.getFormInput('Password').as('passwordInput')
-      cy.get('[data-cy="submit-button"]').as('submitButton')
-    })
+    cy.get('[data-cy="confirm-password-form"]')
+      .as('confirmPasswordForm')
+      .within(() => {
+        cy.getFormInput('Password').as('passwordInput')
+        cy.get('[data-cy="submit-button"]').as('submitButton')
+      })
   })
 
   it('should allow users to confirm their password', () => {

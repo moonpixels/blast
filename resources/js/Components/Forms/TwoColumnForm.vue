@@ -1,5 +1,5 @@
 <template>
-  <article class="grid grid-cols-1 gap-8 md:gap-10 py-10 md:grid-cols-3">
+  <article class="grid grid-cols-1 gap-8 py-10 md:grid-cols-3 md:gap-10">
     <div>
       <h2 class="text-base font-semibold leading-7 text-zinc-900 dark:text-white">
         {{ title }}

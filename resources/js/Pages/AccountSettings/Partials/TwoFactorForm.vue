@@ -4,13 +4,12 @@
     :title="$t('account.2fa_settings_title')"
     data-cy="2fa-form"
   >
-    <div class="max-w-md space-y-10 border-zinc-900/20 dark:border-white/20 rounded-md bg-white shadow-sm dark:bg-zinc-950 border p-3">
+    <div
+      class="max-w-md space-y-10 rounded-md border border-zinc-900/20 bg-white p-3 shadow-sm dark:border-white/20 dark:bg-zinc-950"
+    >
       <div v-if="!showSetup" class="flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <LockClosedIcon
-            v-if="user.two_factor_enabled"
-            class="h-5 w-5 text-emerald-600 dark:text-emerald-500"
-          />
+          <LockClosedIcon v-if="user.two_factor_enabled" class="h-5 w-5 text-emerald-600 dark:text-emerald-500" />
           <LockOpenIcon v-else class="h-5 w-5 text-rose-600 dark:text-rose-500" />
           <Badge :type="user.two_factor_enabled ? 'success' : 'danger'">
             {{ user.two_factor_enabled ? $t('common.enabled') : $t('common.disabled') }}
@@ -33,24 +32,24 @@
 
       <template v-else>
         <article>
-          <h3 class="text-sm text-zinc-900 dark:text-white font-medium">
+          <h3 class="text-sm font-medium text-zinc-900 dark:text-white">
             {{ $t('account.2fa_settings_qr_code') }}
           </h3>
-          <p class="text-sm mt-1">
+          <p class="mt-1 text-sm">
             {{ $t('account.2fa_settings_qr_code_description') }}
           </p>
           <div class="mt-4" data-cy="2fa-qr-code" v-html="twoFactorQrCode" />
         </article>
 
         <article>
-          <h3 class="text-sm text-zinc-900 dark:text-white font-medium">
+          <h3 class="text-sm font-medium text-zinc-900 dark:text-white">
             {{ $t('account.2fa_settings_recovery_codes') }}
           </h3>
-          <p class="text-sm mt-1">
+          <p class="mt-1 text-sm">
             {{ $t('account.2fa_settings_recovery_codes_description') }}
           </p>
           <ul
-            class="mt-4 rounded border border-zinc-900/20 dark:border-white/20 bg-zinc-50 dark:bg-zinc-900 p-3 text-xs font-mono select-all"
+            class="mt-4 select-all rounded border border-zinc-900/20 bg-zinc-50 p-3 font-mono text-xs dark:border-white/20 dark:bg-zinc-900"
             data-cy="2fa-recovery-codes"
           >
             <li v-for="code in twoFactorRecoveryCodes" :key="code" v-text="code" />
@@ -58,13 +57,13 @@
         </article>
 
         <article>
-          <h3 class="text-sm text-zinc-900 dark:text-white font-medium">
+          <h3 class="text-sm font-medium text-zinc-900 dark:text-white">
             {{ $t('account.2fa_settings_confirm_code') }}
           </h3>
-          <p class="text-sm mt-1">
+          <p class="mt-1 text-sm">
             {{ $t('account.2fa_settings_confirm_code_description') }}
           </p>
-          <form class="space-y-4 mt-4" @submit.prevent="confirmCode">
+          <form class="mt-4 space-y-4" @submit.prevent="confirmCode">
             <TextInput
               v-model="form.code"
               :error="form.errors.code"
@@ -132,7 +131,7 @@ function enableTwoFactor(): void {
     },
     onFinish: () => {
       loading.value = false
-    }
+    },
   })
 }
 
@@ -146,7 +145,7 @@ function disableTwoFactor(): void {
     },
     onFinish: () => {
       loading.value = false
-    }
+    },
   })
 }
 
@@ -157,7 +156,7 @@ function confirmCode(): void {
     only: ['user', 'status', 'errors'],
     onError: () => {
       forceShowSetup.value = true
-    }
+    },
   })
 }
 </script>

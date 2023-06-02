@@ -19,7 +19,7 @@ import { Link } from '@inertiajs/vue3'
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 
 defineProps<{
-  laravelVersion: string;
-  phpVersion: string;
+  laravelVersion: string
+  phpVersion: string
 }>()
 </script>

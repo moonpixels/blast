@@ -2,7 +2,7 @@
   <DropdownMenu size="md">
     <template #button>
       <MenuButton
-        class="flex w-40 rounded-md shadow-sm py-1.5 pl-3 pr-10 bg-zinc-50 dark:bg-zinc-900 border border-zinc-900/20 dark:border-white/20 text-sm transition-all ease-in-out focus:outline-none focus:ring-2 focus:ring-violet-500 dark:focus:ring-violet-600 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-zinc-950"
+        class="flex w-40 rounded-md border border-zinc-900/20 bg-zinc-50 py-1.5 pl-3 pr-10 text-sm shadow-sm transition-all ease-in-out focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-white dark:border-white/20 dark:bg-zinc-900 dark:focus:ring-violet-600 dark:focus:ring-offset-zinc-950"
         data-cy="team-switcher-button"
       >
         <span class="block truncate text-zinc-900 dark:text-white">{{ currentTeamName }}</span>
@@ -15,26 +15,26 @@
     <template #menuItems>
       <div class="space-y-1.5" data-cy="team-switcher-menu">
         <div>
-          <span class="block p-2 pb-0.5 pointer-events-none select-none text-xs text-zinc-400 dark:text-zinc-500">
+          <span class="pointer-events-none block select-none p-2 pb-0.5 text-xs text-zinc-400 dark:text-zinc-500">
             {{ $tChoice('teams.teams', 2) }}
           </span>
 
           <MenuItemLink
             v-for="team in user.teams"
             :key="team.id"
-            :class="{ 'text-zinc-900 dark:text-white font-medium': user.current_team_id === team.id }"
+            :class="{ 'font-medium text-zinc-900 dark:text-white': user.current_team_id === team.id }"
             :data="{ team_id: team.id }"
             :href="route('current-team.update')"
             as="button"
             method="put"
           >
             <div class="flex items-center">
-              <span class="flex-1 truncate -ml-2">
+              <span class="-ml-2 flex-1 truncate">
                 {{ team.name }}
               </span>
               <Badge
                 v-if="user.current_team_id === team.id"
-                class="ml-2 -mr-2 shrink-0"
+                class="-mr-2 ml-2 shrink-0"
                 data-cy="current-team-badge"
                 type="primary"
               >
@@ -47,7 +47,7 @@
         <span class="block border-t border-zinc-900/10 dark:border-white/10"></span>
 
         <MenuItemButton
-          v-slot="{active}"
+          v-slot="{ active }"
           class="flex w-full items-center"
           data-cy="create-team-button"
           @click="showModal = true"
@@ -55,7 +55,7 @@
           <PlusCircleIcon
             :class="[active ? 'text-zinc-900 dark:text-white' : '']"
             aria-hidden="true"
-            class="h-5 w-5 -ml-2 mr-2"
+            class="-ml-2 mr-2 h-5 w-5"
           />
           {{ $t('teams.create_team') }}
         </MenuItemButton>
@@ -70,7 +70,7 @@
     @close="showModal = false"
   >
     <template #body>
-      <p class="text-sm mb-4">
+      <p class="mb-4 text-sm">
         {{ $t('teams.create_team_modal_text') }}
       </p>
 
