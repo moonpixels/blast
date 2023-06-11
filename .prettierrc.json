@@ -1,19 +1,9 @@
 {
-  "overrides": [
-    {
-      "files": "/resources/views/emails/**/*.blade.php",
-      "options": {
-        "parser": "markdown"
-      }
-    }
-  ],
   "arrowParens": "always",
   "bracketSameLine": false,
   "bracketSpacing": true,
   "endOfLine": "lf",
-  "plugins": [
-    "prettier-plugin-tailwindcss"
-  ],
+  "plugins": ["prettier-plugin-tailwindcss"],
   "printWidth": 120,
   "semi": false,
   "singleQuote": true,
