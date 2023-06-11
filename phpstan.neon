@@ -1,0 +1,11 @@
+includes:
+  - vendor/nunomaduro/larastan/extension.neon
+
+parameters:
+  paths:
+    - app
+  level: 5
+  ignoreErrors:
+    - '#Access to an undefined property App\\Http\\Resources\\.*::.*\.#'
+  checkMissingIterableValueType: false
+  reportUnmatchedIgnoredErrors: true

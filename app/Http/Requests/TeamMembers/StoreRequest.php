@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\TeamMembers;
 
+use App\Models\Team;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -13,14 +14,16 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        /** @var Team $team */
+        $team = $this->route('team');
+
         return [
             'email' => [
                 'required',
                 'email',
                 'max:255',
-                Rule::unique('team_invitations')
-                    ->where(fn (Builder $query) => $query->where('team_id', $this->route('team')->id)),
-                Rule::notIn($this->route('team')->allUsers()->pluck('email')->toArray()),
+                Rule::unique('team_invitations')->where(fn (Builder $query) => $query->where('team_id', $team->id)),
+                Rule::notIn($team->allUsers()->pluck('email')->toArray()),
             ],
         ];
     }

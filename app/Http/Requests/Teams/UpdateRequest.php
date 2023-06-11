@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Teams;
 
+use App\Models\Team;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -12,14 +14,17 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        /** @var Team $team */
+        $team = $this->route('team');
+
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('teams')->where(function ($query) {
+                Rule::unique('teams')->where(function (Builder $query) use ($team) {
                     return $query->where('owner_id', $this->user()->id)
-                        ->where('id', '!=', $this->route('team')->id);
+                        ->where('id', '!=', $team->id);
                 }),
             ],
         ];

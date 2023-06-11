@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Teams;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -17,9 +18,7 @@ class StoreRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('teams')->where(function ($query) {
-                    return $query->where('owner_id', $this->user()->id);
-                }),
+                Rule::unique('teams')->where(fn (Builder $query) => $query->where('owner_id', $this->user()->id)),
             ],
         ];
     }
