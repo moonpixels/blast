@@ -81,7 +81,7 @@ it('does not reset the password when the email is invalid', function () {
 
     $this->post(route('password.update'), [
         'token' => $this->token,
-        'email' => 'incorrect-email@example.com',
+        'email' => 'incorrect-email@blst.to',
         'password' => 'new-password',
     ])->assertInvalid('email');
 

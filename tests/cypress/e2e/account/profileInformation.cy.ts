@@ -6,7 +6,7 @@ describe('Profile information', () => {
 
     createUser()
 
-    cy.login({ attributes: { email: 'john.doe@example.com' } })
+    cy.login({ attributes: { email: 'user@blst.to' } })
     cy.confirmPassword('password')
     cy.visit({ route: 'account-settings.show' })
 
@@ -22,7 +22,7 @@ describe('Profile information', () => {
   it('should allow users to update their profile information', () => {
     cy.get('@profileInformationForm').within(() => {
       cy.get('@nameInput').clear().type('New name')
-      cy.get('@emailInput').clear().type('new.email@example.com')
+      cy.get('@emailInput').clear().type('new.email@blst.to')
       cy.get('@submitButton').click()
     })
 
@@ -64,8 +64,8 @@ describe('Profile information', () => {
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', 'The email field must be a valid email address.')
 
-      createUser({ email: 'existing-user@example.com' })
-      cy.get('@emailInput').clear().type('existing-user@example.com')
+      createUser({ email: 'existing-user@blst.to' })
+      cy.get('@emailInput').clear().type('existing-user@blst.to')
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', 'The email has already been taken.')
     })

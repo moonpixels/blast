@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Resources\Inertia;
+namespace App\Http\Resources\User;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /** @mixin User */
-class UserResource extends JsonResource
+class CurrentUserResource extends JsonResource
 {
     /**
      * Disable wrapping the outermost layer of the resource.

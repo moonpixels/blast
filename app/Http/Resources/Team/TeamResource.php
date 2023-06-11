@@ -36,12 +36,11 @@ class TeamResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 
-            'pending_invitations_count' => $this->whenCounted($this->pendingInvitations),
-            'users_count' => $this->whenCounted($this->users),
+            'members' => UserResource::collection($this->whenLoaded('users')),
+            'members_count' => $this->whenCounted('users'),
 
-            'owner' => new UserResource($this->whenLoaded('owner')),
-            'users' => UserResource::collection($this->whenLoaded('users')),
-            'pending_invitations' => TeamInvitationResource::collection($this->whenLoaded('pendingInvitations')),
+            'invitations' => TeamInvitationResource::collection($this->whenLoaded('invitations')),
+            'invitations_count' => $this->whenCounted('invitations'),
         ];
     }
 }

@@ -1,15 +1,9 @@
 <template>
   <DropdownMenu size="xs">
     <template #button>
-      <MenuButton
-        class="flex rounded-full bg-white text-sm transition-all ease-in-out focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-white dark:bg-zinc-950 dark:focus:ring-violet-600 dark:focus:ring-offset-zinc-950"
-      >
+      <MenuButton class="focus-ring rounded-full transition-all ease-in-out">
         <span class="sr-only">{{ $t('common.open_menu') }}</span>
-        <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-zinc-400 dark:bg-zinc-500">
-          <span class="text-sm font-medium leading-none text-white">
-            {{ user.initials }}
-          </span>
-        </span>
+        <PlaceholderAvatar :initials="user.initials" />
       </MenuButton>
     </template>
 
@@ -28,10 +22,11 @@
 import MenuItemLink from '@/Components/Dropdown/MenuItemLink.vue'
 import { MenuButton } from '@headlessui/vue'
 import DropdownMenu from '@/Components/Dropdown/DropdownMenu.vue'
-import { User } from '@/types'
+import PlaceholderAvatar from '@/Components/Avatars/PlaceholderAvatar.vue'
+import { CurrentUser } from '@/types/models'
 
 interface Props {
-  user: User
+  user: CurrentUser
 }
 
 defineProps<Props>()

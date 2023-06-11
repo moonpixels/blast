@@ -1,12 +1,17 @@
 <?php
 
 use App\Models\Team;
+use App\Models\TeamInvitation;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
-    $this->team = Team::factory()->for($this->user, 'owner')->create();
+    $this->team = Team::factory()
+        ->for($this->user, 'owner')
+        ->has(User::factory()->count(2), 'users')
+        ->has(TeamInvitation::factory()->count(2), 'invitations')
+        ->create();
 
     $this->actingAs($this->user);
 });
@@ -20,8 +25,9 @@ it('shows the teams page', function () {
                 ->where('id', $this->team->id)
                 ->where('name', $this->team->name)
                 ->where('personal_team', $this->team->personal_team)
-                ->etc()
-            )
+                ->etc())
+            ->has('members.data', 2)
+            ->has('invitations.data', 2)
         );
 });
 

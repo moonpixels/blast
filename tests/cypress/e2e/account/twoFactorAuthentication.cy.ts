@@ -1,8 +1,8 @@
-import { User } from '@/types'
 import { createUser, getOtpCodeForUser } from '../../support/functions'
+import { CurrentUser, User } from '@/types/models'
 
 describe('Two factor authentication', () => {
-  let user: User
+  let user: CurrentUser
 
   function loginUser(user: User): void {
     cy.logout()
@@ -20,12 +20,12 @@ describe('Two factor authentication', () => {
 
     createUser(
       {
-        email: 'john.doe+tfa@example.com',
+        email: 'john.doe+tfa@blst.to',
       },
       ['withTwoFactorAuthentication']
     )
 
-    cy.login({ attributes: { email: 'john.doe+tfa@example.com' } })
+    cy.login({ attributes: { email: 'john.doe+tfa@blst.to' } })
     cy.confirmPassword('password')
     cy.visit({ route: 'account-settings.show' })
 

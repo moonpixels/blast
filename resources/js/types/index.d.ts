@@ -1,23 +1,5 @@
 import { PageProps as InertiaPageProps } from '@inertiajs/core'
-
-export interface Team {
-  id: string
-  owner_id: string
-  name: string
-  personal_team: boolean
-  created_at: string
-  updated_at: string
-}
-
-export interface User {
-  id: string
-  name: string
-  email: string
-  current_team_id: string
-  initials: string
-  two_factor_enabled: boolean
-  teams: Team[]
-}
+import { CurrentUser } from '@/types/models'
 
 export interface FlashMessage {
   title: string
@@ -25,7 +7,7 @@ export interface FlashMessage {
 }
 
 export type PageProps<T extends InertiaPageProps = InertiaPageProps> = T & {
-  user: User
+  user: CurrentUser
   flash: {
     success?: FlashMessage
     error?: FlashMessage

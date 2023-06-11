@@ -21,4 +21,9 @@ return [
     'close' => 'Close',
     'cancel' => 'Cancel',
     'remove' => 'Remove',
+    'owner' => 'Owner',
+    'search' => 'Search',
+    'members' => 'Member|Members',
+    'invites' => 'Invite|Invites',
+    'sent_on' => 'Sent on',
 ];

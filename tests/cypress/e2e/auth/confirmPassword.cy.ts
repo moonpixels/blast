@@ -6,7 +6,7 @@ describe('Confirm password', () => {
 
     createUser()
 
-    cy.login({ attributes: { email: 'john.doe@example.com' } })
+    cy.login({ attributes: { email: 'user@blst.to' } })
     cy.visit({ route: 'password.confirm' })
 
     cy.get('[data-cy="confirm-password-form"]')

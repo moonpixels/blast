@@ -29,12 +29,13 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import ConstrainedContainer from '@/Components/Containers/ConstrainedContainer.vue'
 import { usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
-import { PageProps, User } from '@/types'
+import { PageProps } from '@/types'
 import TwoColumnFormContainer from '@/Components/Forms/TwoColumnFormContainer.vue'
 import PasswordForm from '@/Pages/AccountSettings/Partials/PasswordForm.vue'
 import TwoFactorForm from '@/Pages/AccountSettings/Partials/TwoFactorForm.vue'
 import PersonalInfoForm from '@/Pages/AccountSettings/Partials/ProfileInformationForm.vue'
 import DeleteForm from '@/Pages/AccountSettings/Partials/DeleteForm.vue'
+import { CurrentUser } from '@/types/models'
 
 defineOptions({
   layout: AppLayout,
@@ -48,7 +49,7 @@ interface Props {
 
 defineProps<Props>()
 
-const user = computed<User>(() => {
-  return usePage<PageProps<{}>>().props.user
+const user = computed<CurrentUser>(() => {
+  return usePage<PageProps>().props.user as CurrentUser
 })
 </script>

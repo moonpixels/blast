@@ -31,7 +31,7 @@ describe('Reset password', () => {
 
   it('should allow users to reset their password', () => {
     cy.get('@resetPasswordForm').within(() => {
-      cy.get('@emailInput').should('have.value', 'john.doe@example.com')
+      cy.get('@emailInput').should('have.value', 'user@blst.to')
       cy.get('@passwordInput').type('new-password')
       cy.get('@submitButton').click()
     })
@@ -39,7 +39,7 @@ describe('Reset password', () => {
     cy.assertRedirect('login')
 
     cy.get('[data-cy="login-form"]').within(() => {
-      cy.getFormInput('Email').type('john.doe@example.com')
+      cy.getFormInput('Email').type('user@blst.to')
       cy.getFormInput('Password').type('new-password')
       cy.get('[data-cy="submit-button"]').click()
     })
@@ -54,12 +54,12 @@ describe('Reset password', () => {
         token: 'invalid-token',
       },
       qs: {
-        email: 'john.doe@example.com',
+        email: 'user@blst.to',
       },
     })
 
     cy.get('@resetPasswordForm').within(() => {
-      cy.getFormInput('Email').should('have.value', 'john.doe@example.com')
+      cy.getFormInput('Email').should('have.value', 'user@blst.to')
       cy.getFormInput('New password').type('new-password')
       cy.get('@submitButton').click()
 
@@ -91,7 +91,7 @@ describe('Reset password', () => {
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', 'The email field must be a valid email address.')
 
-      cy.get('@emailInput').clear().type('not-registered@example.com')
+      cy.get('@emailInput').clear().type('not-registered@blst.to')
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', "We can't find a user with that email address.")
     })

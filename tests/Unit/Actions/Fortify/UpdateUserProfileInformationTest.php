@@ -13,11 +13,11 @@ beforeEach(function () {
 it('updates a users profile information', function () {
     $this->action->update($this->user, [
         'name' => 'New Name',
-        'email' => 'new-email@example.com',
+        'email' => 'new-email@blst.to',
     ]);
 
     expect($this->user->name)->toBe('New Name')
-        ->and($this->user->email)->toBe('new-email@example.com')
+        ->and($this->user->email)->toBe('new-email@blst.to')
         ->and(session('success.title'))->toBe(__('account.profile_info_update_success.title'))
         ->and(session('success.message'))->toBe(__('account.profile_info_update_success.message'));
 });
@@ -25,7 +25,7 @@ it('updates a users profile information', function () {
 it('does not update a users name to empty', function () {
     $this->action->update($this->user, [
         'name' => '',
-        'email' => 'new-email@example.com',
+        'email' => 'new-email@blst.to',
     ]);
 })->throws(ValidationException::class);
 

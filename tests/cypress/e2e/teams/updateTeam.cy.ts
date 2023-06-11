@@ -6,7 +6,7 @@ describe('Update team', () => {
 
     createUser({}, ['withStandardTeam'])
 
-    cy.login({ attributes: { email: 'john.doe@example.com' } })
+    cy.login({ attributes: { email: 'user@blst.to' } })
     cy.visit({ route: 'links.index' })
 
     cy.get('[data-cy="main-navigation"]').within(() => {
@@ -21,7 +21,7 @@ describe('Update team', () => {
       })
   })
 
-  it('should allow users to update a team', () => {
+  it('should allow owners to update a team', () => {
     cy.get('@generalSettingsForm').within(() => {
       cy.get('@nameInput').clear().type('New name')
       cy.get('@submitButton').click()

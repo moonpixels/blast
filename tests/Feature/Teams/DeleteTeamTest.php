@@ -2,6 +2,8 @@
 
 use App\Models\Team;
 use App\Models\User;
+use App\Services\TeamService;
+use Mockery\MockInterface;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -37,4 +39,16 @@ it('does not delete personal teams', function () {
 
     $this->delete(route('teams.destroy', $this->team))
         ->assertForbidden();
+});
+
+it('alerts the user if there was an error deleting the team', function () {
+    $this->mock(TeamService::class, function (MockInterface $mock) {
+        $mock->shouldReceive('deleteTeam')->once()->andReturnFalse();
+    });
+
+    $this->delete(route('teams.destroy', $this->team))
+        ->assertRedirect()
+        ->assertSessionHas('error');
+
+    $this->assertModelExists($this->team);
 });

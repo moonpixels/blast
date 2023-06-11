@@ -5,6 +5,8 @@ use App\Http\Controllers\Web\CurrentTeamController;
 use App\Http\Controllers\Web\CurrentUserController;
 use App\Http\Controllers\Web\LinkController;
 use App\Http\Controllers\Web\TeamController;
+use App\Http\Controllers\Web\TeamInvitationController;
+use App\Http\Controllers\Web\TeamMemberController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,6 +21,12 @@ use Inertia\Inertia;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/mailable', function () {
+    $invitation = App\Models\TeamInvitation::first();
+
+    return new App\Mail\TeamInvitationMail($invitation);
+});
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -59,10 +67,26 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/teams/{team}', 'destroy')->name('destroy');
         });
 
+    // Team members...
+    Route::controller(TeamMemberController::class)
+        ->name('team-members.')
+        ->group(function () {
+            Route::post('/teams/{team}/members', 'store')->name('store');
+        });
+
     // Current team...
     Route::controller(CurrentTeamController::class)
         ->name('current-team.')
         ->group(function () {
             Route::put('/current-team', 'update')->name('update');
+        });
+
+    // Team invitations...
+    Route::controller(TeamInvitationController::class)
+        ->name('team-invitations.')
+        ->group(function () {
+            Route::get('team-invitations/{invitation}', 'accept')
+                ->middleware('signed')
+                ->name('accept');
         });
 });

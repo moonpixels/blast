@@ -6,7 +6,7 @@ describe('Password', () => {
 
     createUser()
 
-    cy.login({ attributes: { email: 'john.doe@example.com' } })
+    cy.login({ attributes: { email: 'user@blst.to' } })
     cy.confirmPassword('password')
     cy.visit({ route: 'account-settings.show' })
 
@@ -33,7 +33,7 @@ describe('Password', () => {
     cy.visit({ route: 'login' })
 
     cy.get('[data-cy="login-form"]').within(() => {
-      cy.getFormInput('Email').type('john.doe@example.com')
+      cy.getFormInput('Email').type('user@blst.to')
       cy.getFormInput('Password').type('new-password')
       cy.get('[data-cy="submit-button"]').click()
     })

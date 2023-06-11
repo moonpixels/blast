@@ -44,6 +44,7 @@ class Team extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
+            ->orderBy('name')
             ->using(TeamMembership::class)
             ->withTimestamps()
             ->as('team_membership');
@@ -54,13 +55,13 @@ class Team extends Model
      */
     public function allUsers(): Collection
     {
-        return $this->users->merge([$this->owner]);
+        return collect([$this->owner])->merge($this->users);
     }
 
     /**
      * Get all the pending invitations for the team.
      */
-    public function pendingInvitations(): HasMany
+    public function invitations(): HasMany
     {
         return $this->hasMany(TeamInvitation::class);
     }
