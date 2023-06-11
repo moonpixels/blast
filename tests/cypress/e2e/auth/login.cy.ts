@@ -1,8 +1,8 @@
 import { createUser, getOtpCodeForUser } from '../../support/functions'
-import { User } from '@/types'
+import { CurrentUser } from '@/types/models'
 
 describe('Login', () => {
-  let tfaUser: User
+  let tfaUser: CurrentUser
 
   beforeEach(() => {
     cy.refreshDatabase()
@@ -11,7 +11,7 @@ describe('Login', () => {
 
     createUser(
       {
-        email: 'john.doe+tfa@example.com',
+        email: 'john.doe+tfa@blst.to',
       },
       ['withTwoFactorAuthentication']
     ).then((user) => {
@@ -32,7 +32,7 @@ describe('Login', () => {
 
   it('should allow users to login', () => {
     cy.get('@loginForm').within(() => {
-      cy.get('@emailInput').type('john.doe@example.com')
+      cy.get('@emailInput').type('user@blst.to')
       cy.get('@passwordInput').type('password')
       cy.get('@rememberMeInput').check()
       cy.get('@submitButton').click()
@@ -64,7 +64,7 @@ describe('Login', () => {
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', 'These credentials do not match our records.')
 
-      cy.get('@emailInput').clear().type('not-registered@example.com')
+      cy.get('@emailInput').clear().type('not-registered@blst.to')
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', 'These credentials do not match our records.')
     })
@@ -73,7 +73,7 @@ describe('Login', () => {
   it('should show an error if the password is invalid', () => {
     // Missing password
     cy.get('@loginForm').within(() => {
-      cy.get('@emailInput').type('john.doe@example.com')
+      cy.get('@emailInput').type('user@blst.to')
 
       cy.get('@submitButton').click()
       cy.get('input:invalid').should('have.length', 1)
@@ -109,7 +109,7 @@ describe('Login', () => {
 
   it('should allow users to login with two-factor authentication', () => {
     cy.get('@loginForm').within(() => {
-      cy.get('@emailInput').type('john.doe+tfa@example.com')
+      cy.get('@emailInput').type('john.doe+tfa@blst.to')
       cy.get('@passwordInput').type('password')
       cy.get('@submitButton').click()
     })
@@ -128,7 +128,7 @@ describe('Login', () => {
 
   it('should allow users to login with two-factor recovery codes', () => {
     cy.get('@loginForm').within(() => {
-      cy.get('@emailInput').type('john.doe+tfa@example.com')
+      cy.get('@emailInput').type('john.doe+tfa@blst.to')
       cy.get('@passwordInput').type('password')
       cy.get('@submitButton').click()
     })
@@ -147,7 +147,7 @@ describe('Login', () => {
 
   it('should show an error if the two-factor code is invalid', () => {
     cy.get('@loginForm').within(() => {
-      cy.get('@emailInput').type('john.doe+tfa@example.com')
+      cy.get('@emailInput').type('john.doe+tfa@blst.to')
       cy.get('@passwordInput').type('password')
       cy.get('@submitButton').click()
     })
@@ -180,7 +180,7 @@ describe('Login', () => {
 
   it('should show an error if the two-factor recovery code is invalid', () => {
     cy.get('@loginForm').within(() => {
-      cy.get('@emailInput').type('john.doe+tfa@example.com')
+      cy.get('@emailInput').type('john.doe+tfa@blst.to')
       cy.get('@passwordInput').type('password')
       cy.get('@submitButton').click()
     })
@@ -212,7 +212,7 @@ describe('Login', () => {
 
   it('should show an error if the two-factor recovery code is used twice', () => {
     cy.get('@loginForm').within(() => {
-      cy.get('@emailInput').type('john.doe+tfa@example.com')
+      cy.get('@emailInput').type('john.doe+tfa@blst.to')
       cy.get('@passwordInput').type('password')
       cy.get('@submitButton').click()
     })
@@ -232,7 +232,7 @@ describe('Login', () => {
     cy.visit({ route: 'login' })
 
     cy.get('@loginForm').within(() => {
-      cy.getFormInput('Email').type('john.doe+tfa@example.com')
+      cy.getFormInput('Email').type('john.doe+tfa@blst.to')
       cy.getFormInput('Password').type('password')
       cy.get('@submitButton').click()
     })

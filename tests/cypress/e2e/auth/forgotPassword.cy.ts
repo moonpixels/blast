@@ -18,7 +18,7 @@ describe('Forgot password', () => {
 
   it('should allow users to request a password reset', () => {
     cy.get('@forgotPasswordForm').within(() => {
-      cy.get('@emailInput').type('john.doe@example.com')
+      cy.get('@emailInput').type('user@blst.to')
       cy.get('@submitButton').click()
     })
 
@@ -47,7 +47,7 @@ describe('Forgot password', () => {
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', 'The email field must be a valid email address.')
 
-      cy.get('@emailInput').clear().type('not-registered@example.com')
+      cy.get('@emailInput').clear().type('not-registered@blst.to')
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', "We can't find a user with that email address.")
     })

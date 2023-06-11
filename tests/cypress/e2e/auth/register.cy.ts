@@ -4,7 +4,7 @@ describe('Register', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    createUser({ email: 'existing-user@example.com' })
+    createUser({ email: 'existing-user@blst.to' })
 
     cy.visit({ route: 'register' })
 
@@ -21,7 +21,7 @@ describe('Register', () => {
   it('should allow visitors to register for an account', () => {
     cy.get('@registerForm').within(() => {
       cy.get('@nameInput').type('John Doe')
-      cy.get('@emailInput').type('john.doe@example.com')
+      cy.get('@emailInput').type('user@blst.to')
       cy.get('@passwordInput').type('password')
       cy.get('@submitButton').click()
     })
@@ -32,7 +32,7 @@ describe('Register', () => {
   it('should show an error if the name is invalid', () => {
     // Missing name
     cy.get('@registerForm').within(() => {
-      cy.get('@emailInput').type('john.doe@example.com')
+      cy.get('@emailInput').type('user@blst.to')
       cy.get('@passwordInput').type('password')
 
       cy.get('@submitButton').click()
@@ -68,7 +68,7 @@ describe('Register', () => {
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', 'The email field must be a valid email address.')
 
-      cy.get('@emailInput').clear().type('existing-user@example.com')
+      cy.get('@emailInput').clear().type('existing-user@blst.to')
       cy.get('@submitButton').click()
       cy.get('[data-cy="input-error-message"]').should('contain', 'The email has already been taken.')
     })
@@ -78,7 +78,7 @@ describe('Register', () => {
     // Missing password
     cy.get('@registerForm').within(() => {
       cy.get('@nameInput').type('John Doe')
-      cy.get('@emailInput').type('john.doe@example.com')
+      cy.get('@emailInput').type('user@blst.to')
 
       cy.get('@submitButton').click()
       cy.get('input:invalid').should('have.length', 1)

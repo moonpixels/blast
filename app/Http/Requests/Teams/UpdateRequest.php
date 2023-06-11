@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.unique' => __('teams.team_name_taken', ['team_name' => $this->input('name')]),
+            'name.unique' => __('validation.unique_team_name', ['team_name' => $this->input('name')]),
         ];
     }
 

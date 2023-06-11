@@ -85,7 +85,6 @@
 </template>
 
 <script lang="ts" setup>
-import { User } from '@/types'
 import TwoColumnForm from '@/Components/Forms/TwoColumnForm.vue'
 import { router, useForm } from '@inertiajs/vue3'
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/vue/24/outline'
@@ -94,10 +93,10 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import TextInput from '@/Components/Inputs/TextInput.vue'
 import { computed, ref } from 'vue'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
-import TwoFactorForm from '@/Pages/AccountSettings/Partials/TwoFactorForm.vue'
+import { CurrentUser } from '@/types/models'
 
 interface Props {
-  user: User
+  user: CurrentUser
   status?: string
   twoFactorQrCode?: string
   twoFactorRecoveryCodes?: string[]

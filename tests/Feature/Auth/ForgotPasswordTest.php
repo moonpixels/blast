@@ -59,7 +59,7 @@ it('does not send and email when the user does not exist', function () {
     Notification::fake();
 
     $this->post(route('password.request'), [
-        'email' => 'not-a-user@example.com',
+        'email' => 'not-a-user@blst.to',
     ])->assertInvalid(['email']);
 
     Notification::assertNothingSent();

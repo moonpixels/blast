@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\User;
+use App\Services\UserService;
+use Mockery\MockInterface;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -31,4 +33,18 @@ it('redirects unauthenticated users', function () {
 
     $this->delete(route('current-user.destroy'))
         ->assertRedirectToRoute('login');
+});
+
+it('alerts the user if there was an error deleting their account', function () {
+    withoutPasswordConfirmation();
+
+    $this->mock(UserService::class, function (MockInterface $mock) {
+        $mock->shouldReceive('deleteUser')->once()->andReturnFalse();
+    });
+
+    $this->delete(route('current-user.destroy'))
+        ->assertRedirect()
+        ->assertSessionHas('error');
+
+    $this->assertAuthenticatedAs($this->user);
 });

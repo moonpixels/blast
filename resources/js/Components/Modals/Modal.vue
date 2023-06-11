@@ -29,7 +29,7 @@
                 class="relative transform overflow-hidden rounded-lg border border-zinc-900/20 bg-white text-left shadow-lg transition-all dark:border-white/20 dark:bg-zinc-950 sm:my-8 sm:w-full sm:max-w-lg"
                 v-bind="{ ...attrs }"
               >
-                <div class="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
+                <div class="absolute right-0 top-0 hidden pr-3 pt-3 sm:block">
                   <DismissButton @click="$emit('close')" />
                 </div>
 

@@ -14,10 +14,10 @@ class CurrentTeamController extends Controller
      */
     public function update(UpdateRequest $request): RedirectResponse
     {
-        $team = Team::findOrFail($request->safe()['team_id']);
+        $team = Team::findOrFail($request->validated()['team_id']);
 
         $request->user()->switchTeam($team);
 
-        return redirect(route('links.index'), 303);
+        return redirect(config('fortify.home'), 303);
     }
 }

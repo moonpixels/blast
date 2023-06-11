@@ -11,6 +11,18 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class TeamInvitationResource extends JsonResource
 {
     /**
+     * Instantiate the resource.
+     */
+    public function __construct(mixed $resource, protected bool $withoutWrapping = false)
+    {
+        parent::__construct($resource);
+
+        if ($this->withoutWrapping) {
+            self::withoutWrapping();
+        }
+    }
+
+    /**
      * Transform the resource into an array.
      */
     public function toArray(Request $request): array

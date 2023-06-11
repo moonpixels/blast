@@ -80,17 +80,15 @@ it('cannot delete a personal team', function () {
 });
 
 it('can delete a team and reassign the users and owner to their personal teams', function () {
+    $this->user->switchTeam($this->team);
+
     $user1 = User::factory()->create();
-
     $this->team->users()->attach($user1);
-
     $user1->switchTeam($this->team);
 
-    $this->teamService->deleteTeam($this->team);
+    $this->assertTrue($this->teamService->deleteTeam($this->team));
 
-    $this->assertDatabaseMissing('teams', [
-        'id' => $this->team->id,
-    ]);
+    $this->assertModelMissing($this->team);
 
     expect($user1->fresh()->current_team_id)->toBe($user1->personalTeam()->id)
         ->and($this->user->fresh()->current_team_id)->toBe($this->user->personalTeam()->id);

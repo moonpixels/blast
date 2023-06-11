@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\User;
 
-use App\Http\Resources\Team\TeamResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -31,19 +30,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'current_team_id' => $this->current_team_id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-
             'initials' => $this->initials,
-            'two_factor_enabled' => $this->two_factor_enabled,
-
-            'owned_teams_count' => $this->whenCounted($this->ownedTeams),
-            'teams_count' => $this->whenCounted($this->teams),
-
-            'current_team' => new TeamResource($this->whenLoaded('currentTeam')),
-            'owned_teams' => TeamResource::collection($this->whenLoaded('ownedTeams')),
-            'teams' => TeamResource::collection($this->whenLoaded('teams')),
         ];
     }
 }

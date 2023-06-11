@@ -14,7 +14,6 @@ export default defineConfig({
           fs.renameSync('.env', '.env.backup')
           fs.renameSync('.env.cypress', '.env')
           setAppKey('.env.backup', '.env')
-          cy.artisan('config:clear', {}, { log: false })
         }
       })
 
@@ -23,11 +22,11 @@ export default defineConfig({
           fs.renameSync('.env', '.env.cypress')
           fs.renameSync('.env.backup', '.env')
           setAppKey('.env.example', '.env.cypress')
-          cy.artisan('config:clear', {}, { log: false })
         }
       })
     },
     experimentalRunAllSpecs: true,
+    experimentalWebKitSupport: true,
     baseUrl: 'http://localhost',
     specPattern: 'tests/cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
     supportFile: 'tests/cypress/support/e2e.ts',

@@ -58,13 +58,14 @@ import BlastLogo from '@/Components/Logo/BlastLogo.vue'
 import { Link, usePage } from '@inertiajs/vue3'
 import { transChoice } from 'laravel-vue-i18n'
 import { computed } from 'vue'
-import { PageProps, User } from '@/types'
+import { PageProps } from '@/types'
 import FlashNotification from '@/Components/Notifications/FlashMessages.vue'
 import TeamSwitcher from '@/Layouts/Partials/TeamSwitcher.vue'
 import ProfileMenu from '@/Layouts/Partials/ProfileMenu.vue'
+import { CurrentUser } from '@/types/models'
 
-const user = computed<User>(() => {
-  return usePage<PageProps<{}>>().props.user
+const user = computed<CurrentUser>(() => {
+  return usePage<PageProps>().props.user as CurrentUser
 })
 
 interface NavLink {

@@ -33,4 +33,12 @@ class TeamPolicy
     {
         return $user->id === $team->owner_id && ! $team->personal_team;
     }
+
+    /**
+     * Determine whether the user can invite a team member.
+     */
+    public function inviteMember(User $user, Team $team): bool
+    {
+        return $user->id === $team->owner_id && ! $team->personal_team;
+    }
 }

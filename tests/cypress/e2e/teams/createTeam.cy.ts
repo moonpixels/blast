@@ -6,7 +6,7 @@ describe('Create team', () => {
 
     createUser()
 
-    cy.login({ attributes: { email: 'john.doe@example.com' } })
+    cy.login({ attributes: { email: 'user@blst.to' } })
     cy.visit({ route: 'links.index' })
 
     cy.get('[data-cy="team-switcher-button"]').as('teamSwitcherButton')

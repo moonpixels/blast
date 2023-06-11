@@ -11,11 +11,11 @@ class TeamService
     /**
      * Create a new team for the given user.
      */
-    public function createTeamForUser(User $user, array $input): Team
+    public function createTeamForUser(User $user, array $attributes): Team
     {
         $team = $user->ownedTeams()->create([
-            'name' => $input['name'],
-            'personal_team' => $input['personal_team'] ?? false,
+            'name' => $attributes['name'],
+            'personal_team' => $attributes['personal_team'] ?? false,
         ]);
 
         $user->switchTeam($team);
@@ -26,9 +26,9 @@ class TeamService
     /**
      * Update the given team.
      */
-    public function updateTeam(Team $team, array $input): bool
+    public function updateTeam(Team $team, array $attributes): bool
     {
-        return $team->update($input);
+        return $team->update($attributes);
     }
 
     /**

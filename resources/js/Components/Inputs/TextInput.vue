@@ -7,23 +7,30 @@
       'rounded-md border px-3 py-2 shadow-sm focus-within:ring-1',
     ]"
   >
-    <label :class="[disabledClasses, 'block text-xs font-medium']" :for="id">
+    <label v-if="!hideLabel" :class="[disabledClasses, 'mb-1 block text-xs font-medium']" :for="id">
       {{ label }}
     </label>
 
-    <input
-      :id="id"
-      ref="input"
-      :class="[
-        disabledClasses,
-        'mt-1 block w-full truncate border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-400 focus:ring-0 dark:text-zinc-100 dark:placeholder-zinc-500 sm:text-sm',
-      ]"
-      :inputmode="inputMode"
-      :type="type"
-      :value="modelValue"
-      v-bind="{ ...attrs }"
-      @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    />
+    <div class="relative">
+      <div v-if="$slots.icon" class="pointer-events-none absolute inset-y-0 left-0 -ml-1 flex items-center">
+        <slot name="icon" />
+      </div>
+
+      <input
+        :id="id"
+        ref="input"
+        :class="[
+          disabledClasses,
+          $slots.icon ? 'p-0 pl-4' : 'p-0',
+          'block w-full truncate border-0 bg-transparent text-zinc-900 placeholder-zinc-400 focus:ring-0 dark:text-zinc-100 dark:placeholder-zinc-500 sm:text-sm',
+        ]"
+        :inputmode="inputMode"
+        :type="type"
+        :value="modelValue"
+        v-bind="{ ...attrs }"
+        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+      />
+    </div>
 
     <InputErrorMessage v-if="error" class="border-t border-zinc-900/20 pt-1 dark:border-white/20">
       {{ error }}
@@ -45,6 +52,7 @@ interface Props {
   type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url'
   error?: string
   label: string
+  hideLabel?: boolean
   modelValue: any
   inverse?: boolean
 }
@@ -54,6 +62,7 @@ const props = withDefaults(defineProps<Props>(), {
     return `text-input-${nanoid()}`
   },
   type: 'text',
+  hideLabel: false,
 })
 
 const emit = defineEmits<{

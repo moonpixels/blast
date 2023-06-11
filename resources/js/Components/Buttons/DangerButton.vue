@@ -1,25 +1,14 @@
 <template>
-  <button
-    :disabled="loading"
-    :type="type"
-    class="inline-flex items-center justify-center rounded-md border border-transparent bg-rose-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all duration-200 ease-in-out hover:bg-rose-600 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-zinc-50 disabled:pointer-events-none disabled:opacity-60 dark:bg-rose-600 dark:hover:bg-rose-500 dark:focus:ring-violet-600 dark:focus:ring-offset-zinc-900"
+  <BaseButton
+    class="bg-rose-500 text-white hover:bg-rose-600 dark:bg-rose-600 dark:hover:bg-rose-500"
+    v-bind="{ ...$props }"
   >
-    <LoadingAnimation v-if="loading" />
-
     <slot />
-  </button>
+  </BaseButton>
 </template>
 
 <script lang="ts" setup>
-import LoadingAnimation from '@/Components/Buttons/ButtonLoadingAnimation.vue'
+import BaseButton, { ButtonProps } from '@/Components/Buttons/BaseButton.vue'
 
-interface Props {
-  type?: 'button' | 'submit' | 'reset'
-  loading?: boolean
-}
-
-withDefaults(defineProps<Props>(), {
-  type: 'button',
-  loading: false,
-})
+defineProps<ButtonProps>()
 </script>

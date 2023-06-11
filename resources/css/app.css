@@ -18,3 +18,9 @@
     display: none;
   }
 }
+
+@layer components {
+  .focus-ring {
+    @apply focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-zinc-50 dark:focus:ring-violet-600 dark:focus:ring-offset-zinc-900;
+  }
+}

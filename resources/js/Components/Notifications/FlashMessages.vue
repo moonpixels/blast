@@ -30,7 +30,7 @@
                 </p>
               </div>
 
-              <div class="ml-4 flex flex-shrink-0">
+              <div class="absolute right-0 top-0 pr-2 pt-2">
                 <DismissButton size="sm" @click="show = false" />
               </div>
             </div>
@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { CheckCircleIcon, XCircleIcon } from '@heroicons/vue/20/solid'
 import { router, usePage } from '@inertiajs/vue3'
 import { FlashMessage, PageProps } from '@/types'
@@ -84,19 +84,29 @@ function reset(): void {
   notificationId.value = nanoid()
 }
 
+function showNotification(): void {
+  show.value = true
+
+  setTimeout(() => {
+    loadingBarWidth.value = 0
+
+    timeout = setTimeout(() => {
+      show.value = false
+      loadingBarWidth.value = 100
+    }, 5000)
+  }, 50)
+}
+
+onMounted(() => {
+  if (flash.value) {
+    showNotification()
+  }
+})
+
 watch(flash, (value) => {
   if (value) {
     reset()
-    show.value = true
-
-    setTimeout(() => {
-      loadingBarWidth.value = 0
-
-      timeout = setTimeout(() => {
-        show.value = false
-        loadingBarWidth.value = 100
-      }, 5000)
-    }, 50)
+    showNotification()
   }
 })
 

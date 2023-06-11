@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Teams\StoreRequest;
 use App\Http\Requests\Teams\UpdateRequest;
 use App\Http\Resources\Team\TeamResource;
+use App\Http\Resources\TeamInvitation\TeamInvitationResource;
+use App\Http\Resources\User\UserResource;
 use App\Models\Team;
 use App\Services\TeamService;
 use Illuminate\Http\RedirectResponse;
@@ -30,6 +32,8 @@ class TeamController extends Controller
 
         return inertia('Teams/Show', [
             'team' => new TeamResource($team, true),
+            'members' => UserResource::collection($team->users()->paginate(10)),
+            'invitations' => TeamInvitationResource::collection($team->invitations()->paginate(10)),
         ]);
     }
 
@@ -72,7 +76,7 @@ class TeamController extends Controller
             ]);
         }
 
-        return redirect()->route('links.index')->with('success', [
+        return redirect(config('fortify.home'))->with('success', [
             'title' => __('teams.team_delete_success.title'),
             'message' => __('teams.team_delete_success.message', ['team_name' => $team->name]),
         ]);

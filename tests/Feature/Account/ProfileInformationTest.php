@@ -24,13 +24,13 @@ it('updates the users name', function () {
 it('updates the users email', function () {
     $this->put(route('user-profile-information.update'), [
         'name' => $this->user->name,
-        'email' => 'updated.email@example.com',
+        'email' => 'updated.email@blst.to',
     ])->assertRedirect()->assertSessionHas('success');
 
     $this->assertDatabaseHas('users', [
         'id' => $this->user->id,
         'name' => $this->user->name,
-        'email' => 'updated.email@example.com',
+        'email' => 'updated.email@blst.to',
     ]);
 });
 

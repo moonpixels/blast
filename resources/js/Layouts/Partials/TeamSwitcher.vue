@@ -2,7 +2,7 @@
   <DropdownMenu size="md">
     <template #button>
       <MenuButton
-        class="flex w-40 rounded-md border border-zinc-900/20 bg-zinc-50 py-1.5 pl-3 pr-10 text-sm shadow-sm transition-all ease-in-out focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 focus:ring-offset-white dark:border-white/20 dark:bg-zinc-900 dark:focus:ring-violet-600 dark:focus:ring-offset-zinc-950"
+        class="focus-ring flex w-40 rounded-md border border-zinc-900/20 bg-zinc-50 py-1.5 pl-3 pr-10 text-sm shadow-sm transition-all ease-in-out dark:border-white/20 dark:bg-zinc-900"
         data-cy="team-switcher-button"
       >
         <span class="block truncate text-zinc-900 dark:text-white">{{ currentTeamName }}</span>
@@ -65,13 +65,13 @@
 
   <Modal
     :show="showModal"
-    :title="$t('teams.create_team_modal_title')"
+    :title="$t('teams.create_team_form.modal_title')"
     data-cy="create-team-modal"
     @close="showModal = false"
   >
     <template #body>
       <p class="mb-4 text-sm">
-        {{ $t('teams.create_team_modal_text') }}
+        {{ $t('teams.create_team_form.modal_text') }}
       </p>
 
       <form id="create-team-form" class="space-y-6" data-cy="create-team-form" @submit.prevent="submit">
@@ -88,7 +88,7 @@
 
     <template #footer>
       <PrimaryButton :loading="form.processing" data-cy="submit-button" form="create-team-form" type="submit">
-        {{ $t('teams.create_team_button') }}
+        {{ $t('teams.create_team_form.button') }}
       </PrimaryButton>
 
       <SecondaryButton data-cy="cancel-button" @click="showModal = false">
@@ -106,16 +106,16 @@ import Badge from '@/Components/Badges/Badge.vue'
 import MenuItemButton from '@/Components/Dropdown/MenuItemButton.vue'
 import { MenuButton } from '@headlessui/vue'
 import DropdownMenu from '@/Components/Dropdown/DropdownMenu.vue'
-import { User } from '@/types'
 import { computed, ref } from 'vue'
 import Modal from '@/Components/Modals/Modal.vue'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import { useForm } from '@inertiajs/vue3'
 import TextInput from '@/Components/Inputs/TextInput.vue'
+import { CurrentUser } from '@/types/models'
 
 interface Props {
-  user: User
+  user: CurrentUser
 }
 
 const props = defineProps<Props>()
@@ -136,6 +136,7 @@ const form = useForm<CreateTeamForm>({
 
 function submit(): void {
   form.post(route('teams.store'), {
+    preserveState: false,
     onSuccess: () => {
       showModal.value = false
       form.reset()

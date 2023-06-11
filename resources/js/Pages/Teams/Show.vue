@@ -9,7 +9,7 @@
     <TwoColumnFormContainer>
       <GeneralForm :team="team" />
 
-      <MembersForm :team="team" />
+      <TeamMembersForm :invitations="invitations" :members="members" :team="team" />
 
       <DeleteTeamForm :team="team" />
     </TwoColumnFormContainer>
@@ -19,12 +19,13 @@
 <script lang="ts" setup>
 import AppLayout from '@/Layouts/AppLayout.vue'
 import ConstrainedContainer from '@/Components/Containers/ConstrainedContainer.vue'
-import { Team } from '@/types'
 import AppHead from '@/Components/App/AppHead.vue'
 import TwoColumnFormContainer from '@/Components/Forms/TwoColumnFormContainer.vue'
 import GeneralForm from '@/Pages/Teams/Partials/GeneralForm.vue'
-import MembersForm from '@/Pages/Teams/Partials/MembersForm.vue'
+import TeamMembersForm from '@/Pages/Teams/Partials/TeamMembersForm.vue'
 import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm.vue'
+import { Team, TeamInvitation, User } from '@/types/models'
+import { PaginatedResponse } from '@/types/framework'
 
 defineOptions({
   layout: AppLayout,
@@ -32,6 +33,8 @@ defineOptions({
 
 interface Props {
   team: Team
+  members: PaginatedResponse<User>
+  invitations: PaginatedResponse<TeamInvitation>
 }
 
 defineProps<Props>()

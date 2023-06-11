@@ -49,7 +49,7 @@ it('does not log in a user with an invalid password', function () {
 
 it('does not log in a user with an invalid email', function () {
     $this->post(route('login'), [
-        'email' => 'not-a-user@example.com',
+        'email' => 'not-a-user@blst.to',
         'password' => 'password',
     ])->assertInvalid(['email']);
 

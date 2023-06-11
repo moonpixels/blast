@@ -33,6 +33,14 @@ it('does not allow owners to delete personal teams', function () {
     expect($this->policy->delete($this->user, $this->user->personalTeam()))->toBeFalse();
 });
 
+it('allows owners to invite team members', function () {
+    expect($this->policy->inviteMember($this->user, $this->team))->toBeTrue();
+});
+
+it('does not allow owners to invite team members to personal teams', function () {
+    expect($this->policy->inviteMember($this->user, $this->user->personalTeam()))->toBeFalse();
+});
+
 it('does not allow non-owners to view teams', function () {
     expect($this->policy->view($this->memberUser, $this->team))->toBeFalse()
         ->and($this->policy->view($this->nonMemberUser, $this->team))->toBeFalse();
@@ -46,4 +54,9 @@ it('does not allow non-owners to update teams', function () {
 it('does not allow non-owners to delete teams', function () {
     expect($this->policy->delete($this->memberUser, $this->team))->toBeFalse()
         ->and($this->policy->delete($this->nonMemberUser, $this->team))->toBeFalse();
+});
+
+it('does not allow non-owners to invite team members', function () {
+    expect($this->policy->inviteMember($this->memberUser, $this->team))->toBeFalse()
+        ->and($this->policy->inviteMember($this->nonMemberUser, $this->team))->toBeFalse();
 });
