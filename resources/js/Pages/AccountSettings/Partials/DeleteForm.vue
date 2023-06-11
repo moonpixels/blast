@@ -1,31 +1,38 @@
 <template>
-  <TwoColumnForm :description="$t('account.delete_account_description')" :title="$t('account.delete_account_title')">
+  <TwoColumnForm
+    :description="$t('Permanently delete your account and all of its data and resources.')"
+    :title="$t('Delete account')"
+  >
     <div class="flex h-full items-center">
       <DangerButton data-cy="delete-account-button" @click="showModal = true">
-        {{ $t('account.delete_account_button') }}
+        {{ $t('Delete account') }}
       </DangerButton>
     </div>
   </TwoColumnForm>
 
   <Modal
     :show="showModal"
-    :title="$t('account.delete_account_modal_title')"
+    :title="$t('Are you sure you want to delete your account?')"
     data-cy="delete-account-modal"
     @close="showModal = false"
   >
     <template #body>
       <p class="text-sm">
-        {{ $t('account.delete_account_modal_text') }}
+        {{
+          $t(
+            'Once your account is deleted, all of its resources and data will be permanently removed. You cannot undo this action.'
+          )
+        }}
       </p>
     </template>
 
     <template #footer>
       <DangerButton :loading="form.processing" data-cy="delete-account-button" @click="submit">
-        {{ $t('account.delete_account_button') }}
+        {{ $t('Delete account') }}
       </DangerButton>
 
       <SecondaryButton data-cy="cancel-button" @click="showModal = false">
-        {{ $t('common.cancel') }}
+        {{ $t('Cancel') }}
       </SecondaryButton>
     </template>
   </Modal>

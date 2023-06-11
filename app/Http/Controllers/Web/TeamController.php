@@ -57,8 +57,8 @@ class TeamController extends Controller
         $this->teamService->updateTeam($team, $request->validated());
 
         return back()->with('success', [
-            'title' => __('teams.team_update_success.title'),
-            'message' => __('teams.team_update_success.message', ['team_name' => $team->name]),
+            'title' => __('Team updated'),
+            'message' => __(':team_name team has been updated successfully.', ['team_name' => $team->name]),
         ]);
     }
 
@@ -71,14 +71,15 @@ class TeamController extends Controller
 
         if (! $this->teamService->deleteTeam($team)) {
             return back()->with('error', [
-                'title' => __('teams.team_delete_error.title'),
-                'message' => __('teams.team_delete_error.message', ['team_name' => $team->name]),
+                'title' => __('Team not deleted'),
+                'message' => __('The :team_name team could not be deleted. Personal teams cannot be deleted.',
+                    ['team_name' => $team->name]),
             ]);
         }
 
         return redirect(config('fortify.home'))->with('success', [
-            'title' => __('teams.team_delete_success.title'),
-            'message' => __('teams.team_delete_success.message', ['team_name' => $team->name]),
+            'title' => __('Team deleted'),
+            'message' => __(':team_name team has been deleted successfully.', ['team_name' => $team->name]),
         ]);
     }
 }

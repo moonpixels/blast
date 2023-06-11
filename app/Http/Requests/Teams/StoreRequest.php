@@ -30,7 +30,7 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.unique' => __('validation.unique_team_name', ['team_name' => $this->input('name')]),
+            'name.unique' => __('You already have a team called :team_name.', ['team_name' => $this->input('name')]),
         ];
     }
 }

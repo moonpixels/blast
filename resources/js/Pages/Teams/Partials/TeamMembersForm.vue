@@ -1,7 +1,7 @@
 <template>
-  <TwoColumnForm :description="$t('teams.members_section.description')" :title="$t('teams.members_section.title')">
+  <TwoColumnForm :description="$t('Manage the members of your team.')" :title="$t('Members')">
     <Alert v-if="team.personal_team" data-cy="manage-members-personal-team-alert">
-      {{ $t('teams.members_section.personal_team_text') }}
+      {{ $t('You cannot invite members to your personal team.') }}
     </Alert>
 
     <div
@@ -20,7 +20,7 @@
             @click="switchViewMode"
           >
             <span :class="[viewMode === 'members' ? 'text-zinc-900 dark:text-white' : '']">
-              {{ $tChoice('common.members', 2) }}
+              {{ $tChoice('Member|Members', 2) }}
             </span>
 
             <ArrowsRightLeftIcon
@@ -28,7 +28,7 @@
             />
 
             <span :class="[viewMode === 'invites' ? 'text-zinc-900 dark:text-white' : '']">
-              {{ $tChoice('common.invites', 2) }}
+              {{ $tChoice('Invite|Invites', 2) }}
             </span>
           </BaseButton>
         </div>
@@ -36,8 +36,8 @@
         <form class="mt-3 lg:mt-0 lg:w-60">
           <TextInput
             v-model="form.search"
-            :label="$t('common.search')"
-            :placeholder="$t('teams.members_section.search_placeholder')"
+            :label="$t('Search')"
+            :placeholder="$t('Find a team member...')"
             hide-label
             inverse
             type="search"
@@ -78,7 +78,7 @@
 
                 <div v-if="user.id === team.owner_id" class="flex-none">
                   <Badge data-cy="owner-badge">
-                    {{ $t('common.owner') }}
+                    {{ $t('Owner') }}
                   </Badge>
                 </div>
               </div>
@@ -86,7 +86,7 @@
 
             <div class="flex flex-none items-center">
               <SecondaryButton v-if="user.id !== team.owner_id" data-cy="remove-member-button" size="icon">
-                <span class="sr-only">{{ $t('teams.members_section.remove_member') }}</span>
+                <span class="sr-only">{{ $t('Remove member') }}</span>
                 <TrashIcon
                   aria-hidden="true"
                   class="h-4 w-4 transition-all duration-200 ease-in-out group-hover:text-rose-600 dark:group-hover:text-rose-500"
@@ -120,19 +120,19 @@
                   <p class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white">
                     {{ invite.email }}
                   </p>
-                  <p class="truncate text-xs leading-5">{{ $t('common.sent_on') }} {{ useDate(invite.updated_at) }}</p>
+                  <p class="truncate text-xs leading-5">{{ $t('Sent on') }} {{ useDate(invite.updated_at) }}</p>
                 </div>
               </div>
             </div>
 
             <div class="flex flex-none items-center gap-2">
               <SecondaryButton data-cy="resend-invitation-button" size="icon">
-                <span class="sr-only">{{ $t('teams.members_section.resend_invitation') }}</span>
+                <span class="sr-only">{{ $t('Resend invitation') }}</span>
                 <ArrowPathIcon aria-hidden="true" class="h-4 w-4" />
               </SecondaryButton>
 
               <SecondaryButton data-cy="delete-invitation-button" size="icon">
-                <span class="sr-only">{{ $t('teams.members_section.delete_invitation') }}</span>
+                <span class="sr-only">{{ $t('Delete invitation') }}</span>
                 <TrashIcon
                   aria-hidden="true"
                   class="h-4 w-4 transition-all duration-200 ease-in-out group-hover:text-rose-600 dark:group-hover:text-rose-500"

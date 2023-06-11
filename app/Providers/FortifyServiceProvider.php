@@ -45,7 +45,7 @@ class FortifyServiceProvider extends ServiceProvider
 
         Fortify::registerView(function () {
             if (config('blast.disable_registration')) {
-                abort(403, __('auth.register_disabled'));
+                abort(403, __('Registration is currently disabled'));
             }
 
             return Inertia::render('Auth/Register');

@@ -1,14 +1,14 @@
 <template>
-  <AppHead :title="$t('auth.register_meta_title')" />
+  <AppHead :title="$t('Register')" />
 
-  <AuthHeader :title="$t('auth.register_title')" />
+  <AuthHeader :title="$t('Create your account')" />
 
   <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" data-cy="register-form" @submit.prevent="submit">
       <TextInput
         v-model="form.name"
         :error="form.errors.name"
-        :label="$t('common.full_name')"
+        :label="$t('Full name')"
         autocomplete="name"
         required
         @input="form.clearErrors('name')"
@@ -17,7 +17,7 @@
       <TextInput
         v-model="form.email"
         :error="form.errors.email"
-        :label="$t('common.email')"
+        :label="$t('Email')"
         autocomplete="email"
         required
         type="email"
@@ -27,7 +27,7 @@
       <TextInput
         v-model="form.password"
         :error="form.errors.password"
-        :label="$t('common.password')"
+        :label="$t('Password')"
         autocomplete="new-password"
         required
         type="password"
@@ -35,14 +35,14 @@
       />
 
       <PrimaryButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
-        {{ $t('auth.register_button') }}
+        {{ $t('Create account') }}
       </PrimaryButton>
     </form>
 
     <div>
       <Link :href="route('login')" data-cy="login-link">
         <SecondaryButton class="w-full">
-          {{ $t('auth.register_login_link') }}
+          {{ $t('Already have an account? Login here') }}
         </SecondaryButton>
       </Link>
     </div>

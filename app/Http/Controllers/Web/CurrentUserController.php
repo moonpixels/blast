@@ -35,8 +35,8 @@ class CurrentUserController extends Controller
         $guard->login($request->user());
 
         return back()->with('error', [
-            'title' => __('exceptions.something_went_wrong'),
-            'message' => __('exceptions.generic_issue_text'),
+            'title' => __('Something went wrong'),
+            'message' => __('There was an issue processing your request. Please try again later.'),
         ]);
     }
 }

@@ -1,16 +1,16 @@
 <template>
-  <TwoColumnForm :description="$t('teams.general_section.description')" :title="$t('teams.general_section.title')">
+  <TwoColumnForm :description="$t('Update your team\'s general settings.')" :title="$t('General settings')">
     <form class="max-w-md space-y-6" data-cy="general-settings-form" @submit.prevent="submit">
       <TextInput
         v-model="form.name"
         :error="form.errors.name"
-        :label="$t('teams.team_name')"
+        :label="$t('Team name')"
         required
         @input="form.clearErrors('name')"
       />
 
       <PrimaryButton :loading="form.processing" data-cy="submit-button" type="submit">
-        {{ $t('teams.general_section.form_button') }}
+        {{ $t('Update team') }}
       </PrimaryButton>
     </form>
   </TwoColumnForm>

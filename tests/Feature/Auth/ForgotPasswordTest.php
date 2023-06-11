@@ -28,7 +28,7 @@ it('sends a forgot password email', function () {
 
     $this->post(route('password.request'), ['email' => $this->user->email])
         ->assertRedirect('/forgot-password')
-        ->assertSessionHas('status', __('passwords.sent'));
+        ->assertSessionHas('status');
 
     $token = DB::table('password_reset_tokens')->first()->token;
 

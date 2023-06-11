@@ -39,8 +39,8 @@ class StoreRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.unique' => __('validation.unique_team_invitation_email'),
-            'email.not_in' => __('validation.not_already_a_team_member'),
+            'email.unique' => __('You already have a pending invitation for this email address.'),
+            'email.not_in' => __('There is already a team member with this email address.'),
         ];
     }
 }

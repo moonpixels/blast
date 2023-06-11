@@ -16,7 +16,7 @@
       <div class="space-y-1.5" data-cy="team-switcher-menu">
         <div>
           <span class="pointer-events-none block select-none p-2 pb-0.5 text-xs text-zinc-400 dark:text-zinc-500">
-            {{ $tChoice('teams.teams', 2) }}
+            {{ $tChoice('Team|Teams', 2) }}
           </span>
 
           <MenuItemLink
@@ -38,7 +38,7 @@
                 data-cy="current-team-badge"
                 type="primary"
               >
-                {{ $t('teams.current') }}
+                {{ $t('Current') }}
               </Badge>
             </div>
           </MenuItemLink>
@@ -57,28 +57,23 @@
             aria-hidden="true"
             class="-ml-2 mr-2 h-5 w-5"
           />
-          {{ $t('teams.create_team') }}
+          {{ $t('Create team') }}
         </MenuItemButton>
       </div>
     </template>
   </DropdownMenu>
 
-  <Modal
-    :show="showModal"
-    :title="$t('teams.create_team_form.modal_title')"
-    data-cy="create-team-modal"
-    @close="showModal = false"
-  >
+  <Modal :show="showModal" :title="$t('Create a new team')" data-cy="create-team-modal" @close="showModal = false">
     <template #body>
       <p class="mb-4 text-sm">
-        {{ $t('teams.create_team_form.modal_text') }}
+        {{ $t('Use this form to create a new team. You can add team members to a team after creating it.') }}
       </p>
 
       <form id="create-team-form" class="space-y-6" data-cy="create-team-form" @submit.prevent="submit">
         <TextInput
           v-model="form.name"
           :error="form.errors.name"
-          :label="$t('teams.team_name')"
+          :label="$t('Team name')"
           inverse
           required
           @input="form.clearErrors('name')"
@@ -88,11 +83,11 @@
 
     <template #footer>
       <PrimaryButton :loading="form.processing" data-cy="submit-button" form="create-team-form" type="submit">
-        {{ $t('teams.create_team_form.button') }}
+        {{ $t('Create team') }}
       </PrimaryButton>
 
       <SecondaryButton data-cy="cancel-button" @click="showModal = false">
-        {{ $t('common.cancel') }}
+        {{ $t('Cancel') }}
       </SecondaryButton>
     </template>
   </Modal>

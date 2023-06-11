@@ -1,13 +1,13 @@
 <template>
   <TwoColumnForm
-    :description="$t('account.profile_info_settings_description')"
-    :title="$t('account.profile_info_settings_title')"
+    :description="$t('Update your account\'s profile information and email address.')"
+    :title="$t('Profile information')"
   >
     <form class="max-w-md space-y-6" data-cy="profile-information-form" @submit.prevent="submit">
       <TextInput
         v-model="form.name"
         :error="form.errors.name"
-        :label="$t('common.full_name')"
+        :label="$t('Full name')"
         autocomplete="name"
         required
         @input="form.clearErrors('name')"
@@ -16,7 +16,7 @@
       <TextInput
         v-model="form.email"
         :error="form.errors.email"
-        :label="$t('common.email')"
+        :label="$t('Email')"
         autocomplete="email"
         required
         type="email"
@@ -24,7 +24,7 @@
       />
 
       <PrimaryButton :loading="form.processing" data-cy="submit-button" type="submit">
-        {{ $t('account.profile_info_settings_button') }}
+        {{ $t('Update information') }}
       </PrimaryButton>
     </form>
   </TwoColumnForm>

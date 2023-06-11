@@ -1,7 +1,7 @@
 <template>
-  <AppHead :title="$t('auth.login_meta_title')" />
+  <AppHead :title="$t('Login')" />
 
-  <AuthHeader :title="$t('auth.login_title')">
+  <AuthHeader :title="$t('Log in to Blast')">
     <p class="text-emerald-600 dark:text-emerald-500" data-cy="status-message">
       {{ status }}
     </p>
@@ -12,7 +12,7 @@
       <TextInput
         v-model="form.email"
         :error="form.errors.email"
-        :label="$t('common.email')"
+        :label="$t('Email')"
         autocomplete="email"
         required
         type="email"
@@ -22,7 +22,7 @@
       <TextInput
         v-model="form.password"
         :error="form.errors.password"
-        :label="$t('common.password')"
+        :label="$t('Password')"
         autocomplete="current-password"
         required
         type="password"
@@ -30,22 +30,22 @@
       />
 
       <div class="flex items-center justify-between">
-        <Checkbox v-model="form.remember" :error="form.errors.remember" :label="$t('auth.login_remember')" />
+        <Checkbox v-model="form.remember" :error="form.errors.remember" :label="$t('Remember me')" />
 
         <InternalLink :href="route('password.request')" class="text-sm no-underline" data-cy="forgot-password-link">
-          {{ $t('auth.login_forgot_password_link') }}
+          {{ $t('Forgot your password?') }}
         </InternalLink>
       </div>
 
       <PrimaryButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
-        {{ $t('auth.login_button') }}
+        {{ $t('Log in') }}
       </PrimaryButton>
     </form>
 
     <div>
       <Link :href="route('register')" data-cy="register-link">
         <SecondaryButton class="w-full">
-          {{ $t('auth.login_register_link') }}
+          {{ $t("Don't have an account? Register here") }}
         </SecondaryButton>
       </Link>
     </div>

@@ -24,7 +24,7 @@ readonly class BelongsToTeam implements ValidationRule
         $team = Team::findOrFail($value);
 
         if (! $this->user->belongsToTeam($team)) {
-            $fail('validation.belongs_to_team')->translate();
+            $fail('The :attribute field must contain a valid team ID that you belong to.');
         }
     }
 }

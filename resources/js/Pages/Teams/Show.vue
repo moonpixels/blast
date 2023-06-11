@@ -1,9 +1,9 @@
 <template>
-  <AppHead :title="$t('teams.settings_page.meta_title', { team_name: team.name })" />
+  <AppHead :title="$t(':team_name settings', { team_name: team.name })" />
 
   <ConstrainedContainer>
     <h1 class="text-xl font-semibold text-zinc-900 dark:text-white">
-      {{ $t('teams.settings_page.page_title', { team_name: team.name }) }}
+      {{ $t(':team_name settings', { team_name: team.name }) }}
     </h1>
 
     <TwoColumnFormContainer>

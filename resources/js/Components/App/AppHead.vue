@@ -20,6 +20,6 @@ interface Props {
 const props = defineProps<Props>()
 
 const title = computed<string>(() => {
-  return `${props.title} - Blast` ?? trans('app.application_title')
+  return `${props.title} - Blast` ?? trans('Blast - The privacy-focused open source URL shortener')
 })
 </script>

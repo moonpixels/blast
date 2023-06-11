@@ -1,9 +1,9 @@
 <template>
-  <AppHead :title="$t('auth.confirm_password_meta_title')" />
+  <AppHead :title="$t('Confirm your password')" />
 
-  <AuthHeader :title="$t('auth.confirm_password_title')">
+  <AuthHeader :title="$t('Confirm your password')">
     <p>
-      {{ $t('auth.confirm_password_text') }}
+      {{ $t('Please confirm your password before continuing.') }}
     </p>
   </AuthHeader>
 
@@ -12,7 +12,7 @@
       <TextInput
         v-model="form.password"
         :error="form.errors.password"
-        :label="$t('common.password')"
+        :label="$t('Password')"
         autocomplete="current-password"
         required
         type="password"
@@ -20,7 +20,7 @@
       />
 
       <PrimaryButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
-        {{ $t('auth.confirm_password_button') }}
+        {{ $t('Confirm password') }}
       </PrimaryButton>
     </form>
   </div>

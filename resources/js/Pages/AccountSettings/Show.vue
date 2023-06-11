@@ -1,9 +1,9 @@
 <template>
-  <AppHead :title="$t('account.settings_meta_title')" />
+  <AppHead :title="$t('Account settings')" />
 
   <ConstrainedContainer>
     <h1 class="text-xl font-semibold text-zinc-900 dark:text-white">
-      {{ $t('account.settings_title') }}
+      {{ $t('Account settings') }}
     </h1>
 
     <TwoColumnFormContainer>

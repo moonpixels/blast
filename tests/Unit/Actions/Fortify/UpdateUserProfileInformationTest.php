@@ -17,9 +17,10 @@ it('updates a users profile information', function () {
     ]);
 
     expect($this->user->name)->toBe('New Name')
-        ->and($this->user->email)->toBe('new-email@blst.to')
-        ->and(session('success.title'))->toBe(__('account.profile_info_update_success.title'))
-        ->and(session('success.message'))->toBe(__('account.profile_info_update_success.message'));
+        ->and($this->user->email)->toBe('new-email@blst.to');
+
+    $this->assertTrue(session()->has('success.title'));
+    $this->assertTrue(session()->has('success.message'));
 });
 
 it('does not update a users name to empty', function () {

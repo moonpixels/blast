@@ -1,6 +1,6 @@
 <template>
   <ConstrainedContainer>
-    {{ $tChoice('links.links', 2) }}
+    {{ $tChoice('Link|Links', 2) }}
   </ConstrainedContainer>
 </template>
 

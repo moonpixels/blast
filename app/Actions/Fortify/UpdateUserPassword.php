@@ -28,8 +28,8 @@ class UpdateUserPassword implements UpdatesUserPasswords
         ])->save();
 
         session()->flash('success', [
-            'title' => __('account.password_update_success.title'),
-            'message' => __('account.password_update_success.message'),
+            'title' => __('Password updated'),
+            'message' => __('Your password has been updated successfully.'),
         ]);
     }
 }
