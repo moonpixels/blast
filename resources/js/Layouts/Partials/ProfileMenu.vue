@@ -2,17 +2,17 @@
   <DropdownMenu size="xs">
     <template #button>
       <MenuButton class="focus-ring rounded-full transition-all ease-in-out">
-        <span class="sr-only">{{ $t('common.open_menu') }}</span>
+        <span class="sr-only">{{ $t('Open menu') }}</span>
         <PlaceholderAvatar :initials="user.initials" />
       </MenuButton>
     </template>
 
     <template #menuItems>
       <MenuItemLink :href="route('account-settings.show')">
-        {{ $t('app.user_menu.account_settings') }}
+        {{ $t('Account settings') }}
       </MenuItemLink>
       <MenuItemLink :href="route('logout')" as="button" method="post">
-        {{ $t('app.user_menu.logout') }}
+        {{ $t('Logout') }}
       </MenuItemLink>
     </template>
   </DropdownMenu>

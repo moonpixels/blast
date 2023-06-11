@@ -76,12 +76,12 @@ interface NavLink {
 
 const links = computed<NavLink[]>(() => [
   {
-    name: transChoice('links.links', 2),
+    name: transChoice('Link|Links', 2),
     href: route('links.index'),
     route: '/links',
   },
   {
-    name: transChoice('teams.teams', 1),
+    name: transChoice('Team|Teams', 1),
     href: route('teams.show', user.value.current_team_id),
     route: '/teams',
   },

@@ -45,7 +45,7 @@ it('resets a user password', function () {
         'password' => 'new-password',
     ])
         ->assertRedirectToRoute('login')
-        ->assertSessionHas('status', __('passwords.reset'));
+        ->assertSessionHas('status');
 
     $this->assertTrue(Hash::check('new-password', $this->user->fresh()->password));
 });

@@ -27,7 +27,7 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         if (config('blast.disable_registration')) {
-            abort(403, __('auth.register_disabled'));
+            abort(403, __('Registration is currently disabled'));
         }
 
         Validator::make($input, [
@@ -50,7 +50,7 @@ class CreateNewUser implements CreatesNewUsers
             ]);
 
             $this->teamService->createTeamForUser($user, [
-                'name' => __('teams.personal_team_name'),
+                'name' => __('Personal Team'),
                 'personal_team' => true,
             ]);
 

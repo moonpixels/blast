@@ -32,8 +32,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         ])->save();
 
         session()->flash('success', [
-            'title' => __('account.profile_info_update_success.title'),
-            'message' => __('account.profile_info_update_success.message'),
+            'title' => __('Profile updated'),
+            'message' => __('Your profile has been updated successfully.'),
         ]);
     }
 }

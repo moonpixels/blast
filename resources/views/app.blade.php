@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title inertia>{{ __('app.application_title') }}</title>
+  <title inertia>{{ __('Blast - The privacy-focused open source URL shortener') }}</title>
 
   @routes
   @vite(['resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])

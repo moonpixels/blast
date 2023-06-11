@@ -1,13 +1,10 @@
 <template>
-  <TwoColumnForm
-    :description="$t('account.password_settings_description')"
-    :title="$t('account.password_settings_title')"
-  >
+  <TwoColumnForm :description="$t('Update your account\'s password.')" :title="$t('Password')">
     <form class="max-w-md space-y-6" data-cy="password-form" @submit.prevent="submit">
       <TextInput
         v-model="form.current_password"
         :error="form.errors.current_password"
-        :label="$t('common.current_password')"
+        :label="$t('Current password')"
         autocomplete="current-password"
         required
         type="password"
@@ -17,7 +14,7 @@
       <TextInput
         v-model="form.password"
         :error="form.errors.password"
-        :label="$t('common.new_password')"
+        :label="$t('New password')"
         autocomplete="new-password"
         required
         type="password"
@@ -25,7 +22,7 @@
       />
 
       <PrimaryButton :loading="form.processing" data-cy="submit-button" type="submit">
-        {{ $t('account.password_settings_button') }}
+        {{ $t('Update password') }}
       </PrimaryButton>
     </form>
   </TwoColumnForm>

@@ -1,9 +1,13 @@
 <template>
-  <AppHead :title="$t('auth.forgot_password_meta_title')" />
+  <AppHead :title="$t('Reset your password')" />
 
-  <AuthHeader :title="$t('auth.forgot_password_title')">
+  <AuthHeader :title="$t('Reset your password')">
     <p v-if="resetEmailSent" data-cy="success-message">
-      {{ $t('auth.forgot_password_success', { email: form.email }) }}
+      {{
+        $t('We sent a password reset link to :email. Please allow a few minutes for it to arrive.', {
+          email: form.email,
+        })
+      }}
     </p>
   </AuthHeader>
 
@@ -12,7 +16,7 @@
       <TextInput
         v-model="form.email"
         :error="form.errors.email"
-        :label="$t('common.email')"
+        :label="$t('Email')"
         autocomplete="email"
         required
         type="email"
@@ -20,7 +24,7 @@
       />
 
       <PrimaryButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
-        {{ $t('auth.forgot_password_button') }}
+        {{ $t('Reset password') }}
       </PrimaryButton>
     </form>
   </div>

@@ -63,7 +63,7 @@ describe('Reset password', () => {
       cy.getFormInput('New password').type('new-password')
       cy.get('@submitButton').click()
 
-      cy.get('[data-cy="input-error-message"]').should('contain', 'The password reset token is invalid or has expired.')
+      cy.get('[data-cy="input-error-message"]').should('contain', 'The password reset token is invalid.')
     })
   })
 

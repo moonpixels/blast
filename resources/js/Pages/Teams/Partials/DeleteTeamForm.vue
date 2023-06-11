@@ -1,35 +1,34 @@
 <template>
-  <TwoColumnForm :description="$t('teams.delete_section.description')" :title="$t('teams.delete_section.title')">
+  <TwoColumnForm :description="$t('Permanently delete this team and all of its resources.')" :title="$t('Delete team')">
     <Alert v-if="team.personal_team" data-cy="delete-personal-team-alert">
-      {{ $t('teams.delete_section.personal_team_text') }}
+      {{ $t('You cannot delete your personal team.') }}
     </Alert>
 
     <div v-else class="flex h-full items-center">
       <DangerButton data-cy="delete-team-button" @click="showModal = true">
-        {{ $t('teams.delete_section.form_button') }}
+        {{ $t('Delete team') }}
       </DangerButton>
     </div>
   </TwoColumnForm>
 
-  <Modal
-    :show="showModal"
-    :title="$t('teams.delete_section.modal_title')"
-    data-cy="delete-team-modal"
-    @close="showModal = false"
-  >
+  <Modal :show="showModal" :title="$t('Delete team')" data-cy="delete-team-modal" @close="showModal = false">
     <template #body>
       <p class="text-sm">
-        {{ $t('teams.delete_section.modal_text') }}
+        {{
+          $t(
+            'Are you sure you want to delete this team? Once a team is deleted, all of its resources and data will be permanently deleted, including its short links and members.'
+          )
+        }}
       </p>
     </template>
 
     <template #footer>
       <DangerButton :loading="form.processing" data-cy="delete-team-button" @click="submit">
-        {{ $t('teams.delete_section.form_button') }}
+        {{ $t('Delete team') }}
       </DangerButton>
 
       <SecondaryButton data-cy="cancel-button" @click="showModal = false">
-        {{ $t('common.cancel') }}
+        {{ $t('Cancel') }}
       </SecondaryButton>
     </template>
   </Modal>

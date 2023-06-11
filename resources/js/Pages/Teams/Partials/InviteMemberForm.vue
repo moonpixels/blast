@@ -1,24 +1,28 @@
 <template>
   <PrimaryButton data-cy="invite-team-member-button" @click="showModal = true">
-    {{ $t('teams.members_section.invite_button') }}
+    {{ $t('Add member') }}
   </PrimaryButton>
 
   <Modal
     :show="showModal"
-    :title="$t('teams.members_section.invite_modal_title')"
+    :title="$t('Invite a new team member')"
     data-cy="invite-team-member-modal"
     @close="handleClose"
   >
     <template #body>
       <p class="mb-4 text-sm">
-        {{ $t('teams.members_section.invite_modal_text') }}
+        {{
+          $t(
+            'Enter the email address of the person you would like to invite to this team. If they do not have an account, they will be prompted to create one.'
+          )
+        }}
       </p>
 
       <form id="invite-team-member-form" class="space-y-6" data-cy="invite-team-member-form" @submit.prevent="submit">
         <TextInput
           v-model="form.email"
           :error="form.errors.email"
-          :label="$t('common.email')"
+          :label="$t('Email')"
           inverse
           required
           type="email"
@@ -29,11 +33,11 @@
 
     <template #footer>
       <PrimaryButton :loading="form.processing" data-cy="submit-button" form="invite-team-member-form" type="submit">
-        {{ $t('teams.members_section.invite_modal_button') }}
+        {{ $t('Send invitation') }}
       </PrimaryButton>
 
       <SecondaryButton data-cy="cancel-button" @click="handleClose">
-        {{ $t('common.cancel') }}
+        {{ $t('Cancel') }}
       </SecondaryButton>
     </template>
   </Modal>

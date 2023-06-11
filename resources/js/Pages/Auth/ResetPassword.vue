@@ -1,14 +1,14 @@
 <template>
-  <AppHead :title="$t('auth.reset_password_meta_title')" />
+  <AppHead :title="$t('Set new password')" />
 
-  <AuthHeader :title="$t('auth.reset_password_title')" />
+  <AuthHeader :title="$t('Set new password')" />
 
   <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" data-cy="reset-password-form" @submit.prevent="submit">
       <TextInput
         v-model="form.email"
         :error="form.errors.email"
-        :label="$t('common.email')"
+        :label="$t('Email')"
         autocomplete="email"
         required
         type="email"
@@ -18,7 +18,7 @@
       <TextInput
         v-model="form.password"
         :error="form.errors.password"
-        :label="$t('common.new_password')"
+        :label="$t('New password')"
         autocomplete="new-password"
         required
         type="password"
@@ -26,7 +26,7 @@
       />
 
       <PrimaryButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
-        {{ $t('auth.forgot_password_button') }}
+        {{ $t('Reset password') }}
       </PrimaryButton>
     </form>
   </div>
