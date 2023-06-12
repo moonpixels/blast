@@ -51,7 +51,7 @@ const showModal = ref(false)
 const form = useForm<{}>({})
 
 function submit(): void {
-  form.delete(route('current-user.destroy'), {
+  form.delete(route('user.destroy'), {
     preserveScroll: true,
     onSuccess: () => {
       showModal.value = false

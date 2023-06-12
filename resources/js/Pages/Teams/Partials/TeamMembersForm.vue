@@ -189,7 +189,7 @@ function switchViewMode() {
 }
 
 function cancelInvitation(invitation: TeamInvitation): void {
-  router.delete(route('team-invitations.destroy', { invitation: invitation.id }), {
+  router.delete(route('invitations.destroy', { invitation: invitation.id }), {
     preserveScroll: true,
     preserveState: true,
     only: ['flash', 'invitations'],
@@ -197,10 +197,16 @@ function cancelInvitation(invitation: TeamInvitation): void {
 }
 
 function resendInvitation(invitation: TeamInvitation): void {
-  router.post(route('team-invitations.resend', { invitation: invitation.id }), {
-    preserveScroll: true,
-    preserveState: true,
-    only: ['flash', 'invitations'],
-  })
+  router.post(
+    route('resent-invitations.store'),
+    {
+      invitation_id: invitation.id,
+    },
+    {
+      preserveScroll: true,
+      preserveState: true,
+      only: ['flash', 'invitations'],
+    }
+  )
 }
 </script>

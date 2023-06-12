@@ -44,7 +44,7 @@ class TeamInvitation extends Model
     protected function acceptUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => URL::signedRoute('team-invitations.accept', [
+            get: fn () => URL::signedRoute('accepted-invitations.show', [
                 'invitation' => $this->id,
             ])
         );

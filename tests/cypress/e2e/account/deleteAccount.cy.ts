@@ -8,7 +8,7 @@ describe('Delete account', () => {
 
     cy.login({ attributes: { email: 'user@blst.to' } })
     cy.confirmPassword('password')
-    cy.visit({ route: 'account-settings.show' })
+    cy.visit({ route: 'user.edit' })
   })
 
   it('should allow users to delete their account', () => {
@@ -38,6 +38,6 @@ describe('Delete account', () => {
       cy.get('[data-cy="cancel-button"]').click()
     })
 
-    cy.location('pathname').should('eq', '/account/settings')
+    cy.assertRedirect('user/edit')
   })
 })

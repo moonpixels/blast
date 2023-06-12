@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\TeamMembers;
+namespace App\Http\Requests\TeamInvitation;
 
 use App\Models\Team;
 use Illuminate\Database\Query\Builder;

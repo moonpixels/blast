@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Exceptions\InvalidTeamMemberException;
 use App\Http\Controllers\Controller;
-use App\Models\TeamInvitation;
-use App\Services\TeamInvitationService;
+use App\Http\Requests\TeamInvitation\StoreRequest;
+use App\Models\Team;
+use App\Services\TeamMemberService;
 use Illuminate\Http\RedirectResponse;
 
 class TeamInvitationController extends Controller
@@ -13,57 +13,20 @@ class TeamInvitationController extends Controller
     /**
      * Instantiate the controller.
      */
-    public function __construct(protected readonly TeamInvitationService $teamInvitationService)
+    public function __construct(protected readonly TeamMemberService $teamMemberService)
     {
     }
 
     /**
-     * Accept a team invitation.
+     * Invite a new member to the given team.
      */
-    public function accept(TeamInvitation $invitation): RedirectResponse
+    public function store(StoreRequest $request, Team $team): RedirectResponse
     {
-        try {
-            $this->teamInvitationService->acceptInvitation($invitation);
-
-            return redirect(config('fortify.home'))->with('success', [
-                'title' => __('Invitation accepted'),
-                'message' => __('You have been added to the :team team.', ['team' => $invitation->team->name]),
-            ]);
-        } catch (InvalidTeamMemberException $e) {
-            return redirect(config('fortify.home'))->with('error', [
-                'title' => __('Invitation failed'),
-                'message' => __('You are already on the :team team.', ['team' => $invitation->team->name]),
-            ]);
-        }
-    }
-
-    /**
-     * Cancel the given team invitation.
-     */
-    public function destroy(TeamInvitation $invitation): RedirectResponse
-    {
-        $this->authorize('delete', $invitation);
-
-        $this->teamInvitationService->cancelInvitation($invitation);
+        $this->teamMemberService->inviteMemberToTeam($team, $request->validated());
 
         return back()->with('success', [
-            'title' => __('Invitation cancelled'),
-            'message' => __('The invitation for :email has been cancelled.', ['email' => $invitation->email]),
-        ]);
-    }
-
-    /**
-     * Resend the given team invitation.
-     */
-    public function resend(TeamInvitation $invitation): RedirectResponse
-    {
-        $this->authorize('resend', $invitation);
-
-        $this->teamInvitationService->resendInvitation($invitation);
-
-        return back()->with('success', [
-            'title' => __('Invitation resent'),
-            'message' => __('The invitation for :email has been resent.', ['email' => $invitation->email]),
+            'title' => __('Invitation sent'),
+            'message' => __('An invitation has been sent to :email.', ['email' => $request->validated()['email']]),
         ]);
     }
 }

@@ -8,7 +8,7 @@
     </template>
 
     <template #menuItems>
-      <MenuItemLink :href="route('account-settings.show')">
+      <MenuItemLink :href="route('user.edit')">
         {{ $t('Account settings') }}
       </MenuItemLink>
       <MenuItemLink :href="route('logout')" as="button" method="post">
