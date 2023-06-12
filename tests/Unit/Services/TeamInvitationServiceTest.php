@@ -4,6 +4,7 @@ use App\Exceptions\InvalidTeamMemberException;
 use App\Models\Team;
 use App\Models\TeamInvitation;
 use App\Models\User;
+use App\Notifications\TeamInvitationNotification;
 use App\Services\TeamInvitationService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -52,4 +53,12 @@ it('can cancel a team invitation', function () {
     $this->assertTrue($this->teamInvitationService->cancelInvitation($this->teamInvitation));
 
     $this->assertModelMissing($this->teamInvitation);
+});
+
+it('can resend a team invitation', function () {
+    Notification::fake();
+
+    $this->assertTrue($this->teamInvitationService->resendInvitation($this->teamInvitation));
+
+    Notification::assertSentTo($this->teamInvitation, TeamInvitationNotification::class);
 });

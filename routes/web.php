@@ -85,9 +85,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(TeamInvitationController::class)
         ->name('team-invitations.')
         ->group(function () {
-            Route::get('team-invitations/{invitation}', 'accept')
-                ->middleware('signed')
-                ->name('accept');
+            Route::get('team-invitations/{invitation}/accept', 'accept')->middleware('signed')->name('accept');
             Route::delete('team-invitations/{invitation}', 'destroy')->name('destroy');
+            Route::post('team-invitations/{invitation}/resend', 'resend')->name('resend');
         });
 });

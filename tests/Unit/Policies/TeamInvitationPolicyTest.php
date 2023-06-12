@@ -28,3 +28,12 @@ it('does not allow non-owners to delete team invitations', function () {
     expect($this->policy->delete($this->memberUser, $this->teamInvitation))->toBeFalse()
         ->and($this->policy->delete($this->nonMemberUser, $this->teamInvitation))->toBeFalse();
 });
+
+it('allows owners to resend team invitations', function () {
+    expect($this->policy->resend($this->user, $this->teamInvitation))->toBeTrue();
+});
+
+it('does not allow non-owners to resend team invitations', function () {
+    expect($this->policy->resend($this->memberUser, $this->teamInvitation))->toBeFalse()
+        ->and($this->policy->resend($this->nonMemberUser, $this->teamInvitation))->toBeFalse();
+});

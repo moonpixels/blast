@@ -122,8 +122,7 @@ it('does not allow the user to accept the invitation if they are already on the 
 it('allows owners to cancel invitations', function () {
     $teamInvitation = TeamInvitation::factory()->for($this->team)->create();
 
-    $this->actingAs($this->user)
-        ->delete(route('team-invitations.destroy', [$teamInvitation]))
+    $this->delete(route('team-invitations.destroy', [$teamInvitation]))
         ->assertRedirect()
         ->assertSessionHas('success');
 
@@ -138,4 +137,31 @@ it('does not allow non-owners to cancel invitations', function () {
         ->assertForbidden();
 
     $this->assertModelExists($teamInvitation);
+});
+
+it('allows owners to resend invitations', function () {
+    Notification::fake();
+
+    $teamInvitation = TeamInvitation::factory()->for($this->team)->create();
+
+    $this->post(route('team-invitations.resend', [$teamInvitation]))
+        ->assertRedirect()
+        ->assertSessionHas('success');
+
+    Notification::assertSentTo(
+        $teamInvitation,
+        TeamInvitationNotification::class,
+    );
+});
+
+it('does not allow non-owners to resend invitations', function () {
+    Notification::fake();
+
+    $teamInvitation = TeamInvitation::factory()->for($this->team)->create();
+
+    $this->actingAs($this->existingTeamMember)
+        ->post(route('team-invitations.resend', [$teamInvitation]))
+        ->assertForbidden();
+
+    Notification::assertNothingSent();
 });
