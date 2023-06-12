@@ -140,4 +140,24 @@ describe('Team invitations', () => {
       })
     })
   })
+
+  it.only('should allow owners to cancel an invitation', () => {
+    cy.create({
+      model: 'App\\Models\\TeamInvitation',
+      attributes: {
+        team_id: teamId,
+      },
+    }).then(() => {
+      cy.reload()
+      cy.get('@switchViewModeButton').click()
+
+      cy.get('[data-cy="invitations-list"]').within(() => {
+        cy.get('[data-cy="cancel-invitation-button"]').click()
+      })
+
+      cy.get('[data-cy="success-notification"]').should('contain', 'Invitation cancelled')
+      cy.get('[data-cy="no-invitations-empty-state"]').should('exist')
+      cy.get('[data-cy="invitations-list"]').should('not.exist')
+    })
+  })
 })

@@ -36,4 +36,19 @@ class TeamInvitationController extends Controller
             ]);
         }
     }
+
+    /**
+     * Cancel the given team invitation.
+     */
+    public function destroy(TeamInvitation $invitation): RedirectResponse
+    {
+        $this->authorize('delete', $invitation);
+
+        $this->teamInvitationService->cancelInvitation($invitation);
+
+        return back()->with('success', [
+            'title' => __('Invitation cancelled'),
+            'message' => __('The invitation for :email has been cancelled.', ['email' => $invitation->email]),
+        ]);
+    }
 }
