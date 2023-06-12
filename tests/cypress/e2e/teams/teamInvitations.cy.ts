@@ -160,4 +160,22 @@ describe('Team invitations', () => {
       cy.get('[data-cy="invitations-list"]').should('not.exist')
     })
   })
+
+  it.only('should allow owners to resend an invitation', () => {
+    cy.create({
+      model: 'App\\Models\\TeamInvitation',
+      attributes: {
+        team_id: teamId,
+      },
+    }).then(() => {
+      cy.reload()
+      cy.get('@switchViewModeButton').click()
+
+      cy.get('[data-cy="invitations-list"]').within(() => {
+        cy.get('[data-cy="resend-invitation-button"]').click()
+      })
+
+      cy.get('[data-cy="success-notification"]').should('contain', 'Invitation resent')
+    })
+  })
 })

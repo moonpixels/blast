@@ -120,13 +120,13 @@
                   <p class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white">
                     {{ invitation.email }}
                   </p>
-                  <p class="truncate text-xs leading-5">{{ $t('Sent on') }} {{ useDate(invitation.updated_at) }}</p>
+                  <p class="truncate text-xs leading-5">{{ $t('Invited on') }} {{ useDate(invitation.created_at) }}</p>
                 </div>
               </div>
             </div>
 
             <div class="flex flex-none items-center gap-2">
-              <SecondaryButton data-cy="resend-invitation-button" size="icon">
+              <SecondaryButton data-cy="resend-invitation-button" size="icon" @click="resendInvitation(invitation)">
                 <span class="sr-only">{{ $t('Resend invitation') }}</span>
                 <ArrowPathIcon aria-hidden="true" class="h-4 w-4" />
               </SecondaryButton>
@@ -172,7 +172,7 @@ interface Props {
   invitations: PaginatedResponse<TeamInvitation>
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const viewMode = ref<'members' | 'invites'>('members')
 
@@ -190,6 +190,14 @@ function switchViewMode() {
 
 function cancelInvitation(invitation: TeamInvitation): void {
   router.delete(route('team-invitations.destroy', { invitation: invitation.id }), {
+    preserveScroll: true,
+    preserveState: true,
+    only: ['flash', 'invitations'],
+  })
+}
+
+function resendInvitation(invitation: TeamInvitation): void {
+  router.post(route('team-invitations.resend', { invitation: invitation.id }), {
     preserveScroll: true,
     preserveState: true,
     only: ['flash', 'invitations'],

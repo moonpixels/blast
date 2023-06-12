@@ -17,4 +17,12 @@ class TeamInvitationPolicy
     {
         return $user->id === $teamInvitation->team->owner_id;
     }
+
+    /**
+     * Determine whether the user can resend the team invitation.
+     */
+    public function resend(User $user, TeamInvitation $teamInvitation): bool
+    {
+        return $user->id === $teamInvitation->team->owner_id;
+    }
 }

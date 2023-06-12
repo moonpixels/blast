@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Exceptions\InvalidTeamMemberException;
 use App\Models\TeamInvitation;
 use App\Models\User;
+use App\Notifications\TeamInvitationNotification;
 
 class TeamInvitationService
 {
@@ -37,5 +38,15 @@ class TeamInvitationService
     public function cancelInvitation(TeamInvitation $invitation): bool
     {
         return $invitation->delete();
+    }
+
+    /**
+     * Resend the given team invitation.
+     */
+    public function resendInvitation(TeamInvitation $invitation): bool
+    {
+        $invitation->notify(new TeamInvitationNotification($invitation));
+
+        return true;
     }
 }

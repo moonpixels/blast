@@ -51,4 +51,19 @@ class TeamInvitationController extends Controller
             'message' => __('The invitation for :email has been cancelled.', ['email' => $invitation->email]),
         ]);
     }
+
+    /**
+     * Resend the given team invitation.
+     */
+    public function resend(TeamInvitation $invitation): RedirectResponse
+    {
+        $this->authorize('resend', $invitation);
+
+        $this->teamInvitationService->resendInvitation($invitation);
+
+        return back()->with('success', [
+            'title' => __('Invitation resent'),
+            'message' => __('The invitation for :email has been resent.', ['email' => $invitation->email]),
+        ]);
+    }
 }
