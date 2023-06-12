@@ -23,7 +23,7 @@ class ResentInvitationController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $invitation = TeamInvitation::findOrFail($request->input('invitation_id'));
-        
+      
         $this->authorize('resend', $invitation);
 
         $this->teamInvitationService->resendInvitation($invitation);
