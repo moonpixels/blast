@@ -2,13 +2,13 @@
   <div class="flex items-center gap-4 p-6">
     <Link :href="route('login')">
       <PrimaryButton>
-        {{ $t('auth.login_button') }}
+        {{ $t('Log in') }}
       </PrimaryButton>
     </Link>
 
     <Link :href="route('register')">
       <PrimaryButton>
-        {{ $t('auth.register_button') }}
+        {{ $t('Register') }}
       </PrimaryButton>
     </Link>
   </div>

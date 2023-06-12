@@ -30,4 +30,12 @@ class TeamInvitationService
 
         return true;
     }
+
+    /**
+     * Cancel the given team invitation.
+     */
+    public function cancelInvitation(TeamInvitation $invitation): bool
+    {
+        return $invitation->delete();
+    }
 }

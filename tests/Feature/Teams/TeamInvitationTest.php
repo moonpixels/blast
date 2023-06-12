@@ -16,7 +16,7 @@ beforeEach(function () {
     $this->actingAs($this->user);
 });
 
-it('invites a new team member', function () {
+it('allows owners to invite team members', function () {
     Notification::fake();
 
     $this->post(route('team-members.store', $this->team), [
@@ -32,6 +32,20 @@ it('invites a new team member', function () {
         $this->team->invitations->first(),
         TeamInvitationNotification::class,
     );
+});
+
+it('does not allow non-owners to invite team members', function () {
+    Notification::fake();
+
+    $this->actingAs($this->existingTeamMember);
+
+    $this->post(route('team-members.store', $this->team), [
+        'email' => 'user@blst.to',
+    ])->assertForbidden();
+
+    $this->assertDatabaseEmpty('team_invitations');
+
+    Notification::assertNothingSent();
 });
 
 it('does not invite a user that is already a member of the team', function () {
@@ -103,4 +117,25 @@ it('does not allow the user to accept the invitation if they are already on the 
     $this->assertModelMissing($teamInvitation);
 
     $this->assertTrue($this->existingTeamMember->belongsToTeam($this->team));
+});
+
+it('allows owners to cancel invitations', function () {
+    $teamInvitation = TeamInvitation::factory()->for($this->team)->create();
+
+    $this->actingAs($this->user)
+        ->delete(route('team-invitations.destroy', [$teamInvitation]))
+        ->assertRedirect()
+        ->assertSessionHas('success');
+
+    $this->assertModelMissing($teamInvitation);
+});
+
+it('does not allow non-owners to cancel invitations', function () {
+    $teamInvitation = TeamInvitation::factory()->for($this->team)->create();
+
+    $this->actingAs($this->existingTeamMember)
+        ->delete(route('team-invitations.destroy', [$teamInvitation]))
+        ->assertForbidden();
+
+    $this->assertModelExists($teamInvitation);
 });

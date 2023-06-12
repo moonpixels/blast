@@ -31,7 +31,7 @@ it('can accept a team invitation', function () {
     $this->assertModelMissing($this->teamInvitation);
 });
 
-it('throws an exception if the user is already on the team', function () {
+it('throws an exception when accepting an invitation if the user is already on the team', function () {
     $this->invitedUser->teams()->attach($this->team);
 
     try {
@@ -42,8 +42,14 @@ it('throws an exception if the user is already on the team', function () {
     }
 })->throws(InvalidTeamMemberException::class);
 
-it('throws an exception if the user does not exist', function () {
+it('throws an exception when accepting an invitation if the user does not exist', function () {
     $this->teamInvitation->update(['email' => 'invalid-email@blst.to']);
 
     $this->teamInvitationService->acceptInvitation($this->teamInvitation);
 })->throws(ModelNotFoundException::class);
+
+it('can cancel a team invitation', function () {
+    $this->assertTrue($this->teamInvitationService->cancelInvitation($this->teamInvitation));
+
+    $this->assertModelMissing($this->teamInvitation);
+});

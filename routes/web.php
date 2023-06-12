@@ -29,7 +29,7 @@ Route::get('/mailable', function () {
 });
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
+    return Inertia::render('Home', [
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
@@ -88,5 +88,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('team-invitations/{invitation}', 'accept')
                 ->middleware('signed')
                 ->name('accept');
+            Route::delete('team-invitations/{invitation}', 'destroy')->name('destroy');
         });
 });

@@ -113,14 +113,14 @@
         </SimpleEmptyState>
 
         <ul v-else class="divide-y divide-zinc-900/10 dark:divide-white/10" data-cy="invitations-list" role="list">
-          <li v-for="invite in invitations.data" :key="invite.id" class="flex justify-between gap-4 p-3">
+          <li v-for="invitation in invitations.data" :key="invitation.id" class="flex justify-between gap-4 p-3">
             <div class="flex min-w-0 flex-auto items-center gap-x-4">
               <div class="flex min-w-0 flex-auto gap-x-4">
                 <div class="min-w-0 shrink">
                   <p class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white">
-                    {{ invite.email }}
+                    {{ invitation.email }}
                   </p>
-                  <p class="truncate text-xs leading-5">{{ $t('Sent on') }} {{ useDate(invite.updated_at) }}</p>
+                  <p class="truncate text-xs leading-5">{{ $t('Sent on') }} {{ useDate(invitation.updated_at) }}</p>
                 </div>
               </div>
             </div>
@@ -131,8 +131,8 @@
                 <ArrowPathIcon aria-hidden="true" class="h-4 w-4" />
               </SecondaryButton>
 
-              <SecondaryButton data-cy="delete-invitation-button" size="icon">
-                <span class="sr-only">{{ $t('Delete invitation') }}</span>
+              <SecondaryButton data-cy="cancel-invitation-button" size="icon" @click="cancelInvitation(invitation)">
+                <span class="sr-only">{{ $t('Cancel invitation') }}</span>
                 <TrashIcon
                   aria-hidden="true"
                   class="h-4 w-4 transition-all duration-200 ease-in-out group-hover:text-rose-600 dark:group-hover:text-rose-500"
@@ -154,7 +154,7 @@ import Alert from '@/Components/Alerts/Alert.vue'
 import PlaceholderAvatar from '@/Components/Avatars/PlaceholderAvatar.vue'
 import Badge from '@/Components/Badges/Badge.vue'
 import InviteMemberForm from '@/Pages/Teams/Partials/InviteMemberForm.vue'
-import { useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 import TextInput from '@/Components/Inputs/TextInput.vue'
 import { ArrowPathIcon, ArrowsRightLeftIcon, MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/20/solid'
 import { UserGroupIcon, UserPlusIcon } from '@heroicons/vue/24/outline'
@@ -186,5 +186,13 @@ const form = useForm<FindUserForm>({
 
 function switchViewMode() {
   viewMode.value = viewMode.value === 'members' ? 'invites' : 'members'
+}
+
+function cancelInvitation(invitation: TeamInvitation): void {
+  router.delete(route('team-invitations.destroy', { invitation: invitation.id }), {
+    preserveScroll: true,
+    preserveState: true,
+    only: ['flash', 'invitations'],
+  })
 }
 </script>
