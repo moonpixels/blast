@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\CurrentTeam;
+namespace App\Http\Requests\UserCurrentTeam;
 
 use App\Rules\BelongsToTeam;
 use Illuminate\Foundation\Http\FormRequest;

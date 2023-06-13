@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Teams\StoreRequest;
-use App\Http\Requests\Teams\UpdateRequest;
+use App\Http\Requests\Team\StoreRequest;
+use App\Http\Requests\Team\UpdateRequest;
 use App\Http\Resources\Team\TeamResource;
 use App\Http\Resources\TeamInvitation\TeamInvitationResource;
 use App\Http\Resources\User\UserResource;

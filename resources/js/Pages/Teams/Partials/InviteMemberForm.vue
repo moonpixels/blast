@@ -69,7 +69,7 @@ const form = useForm<InviteForm>({
 })
 
 function submit(): void {
-  form.post(route('team-members.store', props.team.id), {
+  form.post(route('teams.invitations.store', props.team.id), {
     preserveScroll: true,
     onSuccess: () => {
       form.reset()

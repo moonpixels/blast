@@ -20,7 +20,6 @@
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import TwoColumnForm from '@/Components/Forms/TwoColumnForm.vue'
 import TextInput from '@/Components/Inputs/TextInput.vue'
-import ProfileInfoForm from '@/Pages/AccountSettings/Partials/ProfileInformationForm.vue'
 import { useForm } from '@inertiajs/vue3'
 import { Team } from '@/types/models'
 

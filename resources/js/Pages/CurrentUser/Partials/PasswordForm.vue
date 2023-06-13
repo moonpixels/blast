@@ -39,7 +39,7 @@ interface Props {
   user: CurrentUser
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 type PasswordForm = {
   current_password: string

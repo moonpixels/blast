@@ -11,7 +11,7 @@ beforeEach(function () {
 });
 
 it('requires the user to confirm their password', function () {
-    $this->delete(route('current-user.destroy'))
+    $this->delete(route('user.destroy'))
         ->assertRedirectToRoute('password.confirm');
 
     $this->assertModelExists($this->user);
@@ -20,7 +20,7 @@ it('requires the user to confirm their password', function () {
 it('deletes the current user', function () {
     withoutPasswordConfirmation();
 
-    $this->delete(route('current-user.destroy'))
+    $this->delete(route('user.destroy'))
         ->assertRedirect('/');
 
     $this->assertModelMissing($this->user);
@@ -31,7 +31,7 @@ it('deletes the current user', function () {
 it('redirects unauthenticated users', function () {
     $this->post('logout');
 
-    $this->delete(route('current-user.destroy'))
+    $this->delete(route('user.destroy'))
         ->assertRedirectToRoute('login');
 });
 
@@ -42,7 +42,7 @@ it('alerts the user if there was an error deleting their account', function () {
         $mock->shouldReceive('deleteUser')->once()->andReturnFalse();
     });
 
-    $this->delete(route('current-user.destroy'))
+    $this->delete(route('user.destroy'))
         ->assertRedirect()
         ->assertSessionHas('error');
 

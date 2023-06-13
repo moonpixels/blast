@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CurrentTeam\UpdateRequest;
+use App\Http\Requests\UserCurrentTeam\UpdateRequest;
 use App\Models\Team;
 use Illuminate\Http\RedirectResponse;
 
-class CurrentTeamController extends Controller
+class UserCurrentTeamController extends Controller
 {
     /**
      * Update the user's current team.

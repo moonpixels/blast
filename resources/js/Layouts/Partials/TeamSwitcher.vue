@@ -24,7 +24,7 @@
             :key="team.id"
             :class="{ 'font-medium text-zinc-900 dark:text-white': user.current_team_id === team.id }"
             :data="{ team_id: team.id }"
-            :href="route('current-team.update')"
+            :href="route('user.current-team.update')"
             as="button"
             method="put"
           >
