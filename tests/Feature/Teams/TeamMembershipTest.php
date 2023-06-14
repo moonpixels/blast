@@ -25,7 +25,7 @@ it('allows the team member to remove themselves from the team', function () {
     $this->actingAs($this->teamMember);
 
     $this->delete(route('teams.members.destroy', [$this->team, $this->teamMember->team_membership]))
-        ->assertRedirect()
+        ->assertRedirectToRoute('teams.show', $this->teamMember->personalTeam())
         ->assertSessionHas('success');
 
     $this->assertModelMissing($this->teamMember->team_membership);

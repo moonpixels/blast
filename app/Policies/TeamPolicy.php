@@ -15,7 +15,8 @@ class TeamPolicy
      */
     public function view(User $user, Team $team): bool
     {
-        return $user->id === $team->owner_id;
+        return $user->id === $team->owner_id
+            || $user->belongsToTeam($team);
     }
 
     /**

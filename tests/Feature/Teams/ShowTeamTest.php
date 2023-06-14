@@ -16,7 +16,7 @@ beforeEach(function () {
     $this->actingAs($this->user);
 });
 
-it('shows the teams page', function () {
+it('shows the teams page to owners', function () {
     $this->get(route('teams.show', $this->team))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
@@ -28,6 +28,28 @@ it('shows the teams page', function () {
                 ->etc())
             ->has('members.data', 2)
             ->has('invitations.data', 2)
+            ->missing('teamMembership')
+        );
+});
+
+it('shows the teams page to members', function () {
+    $user = $this->team->users->first();
+
+    $this->actingAs($user)
+        ->get(route('teams.show', $this->team))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Teams/Show')
+            ->has('team', fn (Assert $page) => $page
+                ->where('id', $this->team->id)
+                ->where('name', $this->team->name)
+                ->where('personal_team', $this->team->personal_team)
+                ->etc())
+            ->has('teamMembership', fn (Assert $page) => $page
+                ->where('id', $user->team_membership->id)
+                ->etc())
+            ->missing('members')
+            ->missing('invitations')
         );
 });
 

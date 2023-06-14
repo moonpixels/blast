@@ -9,16 +9,20 @@ beforeEach(function () {
 
     $this->team = Team::factory()->for($this->user, 'owner')->create();
 
-    $this->memberUser = User::factory()->create();
-    $this->team->users()->attach($this->memberUser);
+    $this->teamMember = User::factory()->create();
+    $this->team->users()->attach($this->teamMember);
 
-    $this->nonMemberUser = User::factory()->create();
+    $this->nonTeamMember = User::factory()->create();
 
     $this->policy = new TeamPolicy();
 });
 
 it('allows owners to view teams', function () {
     expect($this->policy->view($this->user, $this->team))->toBeTrue();
+});
+
+it('allows team members to view teams', function () {
+    expect($this->policy->view($this->teamMember, $this->team))->toBeTrue();
 });
 
 it('allows owners to update teams', function () {
@@ -41,22 +45,21 @@ it('does not allow owners to invite team members to personal teams', function ()
     expect($this->policy->inviteMember($this->user, $this->user->personalTeam()))->toBeFalse();
 });
 
-it('does not allow non-owners to view teams', function () {
-    expect($this->policy->view($this->memberUser, $this->team))->toBeFalse()
-        ->and($this->policy->view($this->nonMemberUser, $this->team))->toBeFalse();
+it('does not allow users without membership to view the team', function () {
+    expect($this->policy->view($this->nonTeamMember, $this->team))->toBeFalse();
 });
 
 it('does not allow non-owners to update teams', function () {
-    expect($this->policy->update($this->memberUser, $this->team))->toBeFalse()
-        ->and($this->policy->update($this->nonMemberUser, $this->team))->toBeFalse();
+    expect($this->policy->update($this->teamMember, $this->team))->toBeFalse()
+        ->and($this->policy->update($this->nonTeamMember, $this->team))->toBeFalse();
 });
 
 it('does not allow non-owners to delete teams', function () {
-    expect($this->policy->delete($this->memberUser, $this->team))->toBeFalse()
-        ->and($this->policy->delete($this->nonMemberUser, $this->team))->toBeFalse();
+    expect($this->policy->delete($this->teamMember, $this->team))->toBeFalse()
+        ->and($this->policy->delete($this->nonTeamMember, $this->team))->toBeFalse();
 });
 
 it('does not allow non-owners to invite team members', function () {
-    expect($this->policy->inviteMember($this->memberUser, $this->team))->toBeFalse()
-        ->and($this->policy->inviteMember($this->nonMemberUser, $this->team))->toBeFalse();
+    expect($this->policy->inviteMember($this->teamMember, $this->team))->toBeFalse()
+        ->and($this->policy->inviteMember($this->nonTeamMember, $this->team))->toBeFalse();
 });

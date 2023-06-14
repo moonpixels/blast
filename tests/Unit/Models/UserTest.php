@@ -64,3 +64,16 @@ it('can determine if a user belongs to a team', function () {
         ->and($this->user->belongsToTeam($memberTeam))->toBeTrue()
         ->and($this->user->belongsToTeam($nonMemberTeam))->toBeFalse();
 });
+
+it('can determine if the user owns the given team', function () {
+    $ownedTeam = Team::factory()->for($this->user, 'owner')->create();
+
+    $memberTeam = Team::factory()->create();
+    $memberTeam->users()->attach($this->user);
+
+    $nonMemberTeam = Team::factory()->create();
+
+    expect($this->user->ownsTeam($ownedTeam))->toBeTrue()
+        ->and($this->user->ownsTeam($memberTeam))->toBeFalse()
+        ->and($this->user->ownsTeam($nonMemberTeam))->toBeFalse();
+});

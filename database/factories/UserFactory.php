@@ -75,4 +75,17 @@ class UserFactory extends Factory
             ]);
         });
     }
+
+    /**
+     * Indicate that the user has membership in a team.
+     */
+    public function withTeamMembership(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            $team = Team::factory()->create([
+                'name' => 'Membership Team',
+            ]);
+            $team->users()->attach($user);
+        });
+    }
 }

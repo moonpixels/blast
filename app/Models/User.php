@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
@@ -21,6 +22,9 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property Pivot $team_membership
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable, HasUlids;
@@ -113,6 +117,14 @@ class User extends Authenticatable
     public function personalTeam(): Team
     {
         return $this->ownedTeams->where('personal_team', true)->first();
+    }
+
+    /**
+     * Determine if the user owns the given team.
+     */
+    public function ownsTeam(Team $team): bool
+    {
+        return $team->owner_id === $this->id;
     }
 
     /**

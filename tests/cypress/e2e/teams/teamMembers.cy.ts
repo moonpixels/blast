@@ -4,7 +4,7 @@ describe('Team members', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    createUser({}, ['withStandardTeam'])
+    createUser({}, ['withStandardTeam', 'withTeamMembership'])
 
     cy.login({ attributes: { email: 'user@blst.to' } })
 
@@ -56,6 +56,20 @@ describe('Team members', () => {
     cy.get('[data-cy="delete-team-member-modal"]').should('not.exist')
 
     cy.get('[data-cy="success-notification"]').should('not.exist')
+  })
+
+  it.only('allows team members to leave the team', () => {
+    switchTeam('Membership Team')
+
+    cy.get('[data-cy="leave-team-button"]').click()
+
+    cy.get('[data-cy="leave-team-modal"]').within(() => {
+      cy.get('[data-cy="leave-team-button"]').click()
+    })
+
+    cy.get('[data-cy="leave-team-modal"]').should('not.exist')
+
+    cy.get('[data-cy="success-notification"]').should('contain', 'You have left the team')
   })
 
   function createTeamMember(): void {
