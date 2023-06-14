@@ -44,8 +44,9 @@ class Team extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
-            ->orderBy('name')
             ->using(TeamMembership::class)
+            ->withPivot(['id', 'team_id', 'user_id'])
+            ->orderBy('name')
             ->withTimestamps()
             ->as('team_membership');
     }

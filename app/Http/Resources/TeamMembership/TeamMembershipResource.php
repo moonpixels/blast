@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Resources\User;
+namespace App\Http\Resources\TeamMembership;
 
-use App\Http\Resources\TeamMembership\TeamMembershipResource;
-use App\Models\User;
+use App\Http\Resources\Team\TeamResource;
+use App\Http\Resources\User\UserResource;
+use App\Models\TeamMembership;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin User */
-class UserResource extends JsonResource
+/** @mixin TeamMembership */
+class TeamMembershipResource extends JsonResource
 {
     /**
      * Instantiate the resource.
@@ -29,13 +30,11 @@ class UserResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'initials' => $this->initials,
+            'team_id' => $this->team_id,
+            'user_id' => $this->user_id,
 
-            'team_membership' => $this->whenPivotLoadedAs('team_membership', 'team_user', function () {
-                return new TeamMembershipResource($this->team_membership, true);
-            }),
+            'team' => new TeamResource($this->whenLoaded('team')),
+            'user' => new UserResource($this->whenLoaded('user')),
         ];
     }
 }

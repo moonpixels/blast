@@ -1,5 +1,6 @@
 <?php
 
+use App\Mail\TeamInvitationMail;
 use App\Models\Team;
 use App\Models\TeamInvitation;
 use App\Models\User;
@@ -28,10 +29,7 @@ it('allows owners to invite team members', function () {
         'email' => 'user@blst.to',
     ]);
 
-    Notification::assertSentTo(
-        $this->team->invitations->first(),
-        TeamInvitationNotification::class,
-    );
+    assertNotificationSentTo($this->team->invitations->first());
 });
 
 it('does not allow non-owners to invite team members', function () {
@@ -148,10 +146,7 @@ it('allows owners to resend invitations', function () {
         ->assertRedirect()
         ->assertSessionHas('success');
 
-    Notification::assertSentTo(
-        $teamInvitation,
-        TeamInvitationNotification::class,
-    );
+    assertNotificationSentTo($this->team->invitations->first());
 });
 
 it('does not allow non-owners to resend invitations', function () {
@@ -165,3 +160,15 @@ it('does not allow non-owners to resend invitations', function () {
 
     Notification::assertNothingSent();
 });
+
+function assertNotificationSentTo(TeamInvitation $invitation): void
+{
+    Notification::assertSentTo(
+        $invitation,
+        TeamInvitationNotification::class,
+        function ($notification) use ($invitation) {
+            $mail = $notification->toMail($invitation);
+
+            return expect($mail)->toBeInstanceOf(TeamInvitationMail::class);
+        });
+}

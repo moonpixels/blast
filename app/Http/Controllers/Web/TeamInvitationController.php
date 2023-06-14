@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamInvitation\StoreRequest;
 use App\Models\Team;
-use App\Services\TeamMemberService;
+use App\Services\TeamInvitationService;
 use Illuminate\Http\RedirectResponse;
 
 class TeamInvitationController extends Controller
@@ -13,7 +13,7 @@ class TeamInvitationController extends Controller
     /**
      * Instantiate the controller.
      */
-    public function __construct(protected readonly TeamMemberService $teamMemberService)
+    public function __construct(protected readonly TeamInvitationService $teamInvitationService)
     {
     }
 
@@ -22,7 +22,7 @@ class TeamInvitationController extends Controller
      */
     public function store(StoreRequest $request, Team $team): RedirectResponse
     {
-        $this->teamMemberService->inviteMemberToTeam($team, $request->validated());
+        $this->teamInvitationService->createInvitationForTeam($team, $request->validated());
 
         return back()->with('success', [
             'title' => __('Invitation sent'),

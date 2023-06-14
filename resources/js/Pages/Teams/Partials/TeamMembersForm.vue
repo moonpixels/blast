@@ -85,13 +85,7 @@
             </div>
 
             <div class="flex flex-none items-center">
-              <SecondaryButton v-if="user.id !== team.owner_id" data-cy="remove-member-button" size="icon">
-                <span class="sr-only">{{ $t('Remove member') }}</span>
-                <TrashIcon
-                  aria-hidden="true"
-                  class="h-4 w-4 transition-all duration-200 ease-in-out group-hover:text-rose-600 dark:group-hover:text-rose-500"
-                />
-              </SecondaryButton>
+              <DeleteTeamMemberModal :team="team" :user="user" />
             </div>
           </li>
         </ul>
@@ -165,6 +159,7 @@ import useDate from '@/composables/useDate'
 import { Team, TeamInvitation, User } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
 import SimpleEmptyState from '@/Components/EmptyStates/SimpleEmptyState.vue'
+import DeleteTeamMemberModal from '@/Pages/Teams/Partials/DeleteTeamMemberModal.vue'
 
 interface Props {
   team: Team

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Exceptions\InvalidTeamMemberException;
+use App\Exceptions\InvalidTeamMembershipException;
 use App\Http\Controllers\Controller;
 use App\Models\TeamInvitation;
 use App\Services\TeamInvitationService;
@@ -30,7 +30,7 @@ class AcceptedInvitationController extends Controller
                 'title' => __('Invitation accepted'),
                 'message' => __('You have been added to the :team team.', ['team' => $invitation->team->name]),
             ]);
-        } catch (InvalidTeamMemberException $e) {
+        } catch (InvalidTeamMembershipException $e) {
             return redirect(config('fortify.home'))->with('error', [
                 'title' => __('Invitation failed'),
                 'message' => __('You are already on the :team team.', ['team' => $invitation->team->name]),

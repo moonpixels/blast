@@ -4,7 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 
-class InvalidTeamMemberException extends Exception
+class InvalidTeamMembershipException extends Exception
 {
     /**
      * Indicate that the user is already on the team.

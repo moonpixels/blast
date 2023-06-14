@@ -10,10 +10,10 @@ beforeEach(function () {
 
     $this->team = Team::factory()->for($this->user, 'owner')->create();
 
-    $this->memberUser = User::factory()->create();
-    $this->team->users()->attach($this->memberUser);
+    $this->teamMember = User::factory()->create();
+    $this->team->users()->attach($this->teamMember);
 
-    $this->nonMemberUser = User::factory()->create();
+    $this->nonTeamMember = User::factory()->create();
 
     $this->teamInvitation = TeamInvitation::factory()->for($this->team)->create();
 
@@ -25,8 +25,8 @@ it('allows owners to delete team invitations', function () {
 });
 
 it('does not allow non-owners to delete team invitations', function () {
-    expect($this->policy->delete($this->memberUser, $this->teamInvitation))->toBeFalse()
-        ->and($this->policy->delete($this->nonMemberUser, $this->teamInvitation))->toBeFalse();
+    expect($this->policy->delete($this->teamMember, $this->teamInvitation))->toBeFalse()
+        ->and($this->policy->delete($this->nonTeamMember, $this->teamInvitation))->toBeFalse();
 });
 
 it('allows owners to resend team invitations', function () {
@@ -34,6 +34,6 @@ it('allows owners to resend team invitations', function () {
 });
 
 it('does not allow non-owners to resend team invitations', function () {
-    expect($this->policy->resend($this->memberUser, $this->teamInvitation))->toBeFalse()
-        ->and($this->policy->resend($this->nonMemberUser, $this->teamInvitation))->toBeFalse();
+    expect($this->policy->resend($this->teamMember, $this->teamInvitation))->toBeFalse()
+        ->and($this->policy->resend($this->nonTeamMember, $this->teamInvitation))->toBeFalse();
 });

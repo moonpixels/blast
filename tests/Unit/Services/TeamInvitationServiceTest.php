@@ -1,12 +1,14 @@
 <?php
 
-use App\Exceptions\InvalidTeamMemberException;
+use App\Exceptions\InvalidTeamMembershipException;
+use App\Mail\TeamInvitationMail;
 use App\Models\Team;
 use App\Models\TeamInvitation;
 use App\Models\User;
 use App\Notifications\TeamInvitationNotification;
 use App\Services\TeamInvitationService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->user = User::factory()->create();
@@ -37,11 +39,11 @@ it('throws an exception when accepting an invitation if the user is already on t
 
     try {
         $this->teamInvitationService->acceptInvitation($this->teamInvitation);
-    } catch (InvalidTeamMemberException $e) {
+    } catch (InvalidTeamMembershipException $e) {
         $this->assertModelMissing($this->teamInvitation);
         throw $e;
     }
-})->throws(InvalidTeamMemberException::class);
+})->throws(InvalidTeamMembershipException::class);
 
 it('throws an exception when accepting an invitation if the user does not exist', function () {
     $this->teamInvitation->update(['email' => 'invalid-email@blst.to']);
@@ -60,5 +62,25 @@ it('can resend a team invitation', function () {
 
     $this->assertTrue($this->teamInvitationService->resendInvitation($this->teamInvitation));
 
-    Notification::assertSentTo($this->teamInvitation, TeamInvitationNotification::class);
+    Notification::assertSentTo($this->teamInvitation, TeamInvitationNotification::class, function ($notification) {
+        $mail = $notification->toMail($this->teamInvitation);
+
+        return expect($mail)->toBeInstanceOf(TeamInvitationMail::class);
+    });
+});
+
+it('can invite a new team member to the given team', function () {
+    Notification::fake();
+
+    $invitation = $this->teamInvitationService->createInvitationForTeam($this->team, [
+        'email' => 'user@blst.to',
+    ]);
+
+    expect($invitation->email)->toBe('user@blst.to');
+
+    Notification::assertSentTo($invitation, TeamInvitationNotification::class, function ($notification) {
+        $mail = $notification->toMail($this->teamInvitation);
+
+        return expect($mail)->toBeInstanceOf(TeamInvitationMail::class);
+    });
 });
