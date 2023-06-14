@@ -6,6 +6,7 @@ use App\Http\Controllers\Web\LinkController;
 use App\Http\Controllers\Web\ResentInvitationController;
 use App\Http\Controllers\Web\TeamController;
 use App\Http\Controllers\Web\TeamInvitationController;
+use App\Http\Controllers\Web\TeamMemberController;
 use App\Http\Controllers\Web\UserController;
 use App\Http\Controllers\Web\UserCurrentTeamController;
 use Illuminate\Foundation\Application;
@@ -61,6 +62,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::get('/teams/{team}', 'show')->name('show');
             Route::put('/teams/{team}', 'update')->name('update');
             Route::delete('/teams/{team}', 'destroy')->name('destroy');
+        });
+
+    // Team members...
+    Route::controller(TeamMemberController::class)
+        ->name('teams.members.')
+        ->group(function () {
+            Route::delete('/teams/{team}/members/{teamMembership}', 'destroy')->name('destroy');
         });
 
     // Team invitations...

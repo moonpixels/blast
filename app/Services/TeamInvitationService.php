@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use App\Exceptions\InvalidTeamMemberException;
+use App\Exceptions\InvalidTeamMembershipException;
+use App\Models\Team;
 use App\Models\TeamInvitation;
 use App\Models\User;
 use App\Notifications\TeamInvitationNotification;
@@ -10,9 +11,23 @@ use App\Notifications\TeamInvitationNotification;
 class TeamInvitationService
 {
     /**
+     * Create a new team invitation for the given team.
+     */
+    public function createInvitationForTeam(Team $team, array $attributes): TeamInvitation
+    {
+        $invitation = $team->invitations()->create([
+            'email' => $attributes['email'],
+        ]);
+
+        $invitation->notify(new TeamInvitationNotification($invitation));
+
+        return $invitation;
+    }
+
+    /**
      * Accept a team invitation.
      *
-     * @throws InvalidTeamMemberException
+     * @throws InvalidTeamMembershipException
      */
     public function acceptInvitation(TeamInvitation $invitation): bool
     {
@@ -20,7 +35,7 @@ class TeamInvitationService
 
         if ($user->belongsToTeam($invitation->team)) {
             $invitation->delete();
-            throw InvalidTeamMemberException::alreadyOnTeam();
+            throw InvalidTeamMembershipException::alreadyOnTeam();
         }
 
         $user->teams()->attach($invitation->team_id);
