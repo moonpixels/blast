@@ -17,7 +17,7 @@ class TeamMembershipService
                 $teamMembership->user->switchTeam($teamMembership->user->personalTeam());
             }
 
-            return $teamMembership->delete();
+            return (bool) $teamMembership->delete();
         });
     }
 }
