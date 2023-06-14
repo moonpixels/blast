@@ -30,11 +30,18 @@ class TeamController extends Controller
     {
         $this->authorize('view', $team);
 
-        return inertia('Teams/Show', [
+        $props = [
             'team' => new TeamResource($team, true),
-            'members' => UserResource::collection($team->users()->paginate(10)),
-            'invitations' => TeamInvitationResource::collection($team->invitations()->paginate(10)),
-        ]);
+        ];
+
+        if ($request->user()->ownsTeam($team)) {
+            $props['members'] = UserResource::collection($team->users()->paginate(10));
+            $props['invitations'] = TeamInvitationResource::collection($team->invitations()->paginate(10));
+        } else {
+            $props['teamMembership'] = $team->users()->where('user_id', $request->user()->id)->first()->team_membership;
+        }
+
+        return inertia('Teams/Show', $props);
     }
 
     /**
