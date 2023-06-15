@@ -1,18 +1,16 @@
 <?php
 
 use App\Mail\TeamInvitationMail;
-use App\Models\Team;
 use App\Models\TeamInvitation;
 use App\Models\User;
 use App\Notifications\TeamInvitationNotification;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
-    $this->team = Team::factory()->for($this->user, 'owner')->create();
+    $this->user = User::factory()->withStandardTeam()->withTeamMembership()->create();
 
-    $this->existingTeamMember = User::factory()->create();
-    $this->team->users()->attach($this->existingTeamMember);
+    $this->standardTeam = $this->user->ownedTeams()->where('personal_team', false)->first();
+    $this->membershipTeam = $this->user->teams->first();
 
     $this->actingAs($this->user);
 });
@@ -20,24 +18,22 @@ beforeEach(function () {
 it('allows owners to invite team members', function () {
     Notification::fake();
 
-    $this->post(route('teams.invitations.store', $this->team), [
+    $this->post(route('teams.invitations.store', $this->standardTeam), [
         'email' => 'user@blst.to',
     ])->assertRedirect()->assertSessionHas('success');
 
     $this->assertDatabaseHas('team_invitations', [
-        'team_id' => $this->team->id,
+        'team_id' => $this->standardTeam->id,
         'email' => 'user@blst.to',
     ]);
 
-    assertNotificationSentTo($this->team->invitations->first());
+    assertNotificationSentTo($this->standardTeam->invitations->first());
 });
 
 it('does not allow non-owners to invite team members', function () {
     Notification::fake();
 
-    $this->actingAs($this->existingTeamMember);
-
-    $this->post(route('teams.invitations.store', $this->team), [
+    $this->post(route('teams.invitations.store', $this->membershipTeam), [
         'email' => 'user@blst.to',
     ])->assertForbidden();
 
@@ -49,12 +45,14 @@ it('does not allow non-owners to invite team members', function () {
 it('does not invite a user that is already a member of the team', function () {
     Notification::fake();
 
-    $this->post(route('teams.invitations.store', $this->team), [
-        'email' => $this->user->email,
+    $this->actingAs($this->membershipTeam->owner);
+
+    $this->post(route('teams.invitations.store', $this->membershipTeam), [
+        'email' => $this->membershipTeam->owner->email,
     ])->assertInvalid('email');
 
-    $this->post(route('teams.invitations.store', $this->team), [
-        'email' => $this->existingTeamMember->email,
+    $this->post(route('teams.invitations.store', $this->membershipTeam), [
+        'email' => $this->user->email,
     ])->assertInvalid('email');
 
     $this->assertDatabaseEmpty('team_invitations');
@@ -66,11 +64,11 @@ it('does not invite a user that has already been invited to the team', function 
     Notification::fake();
 
     TeamInvitation::factory()->create([
-        'team_id' => $this->team->id,
+        'team_id' => $this->standardTeam->id,
         'email' => 'user@blst.to',
     ]);
 
-    $this->post(route('teams.invitations.store', $this->team), [
+    $this->post(route('teams.invitations.store', $this->standardTeam), [
         'email' => 'user@blst.to',
     ])->assertInvalid('email');
 
@@ -81,7 +79,7 @@ it('does not invite a user that has already been invited to the team', function 
 
 it('allows the user to accept the invitation', function () {
     $teamInvitation = TeamInvitation::factory()->create([
-        'team_id' => $this->team->id,
+        'team_id' => $this->standardTeam->id,
         'email' => 'user@blst.to',
     ]);
 
@@ -96,29 +94,28 @@ it('allows the user to accept the invitation', function () {
 
     $this->assertModelMissing($teamInvitation);
 
-    $this->assertTrue($user->belongsToTeam($this->team));
+    $this->assertTrue($user->belongsToTeam($this->standardTeam));
 
-    $this->assertEquals($this->team->id, $user->fresh()->current_team_id);
+    $this->assertEquals($this->standardTeam->id, $user->fresh()->current_team_id);
 });
 
 it('does not allow the user to accept the invitation if they are already on the team', function () {
     $teamInvitation = TeamInvitation::factory()->create([
-        'team_id' => $this->team->id,
-        'email' => $this->existingTeamMember->email,
+        'team_id' => $this->membershipTeam->id,
+        'email' => $this->user->email,
     ]);
 
-    $this->actingAs($this->existingTeamMember)
-        ->get($teamInvitation->accept_url)
+    $this->get($teamInvitation->accept_url)
         ->assertRedirect(config('fortify.home'))
         ->assertSessionHas('error');
 
     $this->assertModelMissing($teamInvitation);
 
-    $this->assertTrue($this->existingTeamMember->belongsToTeam($this->team));
+    $this->assertTrue($this->user->belongsToTeam($this->membershipTeam));
 });
 
 it('allows owners to cancel invitations', function () {
-    $teamInvitation = TeamInvitation::factory()->for($this->team)->create();
+    $teamInvitation = TeamInvitation::factory()->for($this->standardTeam)->create();
 
     $this->delete(route('invitations.destroy', [$teamInvitation]))
         ->assertRedirect()
@@ -128,10 +125,9 @@ it('allows owners to cancel invitations', function () {
 });
 
 it('does not allow non-owners to cancel invitations', function () {
-    $teamInvitation = TeamInvitation::factory()->for($this->team)->create();
+    $teamInvitation = TeamInvitation::factory()->for($this->membershipTeam)->create();
 
-    $this->actingAs($this->existingTeamMember)
-        ->delete(route('invitations.destroy', [$teamInvitation]))
+    $this->delete(route('invitations.destroy', [$teamInvitation]))
         ->assertForbidden();
 
     $this->assertModelExists($teamInvitation);
@@ -140,22 +136,21 @@ it('does not allow non-owners to cancel invitations', function () {
 it('allows owners to resend invitations', function () {
     Notification::fake();
 
-    $teamInvitation = TeamInvitation::factory()->for($this->team)->create();
+    $teamInvitation = TeamInvitation::factory()->for($this->standardTeam)->create();
 
     $this->post(route('resent-invitations.store'), ['invitation_id' => $teamInvitation->id])
         ->assertRedirect()
         ->assertSessionHas('success');
 
-    assertNotificationSentTo($this->team->invitations->first());
+    assertNotificationSentTo($this->standardTeam->invitations->first());
 });
 
 it('does not allow non-owners to resend invitations', function () {
     Notification::fake();
 
-    $teamInvitation = TeamInvitation::factory()->for($this->team)->create();
+    $teamInvitation = TeamInvitation::factory()->for($this->membershipTeam)->create();
 
-    $this->actingAs($this->existingTeamMember)
-        ->post(route('resent-invitations.store'), ['invitation_id' => $teamInvitation->id])
+    $this->post(route('resent-invitations.store'), ['invitation_id' => $teamInvitation->id])
         ->assertForbidden();
 
     Notification::assertNothingSent();
