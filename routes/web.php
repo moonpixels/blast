@@ -6,7 +6,7 @@ use App\Http\Controllers\Web\LinkController;
 use App\Http\Controllers\Web\ResentInvitationController;
 use App\Http\Controllers\Web\TeamController;
 use App\Http\Controllers\Web\TeamInvitationController;
-use App\Http\Controllers\Web\TeamMemberController;
+use App\Http\Controllers\Web\TeamMembershipController;
 use App\Http\Controllers\Web\UserController;
 use App\Http\Controllers\Web\UserCurrentTeamController;
 use Illuminate\Foundation\Application;
@@ -64,13 +64,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/teams/{team}', 'destroy')->name('destroy');
         });
 
-    // Team members...
-    Route::controller(TeamMemberController::class)
-        ->name('teams.members.')
-        ->group(function () {
-            Route::delete('/teams/{team}/members/{teamMembership}', 'destroy')->name('destroy');
-        });
-
     // Team invitations...
     Route::controller(TeamInvitationController::class)
         ->name('teams.invitations.')
@@ -97,5 +90,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('resent-invitations.')
         ->group(function () {
             Route::post('resent-invitations', 'store')->name('store');
+        });
+
+    // Team memberships...
+    Route::controller(TeamMembershipController::class)
+        ->name('team-memberships.')
+        ->group(function () {
+            Route::delete('/team-memberships/{teamMembership}', 'destroy')->name('destroy');
         });
 });

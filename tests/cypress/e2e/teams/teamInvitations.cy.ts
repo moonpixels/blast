@@ -141,7 +141,7 @@ describe('Team invitations', () => {
     })
   })
 
-  it.only('should allow owners to cancel an invitation', () => {
+  it('should allow owners to cancel an invitation', () => {
     cy.create({
       model: 'App\\Models\\TeamInvitation',
       attributes: {
@@ -161,7 +161,7 @@ describe('Team invitations', () => {
     })
   })
 
-  it.only('should allow owners to resend an invitation', () => {
+  it('should allow owners to resend an invitation', () => {
     cy.create({
       model: 'App\\Models\\TeamInvitation',
       attributes: {

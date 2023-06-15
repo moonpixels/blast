@@ -59,7 +59,7 @@ const showModal = ref<boolean>(false)
 const form = useForm({})
 
 function submit(): void {
-  form.delete(route('teams.members.destroy', [props.team.id, props.teamMembership.id]), {
+  form.delete(route('team-memberships.destroy', [props.teamMembership.id]), {
     preserveScroll: true,
     onFinish: () => {
       showModal.value = false

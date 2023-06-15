@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Models\Team;
 use App\Models\TeamMembership;
 use App\Services\TeamMembershipService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
-class TeamMemberController extends Controller
+class TeamMembershipController extends Controller
 {
     /**
      * Instantiate the controller.
@@ -21,7 +20,7 @@ class TeamMemberController extends Controller
     /**
      * Delete the given team member.
      */
-    public function destroy(Request $request, Team $team, TeamMembership $teamMembership): RedirectResponse
+    public function destroy(Request $request, TeamMembership $teamMembership): RedirectResponse
     {
         $this->authorize('delete', $teamMembership);
 
