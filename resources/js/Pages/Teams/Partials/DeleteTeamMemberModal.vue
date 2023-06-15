@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Team, User } from '@/types/models'
+import { User } from '@/types/models'
 import { useForm } from '@inertiajs/vue3'
 import Modal from '@/Components/Modals/Modal.vue'
 import DangerButton from '@/Components/Buttons/DangerButton.vue'
@@ -41,7 +41,6 @@ import { TrashIcon } from '@heroicons/vue/20/solid'
 import { ref } from 'vue'
 
 interface Props {
-  team: Team
   user: User
 }
 
@@ -57,8 +56,7 @@ function submit(): void {
   }
 
   form.delete(
-    route('teams.members.destroy', {
-      team: props.team.id,
+    route('team-memberships.destroy', {
       teamMembership: props.user.team_membership.id,
     }),
     {

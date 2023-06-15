@@ -58,7 +58,7 @@ describe('Team members', () => {
     cy.get('[data-cy="success-notification"]').should('not.exist')
   })
 
-  it.only('allows team members to leave the team', () => {
+  it('allows team members to leave the team', () => {
     switchTeam('Membership Team')
 
     cy.get('[data-cy="leave-team-button"]').click()

@@ -85,7 +85,7 @@
             </div>
 
             <div class="flex flex-none items-center">
-              <DeleteTeamMemberModal :team="team" :user="user" />
+              <DeleteTeamMemberModal :user="user" />
             </div>
           </li>
         </ul>
