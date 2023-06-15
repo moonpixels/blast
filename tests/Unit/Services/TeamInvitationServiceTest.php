@@ -2,7 +2,6 @@
 
 use App\Exceptions\InvalidTeamMembershipException;
 use App\Mail\TeamInvitationMail;
-use App\Models\Team;
 use App\Models\TeamInvitation;
 use App\Models\User;
 use App\Notifications\TeamInvitationNotification;
@@ -11,9 +10,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
+    $this->user = User::factory()->withStandardTeam()->create();
 
-    $this->team = Team::factory()->for($this->user, 'owner')->create();
+    $this->team = $this->user->ownedTeams()->where('personal_team', false)->first();
 
     $this->invitedUser = User::factory()->create();
 

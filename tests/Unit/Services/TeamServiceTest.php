@@ -1,13 +1,12 @@
 <?php
 
-use App\Models\Team;
 use App\Models\User;
 use App\Services\TeamService;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
+    $this->user = User::factory()->withStandardTeam()->create();
 
-    $this->team = Team::factory()->for($this->user, 'owner')->create();
+    $this->team = $this->user->ownedTeams()->where('personal_team', false)->first();
 
     $this->teamService = app(TeamService::class);
 });

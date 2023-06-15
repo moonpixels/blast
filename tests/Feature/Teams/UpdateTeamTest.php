@@ -4,33 +4,43 @@ use App\Models\Team;
 use App\Models\User;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
-    $this->team = Team::factory()->for($this->user, 'owner')->create();
+    $this->user = User::factory()->withStandardTeam()->withTeamMembership()->create();
+
+    $this->standardTeam = $this->user->ownedTeams()->where('personal_team', false)->first();
+    $this->membershipTeam = $this->user->teams->first();
 
     $this->actingAs($this->user);
 });
 
-it('updated the team', function () {
-    $this->put(route('teams.update', $this->team), [
+it('allows owners to update the team', function () {
+    $this->put(route('teams.update', $this->standardTeam), [
         'name' => 'Test Team',
     ])->assertRedirect()->assertSessionHas('success');
 
     $this->assertDatabaseHas('teams', [
-        'id' => $this->team->id,
+        'id' => $this->standardTeam->id,
         'name' => 'Test Team',
     ]);
 });
 
-it('only allows owners to update the team', function () {
+it('does not allow non-owners to update the team', function () {
+    $this->put(route('teams.update', $this->membershipTeam), [
+        'name' => 'Test Team',
+    ])->assertForbidden();
+
     $team = Team::factory()->create();
 
     $this->put(route('teams.update', $team), [
         'name' => 'Test Team',
     ])->assertForbidden();
 
-    $team->users()->attach($this->user);
+    $this->post(route('logout'));
 
-    $this->put(route('teams.update', $team), [
+    $this->put(route('teams.update', $this->membershipTeam), [
         'name' => 'Test Team',
     ])->assertForbidden();
+
+    $this->assertDatabaseMissing('teams', [
+        'name' => 'Test Team',
+    ]);
 });

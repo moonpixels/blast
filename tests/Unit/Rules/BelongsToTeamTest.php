@@ -5,9 +5,9 @@ use App\Models\User;
 use App\Rules\BelongsToTeam;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
+    $this->user = User::factory()->withStandardTeam()->create();
 
-    $this->team = Team::factory()->for($this->user, 'owner')->create();
+    $this->team = $this->user->ownedTeams()->where('personal_team', false)->first();
 
     $this->rule = new BelongsToTeam($this->user);
 });
