@@ -9,7 +9,13 @@
     <TwoColumnFormContainer>
       <GeneralForm v-if="currentUserIsOwner()" :team="team" />
 
-      <TeamMembersForm v-if="invitations && members" :invitations="invitations" :members="members" :team="team" />
+      <TeamMembersForm
+        v-if="currentUserIsOwner()"
+        :filters="filters"
+        :invitations="invitations"
+        :members="members"
+        :team="team"
+      />
 
       <DeleteTeamForm v-if="currentUserIsOwner()" :team="team" />
 
@@ -24,7 +30,7 @@ import ConstrainedContainer from '@/Components/Containers/ConstrainedContainer.v
 import AppHead from '@/Components/App/AppHead.vue'
 import TwoColumnFormContainer from '@/Components/Forms/TwoColumnFormContainer.vue'
 import GeneralForm from '@/Pages/Teams/Partials/GeneralForm.vue'
-import TeamMembersForm from '@/Pages/Teams/Partials/TeamMembersForm.vue'
+import TeamMembersForm, { Filters } from '@/Pages/Teams/Partials/TeamMembersForm.vue'
 import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm.vue'
 import { CurrentUser, Team, TeamInvitation, TeamMembership, User } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
@@ -41,6 +47,7 @@ interface Props {
   teamMembership?: TeamMembership
   members?: PaginatedResponse<User>
   invitations?: PaginatedResponse<TeamInvitation>
+  filters: Filters
 }
 
 const props = defineProps<Props>()

@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Actions\Teams\FilterTeamInvitations;
+use App\Actions\Teams\FilterTeamMembers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Team\StoreRequest;
 use App\Http\Requests\Team\UpdateRequest;
 use App\Http\Resources\Team\TeamResource;
-use App\Http\Resources\TeamInvitation\TeamInvitationResource;
-use App\Http\Resources\User\UserResource;
+use App\Http\Resources\TeamMembership\TeamMembershipResource;
 use App\Models\Team;
+use App\Models\TeamMembership;
 use App\Services\TeamService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -31,14 +33,22 @@ class TeamController extends Controller
         $this->authorize('view', $team);
 
         $props = [
+            'filters' => [
+                'view' => $request->query('view', 'members'),
+                'search' => $request->query('search'),
+            ],
             'team' => new TeamResource($team, true),
         ];
 
         if ($request->user()->ownsTeam($team)) {
-            $props['members'] = UserResource::collection($team->users()->paginate(10));
-            $props['invitations'] = TeamInvitationResource::collection($team->invitations()->paginate(10));
+            if ($request->query('view') === 'invitations') {
+                $props['invitations'] = FilterTeamInvitations::execute($team, $request->query('search'));
+            } else {
+                $props['members'] = FilterTeamMembers::execute($team, $request->query('search'));
+            }
         } else {
-            $props['teamMembership'] = $team->users()->where('user_id', $request->user()->id)->first()->team_membership;
+            $membership = TeamMembership::whereUserId($request->user()->id)->whereTeamId($team->id)->first();
+            $props['teamMembership'] = new TeamMembershipResource($membership, true);
         }
 
         return inertia('Teams/Show', $props);

@@ -8,6 +8,7 @@ use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\Fill;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -161,6 +162,22 @@ class User extends Authenticatable
         ))->writeString($this->twoFactorQrCodeUrl());
 
         return trim(substr($svg, strpos($svg, "\n") + 1));
+    }
+
+    /**
+     * Search for a user by where their email is like the given value.
+     */
+    public function scopeWhereEmailLike(Builder $query, ?string $email): void
+    {
+        $query->when($email, fn (Builder $query, string $email) => $query->where('email', 'like', "%{$email}%"));
+    }
+
+    /**
+     * Search for a user by where their name is like the given value.
+     */
+    public function scopeWhereNameLike(Builder $query, ?string $name): void
+    {
+        $query->when($name, fn (Builder $query, string $name) => $query->where('name', 'like', "%{$name}%"));
     }
 
     /**

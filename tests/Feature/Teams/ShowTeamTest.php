@@ -27,7 +27,7 @@ it('shows the teams page to owners', function () {
                 ->where('personal_team', $this->team->personal_team)
                 ->etc())
             ->has('members.data', 2)
-            ->has('invitations.data', 2)
+            ->missing('invitations.data')
             ->missing('teamMembership')
         );
 });
@@ -63,4 +63,39 @@ it('does not show the teams page to guests', function () {
 it('does not show the teams page to users who do not belong to the team', function () {
     $this->get(route('teams.show', Team::factory()->create()))
         ->assertForbidden();
+});
+
+it('allows owners to switch the view mode to invitations', function () {
+    $this->get(route('teams.show', [$this->team, 'view' => 'invitations']))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Teams/Show')
+            ->has('invitations.data', 2)
+            ->missing('members.data')
+        );
+});
+
+it('allows owners to filter members', function () {
+    $this->get(route('teams.show', [$this->team, 'search' => $this->team->users->first()->name]))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Teams/Show')
+            ->has('members.data', 1)
+            ->where('members.data.0.name', $this->team->users->first()->name)
+            ->missing('invitations.data')
+        );
+});
+
+it('allows owners to filter invitations', function () {
+    $this->get(route('teams.show', [
+        $this->team,
+        'view' => 'invitations',
+        'search' => $this->team->invitations->first()->email,
+    ]))->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Teams/Show')
+            ->has('invitations.data', 1)
+            ->where('invitations.data.0.email', $this->team->invitations->first()->email)
+            ->missing('members.data')
+        );
 });

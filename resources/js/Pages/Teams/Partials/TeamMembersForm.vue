@@ -14,12 +14,8 @@
         <div class="flex flex-grow justify-between gap-2">
           <InviteMemberForm :team="team" />
 
-          <BaseButton
-            class="flex items-center gap-2 shadow-none"
-            data-cy="switch-view-mode-button"
-            @click="switchViewMode"
-          >
-            <span :class="[viewMode === 'members' ? 'text-zinc-900 dark:text-white' : '']">
+          <BaseButton class="flex items-center gap-2 shadow-none" data-cy="switch-view-mode-button" @click="switchView">
+            <span :class="[filters.view === 'members' ? 'text-zinc-900 dark:text-white' : '']">
               {{ $tChoice('Member|Members', 2) }}
             </span>
 
@@ -27,17 +23,18 @@
               class="group-hover:animated-spin h-4 w-4 transition-all duration-200 ease-in-out group-hover:text-violet-500 dark:group-hover:text-violet-400"
             />
 
-            <span :class="[viewMode === 'invites' ? 'text-zinc-900 dark:text-white' : '']">
+            <span :class="[filters.view === 'invitations' ? 'text-zinc-900 dark:text-white' : '']">
               {{ $tChoice('Invite|Invites', 2) }}
             </span>
           </BaseButton>
         </div>
 
-        <form class="mt-3 lg:mt-0 lg:w-60">
+        <div class="mt-3 lg:mt-0 lg:w-60">
           <TextInput
-            v-model="form.search"
+            v-model="searchForm.search"
             :label="$t('Search')"
             :placeholder="$t('Find a team member...')"
+            data-cy="search-members-input"
             hide-label
             inverse
             type="search"
@@ -46,14 +43,16 @@
               <MagnifyingGlassIcon class="pointer-events-none h-4 w-4" />
             </template>
           </TextInput>
-        </form>
+        </div>
       </div>
 
-      <template v-if="viewMode === 'members'">
+      <template v-if="filters.view === 'members'">
         <SimpleEmptyState
-          v-if="!members.data.length"
+          v-if="!members?.data.length"
           :description="
-            form.search ? $t('There are no members matching your search.') : $t('There are no members in this team.')
+            searchForm.search
+              ? $t('There are no members matching your search.')
+              : $t('There are no members in this team.')
           "
           :title="$t('No members')"
           data-cy="no-members-empty-state"
@@ -92,9 +91,9 @@
       </template>
       <template v-else>
         <SimpleEmptyState
-          v-if="!invitations.data.length"
+          v-if="!invitations?.data.length"
           :description="
-            form.search
+            searchForm.search
               ? $t('There are no pending invitations matching your search.')
               : $t('There are no pending invitations for this team.')
           "
@@ -152,7 +151,6 @@ import { router, useForm } from '@inertiajs/vue3'
 import TextInput from '@/Components/Inputs/TextInput.vue'
 import { ArrowPathIcon, ArrowsRightLeftIcon, MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/20/solid'
 import { UserGroupIcon, UserPlusIcon } from '@heroicons/vue/24/outline'
-import { ref } from 'vue'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import BaseButton from '@/Components/Buttons/BaseButton.vue'
 import useDate from '@/composables/useDate'
@@ -160,27 +158,49 @@ import { Team, TeamInvitation, User } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
 import SimpleEmptyState from '@/Components/EmptyStates/SimpleEmptyState.vue'
 import DeleteTeamMemberModal from '@/Pages/Teams/Partials/DeleteTeamMemberModal.vue'
+import { watch } from 'vue'
+import debounce from 'lodash/debounce'
+
+export interface Filters {
+  view: 'members' | 'invitations'
+  search?: string
+}
 
 interface Props {
   team: Team
-  members: PaginatedResponse<User>
-  invitations: PaginatedResponse<TeamInvitation>
+  members?: PaginatedResponse<User>
+  invitations?: PaginatedResponse<TeamInvitation>
+  filters: Filters
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
-const viewMode = ref<'members' | 'invites'>('members')
-
-type FindUserForm = {
+type SearchForm = {
   search: string
 }
 
-const form = useForm<FindUserForm>({
-  search: '',
+const searchForm = useForm<SearchForm>({
+  search: props.filters.search ?? '',
 })
 
-function switchViewMode() {
-  viewMode.value = viewMode.value === 'members' ? 'invites' : 'members'
+function search() {
+  router.reload({
+    data: {
+      view: props.filters.view,
+      search: searchForm.search,
+    },
+    only: ['filters', 'members', 'invitations'],
+  })
+}
+
+function switchView() {
+  router.reload({
+    data: {
+      view: props.filters.view === 'invitations' ? 'members' : 'invitations',
+      search: props.filters.search,
+    },
+    only: ['filters', 'members', 'invitations'],
+  })
 }
 
 function cancelInvitation(invitation: TeamInvitation): void {
@@ -204,4 +224,6 @@ function resendInvitation(invitation: TeamInvitation): void {
     }
   )
 }
+
+watch(() => searchForm.search, debounce(search, 500))
 </script>

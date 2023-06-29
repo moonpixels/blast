@@ -64,6 +64,6 @@ class Team extends Model
      */
     public function invitations(): HasMany
     {
-        return $this->hasMany(TeamInvitation::class);
+        return $this->hasMany(TeamInvitation::class)->latest();
     }
 }
