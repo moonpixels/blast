@@ -2,20 +2,13 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Actions\Teams\CancelTeamInvitation;
 use App\Http\Controllers\Controller;
 use App\Models\TeamInvitation;
-use App\Services\TeamInvitationService;
 use Illuminate\Http\RedirectResponse;
 
 class InvitationController extends Controller
 {
-    /**
-     * Instantiate the controller.
-     */
-    public function __construct(protected readonly TeamInvitationService $teamInvitationService)
-    {
-    }
-
     /**
      * Cancel the given team invitation.
      */
@@ -23,7 +16,7 @@ class InvitationController extends Controller
     {
         $this->authorize('delete', $invitation);
 
-        $this->teamInvitationService->cancelInvitation($invitation);
+        CancelTeamInvitation::execute($invitation);
 
         return back()->with('success', [
             'title' => __('Invitation cancelled'),

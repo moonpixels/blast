@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Actions\Users\DeleteUser;
 use App\Http\Controllers\Controller;
-use App\Services\UserService;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ class UserController extends Controller
     /**
      * Instantiate the controller.
      */
-    public function __construct(protected readonly UserService $userService)
+    public function __construct()
     {
         $this->middleware(['password.confirm']);
     }
@@ -27,7 +27,7 @@ class UserController extends Controller
     {
         $guard->logout();
 
-        if ($this->userService->deleteUser($request->user())) {
+        if (DeleteUser::execute($request->user())) {
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 

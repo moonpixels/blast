@@ -80,18 +80,20 @@ it('can determine if the user owns the given team', function () {
 });
 
 it('can filter users by their name', function () {
+    $this->user->update(['name' => 'Unique Name']);
+
     User::factory(5)->create();
 
-    $users = User::whereNameLike('John')->get();
+    $users = User::whereNameLike('Unique')->get();
 
     expect($users->count())->toBe(1)
-        ->and($users->first()->name)->toBe('John Doe');
+        ->and($users->first()->name)->toBe('Unique Name');
 });
 
 it('can filter users by their email', function () {
     User::factory(5)->create();
 
-    $users = User::whereEmailLike('john')->get();
+    $users = User::whereEmailLike('@blst.to')->get();
 
     expect($users->count())->toBe(1)
         ->and($users->first()->email)->toBe('john.doe@blst.to');

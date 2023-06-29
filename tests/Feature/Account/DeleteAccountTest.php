@@ -1,7 +1,7 @@
 <?php
 
+use App\Actions\Users\DeleteUser;
 use App\Models\User;
-use App\Services\UserService;
 use Mockery\MockInterface;
 
 beforeEach(function () {
@@ -38,8 +38,8 @@ it('redirects unauthenticated users', function () {
 it('alerts the user if there was an error deleting their account', function () {
     withoutPasswordConfirmation();
 
-    $this->mock(UserService::class, function (MockInterface $mock) {
-        $mock->shouldReceive('deleteUser')->once()->andReturnFalse();
+    $this->mock(DeleteUser::class, function (MockInterface $mock) {
+        $mock->shouldReceive('handle')->once()->andReturnFalse();
     });
 
     $this->delete(route('user.destroy'))

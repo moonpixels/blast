@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Actions\Teams\AcceptTeamInvitation;
 use App\Exceptions\InvalidTeamMembershipException;
 use App\Http\Controllers\Controller;
 use App\Models\TeamInvitation;
-use App\Services\TeamInvitationService;
 use Illuminate\Http\RedirectResponse;
 
 class AcceptedInvitationController extends Controller
@@ -13,7 +13,7 @@ class AcceptedInvitationController extends Controller
     /**
      * Instantiate the controller.
      */
-    public function __construct(protected readonly TeamInvitationService $teamInvitationService)
+    public function __construct()
     {
         $this->middleware(['signed']);
     }
@@ -24,7 +24,7 @@ class AcceptedInvitationController extends Controller
     public function show(TeamInvitation $invitation): RedirectResponse
     {
         try {
-            $this->teamInvitationService->acceptInvitation($invitation);
+            AcceptTeamInvitation::execute($invitation);
 
             return redirect(config('fortify.home'))->with('success', [
                 'title' => __('Invitation accepted'),

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserCurrentTeam\UpdateRequest;
 use App\Models\Team;
 use Illuminate\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserCurrentTeamController extends Controller
 {
@@ -18,6 +19,6 @@ class UserCurrentTeamController extends Controller
 
         $request->user()->switchTeam($team);
 
-        return redirect(config('fortify.home'), 303);
+        return redirect(config('fortify.home'), Response::HTTP_SEE_OTHER);
     }
 }

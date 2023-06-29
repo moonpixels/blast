@@ -2,8 +2,8 @@
 
 namespace App\Actions\Fortify;
 
+use App\Actions\Teams\CreateTeamForUser;
 use App\Models\User;
-use App\Services\TeamService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -13,13 +13,6 @@ use Laravel\Fortify\Contracts\CreatesNewUsers;
 class CreateNewUser implements CreatesNewUsers
 {
     use PasswordValidationRules;
-
-    /**
-     * Instantiate the action.
-     */
-    public function __construct(protected readonly TeamService $teamService)
-    {
-    }
 
     /**
      * Validate and create a newly registered user.
@@ -49,7 +42,7 @@ class CreateNewUser implements CreatesNewUsers
                 'password' => Hash::make($input['password']),
             ]);
 
-            $this->teamService->createTeamForUser($user, [
+            CreateTeamForUser::execute($user, [
                 'name' => __('Personal Team'),
                 'personal_team' => true,
             ]);

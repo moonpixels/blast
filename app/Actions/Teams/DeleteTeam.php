@@ -1,40 +1,20 @@
 <?php
 
-namespace App\Services;
+namespace App\Actions\Teams;
 
+use App\Concerns\Actionable;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class TeamService
+class DeleteTeam
 {
-    /**
-     * Create a new team for the given user.
-     */
-    public function createTeamForUser(User $user, array $attributes): Team
-    {
-        $team = $user->ownedTeams()->create([
-            'name' => $attributes['name'],
-            'personal_team' => $attributes['personal_team'] ?? false,
-        ]);
-
-        $user->switchTeam($team);
-
-        return $team;
-    }
-
-    /**
-     * Update the given team.
-     */
-    public function updateTeam(Team $team, array $attributes): bool
-    {
-        return $team->update($attributes);
-    }
+    use Actionable;
 
     /**
      * Delete the given team.
      */
-    public function deleteTeam(Team $team): bool
+    public function handle(Team $team): bool
     {
         if ($team->personal_team) {
             return false;
