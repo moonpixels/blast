@@ -8,6 +8,7 @@ beforeEach(function () {
         ->withTwoFactorAuthentication()
         ->create([
             'name' => 'John Doe',
+            'email' => 'john.doe@blst.to',
         ]);
 });
 
@@ -76,4 +77,22 @@ it('can determine if the user owns the given team', function () {
     expect($this->user->ownsTeam($ownedTeam))->toBeTrue()
         ->and($this->user->ownsTeam($memberTeam))->toBeFalse()
         ->and($this->user->ownsTeam($nonMemberTeam))->toBeFalse();
+});
+
+it('can filter users by their name', function () {
+    User::factory(5)->create();
+
+    $users = User::whereNameLike('John')->get();
+
+    expect($users->count())->toBe(1)
+        ->and($users->first()->name)->toBe('John Doe');
+});
+
+it('can filter users by their email', function () {
+    User::factory(5)->create();
+
+    $users = User::whereEmailLike('john')->get();
+
+    expect($users->count())->toBe(1)
+        ->and($users->first()->email)->toBe('john.doe@blst.to');
 });

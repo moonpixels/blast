@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -36,6 +37,14 @@ class TeamInvitation extends Model
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
+    }
+
+    /**
+     * Search for an invitation where the email is like the given value.
+     */
+    public function scopeWhereEmailLike(Builder $query, ?string $email): void
+    {
+        $query->when($email, fn (Builder $query, string $email) => $query->where('email', 'like', "%{$email}%"));
     }
 
     /**

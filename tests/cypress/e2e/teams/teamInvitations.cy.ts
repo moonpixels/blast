@@ -149,7 +149,6 @@ describe('Team invitations', () => {
       },
     }).then(() => {
       cy.reload()
-      cy.get('@switchViewModeButton').click()
 
       cy.get('[data-cy="invitations-list"]').within(() => {
         cy.get('[data-cy="cancel-invitation-button"]').click()
@@ -169,13 +168,39 @@ describe('Team invitations', () => {
       },
     }).then(() => {
       cy.reload()
-      cy.get('@switchViewModeButton').click()
 
       cy.get('[data-cy="invitations-list"]').within(() => {
         cy.get('[data-cy="resend-invitation-button"]').click()
       })
 
       cy.get('[data-cy="success-notification"]').should('contain', 'Invitation resent')
+    })
+  })
+
+  it('should allow owners to filter invitations', () => {
+    cy.create({
+      model: 'App\\Models\\TeamInvitation',
+      attributes: {
+        team_id: teamId,
+        email: 'another-user@blst.to',
+      },
+    }).then(() => {
+      cy.create({
+        model: 'App\\Models\\TeamInvitation',
+        attributes: {
+          team_id: teamId,
+        },
+      }).then(() => {
+        cy.reload()
+        cy.get('[data-cy="invitations-list"]').children().should('have.length', 2)
+
+        cy.get('[data-cy="search-members-input"]').type('@blst.to')
+
+        cy.get('[data-cy="invitations-list"]').children().should('have.length', 1)
+        cy.get('[data-cy="invitations-list"]').within(() => {
+          cy.contains('another-user@blst.to').should('exist')
+        })
+      })
     })
   })
 })
