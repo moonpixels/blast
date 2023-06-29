@@ -8,9 +8,6 @@ use Illuminate\Foundation\Http\FormRequest;
 class UpdateRequest extends FormRequest
 {
     /**
-     * F
-     */
-    /**
      * Get the validation rules that apply to the request.
      */
     public function rules(): array

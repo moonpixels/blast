@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Actions\Teams\CreateTeamForUser;
+use App\Actions\Teams\DeleteTeam;
 use App\Actions\Teams\FilterTeamInvitations;
 use App\Actions\Teams\FilterTeamMembers;
+use App\Actions\Teams\UpdateTeam;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Team\StoreRequest;
 use App\Http\Requests\Team\UpdateRequest;
@@ -11,20 +14,12 @@ use App\Http\Resources\Team\TeamResource;
 use App\Http\Resources\TeamMembership\TeamMembershipResource;
 use App\Models\Team;
 use App\Models\TeamMembership;
-use App\Services\TeamService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
 class TeamController extends Controller
 {
-    /**
-     * Instantiate the controller.
-     */
-    public function __construct(protected readonly TeamService $teamService)
-    {
-    }
-
     /**
      * Show the team management page.
      */
@@ -59,9 +54,7 @@ class TeamController extends Controller
      */
     public function store(StoreRequest $request): RedirectResponse
     {
-        $team = $this->teamService->createTeamForUser($request->user(), $request->validated());
-
-        $request->user()->switchTeam($team);
+        $team = CreateTeamForUser::execute($request->user(), $request->validated());
 
         return redirect()->route('teams.show', $team);
     }
@@ -71,7 +64,7 @@ class TeamController extends Controller
      */
     public function update(UpdateRequest $request, Team $team): RedirectResponse
     {
-        $this->teamService->updateTeam($team, $request->validated());
+        UpdateTeam::execute($team, $request->validated());
 
         return back()->with('success', [
             'title' => __('Team updated'),
@@ -86,7 +79,7 @@ class TeamController extends Controller
     {
         $this->authorize('delete', $team);
 
-        if (! $this->teamService->deleteTeam($team)) {
+        if (! DeleteTeam::execute($team)) {
             return back()->with('error', [
                 'title' => __('Team not deleted'),
                 'message' => __('The :team_name team could not be deleted. Personal teams cannot be deleted.',

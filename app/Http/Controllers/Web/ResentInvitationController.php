@@ -2,21 +2,14 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Actions\Teams\ResendTeamInvitation;
 use App\Http\Controllers\Controller;
 use App\Models\TeamInvitation;
-use App\Services\TeamInvitationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ResentInvitationController extends Controller
 {
-    /**
-     * Instantiate the controller.
-     */
-    public function __construct(protected readonly TeamInvitationService $teamInvitationService)
-    {
-    }
-
     /**
      * Resend the given team invitation.
      */
@@ -26,7 +19,7 @@ class ResentInvitationController extends Controller
 
         $this->authorize('resend', $invitation);
 
-        $this->teamInvitationService->resendInvitation($invitation);
+        ResendTeamInvitation::execute($invitation);
 
         return back()->with('success', [
             'title' => __('Invitation resent'),

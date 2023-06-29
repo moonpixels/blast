@@ -1,8 +1,8 @@
 <?php
 
+use App\Actions\Teams\DeleteTeam;
 use App\Models\Team;
 use App\Models\User;
-use App\Services\TeamService;
 use Mockery\MockInterface;
 
 beforeEach(function () {
@@ -42,8 +42,8 @@ it('does not delete personal teams', function () {
 });
 
 it('alerts the user if there was an error deleting the team', function () {
-    $this->mock(TeamService::class, function (MockInterface $mock) {
-        $mock->shouldReceive('deleteTeam')->once()->andReturnFalse();
+    $this->mock(DeleteTeam::class, function (MockInterface $mock) {
+        $mock->shouldReceive('handle')->once()->andReturnFalse();
     });
 
     $this->delete(route('teams.destroy', $this->team))
