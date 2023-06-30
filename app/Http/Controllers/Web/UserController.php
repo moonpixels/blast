@@ -13,14 +13,6 @@ use Inertia\Response;
 class UserController extends Controller
 {
     /**
-     * Instantiate the controller.
-     */
-    public function __construct()
-    {
-        $this->middleware(['password.confirm']);
-    }
-
-    /**
      * Delete the current user.
      */
     public function destroy(Request $request, StatefulGuard $guard): RedirectResponse
