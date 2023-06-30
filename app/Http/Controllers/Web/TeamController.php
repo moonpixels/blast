@@ -64,6 +64,8 @@ class TeamController extends Controller
      */
     public function update(UpdateRequest $request, Team $team): RedirectResponse
     {
+        $this->authorize('update', $team);
+
         UpdateTeam::execute($team, $request->validated());
 
         return back()->with('success', [

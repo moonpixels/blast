@@ -39,12 +39,4 @@ class UpdateRequest extends FormRequest
             'name.unique' => __('You already have a team called :team_name.', ['team_name' => $this->input('name')]),
         ];
     }
-
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return $this->user()->can('update', $this->route('team'));
-    }
 }
