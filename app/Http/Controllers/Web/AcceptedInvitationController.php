@@ -11,14 +11,6 @@ use Illuminate\Http\RedirectResponse;
 class AcceptedInvitationController extends Controller
 {
     /**
-     * Instantiate the controller.
-     */
-    public function __construct()
-    {
-        $this->middleware(['signed']);
-    }
-
-    /**
      * Accept a team invitation.
      */
     public function show(TeamInvitation $invitation): RedirectResponse

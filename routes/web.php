@@ -41,6 +41,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Current user...
     Route::controller(UserController::class)
+        ->middleware(['password.confirm'])
         ->name('user.')
         ->group(function () {
             Route::delete('/user', 'destroy')->name('destroy');
@@ -82,7 +83,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(AcceptedInvitationController::class)
         ->name('accepted-invitations.')
         ->group(function () {
-            Route::get('accepted-invitations/{invitation}', 'show')->name('show');
+            Route::get('accepted-invitations/{invitation}', 'show')
+                ->middleware(['signed'])
+                ->name('show');
         });
 
     // Resent invitations...
