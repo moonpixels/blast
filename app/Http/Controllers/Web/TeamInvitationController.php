@@ -15,6 +15,8 @@ class TeamInvitationController extends Controller
      */
     public function store(StoreRequest $request, Team $team): RedirectResponse
     {
+        $this->authorize('inviteMember', $team);
+        
         CreateInvitationForTeam::execute($team, $request->validated());
 
         return back()->with('success', [

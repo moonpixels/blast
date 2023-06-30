@@ -29,14 +29,6 @@ class StoreRequest extends FormRequest
     }
 
     /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return $this->user()->can('inviteMember', $this->route('team'));
-    }
-
-    /**
      * Get the error messages for the defined validation rules.
      */
     public function messages(): array
