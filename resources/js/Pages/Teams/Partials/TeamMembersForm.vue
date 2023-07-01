@@ -14,7 +14,11 @@
         <div class="flex flex-grow justify-between gap-2">
           <InviteMemberForm :team="team" />
 
-          <BaseButton class="flex items-center gap-2 shadow-none" data-cy="switch-view-mode-button" @click="switchView">
+          <BaseButton
+            class="flex items-center gap-2 shadow-none focus:ring-0 focus:ring-offset-0"
+            data-cy="switch-view-mode-button"
+            @click="switchView"
+          >
             <span :class="[filters.view === 'members' ? 'text-zinc-900 dark:text-white' : '']">
               {{ $tChoice('Member|Members', 2) }}
             </span>
@@ -136,7 +140,24 @@
         </ul>
       </template>
 
-      <div class="border-t border-zinc-900/20 px-3 py-1.5 text-sm dark:border-white/20">Pagination</div>
+      <div
+        v-if="currentResource?.data.length"
+        class="flex items-center justify-between border-t border-zinc-900/20 p-3 text-sm dark:border-white/20"
+      >
+        <div>
+          <PaginationTotals
+            :paginated-resource="currentResource"
+            :resource-name="
+              filters.view === 'members'
+                ? $tChoice('member|members', currentResource.meta.total)
+                : $tChoice('invitation|invitations', currentResource.meta.total)
+            "
+            data-cy="pagination-totals"
+          />
+        </div>
+
+        <SimplePagination :paginated-resource="currentResource" />
+      </div>
     </div>
   </TwoColumnForm>
 </template>
@@ -158,8 +179,10 @@ import { Team, TeamInvitation, User } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
 import SimpleEmptyState from '@/Components/EmptyStates/SimpleEmptyState.vue'
 import DeleteTeamMemberModal from '@/Pages/Teams/Partials/DeleteTeamMemberModal.vue'
-import { watch } from 'vue'
+import { computed, watch } from 'vue'
 import debounce from 'lodash/debounce'
+import PaginationTotals from '@/Components/Pagination/PaginationTotals.vue'
+import SimplePagination from '@/Components/Pagination/SimplePagination.vue'
 
 export interface Filters {
   view: 'members' | 'invitations'
@@ -183,11 +206,16 @@ const searchForm = useForm<SearchForm>({
   search: props.filters.search ?? '',
 })
 
+const currentResource = computed<PaginatedResponse<User | TeamInvitation> | undefined>(() => {
+  return props.filters.view === 'members' ? props.members : props.invitations
+})
+
 function search() {
   router.reload({
     data: {
       view: props.filters.view,
       search: searchForm.search,
+      page: 1,
     },
     only: ['filters', 'members', 'invitations'],
   })
@@ -198,6 +226,7 @@ function switchView() {
     data: {
       view: props.filters.view === 'invitations' ? 'members' : 'invitations',
       search: props.filters.search,
+      page: 1,
     },
     only: ['filters', 'members', 'invitations'],
   })
