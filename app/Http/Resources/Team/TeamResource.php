@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Team;
 
+use App\Concerns\Unwrappable;
 use App\Http\Resources\TeamInvitation\TeamInvitationResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\Team;
@@ -11,17 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /** @mixin Team */
 class TeamResource extends JsonResource
 {
-    /**
-     * Instantiate the resource.
-     */
-    public function __construct(mixed $resource, protected bool $withoutWrapping = false)
-    {
-        parent::__construct($resource);
-
-        if ($this->withoutWrapping) {
-            self::withoutWrapping();
-        }
-    }
+    use Unwrappable;
 
     /**
      * Transform the resource into an array.
