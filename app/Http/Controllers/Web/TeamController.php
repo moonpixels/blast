@@ -32,7 +32,7 @@ class TeamController extends Controller
                 'view' => $request->query('view', 'members'),
                 'search' => $request->query('search'),
             ],
-            'team' => new TeamResource($team, true),
+            'team' => TeamResource::createWithoutWrapping($team),
         ];
 
         if ($request->user()->ownsTeam($team)) {
@@ -43,7 +43,7 @@ class TeamController extends Controller
             }
         } else {
             $membership = TeamMembership::whereUserId($request->user()->id)->whereTeamId($team->id)->first();
-            $props['teamMembership'] = new TeamMembershipResource($membership, true);
+            $props['teamMembership'] = TeamMembershipResource::createWithoutWrapping($membership);
         }
 
         return inertia('Teams/Show', $props);
