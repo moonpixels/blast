@@ -53,7 +53,7 @@ jobs:
         run: npm install
 
       - name: Run Prettier
-        run: npm run prettier:check
+        run: npm run prettier
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
