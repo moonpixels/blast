@@ -19,7 +19,7 @@ beforeEach(function () {
 });
 
 it('can accept a team invitation', function () {
-    expect(AcceptTeamInvitation::execute($this->teamInvitation))->toBeTrue()
+    expect(AcceptTeamInvitation::run($this->teamInvitation))->toBeTrue()
         ->and($this->invitedUser->belongsToTeam($this->team))->toBeTrue()
         ->and($this->team->id)->toEqual($this->invitedUser->fresh()->current_team_id);
 
@@ -30,7 +30,7 @@ it('throws an exception when accepting an invitation if the user is already on t
     $this->invitedUser->teams()->attach($this->team);
 
     try {
-        AcceptTeamInvitation::execute($this->teamInvitation);
+        AcceptTeamInvitation::run($this->teamInvitation);
     } catch (InvalidTeamMembershipException $e) {
         $this->assertModelMissing($this->teamInvitation);
         throw $e;
@@ -40,5 +40,5 @@ it('throws an exception when accepting an invitation if the user is already on t
 it('throws an exception when accepting an invitation if the user does not exist', function () {
     $this->teamInvitation->update(['email' => 'invalid-email@blst.to']);
 
-    AcceptTeamInvitation::execute($this->teamInvitation);
+    AcceptTeamInvitation::run($this->teamInvitation);
 })->throws(ModelNotFoundException::class);

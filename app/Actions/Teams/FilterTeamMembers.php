@@ -2,14 +2,14 @@
 
 namespace App\Actions\Teams;
 
-use App\Concerns\Actionable;
 use App\Http\Resources\User\UserResource;
 use App\Models\Team;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class FilterTeamMembers
 {
-    use Actionable;
+    use AsAction;
 
     /**
      * Filter the team members.

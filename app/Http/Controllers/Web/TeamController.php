@@ -37,9 +37,9 @@ class TeamController extends Controller
 
         if ($request->user()->ownsTeam($team)) {
             if ($request->query('view') === 'invitations') {
-                $props['invitations'] = FilterTeamInvitations::execute($team, $request->query('search'));
+                $props['invitations'] = FilterTeamInvitations::run($team, $request->query('search'));
             } else {
-                $props['members'] = FilterTeamMembers::execute($team, $request->query('search'));
+                $props['members'] = FilterTeamMembers::run($team, $request->query('search'));
             }
         } else {
             $membership = TeamMembership::whereUserId($request->user()->id)->whereTeamId($team->id)->first();
@@ -54,7 +54,7 @@ class TeamController extends Controller
      */
     public function store(StoreRequest $request): RedirectResponse
     {
-        $team = CreateTeamForUser::execute($request->user(), $request->validated());
+        $team = CreateTeamForUser::run($request->user(), $request->validated());
 
         return redirect()->route('teams.show', $team);
     }
@@ -66,7 +66,7 @@ class TeamController extends Controller
     {
         $this->authorize('update', $team);
 
-        UpdateTeam::execute($team, $request->validated());
+        UpdateTeam::run($team, $request->validated());
 
         return back()->with('success', [
             'title' => __('Team updated'),
@@ -81,7 +81,7 @@ class TeamController extends Controller
     {
         $this->authorize('delete', $team);
 
-        if (! DeleteTeam::execute($team)) {
+        if (! DeleteTeam::run($team)) {
             return back()->with('error', [
                 'title' => __('Team not deleted'),
                 'message' => __('The :team_name team could not be deleted. Personal teams cannot be deleted.',

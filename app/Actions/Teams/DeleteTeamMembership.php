@@ -2,13 +2,13 @@
 
 namespace App\Actions\Teams;
 
-use App\Concerns\Actionable;
 use App\Models\TeamMembership;
 use Illuminate\Support\Facades\DB;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class DeleteTeamMembership
 {
-    use Actionable;
+    use AsAction;
 
     /**
      * Delete the given team membership.

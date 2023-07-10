@@ -2,13 +2,13 @@
 
 namespace App\Actions\Teams;
 
-use App\Concerns\Actionable;
 use App\Models\TeamInvitation;
 use App\Notifications\TeamInvitationNotification;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class ResendTeamInvitation
 {
-    use Actionable;
+    use AsAction;
 
     /**
      * Resend the given team invitation.

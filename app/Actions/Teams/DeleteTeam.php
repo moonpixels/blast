@@ -2,14 +2,14 @@
 
 namespace App\Actions\Teams;
 
-use App\Concerns\Actionable;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class DeleteTeam
 {
-    use Actionable;
+    use AsAction;
 
     /**
      * Delete the given team.

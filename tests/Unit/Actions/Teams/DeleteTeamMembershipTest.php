@@ -11,7 +11,7 @@ beforeEach(function () {
 });
 
 it('can delete a team membership', function () {
-    $this->assertTrue(DeleteTeamMembership::execute($this->membershipTeam->team_membership));
+    $this->assertTrue(DeleteTeamMembership::run($this->membershipTeam->team_membership));
 
     $this->assertFalse($this->user->belongsToTeam($this->membershipTeam));
 });
@@ -19,7 +19,7 @@ it('can delete a team membership', function () {
 it('switches the users current team to their personal team when deleting a team membership', function () {
     $this->user->switchTeam($this->membershipTeam);
 
-    $this->assertTrue(DeleteTeamMembership::execute($this->membershipTeam->team_membership));
+    $this->assertTrue(DeleteTeamMembership::run($this->membershipTeam->team_membership));
 
     $this->assertFalse($this->user->belongsToTeam($this->membershipTeam));
 

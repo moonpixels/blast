@@ -15,7 +15,7 @@ beforeEach(function () {
 it('can invite a new team member to the given team', function () {
     Notification::fake();
 
-    $invitation = CreateInvitationForTeam::execute($this->team, [
+    $invitation = CreateInvitationForTeam::run($this->team, [
         'email' => 'user@blst.to',
     ]);
 

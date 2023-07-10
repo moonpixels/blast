@@ -13,25 +13,25 @@ beforeEach(function () {
 });
 
 it('returns all results if a search term is not sent', function () {
-    $invitations = FilterTeamInvitations::execute($this->team);
+    $invitations = FilterTeamInvitations::run($this->team);
 
     expect($invitations->count())->toBe(10);
 });
 
 it('returns filtered results if a search term is sent', function () {
-    $invitations = FilterTeamInvitations::execute($this->team, '@blst.to');
+    $invitations = FilterTeamInvitations::run($this->team, '@blst.to');
 
     expect($invitations->count())->toBe(1);
 });
 
 it('returns an empty collection if no results are found', function () {
-    $invitations = FilterTeamInvitations::execute($this->team, 'invitation does not exist');
+    $invitations = FilterTeamInvitations::run($this->team, 'invitation does not exist');
 
     expect($invitations->count())->toBe(0);
 });
 
 it('returns a paginated collection', function () {
-    $invitations = FilterTeamInvitations::execute($this->team);
+    $invitations = FilterTeamInvitations::run($this->team);
 
     expect($invitations->currentPage())->toBe(1)
         ->and($invitations->perPage())->toBe(10)

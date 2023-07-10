@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $guard->logout();
 
-        if (DeleteUser::execute($request->user())) {
+        if (DeleteUser::run($request->user())) {
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 

@@ -10,7 +10,7 @@ beforeEach(function () {
 });
 
 it('can create a standard team for a user', function () {
-    $team = CreateTeamForUser::execute($this->user, ['name' => 'Test Team']);
+    $team = CreateTeamForUser::run($this->user, ['name' => 'Test Team']);
 
     expect($team->name)->toBe('Test Team')
         ->and($team->personal_team)->toBeFalse()
@@ -27,7 +27,7 @@ it('can create a standard team for a user', function () {
 });
 
 it('can create a personal team for a user', function () {
-    $team = CreateTeamForUser::execute($this->user, ['name' => 'Test Team', 'personal_team' => true]);
+    $team = CreateTeamForUser::run($this->user, ['name' => 'Test Team', 'personal_team' => true]);
 
     expect($team->name)->toBe('Test Team')
         ->and($team->personal_team)->toBeTrue()

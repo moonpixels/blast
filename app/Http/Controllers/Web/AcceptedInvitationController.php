@@ -16,7 +16,7 @@ class AcceptedInvitationController extends Controller
     public function show(TeamInvitation $invitation): RedirectResponse
     {
         try {
-            AcceptTeamInvitation::execute($invitation);
+            AcceptTeamInvitation::run($invitation);
 
             return redirect(config('fortify.home'))->with('success', [
                 'title' => __('Invitation accepted'),

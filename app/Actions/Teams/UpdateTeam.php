@@ -2,12 +2,12 @@
 
 namespace App\Actions\Teams;
 
-use App\Concerns\Actionable;
 use App\Models\Team;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class UpdateTeam
 {
-    use Actionable;
+    use AsAction;
 
     /**
      * Update the given team.

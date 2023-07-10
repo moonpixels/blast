@@ -8,7 +8,7 @@ beforeEach(function () {
 });
 
 it('can delete a user', function () {
-    $this->assertTrue(DeleteUser::execute($this->user));
+    $this->assertTrue(DeleteUser::run($this->user));
 
     $this->assertModelMissing($this->user);
 });

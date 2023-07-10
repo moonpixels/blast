@@ -17,7 +17,7 @@ class TeamMembershipController extends Controller
     {
         $this->authorize('delete', $teamMembership);
 
-        DeleteTeamMembership::execute($teamMembership);
+        DeleteTeamMembership::run($teamMembership);
 
         if ($request->user()->ownsTeam($teamMembership->team)) {
             return back()->with('success', [

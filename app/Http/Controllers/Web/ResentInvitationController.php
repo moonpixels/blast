@@ -19,7 +19,7 @@ class ResentInvitationController extends Controller
 
         $this->authorize('resend', $invitation);
 
-        ResendTeamInvitation::execute($invitation);
+        ResendTeamInvitation::run($invitation);
 
         return back()->with('success', [
             'title' => __('Invitation resent'),
