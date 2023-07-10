@@ -2,14 +2,14 @@
 
 namespace App\Actions\Teams;
 
-use App\Concerns\Actionable;
 use App\Models\Team;
 use App\Models\TeamInvitation;
 use App\Notifications\TeamInvitationNotification;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class CreateInvitationForTeam
 {
-    use Actionable;
+    use AsAction;
 
     /**
      * Create a new team invitation for the given team.

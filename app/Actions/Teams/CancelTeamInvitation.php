@@ -2,12 +2,12 @@
 
 namespace App\Actions\Teams;
 
-use App\Concerns\Actionable;
 use App\Models\TeamInvitation;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class CancelTeamInvitation
 {
-    use Actionable;
+    use AsAction;
 
     /**
      * Cancel the given team invitation.

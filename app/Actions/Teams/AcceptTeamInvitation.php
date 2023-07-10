@@ -2,14 +2,14 @@
 
 namespace App\Actions\Teams;
 
-use App\Concerns\Actionable;
 use App\Exceptions\InvalidTeamMembershipException;
 use App\Models\TeamInvitation;
 use App\Models\User;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class AcceptTeamInvitation
 {
-    use Actionable;
+    use AsAction;
 
     /**
      * Accept a team invitation.

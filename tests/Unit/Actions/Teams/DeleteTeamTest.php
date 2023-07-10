@@ -14,13 +14,13 @@ beforeEach(function () {
 });
 
 it('can delete a team', function () {
-    DeleteTeam::execute($this->standardTeam);
+    DeleteTeam::run($this->standardTeam);
 
     $this->assertModelMissing($this->standardTeam);
 });
 
 it('cannot delete a personal team', function () {
-    $this->assertFalse(DeleteTeam::execute($this->user->personalTeam()));
+    $this->assertFalse(DeleteTeam::run($this->user->personalTeam()));
 
     $this->assertModelExists($this->user->personalTeam());
 });
@@ -29,7 +29,7 @@ it('can delete a team and reassign the users and owner to their personal teams',
     $this->membershipTeam->owner->switchTeam($this->membershipTeam);
     $this->user->switchTeam($this->membershipTeam);
 
-    $this->assertTrue(DeleteTeam::execute($this->membershipTeam));
+    $this->assertTrue(DeleteTeam::run($this->membershipTeam));
 
     $this->assertModelMissing($this->membershipTeam);
 

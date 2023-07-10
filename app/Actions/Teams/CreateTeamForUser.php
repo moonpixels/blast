@@ -2,13 +2,13 @@
 
 namespace App\Actions\Teams;
 
-use App\Concerns\Actionable;
 use App\Models\Team;
 use App\Models\User;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class CreateTeamForUser
 {
-    use Actionable;
+    use AsAction;
 
     /**
      * Create a new team for the given user.

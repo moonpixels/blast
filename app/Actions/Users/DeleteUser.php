@@ -2,12 +2,12 @@
 
 namespace App\Actions\Users;
 
-use App\Concerns\Actionable;
 use App\Models\User;
+use Lorisleiva\Actions\Concerns\AsAction;
 
 class DeleteUser
 {
-    use Actionable;
+    use AsAction;
 
     /**
      * Delete the given user.

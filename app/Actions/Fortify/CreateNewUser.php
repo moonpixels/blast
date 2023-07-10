@@ -42,7 +42,7 @@ class CreateNewUser implements CreatesNewUsers
                 'password' => Hash::make($input['password']),
             ]);
 
-            CreateTeamForUser::execute($user, [
+            CreateTeamForUser::run($user, [
                 'name' => __('Personal Team'),
                 'personal_team' => true,
             ]);

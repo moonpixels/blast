@@ -17,7 +17,7 @@ class TeamInvitationController extends Controller
     {
         $this->authorize('inviteMember', $team);
 
-        CreateInvitationForTeam::execute($team, $request->validated());
+        CreateInvitationForTeam::run($team, $request->validated());
 
         return back()->with('success', [
             'title' => __('Invitation sent'),

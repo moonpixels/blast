@@ -22,7 +22,7 @@ beforeEach(function () {
 it('can resend a team invitation', function () {
     Notification::fake();
 
-    expect(ResendTeamInvitation::execute($this->teamInvitation))->toBeTrue();
+    expect(ResendTeamInvitation::run($this->teamInvitation))->toBeTrue();
 
     Notification::assertSentTo($this->teamInvitation, TeamInvitationNotification::class, function ($notification) {
         $mail = $notification->toMail($this->teamInvitation);

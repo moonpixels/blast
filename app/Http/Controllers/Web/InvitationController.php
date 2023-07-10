@@ -16,7 +16,7 @@ class InvitationController extends Controller
     {
         $this->authorize('delete', $invitation);
 
-        CancelTeamInvitation::execute($invitation);
+        CancelTeamInvitation::run($invitation);
 
         return back()->with('success', [
             'title' => __('Invitation cancelled'),

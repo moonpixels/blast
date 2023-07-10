@@ -17,7 +17,7 @@ beforeEach(function () {
 });
 
 it('can cancel a team invitation', function () {
-    expect(CancelTeamInvitation::execute($this->teamInvitation))->toBeTrue();
+    expect(CancelTeamInvitation::run($this->teamInvitation))->toBeTrue();
 
     $this->assertModelMissing($this->teamInvitation);
 });
