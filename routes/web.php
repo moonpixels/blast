@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->name('links.')
         ->group(function () {
             Route::get('/links', 'index')->name('index');
+            Route::post('/links', 'store')->name('store');
         });
 
     // Current user...

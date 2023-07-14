@@ -34,3 +34,11 @@ export interface TeamMembership {
   team_id: string
   user_id: string
 }
+
+export interface Link {
+  id: string
+  team_id: string
+  alias: string
+  destination_url: string
+  short_url: string
+}

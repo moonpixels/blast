@@ -7,29 +7,24 @@
       'rounded-md border px-3 py-2 shadow-sm focus-within:ring-1',
     ]"
   >
-    <label :class="[disabledClasses, hideLabel ? 'sr-only' : '', 'mb-1 block text-xs font-medium']" :for="id">
+    <label v-if="!hideLabel" :class="[disabledClasses, 'mb-1 block text-xs font-medium']" :for="id">
       {{ label }}
     </label>
 
     <div class="relative">
-      <div v-if="$slots.icon" class="pointer-events-none absolute inset-y-0 left-0 -ml-1 flex items-center">
-        <slot name="icon" />
-      </div>
-
-      <input
+      <select
         :id="id"
         ref="input"
         :class="[
           disabledClasses,
-          $slots.icon ? 'p-0 pl-4' : 'p-0',
-          'block w-full truncate border-0 bg-transparent text-zinc-900 placeholder-zinc-400 focus:ring-0 dark:text-zinc-100 dark:placeholder-zinc-500 sm:text-sm',
+          'block w-full truncate border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-400 focus:ring-0 dark:text-zinc-100 dark:placeholder-zinc-500 sm:text-sm',
         ]"
-        :inputmode="inputMode"
-        :type="type"
         :value="modelValue"
         v-bind="{ ...attrs }"
         @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-      />
+      >
+        <slot />
+      </select>
     </div>
 
     <InputErrorMessage v-if="error" class="border-t border-zinc-900/20 pt-1 dark:border-white/20">
@@ -49,7 +44,6 @@ defineOptions({
 
 interface Props {
   id?: string
-  type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url'
   error?: string
   label: string
   hideLabel?: boolean
@@ -59,39 +53,19 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   id: () => {
-    return `text-input-${nanoid()}`
+    return `select-input-${nanoid()}`
   },
-  type: 'text',
   error: undefined,
   hideLabel: false,
 })
 
-const emit = defineEmits<{
+defineEmits<{
   (e: 'update:modelValue', value: any): void
 }>()
 
 const attrs = useAttrs()
 
 const input = ref<HTMLInputElement>()
-
-type HTMLInputMode = 'search' | 'text' | 'none' | 'email' | 'tel' | 'url' | 'numeric' | 'decimal'
-
-const inputMode = computed<HTMLInputMode>(() => {
-  switch (attrs.inputmode ?? props.type) {
-    case 'email':
-      return 'email'
-    case 'number':
-      return 'numeric'
-    case 'search':
-      return 'search'
-    case 'tel':
-      return 'tel'
-    case 'url':
-      return 'url'
-    default:
-      return 'text'
-  }
-})
 
 const disabledClasses = computed<string>(() => {
   return attrs.disabled !== undefined ? 'cursor-not-allowed opacity-75' : ''
@@ -109,14 +83,6 @@ const backgroundClasses = computed<string>(() => {
 
 function focus(): void {
   input.value?.focus()
-}
-
-function select(): void {
-  input.value?.select()
-}
-
-function setSelectionRange(start: number, end: number): void {
-  input.value?.setSelectionRange(start, end)
 }
 
 onMounted(() => {

@@ -1,9 +1,12 @@
 <template>
   <button
-    :class="sizeClasses"
+    :class="[
+      sizeClasses,
+      shadowClasses,
+      'focus-ring group inline-flex items-center justify-center rounded-md border border-transparent font-medium transition-all duration-200 ease-in-out disabled:pointer-events-none disabled:opacity-60',
+    ]"
     :disabled="loading"
     :type="type"
-    class="focus-ring group inline-flex items-center justify-center rounded-md border border-transparent font-medium shadow-sm transition-all duration-200 ease-in-out disabled:pointer-events-none disabled:opacity-60"
   >
     <ButtonLoadingAnimation v-if="loading" />
 
@@ -19,6 +22,7 @@ export interface ButtonProps {
   type?: 'button' | 'submit' | 'reset'
   loading?: boolean
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'icon'
+  noShadow?: boolean
 }
 
 const props = withDefaults(defineProps<ButtonProps>(), {
@@ -42,5 +46,9 @@ const sizeClasses = computed<string>(() => {
     default:
       return ''
   }
+})
+
+const shadowClasses = computed<string>(() => {
+  return props.noShadow ? '' : 'shadow-sm'
 })
 </script>

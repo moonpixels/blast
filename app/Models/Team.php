@@ -66,4 +66,12 @@ class Team extends Model
     {
         return $this->hasMany(TeamInvitation::class)->latest();
     }
+
+    /**
+     * Get all the links that belong to the team.
+     */
+    public function links(): HasMany
+    {
+        return $this->hasMany(Link::class);
+    }
 }
