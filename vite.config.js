@@ -19,4 +19,12 @@ export default defineConfig({
     }),
     i18n(),
   ],
+  resolve: {
+    alias: [
+      {
+        find: '@',
+        replacement: '/resources/js',
+      },
+    ],
+  },
 })

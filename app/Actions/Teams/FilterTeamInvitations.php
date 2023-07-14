@@ -14,7 +14,7 @@ class FilterTeamInvitations
     /**
      * Filter the team invitations.
      */
-    public function handle(Team $team, ?string $searchTerm = null): ResourceCollection
+    public function handle(Team $team, string $searchTerm = null): ResourceCollection
     {
         return TeamInvitationResource::collection($team->invitations()
             ->whereEmailLike($searchTerm)

@@ -17,6 +17,7 @@
           <BaseButton
             class="flex items-center gap-2 shadow-none focus:ring-0 focus:ring-offset-0"
             data-cy="switch-view-mode-button"
+            no-shadow
             @click="switchView"
           >
             <span :class="[filters.view === 'members' ? 'text-zinc-900 dark:text-white' : '']">

@@ -1,6 +1,7 @@
 <template>
   <BaseButton
     class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
+    no-shadow
     size="icon"
     type="button"
   >
@@ -29,10 +30,10 @@ const classes = computed<string>(() => {
   switch (props.size) {
     case 'sm':
       return 'h-4 w-4'
-    case 'md':
-      return 'h-5 w-5'
     case 'lg':
       return 'h-6 w-6'
+    default:
+      return 'h-5 w-5'
   }
 })
 </script>

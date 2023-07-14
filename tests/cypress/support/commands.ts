@@ -9,6 +9,8 @@ declare global {
       getFormInput(label: string): Chainable<any>
 
       confirmPassword(password: string): Chainable<any>
+
+      assertValueCopiedToClipboard(value: string): Chainable<any>
     }
   }
 }
@@ -54,4 +56,15 @@ Cypress.Commands.add('confirmPassword', (password: string) => {
   })
 
   cy.get('[data-cy="confirm-password-form"]').should('not.exist')
+})
+
+/**
+ * Assert the given value has been copied to the clipboard.
+ */
+Cypress.Commands.add('assertValueCopiedToClipboard', (value: string) => {
+  cy.window().then((win) => {
+    win.navigator.clipboard.readText().then((text) => {
+      expect(text).to.eq(value)
+    })
+  })
 })

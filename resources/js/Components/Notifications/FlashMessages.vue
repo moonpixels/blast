@@ -1,11 +1,11 @@
 <template>
   <div aria-live="assertive" class="pointer-events-none fixed inset-0 flex items-end px-6 py-4 sm:py-6">
     <div class="flex w-full flex-col items-center space-y-4 sm:items-end">
-      <transition
-        enter-active-class="transition ease-out duration-200"
+      <Transition
+        enter-active-class="transition ease-in-out duration-200"
         enter-from-class="transform opacity-0 scale-95"
         enter-to-class="transform opacity-100 scale-100"
-        leave-active-class="transition ease-in duration-75"
+        leave-active-class="transition ease-in-out duration-75"
         leave-from-class="transform opacity-100 scale-100"
         leave-to-class="transform opacity-0 scale-95"
       >
@@ -44,7 +44,7 @@
           >
           </span>
         </div>
-      </transition>
+      </Transition>
     </div>
   </div>
 </template>

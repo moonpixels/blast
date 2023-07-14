@@ -16,7 +16,6 @@ lang/php_*.json
 /tests/cypress/videos
 /tests/cypress/screenshots
 /tests/cypress/support/routes.json
-vite.config.js
 composer.lock
 docker-compose.yml
 /public/vendor
