@@ -14,7 +14,7 @@ class FilterTeamMembers
     /**
      * Filter the team members.
      */
-    public function handle(Team $team, ?string $searchTerm = null): ResourceCollection
+    public function handle(Team $team, string $searchTerm = null): ResourceCollection
     {
         return UserResource::collection($team->users()
             ->whereEmailLike($searchTerm)
