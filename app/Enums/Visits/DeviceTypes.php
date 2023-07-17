@@ -18,7 +18,7 @@ enum DeviceTypes: string
         if ($agent->isTablet()) {
             return self::Tablet;
         }
-        
+
         if ($agent->isMobile()) {
             return self::Mobile;
         }

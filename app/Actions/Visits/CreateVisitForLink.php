@@ -25,7 +25,7 @@ class CreateVisitForLink
     /**
      * Create a new visit for the given link.
      */
-    public function handle(Link $link, ?string $userAgent = null, ?string $referer = null): Visit
+    public function handle(Link $link, string $userAgent = null, string $referer = null): Visit
     {
         $visit = Visit::make([
             'link_id' => $link->id,

@@ -51,7 +51,7 @@ class VisitFactory extends Factory
     /**
      * Indicate that the visit has user agent information.
      */
-    public function withUserAgent(?string $userAgent = null): self
+    public function withUserAgent(string $userAgent = null): self
     {
         $agent = new Agent();
         $agent->setUserAgent($userAgent ?: $this->faker->userAgent());
