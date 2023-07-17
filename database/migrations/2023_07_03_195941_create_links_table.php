@@ -12,8 +12,9 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->foreignUlid('team_id')->index();
             $table->foreignUlid('domain_id')->index();
-            $table->string('destination_path', 2048);
+            $table->string('destination_path', 2048)->nullable();
             $table->string('alias', 20)->unique()->collation('utf8mb4_bin');
+            $table->mediumInteger('total_visits')->unsigned()->default(0);
             $table->timestamps();
         });
     }

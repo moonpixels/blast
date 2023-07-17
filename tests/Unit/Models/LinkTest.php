@@ -22,3 +22,11 @@ it('generates a short link based on the app url config', function () {
 it('generates the correct destination URL', function () {
     expect($this->link->destination_url)->toBe('https://blst.to/test');
 });
+
+it('increments the total visits for the link', function () {
+    expect($this->link->total_visits)->toBe(0);
+
+    $this->link->incrementTotalVisits();
+
+    expect($this->link->total_visits)->toBe(1);
+});

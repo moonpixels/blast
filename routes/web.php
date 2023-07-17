@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\AcceptedInvitationController;
 use App\Http\Controllers\Web\InvitationController;
 use App\Http\Controllers\Web\LinkController;
+use App\Http\Controllers\Web\RedirectController;
 use App\Http\Controllers\Web\ResentInvitationController;
 use App\Http\Controllers\Web\TeamController;
 use App\Http\Controllers\Web\TeamInvitationController;
@@ -103,3 +104,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::delete('/team-memberships/{teamMembership}', 'destroy')->name('destroy');
         });
 });
+
+Route::get('/{alias}', [RedirectController::class, 'show'])->name('redirects.show');

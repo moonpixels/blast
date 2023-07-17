@@ -24,6 +24,7 @@ class LinkFactory extends Factory
             'domain_id' => Domain::factory(),
             'destination_path' => '/'.$this->faker->slug,
             'alias' => $this->faker->unique()->regexify('[a-zA-Z0-9]{7}'),
+            'total_visits' => 0,
         ];
     }
 }

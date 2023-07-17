@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Link extends Model
 {
@@ -18,6 +19,15 @@ class Link extends Model
      * @var array<string>
      */
     protected $guarded = ['id'];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'total_visits' => 'integer',
+    ];
 
     /**
      * The attributes to be appended to the model's array form.
@@ -50,6 +60,22 @@ class Link extends Model
     public function team(): BelongsTo
     {
         return $this->belongsTo(Team::class);
+    }
+
+    /**
+     * Get the visits for the link.
+     */
+    public function visits(): HasMany
+    {
+        return $this->hasMany(Visit::class);
+    }
+
+    /**
+     * Increment the total visits for the link.
+     */
+    public function incrementTotalVisits(): void
+    {
+        $this->increment('total_visits');
     }
 
     /**
