@@ -23,7 +23,7 @@ class Visit extends Model
     /**
      * The attributes that should be cast.
      *
-     * @var array<string>
+     * @var array<string, string>
      */
     protected $casts = [
         'device_type' => DeviceTypes::class,

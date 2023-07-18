@@ -27,9 +27,9 @@ class CreateVisitForLink
      */
     public function handle(Link $link, ?string $userAgent = null, ?string $referer = null): Visit
     {
-        $visit = Visit::make([
-            'link_id' => $link->id,
-        ]);
+        $visit = new Visit;
+
+        $visit->link()->associate($link);
 
         if ($userAgent) {
             $this->agent->setUserAgent($userAgent);
