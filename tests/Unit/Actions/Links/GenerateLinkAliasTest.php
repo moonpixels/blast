@@ -3,9 +3,6 @@
 use App\Actions\Links\GenerateLinkAlias;
 use Illuminate\Support\Facades\Log;
 
-beforeEach(function () {
-});
-
 it('can generate a unique alias', function () {
     $alias = GenerateLinkAlias::run();
 
