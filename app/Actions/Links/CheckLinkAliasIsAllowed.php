@@ -17,7 +17,7 @@ class CheckLinkAliasIsAllowed
         $reservedAliases = collect(app('router')->getRoutes())->map(function ($route) {
             return Str::before($route->uri(), '/');
         })->merge(config('blast.reserved_aliases'))->unique();
-        
+
         return ! $reservedAliases->contains(function ($reservedAlias) use ($alias) {
             return Str::lower($reservedAlias) === Str::lower($alias);
         });
