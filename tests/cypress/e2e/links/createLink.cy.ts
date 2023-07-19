@@ -104,6 +104,24 @@ describe('Create link', () => {
         'contain',
         'The alias field must not be greater than 20 characters.'
       )
+
+      // Reserved
+      cy.get('[data-cy="set-alias-button"]').click()
+      cy.get('[data-cy="link-options-popover"]').within(() => {
+        cy.getFormInput('Alias').clear().type('admin')
+        cy.get('[data-cy="dismiss-options-popover-button"]').click()
+      })
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('[data-cy="link-options-errors"]').should('contain', 'The alias has already been taken.')
+
+      // Route conflict
+      cy.get('[data-cy="set-alias-button"]').click()
+      cy.get('[data-cy="link-options-popover"]').within(() => {
+        cy.getFormInput('Alias').clear().type('login')
+        cy.get('[data-cy="dismiss-options-popover-button"]').click()
+      })
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('[data-cy="link-options-errors"]').should('contain', 'The alias has already been taken.')
     })
 
     // Already taken

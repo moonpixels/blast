@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Actions\Links\CreateLink;
 use App\Actions\Links\FilterLinks;
 use App\Exceptions\InvalidUrlException;
+use App\Exceptions\ReservedAliasException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Link\StoreRequest;
 use App\Http\Resources\Link\LinkResource;
@@ -41,9 +42,13 @@ class LinkController extends Controller
     {
         try {
             $link = CreateLink::run($request->validated());
-        } catch (InvalidUrlException $e) {
+        } catch (InvalidUrlException) {
             return back()->withErrors([
                 'url' => __('The URL is invalid.'),
+            ]);
+        } catch (ReservedAliasException) {
+            return back()->withErrors([
+                'alias' => __('The alias has already been taken.'),
             ]);
         }
 

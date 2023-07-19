@@ -4,6 +4,7 @@ namespace App\Http\Requests\Link;
 
 use App\Actions\Links\FormatRawUrl;
 use App\Rules\BelongsToTeam;
+use App\Rules\NotReservedAlias;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -15,7 +16,9 @@ class StoreRequest extends FormRequest
     {
         return [
             'url' => ['required', 'string', 'url', 'active_url', 'max:2048'],
-            'alias' => ['sometimes', 'string', 'alpha_num:ascii', 'max:20', 'unique:links,alias'],
+            'alias' => [
+                'sometimes', 'string', 'alpha_num:ascii', 'max:20', 'unique:links,alias', new NotReservedAlias,
+            ],
             'team_id' => ['bail', 'required', 'ulid', 'exists:teams,id', new BelongsToTeam($this->user())],
         ];
     }

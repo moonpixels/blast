@@ -118,6 +118,26 @@ it('does not create a link when the alias is too long', function () {
     expect(Link::count())->toBe(0);
 });
 
+it('does not create a link when the alias is on the reserved list', function () {
+    $this->post(route('links.store'), [
+        'url' => 'https://blst.to',
+        'alias' => 'admin',
+        'team_id' => $this->standardTeam->id,
+    ])->assertInvalid('alias');
+
+    expect(Link::count())->toBe(0);
+});
+
+it('does not create a link when the alias matches an app route', function () {
+    $this->post(route('links.store'), [
+        'url' => 'https://blst.to',
+        'alias' => 'login',
+        'team_id' => $this->standardTeam->id,
+    ])->assertInvalid('alias');
+
+    expect(Link::count())->toBe(0);
+});
+
 it('does not create a link when the alias contains invalid characters', function () {
     $this->post(route('links.store'), [
         'url' => 'https://blst.to',
