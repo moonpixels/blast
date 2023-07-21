@@ -33,7 +33,7 @@ class LinkController extends Controller
 
                 return null;
             }),
-            'links' => FilterLinks::run($request->user()->currentTeam),
+            'links' => FilterLinks::run($request->user()->currentTeam, $request->query('search')),
         ]);
     }
 

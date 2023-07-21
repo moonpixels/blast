@@ -125,4 +125,24 @@ describe('List links', () => {
         })
     })
   })
+
+  it('should allows links to be searched', () => {
+    cy.create({
+      model: 'App\\Models\\Link',
+      attributes: {
+        team_id: teamId,
+        alias: 'myAlias',
+      },
+    }).then(() => {
+      cy.reload()
+
+      cy.get('[data-cy="links-list"]').children().should('have.length', 1)
+
+      cy.get('[data-cy="search-links-input"]').type('myAlias')
+      cy.get('[data-cy="links-list"]').children().should('have.length', 1)
+
+      cy.get('[data-cy="search-links-input"]').clear().type('notFound')
+      cy.get('[data-cy="no-links-empty-state"]').should('exist')
+    })
+  })
 })

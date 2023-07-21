@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 class Link extends Model
 {
-    use HasFactory, HasUlids;
+    use HasFactory, HasUlids, Searchable;
 
     /**
      * The attributes that aren't mass assignable.
@@ -76,6 +77,24 @@ class Link extends Model
     public function incrementTotalVisits(): void
     {
         $this->increment('total_visits');
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'team_id' => $this->team_id,
+            'alias' => $this->alias,
+            'destination_path' => $this->destination_path,
+            'destination_url' => $this->destination_url,
+            'short_url' => $this->short_url,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 
     /**

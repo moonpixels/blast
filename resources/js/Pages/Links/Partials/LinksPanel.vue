@@ -93,12 +93,12 @@ import { LinkIcon } from '@heroicons/vue/24/outline'
 import PaginationTotals from '@/Components/Pagination/PaginationTotals.vue'
 import TextInput from '@/Components/Inputs/TextInput.vue'
 import SimplePagination from '@/Components/Pagination/SimplePagination.vue'
-import { useForm } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
 import { Link } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import ClipboardJS from 'clipboard'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import ResourcePanel from '@/Components/ResourcePanel/ResourcePanel.vue'
 import ResourcePanelHeader from '@/Components/ResourcePanel/ResourcePanelHeader.vue'
 import ResourcePanelList from '@/Components/ResourcePanel/ResourcePanelList.vue'
@@ -106,6 +106,7 @@ import ResourcePanelListItem from '@/Components/ResourcePanel/ResourcePanelListI
 import ResourcePanelFooter from '@/Components/ResourcePanel/ResourcePanelFooter.vue'
 import { useTippy } from 'vue-tippy'
 import { trans } from 'laravel-vue-i18n'
+import debounce from 'lodash/debounce'
 
 export interface Filters {
   search?: string
@@ -153,4 +154,16 @@ function copyLinkToClipboard(link: Link, event: Event): void {
     }, 2000)
   }
 }
+
+function search() {
+  router.reload({
+    data: {
+      search: searchForm.search,
+      page: 1,
+    },
+    only: ['filters', 'links'],
+  })
+}
+
+watch(() => searchForm.search, debounce(search, 500))
 </script>
