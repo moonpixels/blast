@@ -21,8 +21,7 @@ it('shows the list links page to users', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Links/Index')
-            ->has('filters', fn (Assert $page) => $page
-                ->where('search', null))
+            ->where('filters.query', null)
             ->missing('shortenedLink')
             ->has('links.data', 0)
         );
@@ -96,6 +95,23 @@ it('gets the shortened link from the session if it exists', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Links/Index')
             ->has('shortenedLink', fn (Assert $page) => $page
+                ->where('id', $link->id)
+                ->etc()
+            )
+        );
+});
+
+it('gets the correct links when searching', function () {
+    Link::factory(5)->for($this->user->currentTeam)->create();
+    $link = Link::factory()->for($this->user->currentTeam)->create(['alias' => 'myAlias']);
+
+    $this->get(route('links.index', ['query' => 'myAlias']))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Links/Index')
+            ->where('filters.query', 'myAlias')
+            ->has('links.data', 1)
+            ->has('links.data.0', fn (Assert $page) => $page
                 ->where('id', $link->id)
                 ->etc()
             )

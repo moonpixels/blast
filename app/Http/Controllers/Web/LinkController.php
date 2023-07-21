@@ -22,7 +22,7 @@ class LinkController extends Controller
     {
         return Inertia::render('Links/Index', [
             'filters' => [
-                'search' => $request->query('search'),
+                'query' => $request->query('query'),
             ],
             'shortenedLink' => Inertia::lazy(function () use ($request) {
                 if ($request->session()->has('shortened_link')) {
@@ -33,7 +33,7 @@ class LinkController extends Controller
 
                 return null;
             }),
-            'links' => FilterLinks::run($request->user()->currentTeam),
+            'links' => FilterLinks::run($request->user()->currentTeam, $request->query('query')),
         ]);
     }
 

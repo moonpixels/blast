@@ -30,3 +30,15 @@ it('increments the total visits for the link', function () {
 
     expect($this->link->total_visits)->toBe(1);
 });
+
+it('returns the correct indexable array', function () {
+    expect($this->link->toSearchableArray())->toHaveKeys([
+        'team_id',
+        'alias',
+        'destination_path',
+        'destination_url',
+        'short_url',
+        'created_at',
+        'updated_at',
+    ]);
+});

@@ -5,7 +5,7 @@
 
       <div class="mt-3 lg:mt-0 lg:w-60">
         <TextInput
-          v-model="searchForm.search"
+          v-model="searchQuery"
           :label="$t('Search')"
           :placeholder="$t('Find a link...')"
           data-cy="search-links-input"
@@ -23,7 +23,7 @@
     <SimpleEmptyState
       v-if="!links.data.length"
       :description="
-        searchForm.search ? $t('There are no links matching your search.') : $t('There are no links for this team.')
+        searchQuery ? $t('There are no links matching your search.') : $t('There are no links for this team.')
       "
       :title="$t('No links')"
       data-cy="no-links-empty-state"
@@ -93,12 +93,12 @@ import { LinkIcon } from '@heroicons/vue/24/outline'
 import PaginationTotals from '@/Components/Pagination/PaginationTotals.vue'
 import TextInput from '@/Components/Inputs/TextInput.vue'
 import SimplePagination from '@/Components/Pagination/SimplePagination.vue'
-import { useForm } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
 import { Link } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import ClipboardJS from 'clipboard'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import ResourcePanel from '@/Components/ResourcePanel/ResourcePanel.vue'
 import ResourcePanelHeader from '@/Components/ResourcePanel/ResourcePanelHeader.vue'
 import ResourcePanelList from '@/Components/ResourcePanel/ResourcePanelList.vue'
@@ -106,9 +106,10 @@ import ResourcePanelListItem from '@/Components/ResourcePanel/ResourcePanelListI
 import ResourcePanelFooter from '@/Components/ResourcePanel/ResourcePanelFooter.vue'
 import { useTippy } from 'vue-tippy'
 import { trans } from 'laravel-vue-i18n'
+import debounce from 'lodash/debounce'
 
 export interface Filters {
-  search?: string
+  query?: string
 }
 
 interface Props {
@@ -118,13 +119,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-type SearchForm = {
-  search: string
-}
-
-const searchForm = useForm<SearchForm>({
-  search: props.filters.search ?? '',
-})
+const searchQuery = ref<string>(props.filters.query ?? '')
 
 const recentlyCopiedLink = ref<Link | null>(null)
 
@@ -153,4 +148,16 @@ function copyLinkToClipboard(link: Link, event: Event): void {
     }, 2000)
   }
 }
+
+function search() {
+  router.reload({
+    data: {
+      query: searchQuery.value,
+      page: 1,
+    },
+    only: ['filters', 'links'],
+  })
+}
+
+watch(searchQuery, debounce(search, 500))
 </script>
