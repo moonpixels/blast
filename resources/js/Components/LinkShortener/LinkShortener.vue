@@ -21,28 +21,29 @@
       <div class="p-3">
         <div class="flex items-center gap-2">
           <Popover v-for="option in linkOptions" :key="option.name">
-            <PopoverButton
-              :as="SecondaryButton"
-              :data-cy="`set-${option.name}-button`"
-              :title="option.title"
-              class="relative overflow-hidden"
-              size="icon"
-            >
-              <span class="sr-only">{{ option.title }}</span>
+            <Tippy :content="option.title">
+              <PopoverButton
+                :as="SecondaryButton"
+                :data-cy="`set-${option.name}-button`"
+                class="relative overflow-hidden"
+                size="icon"
+              >
+                <span class="sr-only">{{ option.title }}</span>
 
-              <span
-                v-if="
-                  (form[option.name] && option.name !== 'team_id') ||
-                  (option.name === 'team_id' && form.team_id !== user.current_team_id)
-                "
-                :class="[
-                  !!optionsErrors[option.name] ? 'bg-rose-500 dark:bg-rose-600' : 'bg-violet-500 dark:bg-violet-600',
-                ]"
-                class="absolute right-0.5 top-0.5 h-1.5 w-1.5 rounded-full"
-              />
+                <span
+                  v-if="
+                    (form[option.name] && option.name !== 'team_id') ||
+                    (option.name === 'team_id' && form.team_id !== user.current_team_id)
+                  "
+                  :class="[
+                    !!optionsErrors[option.name] ? 'bg-rose-500 dark:bg-rose-600' : 'bg-violet-500 dark:bg-violet-600',
+                  ]"
+                  class="absolute right-0.5 top-0.5 h-1.5 w-1.5 rounded-full"
+                />
 
-              <component :is="option.icon" class="h-4 w-4" />
-            </PopoverButton>
+                <component :is="option.icon" class="h-4 w-4" />
+              </PopoverButton>
+            </Tippy>
 
             <PopoverOverlay
               class="absolute inset-0 z-10 bg-white/50 backdrop-blur transition-opacity dark:bg-zinc-900/50"
@@ -135,13 +136,11 @@
         <div class="min-w-0 flex-1">
           <a
             :href="shortenedLink.destination_url"
-            class="flex items-center gap-2 break-all text-sm font-medium text-zinc-900 dark:text-white"
-            data-cy="shortened-link-link"
+            class="text-sm font-medium leading-6 text-zinc-900 hover:underline hover:decoration-dashed hover:underline-offset-4 dark:text-white"
+            data-cy="short-url-link"
             rel="noopener noreferrer"
             target="_blank"
           >
-            <ArrowTopRightOnSquareIcon class="h-4 w-4 shrink-0" />
-
             {{ shortenedLink.short_url }}
           </a>
 
@@ -153,15 +152,13 @@
         <div class="shrink-0">
           <SecondaryButton
             id="copy-to-clipboard"
-            class="w-full"
             data-cy="copy-to-clipboard-button"
-            size="sm"
+            size="icon"
             @click="copyLinkToClipboard"
           >
-            <ClipboardDocumentCheckIcon v-if="recentlyCopiedLink" class="-ml-1 mr-2 h-4 w-4" />
-            <ClipboardIcon v-else class="-ml-1 mr-2 h-4 w-4" />
-
-            {{ recentlyCopiedLink ? $t('Copied') : $t('Copy') }}
+            <span class="sr-only">{{ recentlyCopiedLink ? $t('Copied') : $t('Copy') }}</span>
+            <ClipboardDocumentCheckIcon v-if="recentlyCopiedLink" class="h-5 w-5 text-zinc-900 dark:text-white" />
+            <ClipboardDocumentIcon v-else class="h-5 w-5" />
           </SecondaryButton>
         </div>
       </div>
@@ -173,17 +170,8 @@
 import TextInput from '@/Components/Inputs/TextInput.vue'
 import { useForm, usePage } from '@inertiajs/vue3'
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
-import { LinkIcon } from '@heroicons/vue/24/outline'
-import {
-  ArrowTopRightOnSquareIcon,
-  ClipboardDocumentCheckIcon,
-  ClipboardIcon,
-  ClockIcon,
-  CursorArrowRaysIcon,
-  FolderIcon,
-  LockClosedIcon,
-  TagIcon,
-} from '@heroicons/vue/20/solid'
+import { ClipboardDocumentCheckIcon, ClipboardDocumentIcon, LinkIcon } from '@heroicons/vue/24/outline'
+import { ClockIcon, CursorArrowRaysIcon, FolderIcon, LockClosedIcon, TagIcon } from '@heroicons/vue/20/solid'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import { Component as VueComponent, computed, ref } from 'vue'
 import { trans } from 'laravel-vue-i18n'
@@ -194,6 +182,7 @@ import { Popover, PopoverButton, PopoverOverlay, PopoverPanel } from '@headlessu
 import InputErrorMessage from '@/Components/Inputs/InputErrorMessage.vue'
 import SelectInput from '@/Components/Inputs/SelectInput.vue'
 import ClipboardJS from 'clipboard'
+import { Tippy, useTippy } from 'vue-tippy'
 
 interface Props {
   shortenedLink?: Link
@@ -292,9 +281,21 @@ function copyLinkToClipboard(): void {
 
       recentlyCopiedLink.value = true
 
+      const copyButton = document.getElementById('copy-to-clipboard') as HTMLButtonElement
+
+      useTippy(copyButton, {
+        content: trans('Copied'),
+        trigger: 'manual',
+        onShow(instance) {
+          setTimeout(() => {
+            instance.destroy()
+          }, 2000)
+        },
+      }).show()
+
       setTimeout(() => {
         recentlyCopiedLink.value = false
-      }, 3000)
+      }, 2000)
     })
   }
 }

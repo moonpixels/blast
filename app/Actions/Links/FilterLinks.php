@@ -18,7 +18,7 @@ class FilterLinks
     {
         return LinkResource::collection($team->links()
             ->latest()
-            ->paginate(10)
+            ->fastPaginate(15)
             ->withQueryString()
         );
     }

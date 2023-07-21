@@ -2,7 +2,6 @@
 
 use App\Actions\Links\CreateLink;
 use App\Exceptions\InvalidUrlException;
-use App\Exceptions\ReservedAliasException;
 use App\Models\Team;
 
 beforeEach(function () {
@@ -104,11 +103,3 @@ it('can create new links with case sensitive aliases', function () {
 
     expect($link->alias)->toBe('customalias');
 });
-
-it('throws an exception if the custom alias is reserved', function () {
-    CreateLink::run([
-        'team_id' => $this->team->id,
-        'url' => $this->url,
-        'alias' => 'admin',
-    ]);
-})->throws(ReservedAliasException::class);

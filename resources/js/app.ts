@@ -1,4 +1,5 @@
 import './bootstrap'
+import 'tippy.js/animations/scale-subtle.css'
 import '../css/app.css'
 
 import { createApp, DefineComponent, h } from 'vue'
@@ -6,6 +7,7 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
 import { i18nVue } from 'laravel-vue-i18n'
+import VueTippy from 'vue-tippy'
 
 createInertiaApp({
   resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob<DefineComponent>('./Pages/**/*.vue')),
@@ -19,6 +21,14 @@ createInertiaApp({
           if (lang.includes('php_')) {
             return await langs[`../../lang/${lang}.json`]()
           }
+        },
+      })
+      .use(VueTippy, {
+        defaultProps: {
+          theme: 'blast',
+          duration: [300, 150],
+          inertia: true,
+          animation: 'scale-subtle',
         },
       })
       .mount(el)

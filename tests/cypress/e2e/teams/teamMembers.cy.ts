@@ -79,7 +79,7 @@ describe('Team members', () => {
     cy.get('[data-cy="success-notification"]').should('contain', 'You have left the team')
   })
 
-  it.only('should allow owners to filter team members', () => {
+  it('should allow owners to filter team members', () => {
     cy.create({
       model: 'App\\Models\\User',
       attributes: {
@@ -172,7 +172,7 @@ describe('Team members', () => {
 
       cy.get('[data-cy="members-list"]').children().should('have.length', 10)
 
-      cy.get('[data-cy="pagination-totals"]').should('exist').and('contain', 'Showing 1 to 10 of 10 invitations')
+      cy.get('[data-cy="pagination-totals"]').should('exist').and('contain', 'Showing 1 to 10 of 10 members')
       cy.get('[data-cy="pagination-previous-link"]').should('not.exist')
       cy.get('[data-cy="pagination-next-link"]').should('not.exist')
     })

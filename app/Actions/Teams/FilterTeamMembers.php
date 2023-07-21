@@ -19,7 +19,7 @@ class FilterTeamMembers
         return UserResource::collection($team->users()
             ->whereEmailLike($searchTerm)
             ->orWhere(fn ($query) => $query->whereNameLike($searchTerm))
-            ->paginate(10)
+            ->fastPaginate(10)
             ->withQueryString()
         );
     }

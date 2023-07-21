@@ -4,7 +4,7 @@
       :is="paginatedResource.links.prev ? Link : 'div'"
       :href="paginatedResource.links.prev"
       data-cy="pagination-previous-link"
-      preserve-scroll
+      preserve-state
     >
       <SecondaryButton :disabled="!paginatedResource.links.prev" :size="'sm'">
         {{ $t('Previous') }}
@@ -15,7 +15,7 @@
       :is="paginatedResource.links.next ? Link : 'div'"
       :href="paginatedResource.links.next"
       data-cy="pagination-next-link"
-      preserve-scroll
+      preserve-state
     >
       <SecondaryButton :disabled="!paginatedResource.links.next" :size="'sm'">
         {{ $t('Next') }}

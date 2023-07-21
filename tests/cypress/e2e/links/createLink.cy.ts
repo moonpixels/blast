@@ -21,7 +21,7 @@ describe('Create link', () => {
     cy.get('[data-cy="shortened-link-card"]').should('be.visible')
 
     cy.get('[data-cy="shortened-link-card"]').within(() => {
-      cy.get('[data-cy="shortened-link-link"]').should('have.attr', 'href', 'https://blst.to')
+      cy.get('[data-cy="short-url-link"]').should('have.attr', 'href', 'https://blst.to')
       cy.get('[data-cy="shortened-link-destination"]').should('contain', 'https://blst.to')
       cy.get('[data-cy="copy-to-clipboard-button"]').click()
       cy.assertValueCopiedToClipboard('https://blst.to')
@@ -73,7 +73,7 @@ describe('Create link', () => {
     cy.get('[data-cy="shortened-link-card"]').should('be.visible')
 
     cy.get('[data-cy="shortened-link-card"]').within(() => {
-      cy.get('[data-cy="shortened-link-link"]').should('contain', 'customAlias')
+      cy.get('[data-cy="short-url-link"]').should('contain', 'customAlias')
     })
   })
 
