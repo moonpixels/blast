@@ -1,0 +1,11 @@
+.tippy-box[data-theme~='blast'] {
+  @apply rounded border border-zinc-900/20 bg-white/50 p-1.5 backdrop-blur-sm dark:border-white/20 dark:bg-zinc-950/50;
+}
+
+.tippy-box[data-theme~='blast'] .tippy-content {
+  @apply text-xs text-zinc-900 dark:text-white;
+}
+
+.tippy-box[data-theme~='blast'] > .tippy-svg-arrow {
+  @apply fill-zinc-300 dark:fill-zinc-700;
+}

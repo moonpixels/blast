@@ -4,7 +4,6 @@ namespace App\Actions\Links;
 
 use App\Concerns\HasUrlInput;
 use App\Exceptions\InvalidUrlException;
-use App\Exceptions\ReservedAliasException;
 use App\Models\Domain;
 use App\Models\Link;
 use Illuminate\Http\RedirectResponse;
@@ -19,17 +18,12 @@ class CreateLink
      * Create a new link.
      *
      * @throws InvalidUrlException
-     * @throws ReservedAliasException
      */
     public function handle(array $data): Link|RedirectResponse
     {
         $url = $this->parseUrlInput($data['url']);
 
         $alias = $data['alias'] ?? GenerateLinkAlias::run();
-
-        if (! CheckLinkAliasIsAllowed::run($alias)) {
-            throw new ReservedAliasException;
-        }
 
         return DB::transaction(function () use (&$data, $url, $alias) {
             $domain = Domain::firstOrCreate([

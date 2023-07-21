@@ -1,15 +1,15 @@
 <template>
+  <AppHead :title="$t('Links')" />
+
   <ConstrainedContainer>
     <div class="space-y-6 lg:flex lg:space-x-6 lg:space-y-0">
-      <div class="shrink-0">
-        <LinkShortener :shortened-link="shortenedLink" />
+      <div class="flex-none">
+        <LinkShortener v-bind="$props" />
       </div>
 
-      <ul class="flex-1">
-        <li v-for="link in links.data" :key="link.id">
-          {{ link.short_url }}
-        </li>
-      </ul>
+      <div class="flex-auto overflow-hidden">
+        <LinksPanel v-bind="$props" />
+      </div>
     </div>
   </ConstrainedContainer>
 </template>
@@ -20,6 +20,8 @@ import ConstrainedContainer from '@/Components/Containers/ConstrainedContainer.v
 import LinkShortener from '@/Components/LinkShortener/LinkShortener.vue'
 import { Link } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
+import LinksPanel, { Filters } from '@/Pages/Links/Partials/LinksPanel.vue'
+import AppHead from '@/Components/App/AppHead.vue'
 
 defineOptions({
   layout: AppLayout,
@@ -28,6 +30,7 @@ defineOptions({
 interface Props {
   shortenedLink?: Link
   links: PaginatedResponse<Link>
+  filters: Filters
 }
 
 defineProps<Props>()

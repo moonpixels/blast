@@ -18,7 +18,7 @@ class FilterTeamInvitations
     {
         return TeamInvitationResource::collection($team->invitations()
             ->whereEmailLike($searchTerm)
-            ->paginate(10)
+            ->fastPaginate(10)
             ->withQueryString()
         );
     }

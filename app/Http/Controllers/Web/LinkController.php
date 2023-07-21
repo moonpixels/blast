@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Web;
 use App\Actions\Links\CreateLink;
 use App\Actions\Links\FilterLinks;
 use App\Exceptions\InvalidUrlException;
-use App\Exceptions\ReservedAliasException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Link\StoreRequest;
 use App\Http\Resources\Link\LinkResource;
@@ -22,6 +21,9 @@ class LinkController extends Controller
     public function index(Request $request): Response
     {
         return Inertia::render('Links/Index', [
+            'filters' => [
+                'search' => $request->query('search'),
+            ],
             'shortenedLink' => Inertia::lazy(function () use ($request) {
                 if ($request->session()->has('shortened_link')) {
                     return LinkResource::createWithoutWrapping(
@@ -45,10 +47,6 @@ class LinkController extends Controller
         } catch (InvalidUrlException) {
             return back()->withErrors([
                 'url' => __('The URL is invalid.'),
-            ]);
-        } catch (ReservedAliasException) {
-            return back()->withErrors([
-                'alias' => __('The alias has already been taken.'),
             ]);
         }
 

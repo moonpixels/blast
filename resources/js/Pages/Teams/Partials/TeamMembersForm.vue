@@ -4,13 +4,8 @@
       {{ $t('You cannot invite members to your personal team.') }}
     </Alert>
 
-    <div
-      v-else
-      class="overflow-hidden rounded-md border border-zinc-900/20 bg-white shadow-sm dark:border-white/20 dark:bg-zinc-950"
-    >
-      <div
-        class="gap-3 border-b border-zinc-900/20 p-3 dark:border-white/20 lg:flex lg:items-center lg:justify-between"
-      >
+    <ResourcePanel v-else>
+      <ResourcePanelHeader>
         <div class="flex flex-grow justify-between gap-2">
           <InviteMemberForm :team="team" />
 
@@ -49,7 +44,7 @@
             </template>
           </TextInput>
         </div>
-      </div>
+      </ResourcePanelHeader>
 
       <template v-if="filters.view === 'members'">
         <SimpleEmptyState
@@ -67,33 +62,36 @@
           </template>
         </SimpleEmptyState>
 
-        <ul v-else class="divide-y divide-zinc-900/10 dark:divide-white/10" data-cy="members-list" role="list">
-          <li v-for="user in members.data" :key="user.id" class="flex justify-between gap-4 p-3">
-            <div class="flex min-w-0 flex-auto items-center gap-x-4">
-              <PlaceholderAvatar :initials="user.initials" class="flex-none" size="md" />
+        <ResourcePanelList v-else data-cy="members-list">
+          <ResourcePanelListItem v-for="user in members.data" :key="user.id">
+            <template #content>
+              <div class="flex items-center gap-3">
+                <PlaceholderAvatar :initials="user.initials" class="flex-none" size="md" />
 
-              <div class="flex min-w-0 flex-auto gap-x-4">
-                <div class="min-w-0 shrink">
-                  <p class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white">
-                    {{ user.name }}
-                  </p>
-                  <p class="truncate text-xs leading-5">{{ user.email }}</p>
-                </div>
+                <div class="flex flex-auto gap-x-4 overflow-hidden">
+                  <div class="flex-auto overflow-hidden">
+                    <p class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white">
+                      {{ user.name }}
+                    </p>
+                    <p class="truncate text-xs leading-5">{{ user.email }}</p>
+                  </div>
 
-                <div v-if="user.id === team.owner_id" class="flex-none">
-                  <Badge data-cy="owner-badge">
-                    {{ $t('Owner') }}
-                  </Badge>
+                  <div v-if="user.id === team.owner_id" class="flex-none">
+                    <Badge data-cy="owner-badge">
+                      {{ $t('Owner') }}
+                    </Badge>
+                  </div>
                 </div>
               </div>
-            </div>
+            </template>
 
-            <div class="flex flex-none items-center">
+            <template #actions>
               <DeleteTeamMemberModal :user="user" />
-            </div>
-          </li>
-        </ul>
+            </template>
+          </ResourcePanelListItem>
+        </ResourcePanelList>
       </template>
+
       <template v-else>
         <SimpleEmptyState
           v-if="!invitations?.data.length"
@@ -110,20 +108,16 @@
           </template>
         </SimpleEmptyState>
 
-        <ul v-else class="divide-y divide-zinc-900/10 dark:divide-white/10" data-cy="invitations-list" role="list">
-          <li v-for="invitation in invitations.data" :key="invitation.id" class="flex justify-between gap-4 p-3">
-            <div class="flex min-w-0 flex-auto items-center gap-x-4">
-              <div class="flex min-w-0 flex-auto gap-x-4">
-                <div class="min-w-0 shrink">
-                  <p class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white">
-                    {{ invitation.email }}
-                  </p>
-                  <p class="truncate text-xs leading-5">{{ $t('Invited on') }} {{ useDate(invitation.created_at) }}</p>
-                </div>
-              </div>
-            </div>
+        <ResourcePanelList v-else data-cy="invitations-list">
+          <ResourcePanelListItem v-for="invitation in invitations.data" :key="invitation.id">
+            <template #content>
+              <p class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white">
+                {{ invitation.email }}
+              </p>
+              <p class="truncate text-xs leading-5">{{ $t('Invited on') }} {{ useDate(invitation.created_at) }}</p>
+            </template>
 
-            <div class="flex flex-none items-center gap-2">
+            <template #actions>
               <SecondaryButton data-cy="resend-invitation-button" size="icon" @click="resendInvitation(invitation)">
                 <span class="sr-only">{{ $t('Resend invitation') }}</span>
                 <ArrowPathIcon aria-hidden="true" class="h-4 w-4" />
@@ -136,30 +130,25 @@
                   class="h-4 w-4 transition-all duration-200 ease-in-out group-hover:text-rose-600 dark:group-hover:text-rose-500"
                 />
               </SecondaryButton>
-            </div>
-          </li>
-        </ul>
+            </template>
+          </ResourcePanelListItem>
+        </ResourcePanelList>
       </template>
 
-      <div
-        v-if="currentResource?.data.length"
-        class="flex items-center justify-between border-t border-zinc-900/20 p-3 text-sm dark:border-white/20"
-      >
-        <div>
-          <PaginationTotals
-            :paginated-resource="currentResource"
-            :resource-name="
-              filters.view === 'members'
-                ? $tChoice('member|members', currentResource.meta.total)
-                : $tChoice('invitation|invitations', currentResource.meta.total)
-            "
-            data-cy="pagination-totals"
-          />
-        </div>
+      <ResourcePanelFooter v-if="currentResource?.data.length">
+        <PaginationTotals
+          :paginated-resource="currentResource"
+          :resource-name="
+            filters.view === 'members'
+              ? $tChoice('member|members', currentResource.meta.total)
+              : $tChoice('invitation|invitations', currentResource.meta.total)
+          "
+          data-cy="pagination-totals"
+        />
 
         <SimplePagination :paginated-resource="currentResource" />
-      </div>
-    </div>
+      </ResourcePanelFooter>
+    </ResourcePanel>
   </TwoColumnForm>
 </template>
 
@@ -184,6 +173,11 @@ import { computed, watch } from 'vue'
 import debounce from 'lodash/debounce'
 import PaginationTotals from '@/Components/Pagination/PaginationTotals.vue'
 import SimplePagination from '@/Components/Pagination/SimplePagination.vue'
+import ResourcePanel from '@/Components/ResourcePanel/ResourcePanel.vue'
+import ResourcePanelHeader from '@/Components/ResourcePanel/ResourcePanelHeader.vue'
+import ResourcePanelList from '@/Components/ResourcePanel/ResourcePanelList.vue'
+import ResourcePanelListItem from '@/Components/ResourcePanel/ResourcePanelListItem.vue'
+import ResourcePanelFooter from '@/Components/ResourcePanel/ResourcePanelFooter.vue'
 
 export interface Filters {
   view: 'members' | 'invitations'

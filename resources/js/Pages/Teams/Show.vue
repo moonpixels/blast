@@ -1,5 +1,5 @@
 <template>
-  <AppHead :title="$t(':team_name settings', { team_name: team.name })" />
+  <AppHead :title="$t('Team settings')" />
 
   <ConstrainedContainer>
     <h1 class="text-xl font-semibold text-zinc-900 dark:text-white">
