@@ -15,14 +15,13 @@ class FilterLinks
     /**
      * Filter the links.
      */
-    public function handle(Team $team, string $searchTerm = null): ResourceCollection
+    public function handle(Team $team, string $query = null): ResourceCollection
     {
         return LinkResource::collection(
-            Link::search($searchTerm)
+            Link::search($query)
                 ->where('team_id', $team->id)
                 ->orderBy('created_at', 'desc')
                 ->paginate(15)
-                ->withQueryString()
         );
     }
 }

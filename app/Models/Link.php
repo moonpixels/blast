@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Scout\Searchable;
 
+/**
+ * @property string $destination_url
+ * @property string $short_url
+ */
 class Link extends Model
 {
     use HasFactory, HasUlids, Searchable;
