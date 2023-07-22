@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Actions\Teams\CreateInvitationForTeam;
+use App\Data\TeamInvitationData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TeamInvitation\StoreRequest;
 use App\Models\Team;
@@ -17,7 +18,7 @@ class TeamInvitationController extends Controller
     {
         $this->authorize('inviteMember', $team);
 
-        CreateInvitationForTeam::run($team, $request->validated());
+        CreateInvitationForTeam::run($team, TeamInvitationData::from($request->validated()));
 
         return back()->with('success', [
             'title' => __('Invitation sent'),

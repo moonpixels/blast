@@ -15,7 +15,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'url' => ['required', 'string', 'url', 'active_url', 'max:2048'],
+            'destination_url' => ['required', 'string', 'url', 'active_url', 'max:2048'],
             'alias' => [
                 'sometimes', 'string', 'alpha_num:ascii', 'max:20', 'unique:links,alias', new NotReservedAlias,
             ],
@@ -29,7 +29,7 @@ class StoreRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'url' => __('URL'),
+            'destination_url' => __('URL'),
             'alias' => __('alias'),
             'team_id' => __('team'),
         ];
@@ -41,7 +41,7 @@ class StoreRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'url' => $this->input('url') ? FormatRawUrl::run($this->input('url')) : null,
+            'destination_url' => $this->input('destination_url') ? FormatRawUrl::run($this->input('destination_url')) : null,
         ]);
     }
 }

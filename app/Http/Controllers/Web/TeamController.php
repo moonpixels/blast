@@ -7,6 +7,7 @@ use App\Actions\Teams\CreateTeamForUser;
 use App\Actions\Teams\DeleteTeam;
 use App\Actions\Teams\FilterTeamInvitations;
 use App\Actions\Teams\UpdateTeam;
+use App\Data\TeamData;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Team\StoreRequest;
 use App\Http\Requests\Team\UpdateRequest;
@@ -56,7 +57,7 @@ class TeamController extends Controller
      */
     public function store(StoreRequest $request): RedirectResponse
     {
-        $team = CreateTeamForUser::run($request->user(), $request->validated());
+        $team = CreateTeamForUser::run($request->user(), TeamData::from($request->validated()));
 
         return redirect()->route('teams.show', $team);
     }
@@ -68,7 +69,7 @@ class TeamController extends Controller
     {
         $this->authorize('update', $team);
 
-        UpdateTeam::run($team, $request->validated());
+        UpdateTeam::run($team, TeamData::from($request->validated()));
 
         return back()->with('success', [
             'title' => __('Team updated'),

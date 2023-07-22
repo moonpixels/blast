@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Teams\CreateTeamForUser;
+use App\Data\TeamData;
 use App\Models\User;
 
 beforeEach(function () {
@@ -10,7 +11,9 @@ beforeEach(function () {
 });
 
 it('can create a standard team for a user', function () {
-    $team = CreateTeamForUser::run($this->user, ['name' => 'Test Team']);
+    $team = CreateTeamForUser::run($this->user, TeamData::from([
+        'name' => 'Test Team',
+    ]));
 
     expect($team->name)->toBe('Test Team')
         ->and($team->personal_team)->toBeFalse()
@@ -27,7 +30,10 @@ it('can create a standard team for a user', function () {
 });
 
 it('can create a personal team for a user', function () {
-    $team = CreateTeamForUser::run($this->user, ['name' => 'Test Team', 'personal_team' => true]);
+    $team = CreateTeamForUser::run($this->user, TeamData::from([
+        'name' => 'Test Team',
+        'personalTeam' => true,
+    ]));
 
     expect($team->name)->toBe('Test Team')
         ->and($team->personal_team)->toBeTrue()
