@@ -10,7 +10,6 @@ use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 class TeamInvitationData extends Data
 {
     public function __construct(
-        public ?string $teamId,
         public string $email,
     ) {
     }
