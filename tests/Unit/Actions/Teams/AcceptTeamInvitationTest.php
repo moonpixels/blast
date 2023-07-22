@@ -3,6 +3,7 @@
 use App\Actions\Teams\AcceptTeamInvitation;
 use App\Exceptions\InvalidTeamMembershipException;
 use App\Models\TeamInvitation;
+use App\Models\TeamMembership;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -24,10 +25,15 @@ it('can accept a team invitation', function () {
         ->and($this->team->id)->toEqual($this->invitedUser->fresh()->current_team_id);
 
     $this->assertModelMissing($this->teamInvitation);
+
+    $this->assertDatabaseHas('team_memberships', [
+        'user_id' => $this->invitedUser->id,
+        'team_id' => $this->team->id,
+    ]);
 });
 
 it('throws an exception when accepting an invitation if the user is already on the team', function () {
-    $this->invitedUser->teams()->attach($this->team);
+    TeamMembership::factory()->for($this->invitedUser)->for($this->team)->create();
 
     try {
         AcceptTeamInvitation::run($this->teamInvitation);

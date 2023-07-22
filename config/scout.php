@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Link;
+use App\Models\TeamInvitation;
+use App\Models\TeamMembership;
 
 return [
 
@@ -138,6 +140,14 @@ return [
             Link::class => [
                 'filterableAttributes' => ['team_id'],
                 'sortableAttributes' => ['created_at'],
+            ],
+            TeamInvitation::class => [
+                'filterableAttributes' => ['team_id'],
+                'sortableAttributes' => ['created_at'],
+            ],
+            TeamMembership::class => [
+                'filterableAttributes' => ['team_id'],
+                'sortableAttributes' => ['user_name'],
             ],
         ],
     ],

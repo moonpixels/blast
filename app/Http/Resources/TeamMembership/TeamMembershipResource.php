@@ -23,6 +23,8 @@ class TeamMembershipResource extends JsonResource
             'id' => $this->id,
             'team_id' => $this->team_id,
             'user_id' => $this->user_id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
 
             'team' => new TeamResource($this->whenLoaded('team')),
             'user' => new UserResource($this->whenLoaded('user')),

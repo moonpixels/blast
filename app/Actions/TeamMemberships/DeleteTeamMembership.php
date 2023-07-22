@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Teams;
+namespace App\Actions\TeamMemberships;
 
 use App\Models\TeamMembership;
 use Illuminate\Support\Facades\DB;

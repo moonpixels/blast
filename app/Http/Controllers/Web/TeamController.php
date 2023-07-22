@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Actions\TeamMemberships\FilterTeamMemberships;
 use App\Actions\Teams\CreateTeamForUser;
 use App\Actions\Teams\DeleteTeam;
 use App\Actions\Teams\FilterTeamInvitations;
-use App\Actions\Teams\FilterTeamMembers;
 use App\Actions\Teams\UpdateTeam;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Team\StoreRequest;
@@ -30,16 +30,18 @@ class TeamController extends Controller
         $props = [
             'filters' => [
                 'view' => $request->query('view', 'members'),
-                'search' => $request->query('search'),
+                'query' => $request->query('query'),
             ],
             'team' => TeamResource::createWithoutWrapping($team),
         ];
 
         if ($request->user()->ownsTeam($team)) {
             if ($request->query('view') === 'invitations') {
-                $props['invitations'] = FilterTeamInvitations::run($team, $request->query('search'));
+                $props['invitations'] = FilterTeamInvitations::run($team, $request->query('query'))
+                    ->withQuery(['view' => $request->query('view')]);
             } else {
-                $props['members'] = FilterTeamMembers::run($team, $request->query('search'));
+                $props['memberships'] = FilterTeamMemberships::run($team, $request->query('query'))
+                    ->withQuery(['view' => $request->query('view')]);
             }
         } else {
             $membership = TeamMembership::whereUserId($request->user()->id)->whereTeamId($team->id)->first();
@@ -77,7 +79,7 @@ class TeamController extends Controller
     /**
      * Remove the specified team from storage.
      */
-    public function destroy(Request $request, Team $team): RedirectResponse
+    public function destroy(Team $team): RedirectResponse
     {
         $this->authorize('delete', $team);
 

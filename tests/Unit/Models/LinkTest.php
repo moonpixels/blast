@@ -2,6 +2,9 @@
 
 use App\Models\Domain;
 use App\Models\Link;
+use App\Models\Team;
+use App\Models\Visit;
+use Illuminate\Database\Eloquent\Collection;
 
 beforeEach(function () {
     $this->domain = Domain::factory()->create([
@@ -33,6 +36,7 @@ it('increments the total visits for the link', function () {
 
 it('returns the correct indexable array', function () {
     expect($this->link->toSearchableArray())->toHaveKeys([
+        'id',
         'team_id',
         'alias',
         'destination_path',
@@ -41,4 +45,22 @@ it('returns the correct indexable array', function () {
         'created_at',
         'updated_at',
     ]);
+});
+
+it('belongs to a domain', function () {
+    expect($this->link->domain)->toBeInstanceOf(Domain::class);
+});
+
+it('belongs to a team', function () {
+    expect($this->link->team)->toBeInstanceOf(Team::class);
+});
+
+it('has many visits', function () {
+    Visit::factory(5)->for($this->link)->create();
+
+    $visits = $this->link->visits;
+
+    expect($visits)->toHaveCount(5)
+        ->and($visits)->toBeInstanceOf(Collection::class)
+        ->and($visits)->each->toBeInstanceOf(Visit::class);
 });

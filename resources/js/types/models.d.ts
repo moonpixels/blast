@@ -18,7 +18,6 @@ export interface User {
   name: string
   email: string
   initials: string
-  team_membership?: TeamMembership
 }
 
 export interface TeamInvitation {
@@ -33,6 +32,10 @@ export interface TeamMembership {
   id: string
   team_id: string
   user_id: string
+  created_at: string
+  updated_at: string
+  team: Team
+  user: User
 }
 
 export interface Link {

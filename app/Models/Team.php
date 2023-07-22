@@ -40,16 +40,19 @@ class Team extends Model
     }
 
     /**
-     * Get all the users that belong to the team.
+     * Get the teams memberships.
+     */
+    public function memberships(): HasMany
+    {
+        return $this->hasMany(TeamMembership::class);
+    }
+
+    /**
+     * Get the users that have memberships with the team.
      */
     public function users(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)
-            ->using(TeamMembership::class)
-            ->withPivot(['id', 'team_id', 'user_id'])
-            ->orderBy('name')
-            ->withTimestamps()
-            ->as('team_membership');
+        return $this->belongsToMany(User::class, 'team_memberships');
     }
 
     /**
@@ -57,7 +60,7 @@ class Team extends Model
      */
     public function allUsers(): Collection
     {
-        return collect([$this->owner])->merge($this->users);
+        return $this->users->merge([$this->owner]);
     }
 
     /**
@@ -79,7 +82,7 @@ class Team extends Model
     /**
      * Get all the visits for the teams links.
      */
-    public function visits(): HasManyThrough
+    public function linkVisits(): HasManyThrough
     {
         return $this->hasManyThrough(Visit::class, Link::class);
     }

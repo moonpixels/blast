@@ -8,14 +8,12 @@ use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\Fill;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
@@ -23,9 +21,6 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
-/**
- * @property Pivot $team_membership
- */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable, HasUlids;
@@ -65,14 +60,6 @@ class User extends Authenticatable
         'two_factor_enabled',
         'initials',
     ];
-
-    /**
-     * Get the teams that the user owns.
-     */
-    public function ownedTeams(): HasMany
-    {
-        return $this->hasMany(Team::class, 'owner_id');
-    }
 
     /**
      * Get user's current team.
@@ -117,7 +104,15 @@ class User extends Authenticatable
      */
     public function personalTeam(): Team
     {
-        return $this->ownedTeams->where('personal_team', true)->first();
+        return $this->ownedTeams()->where('personal_team', true)->first();
+    }
+
+    /**
+     * Get the teams that the user owns.
+     */
+    public function ownedTeams(): HasMany
+    {
+        return $this->hasMany(Team::class, 'owner_id');
     }
 
     /**
@@ -137,15 +132,19 @@ class User extends Authenticatable
     }
 
     /**
-     * Get all the teams that the user is a member of.
+     * Get the users team memberships.
+     */
+    public function teamMemberships(): HasMany
+    {
+        return $this->hasMany(TeamMembership::class);
+    }
+
+    /**
+     * Get the teams the user has memberships for.
      */
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class)
-            ->using(TeamMembership::class)
-            ->withPivot(['id', 'team_id', 'user_id'])
-            ->withTimestamps()
-            ->as('team_membership');
+        return $this->belongsToMany(Team::class, 'team_memberships');
     }
 
     /**
@@ -162,22 +161,6 @@ class User extends Authenticatable
         ))->writeString($this->twoFactorQrCodeUrl());
 
         return trim(substr($svg, strpos($svg, "\n") + 1));
-    }
-
-    /**
-     * Search for a user by where their email is like the given value.
-     */
-    public function scopeWhereEmailLike(Builder $query, ?string $email): void
-    {
-        $query->when($email, fn (Builder $query, string $email) => $query->where('email', 'like', "%{$email}%"));
-    }
-
-    /**
-     * Search for a user by where their name is like the given value.
-     */
-    public function scopeWhereNameLike(Builder $query, ?string $name): void
-    {
-        $query->when($name, fn (Builder $query, string $name) => $query->where('name', 'like', "%{$name}%"));
     }
 
     /**
