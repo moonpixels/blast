@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Teams\CreateInvitationForTeam;
+use App\Data\TeamInvitationData;
 use App\Mail\TeamInvitationMail;
 use App\Models\User;
 use App\Notifications\TeamInvitationNotification;
@@ -15,9 +16,9 @@ beforeEach(function () {
 it('can invite a new team member to the given team', function () {
     Notification::fake();
 
-    $invitation = CreateInvitationForTeam::run($this->team, [
+    $invitation = CreateInvitationForTeam::run($this->team, TeamInvitationData::from([
         'email' => 'user@blst.to',
-    ]);
+    ]));
 
     expect($invitation->email)->toBe('user@blst.to');
 

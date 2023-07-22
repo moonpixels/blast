@@ -21,6 +21,7 @@
     "laravel/tinker": "^2.8",
     "lorisleiva/laravel-actions": "^2.6",
     "meilisearch/meilisearch-php": "^1.2",
+    "spatie/laravel-data": "^3.7",
     "tightenco/ziggy": "^1.5"
   },
   "require-dev": {

@@ -3,6 +3,7 @@
 namespace App\Actions\Links;
 
 use App\Concerns\HasUrlInput;
+use App\Data\LinkData;
 use App\Exceptions\InvalidUrlException;
 use App\Models\Domain;
 use App\Models\Link;
@@ -19,11 +20,11 @@ class CreateLink
      *
      * @throws InvalidUrlException
      */
-    public function handle(array $data): Link|RedirectResponse
+    public function handle(LinkData $data): Link|RedirectResponse
     {
-        $url = $this->parseUrlInput($data['url']);
+        $url = $this->parseUrlInput($data->destinationUrl);
 
-        $alias = $data['alias'] ?? GenerateLinkAlias::run();
+        $alias = $data->alias ?? GenerateLinkAlias::run();
 
         return DB::transaction(function () use (&$data, $url, $alias) {
             $domain = Domain::firstOrCreate([
@@ -31,7 +32,7 @@ class CreateLink
             ]);
 
             return Link::create([
-                'team_id' => $data['team_id'],
+                'team_id' => $data->teamId,
                 'domain_id' => $domain->id,
                 'destination_path' => $url['path'],
                 'alias' => $alias,

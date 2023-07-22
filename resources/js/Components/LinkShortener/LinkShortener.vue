@@ -7,14 +7,14 @@
     >
       <div class="p-3">
         <TextInput
-          v-model="form.url"
-          :error="form.errors.url"
+          v-model="form.destination_url"
+          :error="form.errors.destination_url"
           inputmode="url"
           inverse
           label="URL"
           placeholder="https://example.com"
           required
-          @input="form.clearErrors('url')"
+          @input="form.clearErrors('destination_url')"
         />
       </div>
 
@@ -197,7 +197,7 @@ const user = computed<CurrentUser>(() => {
 const recentlyCopiedLink = ref<boolean>(false)
 
 type LinkShortenerForm = {
-  url: string
+  destination_url: string
   alias?: string
   password?: string
   expires_on?: string
@@ -206,7 +206,7 @@ type LinkShortenerForm = {
 }
 
 const form = useForm<LinkShortenerForm>({
-  url: '',
+  destination_url: '',
   alias: undefined,
   password: undefined,
   expires_on: undefined,

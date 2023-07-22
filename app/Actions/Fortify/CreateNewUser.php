@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use App\Actions\Teams\CreateTeamForUser;
+use App\Data\TeamData;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -42,10 +43,10 @@ class CreateNewUser implements CreatesNewUsers
                 'password' => Hash::make($input['password']),
             ]);
 
-            CreateTeamForUser::run($user, [
+            CreateTeamForUser::run($user, TeamData::from([
                 'name' => __('Personal Team'),
                 'personal_team' => true,
-            ]);
+            ]));
 
             return $user;
         });

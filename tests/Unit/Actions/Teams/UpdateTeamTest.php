@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Teams\UpdateTeam;
+use App\Data\TeamData;
 use App\Models\User;
 
 beforeEach(function () {
@@ -10,6 +11,6 @@ beforeEach(function () {
 });
 
 it('can update a team', function () {
-    expect(UpdateTeam::run($this->team, ['name' => 'Test Team Updated']))->toBeTrue()
+    expect(UpdateTeam::run($this->team, TeamData::from(['name' => 'Test Team Updated'])))->toBeTrue()
         ->and($this->team->fresh()->name)->toBe('Test Team Updated');
 });

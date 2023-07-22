@@ -2,6 +2,7 @@
 
 namespace App\Actions\Teams;
 
+use App\Data\TeamData;
 use App\Models\Team;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -12,8 +13,10 @@ class UpdateTeam
     /**
      * Update the given team.
      */
-    public function handle(Team $team, array $attributes): bool
+    public function handle(Team $team, TeamData $data): bool
     {
-        return $team->update($attributes);
+        return $team->update([
+            'name' => $data->name,
+        ]);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web;
 
 use App\Actions\Links\CreateLink;
 use App\Actions\Links\FilterLinks;
+use App\Data\LinkData;
 use App\Exceptions\InvalidUrlException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Link\StoreRequest;
@@ -43,10 +44,10 @@ class LinkController extends Controller
     public function store(StoreRequest $request): RedirectResponse
     {
         try {
-            $link = CreateLink::run($request->validated());
+            $link = CreateLink::run(LinkData::from($request->validated()));
         } catch (InvalidUrlException) {
             return back()->withErrors([
-                'url' => __('The URL is invalid.'),
+                'destination_url' => __('The URL is invalid.'),
             ]);
         }
 
