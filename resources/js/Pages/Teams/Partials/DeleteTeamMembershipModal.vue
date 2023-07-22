@@ -13,7 +13,7 @@
         {{
           $t(
             'Are you sure you want to delete :name from this team? They will no longer have access to the team’s resources and data.',
-            { name: user.name }
+            { name: membership.user.name }
           )
         }}
       </p>
@@ -32,7 +32,7 @@
 </template>
 
 <script lang="ts" setup>
-import { User } from '@/types/models'
+import { TeamMembership } from '@/types/models'
 import { useForm } from '@inertiajs/vue3'
 import Modal from '@/Components/Modals/Modal.vue'
 import DangerButton from '@/Components/Buttons/DangerButton.vue'
@@ -41,7 +41,7 @@ import { TrashIcon } from '@heroicons/vue/20/solid'
 import { ref } from 'vue'
 
 interface Props {
-  user: User
+  membership: TeamMembership
 }
 
 const props = defineProps<Props>()
@@ -51,19 +51,10 @@ const open = ref<boolean>(false)
 const form = useForm<{}>({})
 
 function submit(): void {
-  if (!props.user.team_membership) {
-    return
-  }
-
-  form.delete(
-    route('team-memberships.destroy', {
-      teamMembership: props.user.team_membership.id,
-    }),
-    {
-      preserveScroll: true,
-      preserveState: true,
-      only: ['flash', 'members'],
-    }
-  )
+  form.delete(route('team-memberships.destroy', props.membership.id), {
+    preserveScroll: true,
+    preserveState: true,
+    only: ['flash', 'memberships'],
+  })
 }
 </script>

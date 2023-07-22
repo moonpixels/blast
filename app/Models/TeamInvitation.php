@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,10 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\URL;
+use Laravel\Scout\Searchable;
 
 class TeamInvitation extends Model
 {
-    use HasFactory, HasUlids, Notifiable;
+    use HasFactory, HasUlids, Notifiable, Searchable;
 
     /**
      * The attributes that aren't mass assignable.
@@ -40,11 +40,19 @@ class TeamInvitation extends Model
     }
 
     /**
-     * Search for an invitation where the email is like the given value.
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
      */
-    public function scopeWhereEmailLike(Builder $query, ?string $email): void
+    public function toSearchableArray(): array
     {
-        $query->when($email, fn (Builder $query, string $email) => $query->where('email', 'like', "%{$email}%"));
+        return [
+            'id' => $this->id,
+            'team_id' => $this->team_id,
+            'email' => $this->email,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
     }
 
     /**

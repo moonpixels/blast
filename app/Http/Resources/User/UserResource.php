@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\User;
 
-use App\Http\Resources\TeamMembership\TeamMembershipResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -20,10 +19,6 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'initials' => $this->initials,
-
-            'team_membership' => $this->whenPivotLoadedAs('team_membership', 'team_user', function () {
-                return TeamMembershipResource::createWithoutWrapping($this->team_membership);
-            }),
         ];
     }
 }

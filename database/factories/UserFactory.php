@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Team;
+use App\Models\TeamMembership;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Collection;
@@ -82,10 +83,11 @@ class UserFactory extends Factory
     public function withTeamMembership(): self
     {
         return $this->afterCreating(function (User $user) {
-            $team = Team::factory()->create([
-                'name' => 'Membership Team',
-            ]);
-            $team->users()->attach($user);
+            TeamMembership::factory()
+                ->for($user)
+                ->for(Team::factory()->create([
+                    'name' => 'Membership Team',
+                ]))->create();
         });
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Models\Team;
 use App\Models\TeamInvitation;
+use App\Models\TeamMembership;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -9,7 +10,7 @@ beforeEach(function () {
     $this->user = User::factory()->create();
     $this->team = Team::factory()
         ->for($this->user, 'owner')
-        ->has(User::factory()->count(2), 'users')
+        ->has(TeamMembership::factory()->count(2), 'memberships')
         ->has(TeamInvitation::factory()->count(2), 'invitations')
         ->create();
 
@@ -26,7 +27,7 @@ it('shows the teams page to owners', function () {
                 ->where('name', $this->team->name)
                 ->where('personal_team', $this->team->personal_team)
                 ->etc())
-            ->has('members.data', 2)
+            ->has('memberships.data', 2)
             ->missing('invitations.data')
             ->missing('teamMembership')
         );
@@ -46,9 +47,9 @@ it('shows the teams page to members', function () {
                 ->where('personal_team', $this->team->personal_team)
                 ->etc())
             ->has('teamMembership', fn (Assert $page) => $page
-                ->where('id', $user->team_membership->id)
+                ->where('id', $user->teamMemberships()->first()->id)
                 ->etc())
-            ->missing('members')
+            ->missing('memberships')
             ->missing('invitations')
         );
 });
@@ -71,17 +72,17 @@ it('allows owners to switch the view mode to invitations', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Teams/Show')
             ->has('invitations.data', 2)
-            ->missing('members.data')
+            ->missing('memberships.data')
         );
 });
 
-it('allows owners to filter members', function () {
-    $this->get(route('teams.show', [$this->team, 'search' => $this->team->users->first()->name]))
+it('allows owners to filter team memberships', function () {
+    $this->get(route('teams.show', [$this->team, 'query' => $this->team->users->first()->name]))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Teams/Show')
-            ->has('members.data', 1)
-            ->where('members.data.0.name', $this->team->users->first()->name)
+            ->has('memberships.data', 1)
+            ->where('memberships.data.0.user.name', $this->team->users->first()->name)
             ->missing('invitations.data')
         );
 });
@@ -90,12 +91,12 @@ it('allows owners to filter invitations', function () {
     $this->get(route('teams.show', [
         $this->team,
         'view' => 'invitations',
-        'search' => $this->team->invitations->first()->email,
+        'query' => $this->team->invitations->first()->email,
     ]))->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Teams/Show')
             ->has('invitations.data', 1)
             ->where('invitations.data.0.email', $this->team->invitations->first()->email)
-            ->missing('members.data')
+            ->missing('memberships.data')
         );
 });

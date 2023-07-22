@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
-use App\Actions\Teams\DeleteTeamMembership;
+use App\Actions\TeamMemberships\DeleteTeamMembership;
 use App\Http\Controllers\Controller;
 use App\Models\TeamMembership;
 use Illuminate\Http\RedirectResponse;

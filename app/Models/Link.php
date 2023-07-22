@@ -91,6 +91,7 @@ class Link extends Model
     public function toSearchableArray(): array
     {
         return [
+            'id' => $this->id,
             'team_id' => $this->team_id,
             'alias' => $this->alias,
             'destination_path' => $this->destination_path,

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Teams;
 
+use App\Actions\TeamMemberships\CreateTeamMembership;
 use App\Exceptions\InvalidTeamMembershipException;
 use App\Models\TeamInvitation;
 use App\Models\User;
@@ -25,7 +26,7 @@ class AcceptTeamInvitation
             throw InvalidTeamMembershipException::alreadyOnTeam();
         }
 
-        $user->teams()->attach($invitation->team_id);
+        CreateTeamMembership::run($invitation->team, $user);
 
         $user->switchTeam($invitation->team);
 

@@ -2,6 +2,7 @@
 
 use App\Actions\Teams\DeleteTeam;
 use App\Models\Team;
+use App\Models\TeamMembership;
 use App\Models\User;
 use Mockery\MockInterface;
 
@@ -28,7 +29,7 @@ it('only allows owners to delete the team', function () {
     $this->delete(route('teams.destroy', $team))
         ->assertForbidden();
 
-    $team->users()->attach($this->user);
+    TeamMembership::factory()->for($this->user)->for($team)->create();
 
     $this->delete(route('teams.destroy', $team))
         ->assertForbidden();

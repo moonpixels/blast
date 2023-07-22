@@ -1,6 +1,6 @@
 <?php
 
-use App\Actions\Teams\FilterTeamMembers;
+use App\Actions\TeamMemberships\FilterTeamMemberships;
 use App\Models\Team;
 use App\Models\TeamMembership;
 use App\Models\User;
@@ -14,25 +14,25 @@ beforeEach(function () {
 });
 
 it('returns all results if a search term is not sent', function () {
-    $memberships = FilterTeamMembers::run($this->team);
+    $memberships = FilterTeamMemberships::run($this->team);
 
     expect($memberships->count())->toBe(10);
 });
 
 it('returns filtered results if a search term is sent', function () {
-    $memberships = FilterTeamMembers::run($this->team, '@blst.to');
+    $memberships = FilterTeamMemberships::run($this->team, '@blst.to');
 
     expect($memberships->count())->toBe(1);
 });
 
 it('returns an empty collection if no results are found', function () {
-    $memberships = FilterTeamMembers::run($this->team, 'membership does not exist');
+    $memberships = FilterTeamMemberships::run($this->team, 'membership does not exist');
 
     expect($memberships->count())->toBe(0);
 });
 
 it('returns a paginated collection', function () {
-    $memberships = FilterTeamMembers::run($this->team);
+    $memberships = FilterTeamMemberships::run($this->team);
 
     expect($memberships->currentPage())->toBe(1)
         ->and($memberships->perPage())->toBe(10)

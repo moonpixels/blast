@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('team_user', function (Blueprint $table) {
+        Schema::create('team_memberships', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUlid('team_id')->index();
             $table->foreignUlid('user_id')->index();

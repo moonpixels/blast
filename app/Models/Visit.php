@@ -43,6 +43,13 @@ class Visit extends Model
      */
     public function team(): HasOneThrough
     {
-        return $this->hasOneThrough(Team::class, Link::class);
+        return $this->hasOneThrough(
+            Team::class,
+            Link::class,
+            'id',
+            'id',
+            'link_id',
+            'team_id'
+        );
     }
 }

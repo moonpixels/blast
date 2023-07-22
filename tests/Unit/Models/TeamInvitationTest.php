@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Team;
 use App\Models\TeamInvitation;
 
 beforeEach(function () {
@@ -15,11 +16,16 @@ it('generates a URL to accept the invitation', function () {
         ->and($this->teamInvitation->accept_url)->toContain('signature');
 });
 
-it('can filter invitations by email', function () {
-    TeamInvitation::factory(5)->create();
+it('returns the correct indexable array', function () {
+    expect($this->teamInvitation->toSearchableArray())->toHaveKeys([
+        'id',
+        'team_id',
+        'email',
+        'created_at',
+        'updated_at',
+    ]);
+});
 
-    $invitations = TeamInvitation::whereEmailLike('@blst.to')->get();
-
-    expect($invitations)->toHaveCount(1)
-        ->and($invitations->first()->email)->toBe('john.doe@blst.to');
+it('belongs to a team', function () {
+    expect($this->teamInvitation->team)->toBeInstanceOf(Team::class);
 });
