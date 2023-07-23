@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  laravel.test:
+  blast:
     build:
       context: ./vendor/laravel/sail/runtimes/8.2
       dockerfile: Dockerfile
