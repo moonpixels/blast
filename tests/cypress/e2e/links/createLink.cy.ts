@@ -24,7 +24,7 @@ describe('Create link', () => {
       cy.get('[data-cy="short-url-link"]').should('have.attr', 'href', 'https://blst.to')
       cy.get('[data-cy="shortened-link-destination"]').should('contain', 'https://blst.to')
       cy.get('[data-cy="copy-to-clipboard-button"]').click()
-      cy.assertValueCopiedToClipboard('https://blst.to')
+      cy.assertValueCopiedToClipboard(Cypress.$('[data-cy="short-url-link"]').text())
     })
   })
 

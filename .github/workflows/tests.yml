@@ -115,3 +115,11 @@ jobs:
           install: false
           config: baseUrl=http://localhost:8000
           wait-on: 'http://localhost:8000'
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: tests/cypress/screenshots
+          if-no-files-found: ignore
