@@ -5,3 +5,9 @@ it('does not use debugging functions', function () {
         ->not
         ->toBeUsed();
 });
+
+it('does not use env variables outside of config files', function () {
+    expect(['env'])
+        ->not
+        ->toBeUsed();
+});
