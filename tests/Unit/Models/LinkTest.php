@@ -64,3 +64,17 @@ it('has many visits', function () {
         ->and($visits)->toBeInstanceOf(Collection::class)
         ->and($visits)->each->toBeInstanceOf(Visit::class);
 });
+
+it('can check if the password matches', function () {
+    $link = Link::factory()->withPassword()->create();
+
+    expect($link->passwordMatches('password'))->toBeTrue()
+        ->and($link->passwordMatches('wrong-password'))->toBeFalse();
+});
+
+it('can determine if a password has been set', function () {
+    $link = Link::factory()->withPassword()->create();
+
+    expect($this->link->has_password)->toBeFalse()
+        ->and($link->has_password)->toBeTrue();
+});

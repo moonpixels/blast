@@ -19,6 +19,7 @@ class StoreRequest extends FormRequest
             'alias' => [
                 'sometimes', 'string', 'alpha_num:ascii', 'max:20', 'unique:links,alias', new NotReservedAlias,
             ],
+            'password' => ['sometimes', 'string'],
             'team_id' => ['bail', 'required', 'ulid', 'exists:teams,id', new BelongsToTeam($this->user())],
         ];
     }

@@ -4,6 +4,7 @@ use App\Actions\Links\CreateLink;
 use App\Data\LinkData;
 use App\Exceptions\InvalidUrlException;
 use App\Models\Team;
+use Illuminate\Support\Facades\Hash;
 
 beforeEach(function () {
     $this->team = Team::factory()->create();
@@ -95,4 +96,14 @@ it('can create new links with case sensitive aliases', function () {
     ]));
 
     expect($link->alias)->toBe('customalias');
+});
+
+it('can create a new link with a password', function () {
+    $link = CreateLink::run(LinkData::from([
+        ...$this->linkData,
+        'password' => 'password',
+    ]));
+
+    expect($link->password)->not->toBeNull()
+        ->and(Hash::check('password', $link->password))->toBeTrue();
 });

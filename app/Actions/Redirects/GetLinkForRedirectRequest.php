@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Links;
+namespace App\Actions\Redirects;
 
 use App\Models\Link;
 use Illuminate\Support\Facades\Cache;

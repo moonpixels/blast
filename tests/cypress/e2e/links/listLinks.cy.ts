@@ -145,4 +145,25 @@ describe('List links', () => {
       cy.get('[data-cy="no-links-empty-state"]').should('exist')
     })
   })
+
+  it('should indicate if a link has additional features set', () => {
+    cy.create({
+      model: 'App\\Models\\Link',
+      state: ['withPassword'],
+      attributes: {
+        team_id: teamId,
+      },
+    }).then(() => {
+      cy.reload()
+
+      cy.get('[data-cy="links-list"]').children().should('have.length', 1)
+
+      cy.get('[data-cy="links-list"]')
+        .children()
+        .first()
+        .within(() => {
+          cy.get('[data-cy="password-protected-icon"]').should('exist')
+        })
+    })
+  })
 })

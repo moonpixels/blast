@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Scout\Searchable;
 
 /**
@@ -26,6 +27,13 @@ class Link extends Model
     protected $guarded = ['id'];
 
     /**
+     * The attributes that should be hidden.
+     *
+     * @var array<string>
+     */
+    protected $hidden = ['password'];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
@@ -42,6 +50,7 @@ class Link extends Model
     protected $appends = [
         'destination_url',
         'short_url',
+        'has_password',
     ];
 
     /**
@@ -103,6 +112,14 @@ class Link extends Model
     }
 
     /**
+     * Determine if the link's password matches the given password.
+     */
+    public function passwordMatches(string $password): bool
+    {
+        return Hash::check($password, $this->password);
+    }
+
+    /**
      * Get the link's long link.
      */
     protected function destinationUrl(): Attribute
@@ -122,6 +139,18 @@ class Link extends Model
         return Attribute::make(
             get: function () {
                 return config('app.url')."/{$this->alias}";
+            }
+        );
+    }
+
+    /**
+     * Determine if the link is password protected.
+     */
+    protected function hasPassword(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return (bool) $this->password;
             }
         );
     }

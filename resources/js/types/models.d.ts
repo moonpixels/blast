@@ -42,6 +42,7 @@ export interface Link {
   id: string
   team_id: string
   alias: string
+  has_password: boolean
   destination_url: string
   short_url: string
 }

@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\Web\AcceptedInvitationController;
-use App\Http\Controllers\Web\InvitationController;
-use App\Http\Controllers\Web\LinkController;
-use App\Http\Controllers\Web\RedirectController;
-use App\Http\Controllers\Web\ResentInvitationController;
-use App\Http\Controllers\Web\TeamController;
-use App\Http\Controllers\Web\TeamInvitationController;
-use App\Http\Controllers\Web\TeamMembershipController;
-use App\Http\Controllers\Web\UserController;
-use App\Http\Controllers\Web\UserCurrentTeamController;
+use App\Http\Controllers\Web\Links\AuthenticatedRedirectController;
+use App\Http\Controllers\Web\Links\LinkController;
+use App\Http\Controllers\Web\Links\RedirectController;
+use App\Http\Controllers\Web\Teams\AcceptedInvitationController;
+use App\Http\Controllers\Web\Teams\InvitationController;
+use App\Http\Controllers\Web\Teams\ResentInvitationController;
+use App\Http\Controllers\Web\Teams\TeamController;
+use App\Http\Controllers\Web\Teams\TeamInvitationController;
+use App\Http\Controllers\Web\Teams\TeamMembershipController;
+use App\Http\Controllers\Web\Users\UserController;
+use App\Http\Controllers\Web\Users\UserCurrentTeamController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -105,4 +106,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 });
 
-Route::get('/{alias}', [RedirectController::class, 'show'])->name('redirects.show');
+// Redirects...
+Route::get('/{alias}', [RedirectController::class, 'create'])->name('redirect');
+Route::get('/{alias}/password', [AuthenticatedRedirectController::class, 'create'])->name('authenticated-redirect');
+Route::post('/{alias}/password', [AuthenticatedRedirectController::class, 'store']);

@@ -1,5 +1,5 @@
 import Chainable = Cypress.Chainable
-import { CurrentUser } from '@/types/models'
+import { CurrentUser, Link } from '@/types/models'
 
 /**
  * Get the OTP code for the given user.
@@ -32,6 +32,28 @@ export function createUser(
   return cy
     .create({
       model: 'App\\Models\\User',
+      attributes,
+      state,
+      load,
+    })
+    .then((model) => {
+      return model
+    })
+}
+
+/**
+ * Create a new link.
+ */
+export function createLink(attributes: Partial<Link> = {}, state: string[] = [], load: string[] = []): Chainable<Link> {
+  if (Object.keys(attributes).length === 0) {
+    attributes = {
+      alias: 'test',
+    }
+  }
+
+  return cy
+    .create({
+      model: 'App\\Models\\Link',
       attributes,
       state,
       load,
