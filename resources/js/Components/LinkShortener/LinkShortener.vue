@@ -85,6 +85,17 @@
                     @keydown.enter.prevent="close"
                   />
 
+                  <TextInput
+                    v-if="option.name === 'password'"
+                    v-model="form.password"
+                    :error="form.errors.password"
+                    :label="$t('Password')"
+                    inverse
+                    type="password"
+                    @input="form.clearErrors('password')"
+                    @keydown.enter.prevent="close"
+                  />
+
                   <SelectInput
                     v-if="option.name === 'team_id'"
                     v-model="form.team_id"

@@ -9,6 +9,7 @@ use App\Models\Domain;
 use App\Models\Link;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class CreateLink
@@ -36,6 +37,7 @@ class CreateLink
                 'domain_id' => $domain->id,
                 'destination_path' => $url['path'],
                 'alias' => $alias,
+                'password' => $data->password ? Hash::make($data->password) : null,
             ]);
         });
     }

@@ -36,15 +36,31 @@
     <ResourcePanelList v-else data-cy="links-list">
       <ResourcePanelListItem v-for="link in links.data" :key="link.id">
         <template #content>
-          <a
-            :href="link.destination_url"
-            class="text-sm font-medium leading-6 text-zinc-900 hover:underline hover:decoration-dashed hover:underline-offset-4 dark:text-white"
-            data-cy="short-url-link"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            {{ link.short_url }}
-          </a>
+          <div class="flex items-center gap-3">
+            <div>
+              <a
+                :href="link.destination_url"
+                class="text-sm font-medium leading-6 text-zinc-900 hover:underline hover:decoration-dashed hover:underline-offset-4 dark:text-white"
+                data-cy="short-url-link"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                {{ link.short_url }}
+              </a>
+            </div>
+
+            <div class="flex items-center gap-1">
+              <div
+                v-if="link.has_password"
+                v-tippy="{ content: $t('Password protected') }"
+                data-cy="password-protected-icon"
+              >
+                <LockClosedIcon
+                  class="h-3 w-3 text-zinc-400 transition-all duration-200 ease-in-out hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+                />
+              </div>
+            </div>
+          </div>
 
           <p class="truncate text-xs leading-5">
             {{ link.destination_url }}
@@ -86,6 +102,7 @@ import {
   ClipboardDocumentCheckIcon,
   ClipboardDocumentIcon,
   EllipsisHorizontalIcon,
+  LockClosedIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/vue/20/solid'
 import SimpleEmptyState from '@/Components/EmptyStates/SimpleEmptyState.vue'

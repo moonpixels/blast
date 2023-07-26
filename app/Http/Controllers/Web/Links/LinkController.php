@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Links;
 
 use App\Actions\Links\CreateLink;
 use App\Actions\Links\FilterLinks;

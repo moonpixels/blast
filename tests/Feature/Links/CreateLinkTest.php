@@ -5,6 +5,7 @@ use App\Exceptions\InvalidUrlException;
 use App\Models\Link;
 use App\Models\Team;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 beforeEach(function () {
@@ -173,4 +174,19 @@ it('does not create a link when the URL host is invalid', function () {
     ])->assertInvalid('destination_url');
 
     expect(Link::count())->toBe(0);
+});
+
+it('can create a link with a password', function () {
+    $this->post(route('links.store'), [
+        'destination_url' => 'https://blst.to',
+        'password' => 'password',
+        'team_id' => $this->standardTeam->id,
+    ])->assertRedirect();
+
+    expect(Link::count())->toBe(1);
+
+    $link = Link::first();
+
+    expect($link->has_password)->toBeTrue()
+        ->and(Hash::check('password', $link->password))->toBeTrue();
 });

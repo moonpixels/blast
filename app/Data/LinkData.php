@@ -12,6 +12,7 @@ class LinkData extends Data
     public function __construct(
         public string $teamId,
         public ?string $alias,
+        public ?string $password,
         public string $destinationUrl,
     ) {
     }

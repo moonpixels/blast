@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Teams;
 
 use App\Actions\TeamMemberships\FilterTeamMemberships;
 use App\Actions\Teams\CreateTeamForUser;

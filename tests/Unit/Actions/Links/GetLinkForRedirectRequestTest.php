@@ -1,6 +1,6 @@
 <?php
 
-use App\Actions\Links\GetLinkForRedirectRequest;
+use App\Actions\Redirects\GetLinkForRedirectRequest;
 use App\Models\Link;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Cache;

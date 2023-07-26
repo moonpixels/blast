@@ -169,4 +169,21 @@ describe('Create link', () => {
 
     cy.get('[data-cy="shortened-link-card"]').should('be.visible')
   })
+
+  it('should allow users to create a link with a password', () => {
+    cy.get('@linkShortenerForm').within(() => {
+      cy.getFormInput('URL').type('https://blst.to')
+
+      cy.get('[data-cy="set-password-button"]').click()
+
+      cy.get('[data-cy="link-options-popover"]').within(() => {
+        cy.getFormInput('Password').type('password')
+        cy.get('[data-cy="dismiss-options-popover-button"]').click()
+      })
+
+      cy.get('[data-cy="submit-button"]').click()
+    })
+
+    cy.get('[data-cy="shortened-link-card"]').should('be.visible')
+  })
 })

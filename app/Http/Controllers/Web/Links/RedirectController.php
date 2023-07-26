@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Links;
 
-use App\Actions\Links\GetLinkForRedirectRequest;
+use App\Actions\Redirects\GetLinkForRedirectRequest;
 use App\Actions\Visits\CreateVisitForLink;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -13,9 +13,13 @@ class RedirectController extends Controller
     /**
      * Redirect the user to the destination URL for the given alias.
      */
-    public function show(Request $request, string $alias): RedirectResponse
+    public function create(Request $request, string $alias): RedirectResponse
     {
         $link = GetLinkForRedirectRequest::run($alias);
+
+        if ($link->has_password && ! session()->pull("authenticated:{$alias}", false)) {
+            return redirect()->route('authenticated-redirect', $alias);
+        }
 
         CreateVisitForLink::run($link, $request->userAgent(), $request->header('referer'));
 

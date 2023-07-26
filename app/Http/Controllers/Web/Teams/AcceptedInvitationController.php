@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web;
+namespace App\Http\Controllers\Web\Teams;
 
 use App\Actions\Teams\AcceptTeamInvitation;
 use App\Exceptions\InvalidTeamMembershipException;
