@@ -29,7 +29,7 @@ class Link extends Model
     /**
      * The attributes that should be hidden.
      *
-     * @var array<string>
+     * @var array<int, string>
      */
     protected $hidden = ['password'];
 
