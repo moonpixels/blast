@@ -10,7 +10,7 @@ beforeEach(function () {
 it('shows the authenticated redirect page', function () {
     $this->get(route('authenticated-redirect', $this->link->alias))
         ->assertOk()
-        ->assertInertia(fn(Assert $page) => $page
+        ->assertInertia(fn (Assert $page) => $page
             ->component('Redirects/Authenticated/Create')
             ->where('alias', $this->link->alias)
         );
