@@ -39,6 +39,14 @@ it('does not show the authenticated redirect page when the link does not have a 
         ->assertRedirect(route('redirect', $link->alias));
 });
 
+it('redirects to the redirects page if a password is submitted for a link that does not have a password', function () {
+    $link = Link::factory()->create();
+
+    $this->post(route('authenticated-redirect', $link->alias), [
+        'password' => 'password',
+    ])->assertRedirect(route('redirect', $link->alias));
+});
+
 it('does not show the authenticated redirect page when the link does not exist', function () {
     $this->get(route('authenticated-redirect', 'not-a-link'))
         ->assertNotFound();

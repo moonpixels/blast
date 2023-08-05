@@ -78,3 +78,12 @@ it('can determine if a password has been set', function () {
     expect($this->link->has_password)->toBeFalse()
         ->and($link->has_password)->toBeTrue();
 });
+
+it('can determine if the link has expired', function () {
+    $link = Link::factory()->create([
+        'expires_at' => now()->subDay(),
+    ]);
+
+    expect($this->link->hasExpired())->toBeFalse()
+        ->and($link->hasExpired())->toBeTrue();
+});

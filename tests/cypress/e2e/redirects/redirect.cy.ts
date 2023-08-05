@@ -44,4 +44,12 @@ describe('Redirect', () => {
       })
     })
   })
+
+  it('should redirect the user to the expired link page if the link has expired', () => {
+    createLink({ alias: 'expiredTest' }, ['expired']).then((link) => {
+      cy.log('link', link)
+      cy.visit({ route: 'redirect', parameters: { alias: link.alias } })
+      cy.assertRedirect('expired-redirect')
+    })
+  })
 })

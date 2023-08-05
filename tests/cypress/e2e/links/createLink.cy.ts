@@ -1,4 +1,5 @@
 import { createUser } from '../../support/functions'
+import dayjs from 'dayjs'
 
 describe('Create link', () => {
   beforeEach(() => {
@@ -185,5 +186,45 @@ describe('Create link', () => {
     })
 
     cy.get('[data-cy="shortened-link-card"]').should('be.visible')
+  })
+
+  it('should allow users to create a link with an expiry date', () => {
+    cy.get('@linkShortenerForm').within(() => {
+      cy.getFormInput('URL').type('https://blst.to')
+
+      cy.get('[data-cy="set-expires_at-button"]').click()
+
+      cy.get('[data-cy="link-options-popover"]').within(() => {
+        cy.getFormInput('Expires at').type(dayjs().add(1, 'day').format('DD/MM/YYYY HH:mm'))
+        cy.get('[data-cy="dismiss-options-popover-button"]').click()
+      })
+
+      cy.get('[data-cy="submit-button"]').click()
+    })
+
+    cy.get('[data-cy="shortened-link-card"]').should('be.visible')
+  })
+
+  it('should show an error if the expiry date is invalid', () => {
+    cy.get('@linkShortenerForm').within(() => {
+      cy.getFormInput('URL').type('https://blst.to')
+
+      // Invalid date
+      cy.get('[data-cy="set-expires_at-button"]').click()
+      cy.get('[data-cy="link-options-popover"]').within(() => {
+        cy.getFormInput('Expires at').type('invalid date')
+        cy.getFormInput('Expires at').should('have.value', '')
+        cy.get('[data-cy="dismiss-options-popover-button"]').click()
+      })
+
+      // Date in the past
+      cy.get('[data-cy="set-expires_at-button"]').click()
+      cy.get('[data-cy="link-options-popover"]').within(() => {
+        cy.getFormInput('Expires at').type(dayjs().subtract(1, 'day').format('DD/MM/YYYY HH:mm'))
+        cy.get('[data-cy="dismiss-options-popover-button"]').click()
+      })
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('[data-cy="link-options-errors"]').should('contain', 'The expires at field must be a date after now.')
+    })
   })
 })

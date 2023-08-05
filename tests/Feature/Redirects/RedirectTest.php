@@ -88,3 +88,10 @@ it('redirects the user to the destination URL if the link has a password and the
     $this->get(route('redirect', $link->alias))
         ->assertRedirect($link->destination_url);
 });
+
+it('redirects the user to the expired redirects route if the link has expired', function () {
+    $link = Link::factory()->expired()->create();
+
+    $this->get(route('redirect', $link->alias))
+        ->assertRedirectToRoute('expired-redirect');
+});

@@ -45,4 +45,7 @@ export interface Link {
   has_password: boolean
   destination_url: string
   short_url: string
+  expires_at: string
+  created_at: string
+  updated_at: string
 }

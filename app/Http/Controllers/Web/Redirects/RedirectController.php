@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Links;
+namespace App\Http\Controllers\Web\Redirects;
 
 use App\Actions\Redirects\GetLinkForRedirectRequest;
 use App\Actions\Visits\CreateVisitForLink;
@@ -19,6 +19,10 @@ class RedirectController extends Controller
 
         if ($link->has_password && ! session()->pull("authenticated:{$alias}", false)) {
             return redirect()->route('authenticated-redirect', $alias);
+        }
+
+        if ($link->hasExpired()) {
+            return redirect()->route('expired-redirect');
         }
 
         CreateVisitForLink::run($link, $request->userAgent(), $request->header('referer'));

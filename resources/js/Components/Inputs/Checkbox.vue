@@ -51,6 +51,9 @@ const props = withDefaults(defineProps<Props>(), {
   id: () => {
     return `checkbox-${nanoid()}`
   },
+  error: undefined,
+  description: undefined,
+  value: undefined,
 })
 
 const emit = defineEmits<{
