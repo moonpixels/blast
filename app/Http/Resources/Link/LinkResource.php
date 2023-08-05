@@ -22,6 +22,7 @@ class LinkResource extends JsonResource
             'team_id' => $this->team_id,
             'alias' => $this->alias,
             'has_password' => $this->has_password,
+            'visit_limit' => $this->visit_limit,
             'destination_url' => $this->destination_url,
             'short_url' => $this->short_url,
             'expires_at' => $this->expires_at,

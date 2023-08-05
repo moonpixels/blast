@@ -43,9 +43,10 @@ export interface Link {
   team_id: string
   alias: string
   has_password: boolean
+  visit_limit: number | null
   destination_url: string
   short_url: string
-  expires_at: string
+  expires_at: string | null
   created_at: string
   updated_at: string
 }

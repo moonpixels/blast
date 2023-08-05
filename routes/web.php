@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Web\Links\LinkController;
 use App\Http\Controllers\Web\Redirects\AuthenticatedRedirectController;
-use App\Http\Controllers\Web\Redirects\ExpiredRedirectsController;
+use App\Http\Controllers\Web\Redirects\ExpiredRedirectController;
+use App\Http\Controllers\Web\Redirects\ReachedVisitLimitRedirectController;
 use App\Http\Controllers\Web\Redirects\RedirectController;
 use App\Http\Controllers\Web\Teams\AcceptedInvitationController;
 use App\Http\Controllers\Web\Teams\InvitationController;
@@ -112,7 +113,11 @@ Route::get('/{alias}/password', [AuthenticatedRedirectController::class, 'create
 Route::post('/{alias}/password', [AuthenticatedRedirectController::class, 'store']);
 
 // Expired redirects...
-Route::get('/expired-redirect', [ExpiredRedirectsController::class, 'show'])->name('expired-redirect');
+Route::get('redirects/expired', [ExpiredRedirectController::class, 'show'])->name('expired-redirect');
+
+// Reached visit limit redirects...
+Route::get('redirects/reached-visit-limit', [ReachedVisitLimitRedirectController::class, 'show'])
+    ->name('reached-visit-limit-redirect');
 
 // Redirects...
 Route::get('/{alias}', [RedirectController::class, 'create'])->name('redirect');

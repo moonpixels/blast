@@ -106,6 +106,17 @@
                     @keydown.enter.prevent="close"
                   />
 
+                  <TextInput
+                    v-if="option.name === 'visit_limit'"
+                    v-model="form.visit_limit"
+                    :error="form.errors.visit_limit"
+                    :label="$t('Visit limit')"
+                    inverse
+                    type="number"
+                    @input="form.clearErrors('visit_limit')"
+                    @keydown.enter.prevent="close"
+                  />
+
                   <SelectInput
                     v-if="option.name === 'team_id'"
                     v-model="form.team_id"
@@ -223,7 +234,7 @@ type LinkShortenerForm = {
   alias?: string
   password?: string
   expires_at?: string
-  max_visits?: number
+  visit_limit?: number
   team_id: string
 }
 
@@ -232,7 +243,7 @@ const form = useForm<LinkShortenerForm>({
   alias: undefined,
   password: undefined,
   expires_at: undefined,
-  max_visits: undefined,
+  visit_limit: undefined,
   team_id: user.value.current_team_id,
 })
 
@@ -263,8 +274,8 @@ const linkOptions: LinkShortenerOption[] = [
     icon: ClockIcon,
   },
   {
-    name: 'max_visits',
-    title: trans('Set visits'),
+    name: 'visit_limit',
+    title: trans('Set visit limit'),
     description: trans('Limit how many visits the link can receive.'),
     icon: CursorArrowRaysIcon,
   },

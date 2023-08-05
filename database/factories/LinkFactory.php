@@ -26,6 +26,7 @@ class LinkFactory extends Factory
             'destination_path' => '/'.$this->faker->slug,
             'alias' => $this->faker->unique()->regexify('[a-zA-Z0-9]{7}'),
             'password' => null,
+            'visit_limit' => null,
             'total_visits' => 0,
             'expires_at' => null,
         ];
@@ -61,6 +62,17 @@ class LinkFactory extends Factory
     {
         return $this->state([
             'expires_at' => now()->subDay(),
+        ]);
+    }
+
+    /**
+     * Indicate that the link has reached its visit limit.
+     */
+    public function withReachedVisitLimit(): self
+    {
+        return $this->state([
+            'visit_limit' => 1,
+            'total_visits' => 1,
         ]);
     }
 }

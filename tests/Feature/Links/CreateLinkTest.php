@@ -226,3 +226,55 @@ it('does not create a link when the expiry date is in the past', function () {
 
     expect(Link::count())->toBe(0);
 });
+
+it('can create a link with a visit limit', function () {
+    $this->post(route('links.store'), [
+        'destination_url' => 'https://blst.to',
+        'visit_limit' => 10,
+        'team_id' => $this->standardTeam->id,
+    ])->assertRedirect();
+
+    expect(Link::count())->toBe(1);
+
+    $link = Link::first();
+
+    expect($link->visit_limit)->toBe(10);
+});
+
+it('does not create a link when the visit limit is invalid', function () {
+    // Not an integer...
+    $this->post(route('links.store'), [
+        'destination_url' => 'https://blst.to',
+        'visit_limit' => 'invalid-limit',
+        'team_id' => $this->standardTeam->id,
+    ])->assertInvalid('visit_limit');
+
+    expect(Link::count())->toBe(0);
+
+    // Zero...
+    $this->post(route('links.store'), [
+        'destination_url' => 'https://blst.to',
+        'visit_limit' => 0,
+        'team_id' => $this->standardTeam->id,
+    ])->assertInvalid('visit_limit');
+
+    expect(Link::count())->toBe(0);
+
+    // Negative...
+    $this->post(route('links.store'), [
+        'destination_url' => 'https://blst.to',
+        'visit_limit' => -1,
+        'team_id' => $this->standardTeam->id,
+    ])->assertInvalid('visit_limit');
+
+    expect(Link::count())->toBe(0);
+
+    // Too large...
+    $this->post(route('links.store'), [
+        'destination_url' => 'https://blst.to',
+        'visit_limit' => 16777216,
+        'team_id' => $this->standardTeam->id,
+    ])->assertInvalid('visit_limit');
+
+    expect(Link::count())->toBe(0);
+});

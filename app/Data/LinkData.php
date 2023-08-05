@@ -14,6 +14,7 @@ class LinkData extends Data
         public string $teamId,
         public ?string $alias,
         public ?string $password,
+        public ?int $visitLimit,
         public ?Carbon $expiresAt,
         public string $destinationUrl,
     ) {

@@ -227,4 +227,65 @@ describe('Create link', () => {
       cy.get('[data-cy="link-options-errors"]').should('contain', 'The expires at field must be a date after now.')
     })
   })
+
+  it('should allow users to create a link with a visit limit', () => {
+    cy.get('@linkShortenerForm').within(() => {
+      cy.getFormInput('URL').type('https://blst.to')
+
+      cy.get('[data-cy="set-visit_limit-button"]').click()
+
+      cy.get('[data-cy="link-options-popover"]').within(() => {
+        cy.getFormInput('Visit limit').type('10')
+        cy.get('[data-cy="dismiss-options-popover-button"]').click()
+      })
+
+      cy.get('[data-cy="submit-button"]').click()
+    })
+
+    cy.get('[data-cy="shortened-link-card"]').should('be.visible')
+  })
+
+  it('should show an error if the visit limit is invalid', () => {
+    cy.get('@linkShortenerForm').within(() => {
+      cy.getFormInput('URL').type('https://blst.to')
+
+      // Invalid visit limit
+      cy.get('[data-cy="set-visit_limit-button"]').click()
+      cy.get('[data-cy="link-options-popover"]').within(() => {
+        cy.getFormInput('Visit limit').type('invalid visit limit')
+        cy.get('[data-cy="dismiss-options-popover-button"]').click()
+      })
+      cy.get('[data-cy="set-visit_limit-button"]').click()
+      cy.get('[data-cy="link-options-popover"]').within(() => {
+        cy.getFormInput('Visit limit').should('have.value', '')
+        cy.get('[data-cy="dismiss-options-popover-button"]').click()
+      })
+
+      // Negative visit limit
+      cy.get('[data-cy="set-visit_limit-button"]').click()
+      cy.get('[data-cy="link-options-popover"]').within(() => {
+        cy.getFormInput('Visit limit').type('-1')
+        cy.get('[data-cy="dismiss-options-popover-button"]').click()
+      })
+      cy.get('[data-cy="link-options-popover"]').should('not.exist')
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('[data-cy="link-options-errors"]').should(
+        'contain',
+        'The visit limit field must be between 1 and 16777215.'
+      )
+
+      // Visit limit too high
+      cy.get('[data-cy="set-visit_limit-button"]').click()
+      cy.get('[data-cy="link-options-popover"]').within(() => {
+        cy.getFormInput('Visit limit').type('16777216')
+        cy.get('[data-cy="dismiss-options-popover-button"]').click()
+      })
+      cy.get('[data-cy="link-options-popover"]').should('not.exist')
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('[data-cy="link-options-errors"]').should(
+        'contain',
+        'The visit limit field must be between 1 and 16777215.'
+      )
+    })
+  })
 })

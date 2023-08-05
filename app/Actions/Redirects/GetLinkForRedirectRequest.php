@@ -3,7 +3,6 @@
 namespace App\Actions\Redirects;
 
 use App\Models\Link;
-use Illuminate\Support\Facades\Cache;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class GetLinkForRedirectRequest
@@ -15,8 +14,6 @@ class GetLinkForRedirectRequest
      */
     public function handle(string $alias): Link
     {
-        return Cache::remember("links:{$alias}", 3600, function () use ($alias) {
-            return Link::where('alias', $alias)->firstOrFail();
-        });
+        return Link::where('alias', $alias)->firstOrFail();
     }
 }
