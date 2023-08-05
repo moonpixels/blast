@@ -116,3 +116,12 @@ it('can create a new link with an expiry date', function () {
 
     expect($link->expires_at)->not->toBeNull();
 });
+
+it('can create a new link with a visit limit', function () {
+    $link = CreateLink::run(LinkData::from([
+        ...$this->linkData,
+        'visit_limit' => 10,
+    ]));
+
+    expect($link->visit_limit)->toBe(10);
+});

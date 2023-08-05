@@ -25,6 +25,10 @@ class RedirectController extends Controller
             return redirect()->route('expired-redirect');
         }
 
+        if ($link->hasReachedVisitLimit()) {
+            return redirect()->route('reached-visit-limit-redirect');
+        }
+
         CreateVisitForLink::run($link, $request->userAgent(), $request->header('referer'));
 
         return redirect()->away($link->destination_url, 301, [

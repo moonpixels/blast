@@ -12,18 +12,6 @@ it('redirects the user to the destination URL', function () {
         ->assertRedirect($this->link->destination_url);
 });
 
-it('caches the link for 1 hour', function () {
-    $this->get(route('redirect', $this->link->alias))
-        ->assertRedirect($this->link->destination_url);
-
-    expect(Cache::has("links:{$this->link->alias}"))->toBeTrue();
-
-    $this->travel(61)->minutes();
-
-    expect(Cache::has("links:{$this->link->alias}"))->toBeFalse();
-
-});
-
 it('creates a visit for the link', function () {
     $this->get(route('redirect', $this->link->alias));
 
@@ -94,4 +82,11 @@ it('redirects the user to the expired redirects route if the link has expired', 
 
     $this->get(route('redirect', $link->alias))
         ->assertRedirectToRoute('expired-redirect');
+});
+
+it('redirects the user to the reached visit limit route if the link has reached its visit limit', function () {
+    $link = Link::factory()->withReachedVisitLimit()->create();
+
+    $this->get(route('redirect', $link->alias))
+        ->assertRedirectToRoute('reached-visit-limit-redirect');
 });

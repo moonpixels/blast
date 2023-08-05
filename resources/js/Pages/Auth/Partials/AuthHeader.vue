@@ -1,5 +1,5 @@
 <template>
-  <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+  <div :class="[fullWidth ? '' : 'sm:max-w-sm']" class="sm:mx-auto sm:w-full">
     <BlastLogo class="mx-auto h-10 w-auto" type="logomark" />
 
     <h2 class="mt-6 text-center text-2xl font-semibold leading-9 tracking-tight text-zinc-900 dark:text-white">
@@ -18,7 +18,11 @@ import BlastLogo from '@/Components/Logo/BlastLogo.vue'
 interface Props {
   title: string
   description?: string
+  fullWidth?: boolean
 }
 
-const props = defineProps<Props>()
+withDefaults(defineProps<Props>(), {
+  description: undefined,
+  fullWidth: false,
+})
 </script>

@@ -6,7 +6,7 @@ describe('Redirect', () => {
   })
 
   it('should redirect the user to the destination URL when the password is correct', () => {
-    createLink({}, ['withPassword', 'toExampleDotCom']).then((link) => {
+    createLink({ alias: 'passwordTest' }, ['withPassword', 'toExampleDotCom']).then((link) => {
       cy.visit({ route: 'redirect', parameters: { alias: link.alias } })
 
       cy.get('[data-cy="authenticated-redirect-form"]')
@@ -23,7 +23,7 @@ describe('Redirect', () => {
   })
 
   it('should show an error if the password is invalid', () => {
-    createLink({}, ['withPassword', 'toExampleDotCom']).then((link) => {
+    createLink({ alias: 'passwordTest' }, ['withPassword', 'toExampleDotCom']).then((link) => {
       cy.visit({ route: 'redirect', parameters: { alias: link.alias } })
 
       // Missing password
@@ -49,7 +49,14 @@ describe('Redirect', () => {
     createLink({ alias: 'expiredTest' }, ['expired']).then((link) => {
       cy.log('link', link)
       cy.visit({ route: 'redirect', parameters: { alias: link.alias } })
-      cy.assertRedirect('expired-redirect')
+      cy.assertRedirect('expired')
+    })
+  })
+
+  it('should redirect the user to the visit limit reached page if the link has reached its visit limit', () => {
+    createLink({ alias: 'visitLimitTest' }, ['withReachedVisitLimit']).then((link) => {
+      cy.visit({ route: 'redirect', parameters: { alias: link.alias } })
+      cy.assertRedirect('reached-visit-limit')
     })
   })
 })

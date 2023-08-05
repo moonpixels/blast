@@ -87,3 +87,16 @@ it('can determine if the link has expired', function () {
     expect($this->link->hasExpired())->toBeFalse()
         ->and($link->hasExpired())->toBeTrue();
 });
+
+it('can determine if the link has reached its visit limit', function () {
+    $link = Link::factory()->create([
+        'visit_limit' => 5,
+    ]);
+
+    expect($this->link->hasReachedVisitLimit())->toBeFalse()
+        ->and($link->hasReachedVisitLimit())->toBeFalse();
+
+    Visit::factory(5)->for($link)->create();
+
+    expect($link->refresh()->hasReachedVisitLimit())->toBeTrue();
+});

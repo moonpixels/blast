@@ -1,9 +1,9 @@
 <template>
-  <AppHead :title="$t('The link has expired')" />
+  <AppHead :title="$t('The link\'s visit limit has been reached')" />
 
-  <AuthHeader :title="$t('The link has expired')">
+  <AuthHeader :title="$t('The link\'s visit limit has been reached')" full-width>
     <p>
-      {{ $t('The link you are trying to access has expired.') }}
+      {{ $t('The link you are trying to access has reached its visit limit.') }}
     </p>
   </AuthHeader>
 </template>

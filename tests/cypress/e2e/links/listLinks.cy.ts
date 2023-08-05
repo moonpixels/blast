@@ -149,7 +149,7 @@ describe('List links', () => {
   it('should indicate if a link has additional features set', () => {
     cy.create({
       model: 'App\\Models\\Link',
-      state: ['withPassword'],
+      state: ['withPassword', 'expired', 'withReachedVisitLimit'],
       attributes: {
         team_id: teamId,
       },
@@ -163,6 +163,8 @@ describe('List links', () => {
         .first()
         .within(() => {
           cy.get('[data-cy="password-protected-icon"]').should('exist')
+          cy.get('[data-cy="expiry-date-icon"]').should('exist')
+          cy.get('[data-cy="visit-limit-icon"]').should('exist')
         })
     })
   })

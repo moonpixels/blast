@@ -56,7 +56,27 @@
                 data-cy="password-protected-icon"
               >
                 <LockClosedIcon
-                  class="h-3 w-3 text-zinc-400 transition-all duration-200 ease-in-out hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+                  class="h-3.5 w-3.5 text-zinc-400 transition-all duration-200 ease-in-out hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+                />
+              </div>
+
+              <div
+                v-if="link.expires_at"
+                v-tippy="{ content: $t('Expires on :expiryDate', { expiryDate: useFormatDate(link.expires_at) }) }"
+                data-cy="expiry-date-icon"
+              >
+                <ClockIcon
+                  class="h-3.5 w-3.5 text-zinc-400 transition-all duration-200 ease-in-out hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+                />
+              </div>
+
+              <div
+                v-if="link.visit_limit"
+                v-tippy="{ content: $t('Limited to :limit visits', { limit: link.visit_limit.toString() }) }"
+                data-cy="visit-limit-icon"
+              >
+                <CursorArrowRaysIcon
+                  class="h-3.5 w-3.5 text-zinc-400 transition-all duration-200 ease-in-out hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
                 />
               </div>
             </div>
@@ -101,6 +121,8 @@
 import {
   ClipboardDocumentCheckIcon,
   ClipboardDocumentIcon,
+  ClockIcon,
+  CursorArrowRaysIcon,
   EllipsisHorizontalIcon,
   LockClosedIcon,
   MagnifyingGlassIcon,
@@ -124,6 +146,7 @@ import ResourcePanelFooter from '@/Components/ResourcePanel/ResourcePanelFooter.
 import { useTippy } from 'vue-tippy'
 import { trans } from 'laravel-vue-i18n'
 import debounce from 'lodash/debounce'
+import useFormatDate from '@/composables/useFormatDate'
 
 export interface Filters {
   query?: string

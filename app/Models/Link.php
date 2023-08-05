@@ -39,6 +39,7 @@ class Link extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'visit_limit' => 'integer',
         'total_visits' => 'integer',
         'expires_at' => 'datetime',
     ];
@@ -126,6 +127,14 @@ class Link extends Model
     public function hasExpired(): bool
     {
         return $this->expires_at && $this->expires_at->isPast();
+    }
+
+    /**
+     * Determine if the link has reached its visit limit.
+     */
+    public function hasReachedVisitLimit(): bool
+    {
+        return $this->visit_limit && $this->total_visits >= $this->visit_limit;
     }
 
     /**

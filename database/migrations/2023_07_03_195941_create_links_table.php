@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('destination_path', 2048)->nullable();
             $table->string('alias', 20)->unique()->collation('utf8mb4_bin');
             $table->string('password')->nullable();
+            $table->mediumInteger('visit_limit')->unsigned()->nullable();
             $table->mediumInteger('total_visits')->unsigned()->default(0);
             $table->dateTime('expires_at')->nullable();
             $table->timestamps();
