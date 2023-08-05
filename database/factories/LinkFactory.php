@@ -25,7 +25,9 @@ class LinkFactory extends Factory
             'domain_id' => Domain::factory(),
             'destination_path' => '/'.$this->faker->slug,
             'alias' => $this->faker->unique()->regexify('[a-zA-Z0-9]{7}'),
+            'password' => null,
             'total_visits' => 0,
+            'expires_at' => null,
         ];
     }
 
@@ -49,6 +51,16 @@ class LinkFactory extends Factory
         return $this->state([
             'domain_id' => $domain ? $domain->id : Domain::factory()->toExampleDotCom(),
             'destination_path' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the link has expired.
+     */
+    public function expired(): self
+    {
+        return $this->state([
+            'expires_at' => now()->subDay(),
         ]);
     }
 }

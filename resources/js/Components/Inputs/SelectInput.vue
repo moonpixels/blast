@@ -11,21 +11,19 @@
       {{ label }}
     </label>
 
-    <div class="relative">
-      <select
-        :id="id"
-        ref="input"
-        :class="[
-          disabledClasses,
-          'block w-full truncate border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-400 focus:ring-0 dark:text-zinc-100 dark:placeholder-zinc-500 sm:text-sm',
-        ]"
-        :value="modelValue"
-        v-bind="{ ...attrs }"
-        @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-      >
-        <slot />
-      </select>
-    </div>
+    <select
+      :id="id"
+      ref="input"
+      :class="[
+        disabledClasses,
+        'block w-full truncate border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-400 focus:ring-0 dark:text-zinc-100 dark:placeholder-zinc-500 sm:text-sm',
+      ]"
+      :value="modelValue"
+      v-bind="{ ...attrs }"
+      @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+    >
+      <slot />
+    </select>
 
     <InputErrorMessage v-if="error" class="border-t border-zinc-900/20 pt-1 dark:border-white/20">
       {{ error }}
@@ -57,6 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
   },
   error: undefined,
   hideLabel: false,
+  inverse: false,
 })
 
 defineEmits<{

@@ -40,6 +40,7 @@ class Link extends Model
      */
     protected $casts = [
         'total_visits' => 'integer',
+        'expires_at' => 'datetime',
     ];
 
     /**
@@ -117,6 +118,14 @@ class Link extends Model
     public function passwordMatches(string $password): bool
     {
         return Hash::check($password, $this->password);
+    }
+
+    /**
+     * Determine if the link has expired.
+     */
+    public function hasExpired(): bool
+    {
+        return $this->expires_at && $this->expires_at->isPast();
     }
 
     /**

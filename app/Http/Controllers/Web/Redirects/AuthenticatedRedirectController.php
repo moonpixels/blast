@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Links;
+namespace App\Http\Controllers\Web\Redirects;
 
 use App\Actions\Redirects\GetLinkForRedirectRequest;
 use App\Http\Controllers\Controller;

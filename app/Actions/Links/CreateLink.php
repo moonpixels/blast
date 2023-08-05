@@ -38,6 +38,7 @@ class CreateLink
                 'destination_path' => $url['path'],
                 'alias' => $alias,
                 'password' => $data->password ? Hash::make($data->password) : null,
+                'expires_at' => $data->expiresAt?->utc(),
             ]);
         });
     }

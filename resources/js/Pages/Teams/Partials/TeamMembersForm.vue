@@ -112,7 +112,9 @@
               <p class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white">
                 {{ invitation.email }}
               </p>
-              <p class="truncate text-xs leading-5">{{ $t('Invited on') }} {{ useDate(invitation.created_at) }}</p>
+              <p class="truncate text-xs leading-5">
+                {{ $t('Invited on') }} {{ useFormatDate(invitation.created_at) }}
+              </p>
             </template>
 
             <template #actions>
@@ -162,7 +164,7 @@ import { ArrowPathIcon, ArrowsRightLeftIcon, MagnifyingGlassIcon, TrashIcon } fr
 import { UserGroupIcon, UserPlusIcon } from '@heroicons/vue/24/outline'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import BaseButton from '@/Components/Buttons/BaseButton.vue'
-import useDate from '@/composables/useDate'
+import useFormatDate from '@/composables/useFormatDate'
 import { Team, TeamInvitation, TeamMembership } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
 import SimpleEmptyState from '@/Components/EmptyStates/SimpleEmptyState.vue'

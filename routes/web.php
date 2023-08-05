@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Web\Links\AuthenticatedRedirectController;
 use App\Http\Controllers\Web\Links\LinkController;
-use App\Http\Controllers\Web\Links\RedirectController;
+use App\Http\Controllers\Web\Redirects\AuthenticatedRedirectController;
+use App\Http\Controllers\Web\Redirects\ExpiredRedirectsController;
+use App\Http\Controllers\Web\Redirects\RedirectController;
 use App\Http\Controllers\Web\Teams\AcceptedInvitationController;
 use App\Http\Controllers\Web\Teams\InvitationController;
 use App\Http\Controllers\Web\Teams\ResentInvitationController;
@@ -106,7 +107,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         });
 });
 
-// Redirects...
-Route::get('/{alias}', [RedirectController::class, 'create'])->name('redirect');
+// Authenticated redirects...
 Route::get('/{alias}/password', [AuthenticatedRedirectController::class, 'create'])->name('authenticated-redirect');
 Route::post('/{alias}/password', [AuthenticatedRedirectController::class, 'store']);
+
+// Expired redirects...
+Route::get('/expired-redirect', [ExpiredRedirectsController::class, 'show'])->name('expired-redirect');
+
+// Redirects...
+Route::get('/{alias}', [RedirectController::class, 'create'])->name('redirect');

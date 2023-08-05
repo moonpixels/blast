@@ -5,6 +5,7 @@ use App\Exceptions\InvalidUrlException;
 use App\Models\Link;
 use App\Models\Team;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -189,4 +190,39 @@ it('can create a link with a password', function () {
 
     expect($link->has_password)->toBeTrue()
         ->and(Hash::check('password', $link->password))->toBeTrue();
+});
+
+it('can create a link with an expiry date', function () {
+    $this->post(route('links.store'), [
+        'destination_url' => 'https://blst.to',
+        'expires_at' => now()->addDay(),
+        'team_id' => $this->standardTeam->id,
+    ])->assertRedirect();
+
+    expect(Link::count())->toBe(1);
+
+    $link = Link::first();
+
+    expect($link->expires_at)->toBeInstanceOf(Carbon::class)
+        ->and($link->expires_at->isFuture())->toBeTrue();
+});
+
+it('does not create a link when the expiry date is invalid', function () {
+    $this->post(route('links.store'), [
+        'destination_url' => 'https://blst.to',
+        'expires_at' => 'invalid-date',
+        'team_id' => $this->standardTeam->id,
+    ])->assertInvalid('expires_at');
+
+    expect(Link::count())->toBe(0);
+});
+
+it('does not create a link when the expiry date is in the past', function () {
+    $this->post(route('links.store'), [
+        'destination_url' => 'https://blst.to',
+        'expires_at' => now()->subDay(),
+        'team_id' => $this->standardTeam->id,
+    ])->assertInvalid('expires_at');
+
+    expect(Link::count())->toBe(0);
 });

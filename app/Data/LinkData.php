@@ -2,6 +2,7 @@
 
 namespace App\Data;
 
+use Carbon\Carbon;
 use Spatie\LaravelData\Attributes\MapInputName;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
@@ -13,6 +14,7 @@ class LinkData extends Data
         public string $teamId,
         public ?string $alias,
         public ?string $password,
+        public ?Carbon $expiresAt,
         public string $destinationUrl,
     ) {
     }

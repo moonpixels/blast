@@ -64,6 +64,7 @@ const props = withDefaults(defineProps<Props>(), {
   type: 'text',
   error: undefined,
   hideLabel: false,
+  inverse: false,
 })
 
 const emit = defineEmits<{

@@ -24,6 +24,9 @@ class LinkResource extends JsonResource
             'has_password' => $this->has_password,
             'destination_url' => $this->destination_url,
             'short_url' => $this->short_url,
+            'expires_at' => $this->expires_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

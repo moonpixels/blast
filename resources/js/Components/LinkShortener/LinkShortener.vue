@@ -96,6 +96,16 @@
                     @keydown.enter.prevent="close"
                   />
 
+                  <DateInput
+                    v-if="option.name === 'expires_at'"
+                    v-model="form.expires_at"
+                    :error="form.errors.expires_at"
+                    :label="$t('Expires at')"
+                    inverse
+                    @input="form.clearErrors('expires_at')"
+                    @keydown.enter.prevent="close"
+                  />
+
                   <SelectInput
                     v-if="option.name === 'team_id'"
                     v-model="form.team_id"
@@ -194,6 +204,7 @@ import InputErrorMessage from '@/Components/Inputs/InputErrorMessage.vue'
 import SelectInput from '@/Components/Inputs/SelectInput.vue'
 import ClipboardJS from 'clipboard'
 import { Tippy, useTippy } from 'vue-tippy'
+import DateInput from '@/Components/Inputs/DateInput.vue'
 
 interface Props {
   shortenedLink?: Link
@@ -211,7 +222,7 @@ type LinkShortenerForm = {
   destination_url: string
   alias?: string
   password?: string
-  expires_on?: string
+  expires_at?: string
   max_visits?: number
   team_id: string
 }
@@ -220,7 +231,7 @@ const form = useForm<LinkShortenerForm>({
   destination_url: '',
   alias: undefined,
   password: undefined,
-  expires_on: undefined,
+  expires_at: undefined,
   max_visits: undefined,
   team_id: user.value.current_team_id,
 })
@@ -246,7 +257,7 @@ const linkOptions: LinkShortenerOption[] = [
     icon: LockClosedIcon,
   },
   {
-    name: 'expires_on',
+    name: 'expires_at',
     title: trans('Set expiry date'),
     description: trans('Expire the link on a specific date.'),
     icon: ClockIcon,

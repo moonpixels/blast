@@ -107,3 +107,12 @@ it('can create a new link with a password', function () {
     expect($link->password)->not->toBeNull()
         ->and(Hash::check('password', $link->password))->toBeTrue();
 });
+
+it('can create a new link with an expiry date', function () {
+    $link = CreateLink::run(LinkData::from([
+        ...$this->linkData,
+        'expires_at' => now()->addDay(),
+    ]));
+
+    expect($link->expires_at)->not->toBeNull();
+});
