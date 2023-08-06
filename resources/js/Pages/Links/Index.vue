@@ -7,7 +7,7 @@
         <LinkShortener v-bind="$props" />
       </div>
 
-      <div class="flex-auto overflow-hidden">
+      <div class="flex-auto overflow-hidden pb-10">
         <LinksPanel v-bind="$props" />
       </div>
     </div>

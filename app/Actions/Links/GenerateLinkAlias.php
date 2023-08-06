@@ -22,7 +22,7 @@ class GenerateLinkAlias
 
         while ($taken) {
             $alias = Str::random(7);
-            $taken = Link::where('alias', $alias)->exists() || ! CheckLinkAliasIsAllowed::run($alias);
+            $taken = Link::where('alias', $alias)->withTrashed()->exists() || ! CheckLinkAliasIsAllowed::run($alias);
             $attempts++;
         }
 

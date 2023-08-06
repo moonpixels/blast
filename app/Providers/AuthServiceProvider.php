@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\Link;
 use App\Models\Team;
 use App\Models\TeamInvitation;
 use App\Models\TeamMembership;
+use App\Policies\LinkPolicy;
 use App\Policies\TeamInvitationPolicy;
 use App\Policies\TeamMembershipPolicy;
 use App\Policies\TeamPolicy;
@@ -22,6 +24,7 @@ class AuthServiceProvider extends ServiceProvider
         Team::class => TeamPolicy::class,
         TeamInvitation::class => TeamInvitationPolicy::class,
         TeamMembership::class => TeamMembershipPolicy::class,
+        Link::class => LinkPolicy::class,
     ];
 
     /**

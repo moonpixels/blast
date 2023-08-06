@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Web\Links;
 
 use App\Actions\Links\CreateLink;
+use App\Actions\Links\DeleteLink;
 use App\Actions\Links\FilterLinks;
 use App\Data\LinkData;
 use App\Exceptions\InvalidUrlException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Link\StoreRequest;
 use App\Http\Resources\Link\LinkResource;
+use App\Models\Link;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -57,5 +59,20 @@ class LinkController extends Controller
                 'title' => __('Link created'),
                 'message' => __('The link has been created.'),
             ]);
+    }
+
+    /**
+     * Remove the specified link from storage.
+     */
+    public function destroy(Link $link): RedirectResponse
+    {
+        $this->authorize('delete', $link);
+
+        DeleteLink::run($link);
+
+        return back()->with('success', [
+            'title' => __('Link deleted'),
+            'message' => __('The link has been deleted.'),
+        ]);
     }
 }

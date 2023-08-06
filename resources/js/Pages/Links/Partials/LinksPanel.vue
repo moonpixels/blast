@@ -97,10 +97,31 @@
             <ClipboardDocumentIcon v-else class="h-4 w-4" />
           </SecondaryButton>
 
-          <SecondaryButton data-cy="link-options-menu-button" size="icon">
-            <span class="sr-only">{{ $t('Show options') }}</span>
-            <EllipsisHorizontalIcon aria-hidden="true" class="h-4 w-4" />
-          </SecondaryButton>
+          <DropdownMenu data-cy="link-options-menu" size="xs">
+            <template #button>
+              <MenuButton
+                :as="SecondaryButton"
+                class="focus-ring rounded-full transition-all duration-200 ease-in-out"
+                data-cy="link-options-menu-button"
+                size="icon"
+              >
+                <span class="sr-only">{{ $t('Show options') }}</span>
+                <EllipsisHorizontalIcon aria-hidden="true" class="h-4 w-4" />
+              </MenuButton>
+            </template>
+
+            <template #menuItems>
+              <MenuItemLink v-slot="{ active }" class="flex w-full items-center" href="#">
+                <PencilSquareIcon
+                  :class="[active ? 'text-zinc-900 dark:text-white' : '']"
+                  aria-hidden="true"
+                  class="-ml-2 mr-2 h-4 w-4"
+                />
+                {{ $t('Update link') }}
+              </MenuItemLink>
+              <DeleteLinkForm :link="link" />
+            </template>
+          </DropdownMenu>
         </template>
       </ResourcePanelListItem>
     </ResourcePanelList>
@@ -126,6 +147,7 @@ import {
   EllipsisHorizontalIcon,
   LockClosedIcon,
   MagnifyingGlassIcon,
+  PencilSquareIcon,
 } from '@heroicons/vue/20/solid'
 import SimpleEmptyState from '@/Components/EmptyStates/SimpleEmptyState.vue'
 import { LinkIcon } from '@heroicons/vue/24/outline'
@@ -147,6 +169,10 @@ import { useTippy } from 'vue-tippy'
 import { trans } from 'laravel-vue-i18n'
 import debounce from 'lodash/debounce'
 import useFormatDate from '@/composables/useFormatDate'
+import MenuItemLink from '@/Components/Dropdown/MenuItemLink.vue'
+import DropdownMenu from '@/Components/Dropdown/DropdownMenu.vue'
+import { MenuButton } from '@headlessui/vue'
+import DeleteLinkForm from '@/Pages/Links/Partials/DeleteLinkForm.vue'
 
 export interface Filters {
   query?: string

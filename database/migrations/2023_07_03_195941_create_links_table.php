@@ -19,6 +19,7 @@ return new class extends Migration
             $table->mediumInteger('total_visits')->unsigned()->default(0);
             $table->dateTime('expires_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

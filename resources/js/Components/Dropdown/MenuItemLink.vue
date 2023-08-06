@@ -8,7 +8,7 @@
       v-bind="{ ...attrs, ...$props }"
     >
       <span aria-hidden="true" class="absolute inset-0" @click="close" />
-      <slot />
+      <slot v-bind="{ active, close }" />
     </Link>
   </MenuItem>
 </template>

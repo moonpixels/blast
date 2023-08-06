@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Scout\Searchable;
 
@@ -17,7 +18,7 @@ use Laravel\Scout\Searchable;
  */
 class Link extends Model
 {
-    use HasFactory, HasUlids, Searchable;
+    use HasFactory, HasUlids, Searchable, SoftDeletes;
 
     /**
      * The attributes that aren't mass assignable.

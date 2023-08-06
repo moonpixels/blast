@@ -7,7 +7,6 @@ use App\Data\LinkData;
 use App\Exceptions\InvalidUrlException;
 use App\Models\Domain;
 use App\Models\Link;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -21,7 +20,7 @@ class CreateLink
      *
      * @throws InvalidUrlException
      */
-    public function handle(LinkData $data): Link|RedirectResponse
+    public function handle(LinkData $data): Link
     {
         $url = $this->parseUrlInput($data->destinationUrl);
 
