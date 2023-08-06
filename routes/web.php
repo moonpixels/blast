@@ -42,6 +42,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ->group(function () {
             Route::get('/links', 'index')->name('index');
             Route::post('/links', 'store')->name('store');
+            Route::delete('/links/{link}', 'destroy')->name('destroy');
         });
 
     // Current user...

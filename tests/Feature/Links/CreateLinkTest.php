@@ -110,6 +110,21 @@ it('does not create a link when the alias is already taken', function () {
     expect(Link::count())->toBe(1);
 });
 
+it('does not create a link when the alias is already taken by a deleted link', function () {
+    Link::factory()->create([
+        'alias' => 'alreadyTaken',
+        'deleted_at' => Carbon::now(),
+    ]);
+
+    $this->post(route('links.store'), [
+        'destination_url' => 'https://blst.to',
+        'alias' => 'alreadyTaken',
+        'team_id' => $this->standardTeam->id,
+    ])->assertInvalid('alias');
+
+    expect(Link::count())->toBe(0);
+});
+
 it('does not create a link when the alias is too long', function () {
     $this->post(route('links.store'), [
         'destination_url' => 'https://blst.to',
