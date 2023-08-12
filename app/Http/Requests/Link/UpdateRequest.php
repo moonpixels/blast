@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Link;
 
 use App\Actions\Links\FormatRawUrl;
+use App\Models\Link;
 use App\Rules\BelongsToTeam;
 use App\Rules\NotReservedAlias;
 use Illuminate\Foundation\Http\FormRequest;
@@ -15,6 +16,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        /** @var Link $link */
         $link = $this->route('link');
 
         return [
