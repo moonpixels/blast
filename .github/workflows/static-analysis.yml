@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   phpstan:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -31,7 +31,7 @@ jobs:
         run: vendor/bin/phpstan analyse --no-ansi --no-interaction --memory-limit=2G
 
   eslint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code

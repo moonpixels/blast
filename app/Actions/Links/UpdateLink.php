@@ -12,27 +12,25 @@ use Illuminate\Support\Facades\Hash;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Spatie\LaravelData\Optional;
 
-class CreateLink
+class UpdateLink
 {
     use AsAction, HasUrlInput;
 
     /**
-     * Create a new link.
+     * Update the given link.
      *
      * @throws InvalidUrlException
      */
-    public function handle(LinkData $data): Link
+    public function handle(Link $link, LinkData $data): bool
     {
         $url = $this->parseUrlInput($data->destinationUrl);
 
         $alias = $data->alias ?? GenerateLinkAlias::run();
 
-        return DB::transaction(function () use (&$data, $url, $alias) {
+        return DB::transaction(function () use ($link, &$data, $url, $alias) {
             $domain = Domain::firstOrCreate([
                 'host' => $url['host'],
             ]);
-
-            $link = new Link;
 
             if (! $data->password instanceof Optional) {
                 $link->password = $data->password ? Hash::make($data->password) : null;
@@ -47,9 +45,7 @@ class CreateLink
                 'expires_at' => $data->expiresAt?->utc(),
             ]);
 
-            $link->save();
-
-            return $link;
+            return $link->save();
         });
     }
 }

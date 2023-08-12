@@ -40,8 +40,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::controller(LinkController::class)
         ->name('links.')
         ->group(function () {
-            Route::get('/links', 'index')->name('index');
             Route::post('/links', 'store')->name('store');
+            Route::get('/links', 'index')->name('index');
+            Route::put('/links/{link}', 'update')->name('update');
             Route::delete('/links/{link}', 'destroy')->name('destroy');
         });
 
