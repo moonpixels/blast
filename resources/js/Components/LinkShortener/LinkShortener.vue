@@ -111,8 +111,8 @@
                     v-model="form.visit_limit"
                     :error="form.errors.visit_limit"
                     :label="$t('Visit limit')"
+                    inputmode="numeric"
                     inverse
-                    type="number"
                     @input="form.clearErrors('visit_limit')"
                     @keydown.enter.prevent="close"
                   />
@@ -229,7 +229,7 @@ const user = computed<CurrentUser>(() => {
 
 const recentlyCopiedLink = ref<boolean>(false)
 
-type LinkShortenerForm = {
+export type LinkShortenerForm = {
   destination_url: string
   alias?: string
   password?: string

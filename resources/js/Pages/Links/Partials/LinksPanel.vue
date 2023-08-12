@@ -111,15 +111,33 @@
             </template>
 
             <template #menuItems>
-              <MenuItemLink v-slot="{ active }" class="flex w-full items-center" href="#">
+              <MenuItemButton
+                v-slot="{ active }"
+                class="flex w-full items-center"
+                data-cy="update-link-button"
+                @click="selectLink(link, 'update')"
+              >
                 <PencilSquareIcon
                   :class="[active ? 'text-zinc-900 dark:text-white' : '']"
                   aria-hidden="true"
                   class="-ml-2 mr-2 h-4 w-4"
                 />
                 {{ $t('Update link') }}
-              </MenuItemLink>
-              <DeleteLinkForm :link="link" />
+              </MenuItemButton>
+
+              <MenuItemButton
+                v-slot="{ active }"
+                class="flex w-full items-center"
+                data-cy="delete-link-button"
+                @click="selectLink(link, 'delete')"
+              >
+                <TrashIcon
+                  :class="[active ? 'text-rose-600 dark:text-rose-500' : '']"
+                  aria-hidden="true"
+                  class="-ml-2 mr-2 h-4 w-4"
+                />
+                {{ $t('Delete link') }}
+              </MenuItemButton>
             </template>
           </DropdownMenu>
         </template>
@@ -136,6 +154,20 @@
       <SimplePagination :paginated-resource="links" />
     </ResourcePanelFooter>
   </ResourcePanel>
+
+  <UpdateLinkModal
+    v-if="showUpdateLinkModal && currentLink"
+    :link="currentLink"
+    :open="showUpdateLinkModal"
+    @close="showUpdateLinkModal = false"
+  />
+
+  <DeleteLinkModal
+    v-if="showDeleteLinkModal && currentLink"
+    :link="currentLink"
+    :open="showDeleteLinkModal"
+    @close="showDeleteLinkModal = false"
+  />
 </template>
 
 <script lang="ts" setup>
@@ -148,6 +180,7 @@ import {
   LockClosedIcon,
   MagnifyingGlassIcon,
   PencilSquareIcon,
+  TrashIcon,
 } from '@heroicons/vue/20/solid'
 import SimpleEmptyState from '@/Components/EmptyStates/SimpleEmptyState.vue'
 import { LinkIcon } from '@heroicons/vue/24/outline'
@@ -169,10 +202,11 @@ import { useTippy } from 'vue-tippy'
 import { trans } from 'laravel-vue-i18n'
 import debounce from 'lodash/debounce'
 import useFormatDate from '@/composables/useFormatDate'
-import MenuItemLink from '@/Components/Dropdown/MenuItemLink.vue'
 import DropdownMenu from '@/Components/Dropdown/DropdownMenu.vue'
 import { MenuButton } from '@headlessui/vue'
-import DeleteLinkForm from '@/Pages/Links/Partials/DeleteLinkForm.vue'
+import MenuItemButton from '@/Components/Dropdown/MenuItemButton.vue'
+import UpdateLinkModal from '@/Pages/Links/Partials/UpdateLinkModal.vue'
+import DeleteLinkModal from '@/Pages/Links/Partials/DeleteLinkModal.vue'
 
 export interface Filters {
   query?: string
@@ -190,6 +224,12 @@ const searchQuery = ref<string>(props.filters.query ?? '')
 const recentlyCopiedLink = ref<Link | null>(null)
 
 let recentlyCopiedLinkTimeout: ReturnType<typeof setTimeout>
+
+const currentLink = ref<Link | null>(null)
+
+const showDeleteLinkModal = ref<boolean>(false)
+
+const showUpdateLinkModal = ref<boolean>(false)
 
 function copyLinkToClipboard(link: Link, event: Event): void {
   if (ClipboardJS.copy(link.short_url)) {
@@ -223,6 +263,16 @@ function search() {
     },
     only: ['filters', 'links'],
   })
+}
+
+function selectLink(link: Link, modal: 'update' | 'delete') {
+  currentLink.value = link
+
+  if (modal === 'update') {
+    showUpdateLinkModal.value = true
+  } else {
+    showDeleteLinkModal.value = true
+  }
 }
 
 watch(searchQuery, debounce(search, 500))

@@ -43,7 +43,7 @@ interface Props {
   error?: string
   label: string
   description?: string
-  value?: string | number
+  value?: string | number | boolean
   modelValue: any
 }
 
@@ -53,7 +53,7 @@ const props = withDefaults(defineProps<Props>(), {
   },
   error: undefined,
   description: undefined,
-  value: undefined,
+  value: true,
 })
 
 const emit = defineEmits<{

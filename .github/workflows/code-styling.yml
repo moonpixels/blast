@@ -11,9 +11,12 @@ concurrency:
   group: code-styling-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   pint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -38,7 +41,7 @@ jobs:
           commit_message: 'Fix code styling (Pint)'
 
   prettier:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code

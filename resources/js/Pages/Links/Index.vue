@@ -4,11 +4,11 @@
   <ConstrainedContainer>
     <div class="space-y-6 lg:flex lg:space-x-6 lg:space-y-0">
       <div class="flex-none">
-        <LinkShortener v-bind="$props" />
+        <LinkShortener :shortened-link="shortenedLink" />
       </div>
 
       <div class="flex-auto overflow-hidden pb-10">
-        <LinksPanel v-bind="$props" />
+        <LinksPanel :filters="filters" :links="links" />
       </div>
     </div>
   </ConstrainedContainer>

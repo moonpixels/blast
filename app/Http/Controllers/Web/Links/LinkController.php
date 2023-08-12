@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Web\Links;
 use App\Actions\Links\CreateLink;
 use App\Actions\Links\DeleteLink;
 use App\Actions\Links\FilterLinks;
+use App\Actions\Links\UpdateLink;
 use App\Data\LinkData;
 use App\Exceptions\InvalidUrlException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Link\StoreRequest;
+use App\Http\Requests\Link\UpdateRequest;
 use App\Http\Resources\Link\LinkResource;
 use App\Models\Link;
 use Illuminate\Http\RedirectResponse;
@@ -59,6 +61,27 @@ class LinkController extends Controller
                 'title' => __('Link created'),
                 'message' => __('The link has been created.'),
             ]);
+    }
+
+    /**
+     * Update the specified link in storage.
+     */
+    public function update(UpdateRequest $request, Link $link): RedirectResponse
+    {
+        $this->authorize('update', $link);
+
+        try {
+            UpdateLink::run($link, LinkData::from($request->validated()));
+        } catch (InvalidUrlException) {
+            return back()->withErrors([
+                'destination_url' => __('The URL is invalid.'),
+            ]);
+        }
+
+        return back()->with('success', [
+            'title' => __('Link updated'),
+            'message' => __('The link has been updated.'),
+        ]);
     }
 
     /**

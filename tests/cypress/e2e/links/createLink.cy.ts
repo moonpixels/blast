@@ -255,16 +255,14 @@ describe('Create link', () => {
         cy.getFormInput('Visit limit').type('invalid visit limit')
         cy.get('[data-cy="dismiss-options-popover-button"]').click()
       })
-      cy.get('[data-cy="set-visit_limit-button"]').click()
-      cy.get('[data-cy="link-options-popover"]').within(() => {
-        cy.getFormInput('Visit limit').should('have.value', '')
-        cy.get('[data-cy="dismiss-options-popover-button"]').click()
-      })
+      cy.get('[data-cy="link-options-popover"]').should('not.exist')
+      cy.get('[data-cy="submit-button"]').click()
+      cy.get('[data-cy="link-options-errors"]').should('contain', 'The visit limit field must be an integer.')
 
       // Negative visit limit
       cy.get('[data-cy="set-visit_limit-button"]').click()
       cy.get('[data-cy="link-options-popover"]').within(() => {
-        cy.getFormInput('Visit limit').type('-1')
+        cy.getFormInput('Visit limit').clear().type('-1')
         cy.get('[data-cy="dismiss-options-popover-button"]').click()
       })
       cy.get('[data-cy="link-options-popover"]').should('not.exist')
@@ -277,7 +275,7 @@ describe('Create link', () => {
       // Visit limit too high
       cy.get('[data-cy="set-visit_limit-button"]').click()
       cy.get('[data-cy="link-options-popover"]').within(() => {
-        cy.getFormInput('Visit limit').type('16777216')
+        cy.getFormInput('Visit limit').clear().type('16777216')
         cy.get('[data-cy="dismiss-options-popover-button"]').click()
       })
       cy.get('[data-cy="link-options-popover"]').should('not.exist')
