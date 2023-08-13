@@ -82,7 +82,7 @@ class FortifyServiceProvider extends ServiceProvider
             if ($request->session()->get('status') === 'verification-link-sent') {
                 session()->flash('success', [
                     'title' => __('Email verification resent'),
-                    'message' => __('A new email verification link has been sen to :email',
+                    'message' => __('A new email verification link has been sent to :email',
                         ['email' => $request->user()->email]),
                 ]);
             }
