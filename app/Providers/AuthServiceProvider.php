@@ -11,7 +11,9 @@ use App\Policies\LinkPolicy;
 use App\Policies\TeamInvitationPolicy;
 use App\Policies\TeamMembershipPolicy;
 use App\Policies\TeamPolicy;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Notifications\Messages\MailMessage;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -32,6 +34,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+            return (new MailMessage)
+                ->subject(__('Verify your email address'))
+                ->markdown('emails.auth.verify-email', [
+                    'url' => $url,
+                ]);
+        });
     }
 }

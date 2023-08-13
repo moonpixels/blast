@@ -77,5 +77,20 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::twoFactorChallengeView(function () {
             return Inertia::render('Auth/TwoFactorChallenge');
         });
+
+        Fortify::verifyEmailView(function (Request $request) {
+            if ($request->session()->get('status') === 'verification-link-sent') {
+                session()->flash('success', [
+                    'title' => __('Email verification resent'),
+                    'message' => __('A new email verification link has been sent to :email',
+                        ['email' => $request->user()->email]),
+                ]);
+            }
+
+            return Inertia::render('Auth/VerifyEmail', [
+                'status' => session('status'),
+                'email' => $request->user()->email,
+            ]);
+        });
     }
 }
