@@ -35,7 +35,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Links...
     Route::controller(LinkController::class)
         ->name('links.')

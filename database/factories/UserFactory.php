@@ -33,6 +33,7 @@ class UserFactory extends Factory
             'two_factor_confirmed_at' => null,
             'remember_token' => Str::random(10),
             'current_team_id' => null,
+            'email_verified_at' => now(),
         ];
     }
 
@@ -88,6 +89,18 @@ class UserFactory extends Factory
                 ->for(Team::factory()->create([
                     'name' => 'Membership Team',
                 ]))->create();
+        });
+    }
+
+    /**
+     * Indicate that the user has not verified their email address.
+     */
+    public function unverified(): self
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'email_verified_at' => null,
+            ];
         });
     }
 }
