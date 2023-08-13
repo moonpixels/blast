@@ -27,7 +27,7 @@ it('can resend the verification email', function () {
     $this->get(route('verification.notice'))
         ->assertSessionHas('success', [
             'title' => 'Email verification resent',
-            'message' => 'A new email verification link has been sen to '.$this->user->email,
+            'message' => 'A new email verification link has been sent to '.$this->user->email,
         ]);
 
     Notification::assertSentTo($this->user, VerifyEmail::class);
