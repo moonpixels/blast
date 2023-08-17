@@ -29,7 +29,7 @@ import { Link } from '@inertiajs/vue3'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import { PaginatedResponse } from '@/types/framework'
 
-interface Props {
+type Props = {
   paginatedResource: PaginatedResponse<any>
 }
 

@@ -1,9 +1,9 @@
 <?php
 
-use App\Mail\TeamInvitationMail;
-use App\Models\TeamInvitation;
-use App\Models\User;
-use App\Notifications\TeamInvitationNotification;
+use App\Domain\Team\Mail\TeamInvitationMail;
+use App\Domain\Team\Models\TeamInvitation;
+use App\Domain\Team\Models\User;
+use App\Domain\Team\Notifications\TeamInvitationNotification;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {

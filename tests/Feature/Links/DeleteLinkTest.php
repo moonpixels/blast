@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Link;
-use App\Models\User;
+use App\Domain\Link\Models\Link;
+use App\Domain\Team\Models\User;
 
 beforeEach(function () {
     $this->user = User::factory()

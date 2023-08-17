@@ -64,17 +64,17 @@
           <ResourcePanelListItem v-for="membership in memberships.data" :key="membership.id">
             <template #content>
               <div class="flex items-center gap-3">
-                <PlaceholderAvatar :initials="membership.user.initials" class="flex-none" size="md" />
+                <PlaceholderAvatar :initials="membership.user?.initials as string" class="flex-none" size="md" />
 
                 <div class="flex flex-auto gap-x-4 overflow-hidden">
                   <div class="flex-auto overflow-hidden">
                     <p class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white">
-                      {{ membership.user.name }}
+                      {{ membership.user?.name }}
                     </p>
-                    <p class="truncate text-xs leading-5">{{ membership.user.email }}</p>
+                    <p class="truncate text-xs leading-5">{{ membership.user?.email }}</p>
                   </div>
 
-                  <div v-if="membership.user.id === team.owner_id" class="flex-none">
+                  <div v-if="membership.user?.id === team.owner?.id" class="flex-none">
                     <Badge data-cy="owner-badge">
                       {{ $t('Owner') }}
                     </Badge>
@@ -179,16 +179,14 @@ import ResourcePanelList from '@/Components/ResourcePanel/ResourcePanelList.vue'
 import ResourcePanelListItem from '@/Components/ResourcePanel/ResourcePanelListItem.vue'
 import ResourcePanelFooter from '@/Components/ResourcePanel/ResourcePanelFooter.vue'
 
-export interface Filters {
-  view: 'members' | 'invitations'
-  query?: string
-}
-
-interface Props {
+type Props = {
   team: Team
   memberships?: PaginatedResponse<TeamMembership>
   invitations?: PaginatedResponse<TeamInvitation>
-  filters: Filters
+  filters: {
+    view: 'members' | 'invitations'
+    query?: string
+  }
 }
 
 const props = defineProps<Props>()
@@ -199,7 +197,7 @@ const currentResource = computed<PaginatedResponse<TeamMembership | TeamInvitati
   return props.filters.view === 'members' ? props.memberships : props.invitations
 })
 
-function search() {
+function search(): void {
   router.reload({
     data: {
       view: props.filters.view,
@@ -210,7 +208,7 @@ function search() {
   })
 }
 
-function switchView() {
+function switchView(): void {
   router.reload({
     data: {
       view: props.filters.view === 'invitations' ? 'members' : 'invitations',

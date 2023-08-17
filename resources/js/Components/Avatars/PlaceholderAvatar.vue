@@ -12,7 +12,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-interface Props {
+type Props = {
   initials: string
   size?: 'sm' | 'md' | 'lg'
 }
@@ -21,25 +21,25 @@ const props = withDefaults(defineProps<Props>(), {
   size: 'sm',
 })
 
-const sizeClasses = computed(() => {
+const sizeClasses = computed<string>(() => {
   switch (props.size) {
-    case 'sm':
-      return 'h-8 w-8'
     case 'md':
       return 'h-10 w-10'
     case 'lg':
       return 'h-12 w-12'
+    default:
+      return 'h-8 w-8'
   }
 })
 
 const textSizeClasses = computed(() => {
   switch (props.size) {
-    case 'sm':
-      return 'text-sm'
     case 'md':
       return 'text-base'
     case 'lg':
       return 'text-lg'
+    default:
+      return 'text-sm'
   }
 })
 </script>

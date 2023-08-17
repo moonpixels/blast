@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Web\Users;
 
-use App\Actions\Users\DeleteUser;
+use App\Domain\Team\Actions\Users\DeleteUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -15,18 +14,18 @@ class UserController extends Controller
     /**
      * Delete the current user.
      */
-    public function destroy(Request $request, StatefulGuard $guard): RedirectResponse
+    public function destroy(StatefulGuard $guard): RedirectResponse
     {
         $guard->logout();
 
-        if (DeleteUser::run($request->user())) {
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
+        if (DeleteUser::run(request()->user())) {
+            request()->session()->invalidate();
+            request()->session()->regenerateToken();
 
             return redirect('/');
         }
 
-        $guard->login($request->user());
+        $guard->login(request()->user());
 
         return back()->with('error', [
             'title' => __('Something went wrong'),

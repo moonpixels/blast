@@ -1,8 +1,8 @@
 import { createUser, getOtpCodeForUser } from '../../support/functions'
-import { CurrentUser, User } from '@/types/models'
+import { User } from '@/types/models'
 
 describe('Two factor authentication', () => {
-  let user: CurrentUser
+  let user: User
 
   function loginUser(user: User): void {
     cy.logout()

@@ -57,18 +57,13 @@ import TextInput from '@/Components/Inputs/TextInput.vue'
 import { Link, useForm } from '@inertiajs/vue3'
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
+import UserData = App.Domain.Team.Data.UserData
 
 defineOptions({
   layout: AuthLayout,
 })
 
-type RegistrationForm = {
-  name: string
-  email: string
-  password: string
-}
-
-const form = useForm<RegistrationForm>({
+const form = useForm<UserData>({
   name: '',
   email: '',
   password: '',

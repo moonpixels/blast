@@ -1,8 +1,8 @@
 import { createUser, getOtpCodeForUser } from '../../support/functions'
-import { CurrentUser } from '@/types/models'
+import { User } from '@/types/models'
 
 describe('Login', () => {
-  let tfaUser: CurrentUser
+  let tfaUser: User
 
   beforeEach(() => {
     cy.refreshDatabase()

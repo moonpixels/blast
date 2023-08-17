@@ -1,7 +1,7 @@
 <?php
 
-use App\Enums\Visits\DeviceTypes;
-use App\Models\Link;
+use App\Domain\Link\Models\Link;
+use App\Domain\Redirect\Enums\DeviceTypes;
 
 beforeEach(function () {
     $this->link = Link::factory()->create();

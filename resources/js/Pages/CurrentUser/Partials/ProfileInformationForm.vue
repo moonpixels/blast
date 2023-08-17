@@ -35,10 +35,10 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import TwoColumnForm from '@/Components/Forms/TwoColumnForm.vue'
 import TextInput from '@/Components/Inputs/TextInput.vue'
 import { useForm } from '@inertiajs/vue3'
-import { CurrentUser } from '@/types/models'
+import { User } from '@/types/models'
 
-interface Props {
-  user: CurrentUser
+type Props = {
+  user: User
 }
 
 const props = defineProps<Props>()

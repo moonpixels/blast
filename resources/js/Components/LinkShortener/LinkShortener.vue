@@ -33,7 +33,7 @@
                 <span
                   v-if="
                     (form[option.name] && option.name !== 'team_id') ||
-                    (option.name === 'team_id' && form.team_id !== user.current_team_id)
+                    (option.name === 'team_id' && form.team_id !== user.current_team?.id)
                   "
                   :class="[
                     !!optionsErrors[option.name] ? 'bg-rose-500 dark:bg-rose-600' : 'bg-violet-500 dark:bg-violet-600',
@@ -207,7 +207,7 @@ import { ClockIcon, CursorArrowRaysIcon, FolderIcon, LockClosedIcon, TagIcon } f
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import { Component as VueComponent, computed, ref } from 'vue'
 import { trans } from 'laravel-vue-i18n'
-import { CurrentUser, Link } from '@/types/models'
+import { Link, User } from '@/types/models'
 import { PageProps } from '@/types'
 import DismissButton from '@/Components/Buttons/DismissButton.vue'
 import { Popover, PopoverButton, PopoverOverlay, PopoverPanel } from '@headlessui/vue'
@@ -216,39 +216,31 @@ import SelectInput from '@/Components/Inputs/SelectInput.vue'
 import ClipboardJS from 'clipboard'
 import { Tippy, useTippy } from 'vue-tippy'
 import DateInput from '@/Components/Inputs/DateInput.vue'
+import LinkData = App.Domain.Link.Data.LinkData
 
-interface Props {
+type Props = {
   shortenedLink?: Link
 }
 
 const props = defineProps<Props>()
 
-const user = computed<CurrentUser>(() => {
-  return usePage<PageProps>().props.user as CurrentUser
+const user = computed<User>(() => {
+  return usePage<PageProps>().props.user
 })
 
 const recentlyCopiedLink = ref<boolean>(false)
 
-export type LinkShortenerForm = {
-  destination_url: string
-  alias?: string
-  password?: string
-  expires_at?: string
-  visit_limit?: number
-  team_id: string
-}
-
-const form = useForm<LinkShortenerForm>({
+const form = useForm<LinkData>({
   destination_url: '',
   alias: undefined,
-  password: undefined,
-  expires_at: undefined,
-  visit_limit: undefined,
-  team_id: user.value.current_team_id,
+  password: null,
+  expires_at: null,
+  visit_limit: null,
+  team_id: user.value.current_team?.id,
 })
 
-interface LinkShortenerOption {
-  name: Exclude<keyof LinkShortenerForm, 'url'>
+type LinkShortenerOption = {
+  name: keyof LinkData
   title: string
   description: string
   icon: VueComponent
@@ -287,10 +279,18 @@ const linkOptions: LinkShortenerOption[] = [
   },
 ]
 
-const optionsErrors = computed(() => {
-  return Object.fromEntries(
-    Object.entries(form.errors).filter(([key]) => linkOptions.some((option) => option.name === key))
-  )
+const optionsErrors = computed<Record<keyof LinkData, string>>(() => {
+  const keys = linkOptions.map((option) => option.name)
+
+  const optionsErrors: Record<string, string> = {}
+
+  for (const key of keys) {
+    if (form.errors[key]) {
+      optionsErrors[key] = form.errors[key] as string
+    }
+  }
+
+  return optionsErrors
 })
 
 function submit(): void {

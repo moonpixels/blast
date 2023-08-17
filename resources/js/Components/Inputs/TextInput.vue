@@ -47,7 +47,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-interface Props {
+type Props = {
   id?: string
   type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url'
   error?: string
@@ -67,8 +67,8 @@ const props = withDefaults(defineProps<Props>(), {
   inverse: false,
 })
 
-const emit = defineEmits<{
-  (e: 'update:modelValue', value: any): void
+defineEmits<{
+  'update:modelValue': [value: any]
 }>()
 
 const attrs = useAttrs()
@@ -110,14 +110,6 @@ const backgroundClasses = computed<string>(() => {
 
 function focus(): void {
   input.value?.focus()
-}
-
-function select(): void {
-  input.value?.select()
-}
-
-function setSelectionRange(start: number, end: number): void {
-  input.value?.setSelectionRange(start, end)
 }
 
 onMounted(() => {

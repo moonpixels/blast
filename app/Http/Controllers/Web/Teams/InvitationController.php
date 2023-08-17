@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Web\Teams;
 
-use App\Actions\Teams\CancelTeamInvitation;
+use App\Domain\Team\Actions\Invitations\CancelTeamInvitation;
+use App\Domain\Team\Models\TeamInvitation;
 use App\Http\Controllers\Controller;
-use App\Models\TeamInvitation;
 use Illuminate\Http\RedirectResponse;
 
 class InvitationController extends Controller

@@ -1,9 +1,9 @@
 <?php
 
-use App\Actions\Teams\DeleteTeam;
-use App\Models\Team;
-use App\Models\TeamMembership;
-use App\Models\User;
+use App\Domain\Team\Actions\DeleteTeam;
+use App\Domain\Team\Models\Team;
+use App\Domain\Team\Models\TeamMembership;
+use App\Domain\Team\Models\User;
 use Mockery\MockInterface;
 
 beforeEach(function () {
@@ -18,9 +18,7 @@ it('deletes the team', function () {
         ->assertRedirectToRoute('links.index')
         ->assertSessionHas('success');
 
-    $this->assertDatabaseMissing('teams', [
-        'id' => $this->team->id,
-    ]);
+    $this->assertSoftDeleted($this->team);
 });
 
 it('only allows owners to delete the team', function () {

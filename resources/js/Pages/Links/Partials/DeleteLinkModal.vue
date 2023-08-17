@@ -25,7 +25,7 @@ import Modal from '@/Components/Modals/Modal.vue'
 import { useForm } from '@inertiajs/vue3'
 import { Link } from '@/types/models'
 
-interface Props {
+type Props = {
   link: Link
   open: boolean
 }
@@ -33,7 +33,7 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  (e: 'close'): void
+  close: []
 }>()
 
 const form = useForm({})

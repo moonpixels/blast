@@ -47,7 +47,7 @@ import Modal from '@/Components/Modals/Modal.vue'
 import { useForm } from '@inertiajs/vue3'
 import { Team, TeamMembership } from '@/types/models'
 
-interface Props {
+type Props = {
   team: Team
   teamMembership: TeamMembership
 }
@@ -59,7 +59,7 @@ const showModal = ref<boolean>(false)
 const form = useForm({})
 
 function submit(): void {
-  form.delete(route('team-memberships.destroy', [props.teamMembership.id]), {
+  form.delete(route('team-memberships.destroy', props.teamMembership.id), {
     preserveScroll: true,
     onFinish: () => {
       showModal.value = false

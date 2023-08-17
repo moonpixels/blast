@@ -7,7 +7,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 
-interface Props {
+type Props = {
   type?: 'neutral' | 'success' | 'warning' | 'danger' | 'primary'
 }
 

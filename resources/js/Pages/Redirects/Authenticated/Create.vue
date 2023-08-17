@@ -38,7 +38,7 @@ defineOptions({
   layout: AuthLayout,
 })
 
-interface Props {
+type Props = {
   alias: string
 }
 

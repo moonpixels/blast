@@ -23,10 +23,10 @@ import MenuItemLink from '@/Components/Dropdown/MenuItemLink.vue'
 import { MenuButton } from '@headlessui/vue'
 import DropdownMenu from '@/Components/Dropdown/DropdownMenu.vue'
 import PlaceholderAvatar from '@/Components/Avatars/PlaceholderAvatar.vue'
-import { CurrentUser } from '@/types/models'
+import { User } from '@/types/models'
 
-interface Props {
-  user: CurrentUser
+type Props = {
+  user: User
 }
 
 defineProps<Props>()

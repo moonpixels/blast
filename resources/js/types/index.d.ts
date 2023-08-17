@@ -1,13 +1,13 @@
 import { PageProps as InertiaPageProps } from '@inertiajs/core'
-import { CurrentUser } from '@/types/models'
+import { User } from '@/types/models'
 
-export interface FlashMessage {
+export type FlashMessage = {
   title: string
   message: string
 }
 
 export type PageProps<T extends InertiaPageProps = InertiaPageProps> = T & {
-  user: CurrentUser
+  user: User
   flash: {
     success?: FlashMessage
     error?: FlashMessage

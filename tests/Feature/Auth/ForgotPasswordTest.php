@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\User;
+use App\Domain\Team\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Inertia\Testing\AssertableInertia as Assert;
 

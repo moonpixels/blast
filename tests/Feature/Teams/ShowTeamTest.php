@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Team;
-use App\Models\TeamInvitation;
-use App\Models\TeamMembership;
-use App\Models\User;
+use App\Domain\Team\Models\Team;
+use App\Domain\Team\Models\TeamInvitation;
+use App\Domain\Team\Models\TeamMembership;
+use App\Domain\Team\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {

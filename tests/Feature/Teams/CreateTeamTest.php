@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Team;
-use App\Models\User;
+use App\Domain\Team\Models\Team;
+use App\Domain\Team\Models\User;
 
 beforeEach(function () {
     $this->user = User::factory()->withStandardTeam()->create();

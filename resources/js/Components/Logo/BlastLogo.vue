@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-interface Props {
+type Props = {
   type?: 'full' | 'logomark'
 }
 

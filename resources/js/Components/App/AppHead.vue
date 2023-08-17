@@ -13,7 +13,7 @@ import { Head } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import { trans } from 'laravel-vue-i18n'
 
-interface Props {
+type Props = {
   title: string
 }
 

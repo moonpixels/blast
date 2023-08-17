@@ -48,7 +48,7 @@ import { ref } from 'vue'
 
 const showModal = ref(false)
 
-const form = useForm<{}>({})
+const form = useForm({})
 
 function submit(): void {
   form.delete(route('user.destroy'), {

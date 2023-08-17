@@ -18,7 +18,7 @@ import { XMarkIcon } from '@heroicons/vue/20/solid'
 import { computed } from 'vue'
 import BaseButton from '@/Components/Buttons/BaseButton.vue'
 
-interface Props {
+type Props = {
   size?: 'sm' | 'md' | 'lg'
 }
 

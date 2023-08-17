@@ -7,13 +7,13 @@
     </h1>
 
     <TwoColumnFormContainer>
-      <GeneralForm v-if="currentUserIsOwner()" :team="team" />
+      <GeneralSettingsForm v-if="currentUserIsOwner" :team="team" />
 
-      <TeamMembersForm v-if="currentUserIsOwner()" v-bind="$props" />
+      <TeamMembersForm v-if="currentUserIsOwner" v-bind="$props" />
 
-      <DeleteTeamForm v-if="currentUserIsOwner()" :team="team" />
+      <DeleteTeamForm v-if="currentUserIsOwner" :team="team" />
 
-      <LeaveTeamForm v-if="!currentUserIsOwner() && teamMembership" :team="team" :team-membership="teamMembership" />
+      <LeaveTeamForm v-if="!currentUserIsOwner && teamMembership" :team="team" :team-membership="teamMembership" />
     </TwoColumnFormContainer>
   </ConstrainedContainer>
 </template>
@@ -23,32 +23,34 @@ import AppLayout from '@/Layouts/AppLayout.vue'
 import ConstrainedContainer from '@/Components/Containers/ConstrainedContainer.vue'
 import AppHead from '@/Components/App/AppHead.vue'
 import TwoColumnFormContainer from '@/Components/Forms/TwoColumnFormContainer.vue'
-import GeneralForm from '@/Pages/Teams/Partials/GeneralForm.vue'
-import TeamMembersForm, { Filters } from '@/Pages/Teams/Partials/TeamMembersForm.vue'
+import TeamMembersForm from '@/Pages/Teams/Partials/TeamMembersForm.vue'
 import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm.vue'
-import { CurrentUser, Team, TeamInvitation, TeamMembership } from '@/types/models'
+import { Team, TeamInvitation, TeamMembership } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
 import { usePage } from '@inertiajs/vue3'
 import { PageProps } from '@/types'
 import LeaveTeamForm from '@/Pages/Teams/Partials/LeaveTeamForm.vue'
+import GeneralSettingsForm from '@/Pages/Teams/Partials/GeneralSettingsForm.vue'
+import { computed } from 'vue'
 
 defineOptions({
   layout: AppLayout,
 })
 
-interface Props {
+type Props = {
   team: Team
   teamMembership?: TeamMembership
   memberships?: PaginatedResponse<TeamMembership>
   invitations?: PaginatedResponse<TeamInvitation>
-  filters: Filters
+  filters: {
+    view: 'members' | 'invitations'
+    query?: string
+  }
 }
 
 const props = defineProps<Props>()
 
-const currentUser = usePage<PageProps>().props.user as CurrentUser
-
-function currentUserIsOwner(): boolean {
-  return currentUser.id === props.team.owner_id
-}
+const currentUserIsOwner = computed<boolean>(() => {
+  return usePage<PageProps>().props.user.id === props.team.owner?.id
+})
 </script>

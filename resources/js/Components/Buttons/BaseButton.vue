@@ -18,7 +18,7 @@
 import ButtonLoadingAnimation from '@/Components/Buttons/ButtonLoadingAnimation.vue'
 import { computed } from 'vue'
 
-export interface ButtonProps {
+export type ButtonProps = {
   type?: 'button' | 'submit' | 'reset'
   loading?: boolean
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'icon'
