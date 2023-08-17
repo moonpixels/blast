@@ -103,10 +103,10 @@ import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import TextInput from '@/Components/Inputs/TextInput.vue'
 import { computed, ref } from 'vue'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
-import { CurrentUser } from '@/types/models'
+import { User } from '@/types/models'
 
-interface Props {
-  user: CurrentUser
+type Props = {
+  user: User
   status?: string
   twoFactorQrCode?: string
   twoFactorRecoveryCodes?: string[]

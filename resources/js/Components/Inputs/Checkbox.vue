@@ -38,7 +38,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-interface Props {
+type Props = {
   id?: string
   error?: string
   label: string
@@ -57,7 +57,7 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: any): void
+  'update:modelValue': [value: any]
 }>()
 
 const input = ref<HTMLInputElement>()
@@ -83,8 +83,4 @@ const checked = computed<boolean>({
     }
   },
 })
-
-function focus(): void {
-  input.value?.focus()
-}
 </script>

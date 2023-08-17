@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Web\Teams;
 
-use App\Actions\Teams\AcceptTeamInvitation;
-use App\Exceptions\InvalidTeamMembershipException;
+use App\Domain\Team\Actions\Invitations\AcceptTeamInvitation;
+use App\Domain\Team\Exceptions\InvalidTeamMembershipException;
+use App\Domain\Team\Models\TeamInvitation;
 use App\Http\Controllers\Controller;
-use App\Models\TeamInvitation;
 use Illuminate\Http\RedirectResponse;
 
 class AcceptedInvitationController extends Controller

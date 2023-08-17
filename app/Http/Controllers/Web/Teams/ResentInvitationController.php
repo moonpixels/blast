@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers\Web\Teams;
 
-use App\Actions\Teams\ResendTeamInvitation;
+use App\Domain\Team\Actions\Invitations\ResendTeamInvitation;
+use App\Domain\Team\Models\TeamInvitation;
 use App\Http\Controllers\Controller;
-use App\Models\TeamInvitation;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ResentInvitationController extends Controller
 {
     /**
      * Resend the given team invitation.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(): RedirectResponse
     {
-        $invitation = TeamInvitation::findOrFail($request->input('invitation_id'));
+        $invitation = TeamInvitation::findOrFail(request()->input('invitation_id'));
 
         $this->authorize('resend', $invitation);
 

@@ -44,7 +44,7 @@ defineOptions({
   layout: AuthLayout,
 })
 
-interface Props {
+type Props = {
   token: string
   email: string
 }

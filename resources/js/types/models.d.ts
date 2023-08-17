@@ -1,52 +1,53 @@
-export interface Team {
+export type Team = {
   id: string
-  owner_id: string
   name: string
   personal_team: boolean
   created_at: string
   updated_at: string
+  owner?: User
+  members?: User[]
+  members_count?: number
+  invitations?: TeamInvitation[]
+  invitations_count?: number
+  links?: Link[]
+  links_count?: number
 }
 
-export interface CurrentUser extends User {
-  current_team_id: string
-  two_factor_enabled: boolean
-  teams: Team[]
-}
-
-export interface User {
+export type User = {
   id: string
   name: string
   email: string
   initials: string
+  two_factor_enabled?: boolean
+  current_team?: Team
+  teams: ?Team[]
 }
 
-export interface TeamInvitation {
+export type TeamInvitation = {
   id: string
-  team_id: string
   email: string
   created_at: string
   updated_at: string
+  team?: Team
 }
 
-export interface TeamMembership {
+export type TeamMembership = {
   id: string
-  team_id: string
-  user_id: string
   created_at: string
   updated_at: string
-  team: Team
-  user: User
+  team?: Team
+  user?: User
 }
 
-export interface Link {
+export type Link = {
   id: string
-  team_id: string
+  short_url: string
+  destination_url: string
   alias: string
   has_password: boolean
   visit_limit: number | null
-  destination_url: string
-  short_url: string
   expires_at: string | null
   created_at: string
   updated_at: string
+  team?: Team
 }

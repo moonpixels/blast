@@ -2,19 +2,15 @@
 
 namespace App\Http\Controllers\Web\Links;
 
-use App\Actions\Links\CreateLink;
-use App\Actions\Links\DeleteLink;
-use App\Actions\Links\FilterLinks;
-use App\Actions\Links\UpdateLink;
-use App\Data\LinkData;
-use App\Exceptions\InvalidUrlException;
+use App\Domain\Link\Actions\CreateLink;
+use App\Domain\Link\Actions\DeleteLink;
+use App\Domain\Link\Actions\FilterLinks;
+use App\Domain\Link\Actions\UpdateLink;
+use App\Domain\Link\Data\LinkData;
+use App\Domain\Link\Models\Link;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Link\StoreRequest;
-use App\Http\Requests\Link\UpdateRequest;
-use App\Http\Resources\Link\LinkResource;
-use App\Models\Link;
+use App\Http\Resources\LinkResource;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -23,37 +19,31 @@ class LinkController extends Controller
     /**
      * Show a list of links.
      */
-    public function index(Request $request): Response
+    public function index(): Response
     {
         return Inertia::render('Links/Index', [
             'filters' => [
-                'query' => $request->query('query'),
+                'query' => request()->query('query'),
             ],
-            'shortenedLink' => Inertia::lazy(function () use ($request) {
-                if ($request->session()->has('shortened_link')) {
+            'shortenedLink' => Inertia::lazy(function () {
+                if (request()->session()->has('shortened_link')) {
                     return LinkResource::createWithoutWrapping(
-                        $request->session()->get('shortened_link')
+                        request()->session()->get('shortened_link')
                     );
                 }
 
                 return null;
             }),
-            'links' => FilterLinks::run($request->user()->currentTeam, $request->query('query')),
+            'links' => FilterLinks::run(request()->user()->currentTeam, request()->query('query')),
         ]);
     }
 
     /**
      * Store a newly created link in storage.
      */
-    public function store(StoreRequest $request): RedirectResponse
+    public function store(LinkData $data): RedirectResponse
     {
-        try {
-            $link = CreateLink::run(LinkData::from($request->validated()));
-        } catch (InvalidUrlException) {
-            return back()->withErrors([
-                'destination_url' => __('The URL is invalid.'),
-            ]);
-        }
+        $link = CreateLink::run($data);
 
         return back()
             ->with('shortened_link', $link)
@@ -66,17 +56,11 @@ class LinkController extends Controller
     /**
      * Update the specified link in storage.
      */
-    public function update(UpdateRequest $request, Link $link): RedirectResponse
+    public function update(Link $link, LinkData $data): RedirectResponse
     {
         $this->authorize('update', $link);
 
-        try {
-            UpdateLink::run($link, LinkData::from($request->validated()));
-        } catch (InvalidUrlException) {
-            return back()->withErrors([
-                'destination_url' => __('The URL is invalid.'),
-            ]);
-        }
+        UpdateLink::run($link, $data);
 
         return back()->with('success', [
             'title' => __('Link updated'),

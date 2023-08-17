@@ -15,7 +15,7 @@
 <script lang="ts" setup>
 import BlastLogo from '@/Components/Logo/BlastLogo.vue'
 
-interface Props {
+type Props = {
   title: string
   description?: string
   fullWidth?: boolean

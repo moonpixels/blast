@@ -67,7 +67,7 @@ defineOptions({
   layout: AuthLayout,
 })
 
-interface Props {
+type Props = {
   status: string | null
 }
 

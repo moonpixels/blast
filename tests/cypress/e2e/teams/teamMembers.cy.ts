@@ -81,21 +81,21 @@ describe('Team members', () => {
 
   it('should allow owners to filter team members', () => {
     cy.create({
-      model: 'App\\Models\\User',
+      model: 'App\\Domain\\Team\\Models\\User',
       attributes: {
         name: 'John Doe',
         email: 'john.doe@blst.to',
       },
     }).then((user: User) => {
       cy.create({
-        model: 'App\\Models\\TeamMembership',
+        model: 'App\\Domain\\Team\\Models\\TeamMembership',
         attributes: {
           team_id: teamId,
           user_id: user.id,
         },
       }).then(() => {
         cy.create({
-          model: 'App\\Models\\TeamMembership',
+          model: 'App\\Domain\\Team\\Models\\TeamMembership',
           attributes: {
             team_id: teamId,
           },
@@ -116,7 +116,7 @@ describe('Team members', () => {
 
   it('should show pagination links if there are more than 10 team members', () => {
     cy.create({
-      model: 'App\\Models\\TeamMembership',
+      model: 'App\\Domain\\Team\\Models\\TeamMembership',
       attributes: {
         team_id: teamId,
       },
@@ -162,7 +162,7 @@ describe('Team members', () => {
 
   it('should not show pagination links if there are 10 or less team members', () => {
     cy.create({
-      model: 'App\\Models\\TeamMembership',
+      model: 'App\\Domain\\Team\\Models\\TeamMembership',
       attributes: {
         team_id: teamId,
       },
@@ -181,7 +181,7 @@ describe('Team members', () => {
   function createTeamMember(): void {
     cy.currentUser().then((user) => {
       cy.create({
-        model: 'App\\Models\\TeamMembership',
+        model: 'App\\Domain\\Team\\Models\\TeamMembership',
         attributes: {
           team_id: user.current_team_id,
         },

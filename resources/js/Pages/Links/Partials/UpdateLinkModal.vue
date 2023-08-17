@@ -83,9 +83,8 @@
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import Modal from '@/Components/Modals/Modal.vue'
 import { useForm, usePage } from '@inertiajs/vue3'
-import { CurrentUser, Link } from '@/types/models'
+import { Link, User } from '@/types/models'
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
-import { LinkShortenerForm } from '@/Components/LinkShortener/LinkShortener.vue'
 import TextInput from '@/Components/Inputs/TextInput.vue'
 import SelectInput from '@/Components/Inputs/SelectInput.vue'
 import DateInput from '@/Components/Inputs/DateInput.vue'
@@ -93,8 +92,9 @@ import { computed, ref } from 'vue'
 import { PageProps } from '@/types'
 import dayjs from 'dayjs'
 import Checkbox from '@/Components/Inputs/Checkbox.vue'
+import LinkData = App.Domain.Link.Data.LinkData
 
-interface Props {
+type Props = {
   link: Link
   open: boolean
 }
@@ -102,30 +102,29 @@ interface Props {
 const props = defineProps<Props>()
 
 const emit = defineEmits<{
-  (e: 'close'): void
+  close: []
 }>()
 
-const user = computed<CurrentUser>(() => {
-  return usePage<PageProps>().props.user as CurrentUser
+const user = computed<User>(() => {
+  return usePage<PageProps>().props.user
 })
 
 const passwordProtected = ref<boolean>(props.link.has_password)
 
-const form = useForm<LinkShortenerForm>({
+const form = useForm<LinkData>({
   destination_url: props.link.destination_url,
-  alias: props.link.alias || undefined,
-  password: '',
+  alias: props.link.alias,
+  password: undefined,
   expires_at: props.link.expires_at ? dayjs(props.link.expires_at).format() : undefined,
   visit_limit: props.link.visit_limit || undefined,
-  team_id: props.link.team_id,
+  team_id: props.link.team?.id || undefined,
 })
 
 function submit(): void {
   form
     .transform((data) => ({
       ...data,
-      alias: data.alias || undefined,
-      password: passwordProtected.value && !data.password ? undefined : data.password,
+      password: passwordProtected.value ? data.password : null,
     }))
     .put(route('links.update', props.link.id), {
       preserveScroll: true,

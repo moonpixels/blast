@@ -92,7 +92,7 @@ describe('Team invitations', () => {
     // Already invited
     cy.get('[data-cy="invite-team-member-modal"]').within(() => {
       cy.create({
-        model: 'App\\Models\\TeamInvitation',
+        model: 'App\\Domain\\Team\\Models\\TeamInvitation',
         attributes: {
           email: 'already-invited@blst.to',
           team_id: teamId,
@@ -120,10 +120,10 @@ describe('Team invitations', () => {
 
   it('should allow a user to accept an invitation', () => {
     cy.create({
-      model: 'App\\Models\\Team',
+      model: 'App\\Domain\\Team\\Models\\Team',
     }).then((team) => {
       cy.create({
-        model: 'App\\Models\\TeamInvitation',
+        model: 'App\\Domain\\Team\\Models\\TeamInvitation',
         attributes: {
           email: 'user@blst.to',
           team_id: team.id,
@@ -143,7 +143,7 @@ describe('Team invitations', () => {
 
   it('should allow owners to cancel an invitation', () => {
     cy.create({
-      model: 'App\\Models\\TeamInvitation',
+      model: 'App\\Domain\\Team\\Models\\TeamInvitation',
       attributes: {
         team_id: teamId,
       },
@@ -162,7 +162,7 @@ describe('Team invitations', () => {
 
   it('should allow owners to resend an invitation', () => {
     cy.create({
-      model: 'App\\Models\\TeamInvitation',
+      model: 'App\\Domain\\Team\\Models\\TeamInvitation',
       attributes: {
         team_id: teamId,
       },
@@ -179,14 +179,14 @@ describe('Team invitations', () => {
 
   it('should allow owners to filter invitations', () => {
     cy.create({
-      model: 'App\\Models\\TeamInvitation',
+      model: 'App\\Domain\\Team\\Models\\TeamInvitation',
       attributes: {
         team_id: teamId,
         email: 'another-user@blst.to',
       },
     }).then(() => {
       cy.create({
-        model: 'App\\Models\\TeamInvitation',
+        model: 'App\\Domain\\Team\\Models\\TeamInvitation',
         attributes: {
           team_id: teamId,
         },
@@ -206,7 +206,7 @@ describe('Team invitations', () => {
 
   it('should show pagination links if there are more than 10 invitations', () => {
     cy.create({
-      model: 'App\\Models\\TeamInvitation',
+      model: 'App\\Domain\\Team\\Models\\TeamInvitation',
       attributes: {
         team_id: teamId,
       },
@@ -252,7 +252,7 @@ describe('Team invitations', () => {
 
   it('should not show pagination links if there are 10 or less invitations', () => {
     cy.create({
-      model: 'App\\Models\\TeamInvitation',
+      model: 'App\\Domain\\Team\\Models\\TeamInvitation',
       attributes: {
         team_id: teamId,
       },

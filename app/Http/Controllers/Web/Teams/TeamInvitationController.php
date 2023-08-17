@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Web\Teams;
 
-use App\Actions\Teams\CreateInvitationForTeam;
-use App\Data\TeamInvitationData;
+use App\Domain\Team\Actions\Invitations\CreateInvitationForTeam;
+use App\Domain\Team\Data\TeamInvitationData;
+use App\Domain\Team\Models\Team;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\TeamInvitation\StoreRequest;
-use App\Models\Team;
 use Illuminate\Http\RedirectResponse;
 
 class TeamInvitationController extends Controller
@@ -14,15 +13,15 @@ class TeamInvitationController extends Controller
     /**
      * Invite a new member to the given team.
      */
-    public function store(StoreRequest $request, Team $team): RedirectResponse
+    public function store(Team $team, TeamInvitationData $data): RedirectResponse
     {
         $this->authorize('inviteMember', $team);
 
-        CreateInvitationForTeam::run($team, TeamInvitationData::from($request->validated()));
+        CreateInvitationForTeam::run($team, $data);
 
         return back()->with('success', [
             'title' => __('Invitation sent'),
-            'message' => __('An invitation has been sent to :email.', ['email' => $request->validated()['email']]),
+            'message' => __('An invitation has been sent to :email.', ['email' => $data->email]),
         ]);
     }
 }

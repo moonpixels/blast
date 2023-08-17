@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Web\Redirects;
 
-use App\Actions\Redirects\GetLinkForRedirectRequest;
+use App\Domain\Link\Models\Link;
+use App\Domain\Redirect\Data\RedirectData;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AuthenticatedRedirect\StoreRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
@@ -16,38 +15,34 @@ class AuthenticatedRedirectController extends Controller
     /**
      * Show the password input page for the link associated with the given alias.
      */
-    public function create(Request $request, string $alias): Response|RedirectResponse
+    public function create(Link $link): Response|RedirectResponse
     {
-        $link = GetLinkForRedirectRequest::run($alias);
-
         if (! $link->has_password) {
-            return redirect()->route('redirect', $alias);
+            return redirect()->route('redirect', $link->alias);
         }
 
         return inertia('Redirects/Authenticated/Create', [
-            'alias' => $alias,
+            'alias' => $link->alias,
         ]);
     }
 
     /**
      * Attempt to authenticate the redirect request.
      */
-    public function store(StoreRequest $request, string $alias): RedirectResponse|HttpResponse
+    public function store(Link $link, RedirectData $data): RedirectResponse|HttpResponse
     {
-        $link = GetLinkForRedirectRequest::run($alias);
-
         if (! $link->has_password) {
-            return redirect()->route('redirect', $alias);
+            return redirect()->route('redirect', $link->alias);
         }
 
-        if (! $link->passwordMatches($request->input('password'))) {
+        if (! $link->passwordMatches($data->password)) {
             return back()->withErrors([
                 'password' => __('The provided password is incorrect.'),
             ]);
         }
 
-        session()->flash("authenticated:{$alias}");
+        session()->flash("authenticated:{$link->alias}");
 
-        return Inertia::location(route('redirect', $alias));
+        return Inertia::location(route('redirect', $link->alias));
     }
 }

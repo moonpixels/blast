@@ -111,8 +111,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 });
 
 // Authenticated redirects...
-Route::get('/{alias}/password', [AuthenticatedRedirectController::class, 'create'])->name('authenticated-redirect');
-Route::post('/{alias}/password', [AuthenticatedRedirectController::class, 'store']);
+Route::get('/{link:alias}/password', [AuthenticatedRedirectController::class, 'create'])
+    ->name('authenticated-redirect');
+Route::post('/{link:alias}/password', [AuthenticatedRedirectController::class, 'store']);
 
 // Expired redirects...
 Route::get('redirects/expired', [ExpiredRedirectController::class, 'show'])->name('expired-redirect');
@@ -122,4 +123,4 @@ Route::get('redirects/reached-visit-limit', [ReachedVisitLimitRedirectController
     ->name('reached-visit-limit-redirect');
 
 // Redirects...
-Route::get('/{alias}', [RedirectController::class, 'create'])->name('redirect');
+Route::get('/{link:alias}', [RedirectController::class, 'create'])->name('redirect');

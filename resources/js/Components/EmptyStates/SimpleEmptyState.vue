@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts" setup>
-interface Props {
+type Props = {
   title: string
   description: string
 }

@@ -24,7 +24,7 @@ describe('Update links', () => {
 
   it('should allow users to update a link', () => {
     cy.create({
-      model: 'App\\Models\\Link',
+      model: 'App\\Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -59,7 +59,7 @@ describe('Update links', () => {
 
   it('should show an error if the URL is invalid', () => {
     cy.create({
-      model: 'App\\Models\\Link',
+      model: 'App\\Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -103,7 +103,7 @@ describe('Update links', () => {
 
   it('should show an error if the alias is invalid', () => {
     cy.create({
-      model: 'App\\Models\\Link',
+      model: 'App\\Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -152,7 +152,7 @@ describe('Update links', () => {
 
   it('should not allow an invalid expires at date to be entered', () => {
     cy.create({
-      model: 'App\\Models\\Link',
+      model: 'App\\Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -177,7 +177,7 @@ describe('Update links', () => {
 
   it('should show an error if the visit limit is invalid', () => {
     cy.create({
-      model: 'App\\Models\\Link',
+      model: 'App\\Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -201,17 +201,14 @@ describe('Update links', () => {
         // Negative visit limit
         cy.getFormInput('Visit limit').clear().type('-1')
         cy.get('[data-cy="submit-button"]').click()
-        cy.get('[data-cy="input-error-message"]').should(
-          'contain',
-          'The visit limit field must be between 1 and 16777215.'
-        )
+        cy.get('[data-cy="input-error-message"]').should('contain', 'The visit limit field must be at least 1.')
 
         // Too large visit limit
         cy.getFormInput('Visit limit').clear().type('16777216')
         cy.get('[data-cy="submit-button"]').click()
         cy.get('[data-cy="input-error-message"]').should(
           'contain',
-          'The visit limit field must be between 1 and 16777215.'
+          'The visit limit field must not be greater than 16777215.'
         )
       })
     })
@@ -219,7 +216,7 @@ describe('Update links', () => {
 
   it('should only show the password field when the password protected option is selected', () => {
     cy.create({
-      model: 'App\\Models\\Link',
+      model: 'App\\Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },

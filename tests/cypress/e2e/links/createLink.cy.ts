@@ -267,10 +267,7 @@ describe('Create link', () => {
       })
       cy.get('[data-cy="link-options-popover"]').should('not.exist')
       cy.get('[data-cy="submit-button"]').click()
-      cy.get('[data-cy="link-options-errors"]').should(
-        'contain',
-        'The visit limit field must be between 1 and 16777215.'
-      )
+      cy.get('[data-cy="link-options-errors"]').should('contain', 'The visit limit field must be at least 1.')
 
       // Visit limit too high
       cy.get('[data-cy="set-visit_limit-button"]').click()
@@ -282,7 +279,7 @@ describe('Create link', () => {
       cy.get('[data-cy="submit-button"]').click()
       cy.get('[data-cy="link-options-errors"]').should(
         'contain',
-        'The visit limit field must be between 1 and 16777215.'
+        'The visit limit field must not be greater than 16777215.'
       )
     })
   })

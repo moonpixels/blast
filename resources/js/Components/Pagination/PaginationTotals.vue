@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import { PaginatedResponse } from '@/types/framework'
 
-interface Props {
+type Props = {
   resourceName: string
   paginatedResource: PaginatedResponse<any>
 }

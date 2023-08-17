@@ -5,19 +5,19 @@ describe('Reset password', () => {
     cy.refreshDatabase()
 
     createUser().then((user) => {
-      cy.php(`Illuminate\\Support\\Facades\\Password::createToken(App\\Models\\User::find('${user.id}'))`).then(
-        (token) => {
-          cy.visit({
-            route: 'password.reset',
-            parameters: {
-              token,
-            },
-            qs: {
-              email: user.email,
-            },
-          })
-        }
-      )
+      cy.php(
+        `Illuminate\\Support\\Facades\\Password::createToken(App\\Domain\\Team\\Models\\User::find('${user.id}'))`
+      ).then((token) => {
+        cy.visit({
+          route: 'password.reset',
+          parameters: {
+            token,
+          },
+          qs: {
+            email: user.email,
+          },
+        })
+      })
     })
 
     cy.get('[data-cy="reset-password-form"]')

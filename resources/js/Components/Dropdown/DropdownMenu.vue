@@ -26,7 +26,7 @@
 import { Menu, MenuItems } from '@headlessui/vue'
 import { computed } from 'vue'
 
-interface Props {
+type Props = {
   size?: 'xs' | 'sm' | 'md' | 'lg'
 }
 
@@ -38,12 +38,12 @@ const sizeClasses = computed<string>(() => {
   switch (props.size) {
     case 'xs':
       return 'w-48'
-    case 'sm':
-      return 'w-56'
     case 'md':
       return 'w-64'
     case 'lg':
       return 'w-80'
+    default:
+      return 'w-56'
   }
 })
 </script>

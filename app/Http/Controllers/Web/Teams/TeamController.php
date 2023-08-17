@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers\Web\Teams;
 
-use App\Actions\TeamMemberships\FilterTeamMemberships;
-use App\Actions\Teams\CreateTeamForUser;
-use App\Actions\Teams\DeleteTeam;
-use App\Actions\Teams\FilterTeamInvitations;
-use App\Actions\Teams\UpdateTeam;
-use App\Data\TeamData;
+use App\Domain\Team\Actions\CreateTeam;
+use App\Domain\Team\Actions\DeleteTeam;
+use App\Domain\Team\Actions\Invitations\FilterTeamInvitations;
+use App\Domain\Team\Actions\Memberships\FilterTeamMemberships;
+use App\Domain\Team\Actions\UpdateTeam;
+use App\Domain\Team\Data\TeamData;
+use App\Domain\Team\Models\Team;
+use App\Domain\Team\Models\TeamMembership;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Team\StoreRequest;
-use App\Http\Requests\Team\UpdateRequest;
-use App\Http\Resources\Team\TeamResource;
-use App\Http\Resources\TeamMembership\TeamMembershipResource;
-use App\Models\Team;
-use App\Models\TeamMembership;
+use App\Http\Resources\TeamMembershipResource;
+use App\Http\Resources\TeamResource;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Response;
 
 class TeamController extends Controller
@@ -24,28 +21,28 @@ class TeamController extends Controller
     /**
      * Show the team management page.
      */
-    public function show(Request $request, Team $team): Response
+    public function show(Team $team): Response
     {
         $this->authorize('view', $team);
 
         $props = [
             'filters' => [
-                'view' => $request->query('view', 'members'),
-                'query' => $request->query('query'),
+                'view' => request()->query('view', 'members'),
+                'query' => request()->query('query'),
             ],
-            'team' => TeamResource::createWithoutWrapping($team),
+            'team' => TeamResource::createWithoutWrapping($team->load('owner')),
         ];
 
-        if ($request->user()->ownsTeam($team)) {
-            if ($request->query('view') === 'invitations') {
-                $props['invitations'] = FilterTeamInvitations::run($team, $request->query('query'))
-                    ->withQuery(['view' => $request->query('view')]);
+        if (request()->user()->ownsTeam($team)) {
+            if (request()->query('view') === 'invitations') {
+                $props['invitations'] = FilterTeamInvitations::run($team, request()->query('query'))
+                    ->withQuery(['view' => request()->query('view')]);
             } else {
-                $props['memberships'] = FilterTeamMemberships::run($team, $request->query('query'))
-                    ->withQuery(['view' => $request->query('view')]);
+                $props['memberships'] = FilterTeamMemberships::run($team, request()->query('query'))
+                    ->withQuery(['view' => request()->query('view')]);
             }
         } else {
-            $membership = TeamMembership::whereUserId($request->user()->id)->whereTeamId($team->id)->first();
+            $membership = TeamMembership::whereUserId(request()->user()->id)->whereTeamId($team->id)->first();
             $props['teamMembership'] = TeamMembershipResource::createWithoutWrapping($membership);
         }
 
@@ -55,9 +52,9 @@ class TeamController extends Controller
     /**
      * Store a newly created team in storage.
      */
-    public function store(StoreRequest $request): RedirectResponse
+    public function store(TeamData $data): RedirectResponse
     {
-        $team = CreateTeamForUser::run($request->user(), TeamData::from($request->validated()));
+        $team = CreateTeam::run(request()->user(), $data);
 
         return redirect()->route('teams.show', $team);
     }
@@ -65,11 +62,11 @@ class TeamController extends Controller
     /**
      * Update the specified team in storage.
      */
-    public function update(UpdateRequest $request, Team $team): RedirectResponse
+    public function update(Team $team, TeamData $data): RedirectResponse
     {
         $this->authorize('update', $team);
 
-        UpdateTeam::run($team, TeamData::from($request->validated()));
+        UpdateTeam::run($team, $data);
 
         return back()->with('success', [
             'title' => __('Team updated'),

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Auth\Middleware\RequirePassword;
+
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
 

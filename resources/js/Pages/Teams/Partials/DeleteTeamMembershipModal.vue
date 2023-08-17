@@ -13,7 +13,7 @@
         {{
           $t(
             'Are you sure you want to delete :name from this team? They will no longer have access to the team’s resources and data.',
-            { name: membership.user.name }
+            { name: membership.user?.name as string }
           )
         }}
       </p>
@@ -40,7 +40,7 @@ import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import { TrashIcon } from '@heroicons/vue/20/solid'
 import { ref } from 'vue'
 
-interface Props {
+type Props = {
   membership: TeamMembership
 }
 
@@ -48,7 +48,7 @@ const props = defineProps<Props>()
 
 const open = ref<boolean>(false)
 
-const form = useForm<{}>({})
+const form = useForm({})
 
 function submit(): void {
   form.delete(route('team-memberships.destroy', props.membership.id), {

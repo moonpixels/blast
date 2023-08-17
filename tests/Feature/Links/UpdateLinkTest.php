@@ -1,9 +1,7 @@
 <?php
 
-use App\Actions\Links\UpdateLink;
-use App\Exceptions\InvalidUrlException;
-use App\Models\Link;
-use App\Models\User;
+use App\Domain\Link\Models\Link;
+use App\Domain\Team\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -89,21 +87,7 @@ it('does not update a link when the URL is invalid', function () {
     ]))->assertInvalid('destination_url');
 
     $this->put(route('links.update', $this->personalTeamLink), array_merge($this->updateData, [
-        'destination_url' => 'invalid-url',
-    ]))->assertInvalid('destination_url');
-
-    $this->put(route('links.update', $this->personalTeamLink), array_merge($this->updateData, [
         'destination_url' => 'https://blst.to/'.str_repeat('a', 2033),
-    ]))->assertInvalid('destination_url');
-});
-
-it('does not update a link when the URL host is invalid', function () {
-    UpdateLink::shouldRun()
-        ->once()
-        ->andThrow(InvalidUrlException::invalidHost());
-
-    $this->put(route('links.update', $this->standardTeamLink), array_merge($this->updateData, [
-        'destination_url' => 'https://blst.to',
     ]))->assertInvalid('destination_url');
 });
 

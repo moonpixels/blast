@@ -22,8 +22,8 @@
           <MenuItemLink
             v-for="team in user.teams"
             :key="team.id"
-            :class="{ 'font-medium text-zinc-900 dark:text-white': user.current_team_id === team.id }"
-            :data="{ team_id: team.id }"
+            :class="{ 'font-medium text-zinc-900 dark:text-white': user.current_team?.id === team.id }"
+            :data="{ current_team_id: team.id }"
             :href="route('user.current-team.update')"
             as="button"
             method="put"
@@ -33,7 +33,7 @@
                 {{ team.name }}
               </span>
               <Badge
-                v-if="user.current_team_id === team.id"
+                v-if="user.current_team?.id === team.id"
                 class="-mr-2 ml-2 shrink-0"
                 data-cy="current-team-badge"
                 type="primary"
@@ -107,10 +107,11 @@ import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import { useForm } from '@inertiajs/vue3'
 import TextInput from '@/Components/Inputs/TextInput.vue'
-import { CurrentUser } from '@/types/models'
+import { User } from '@/types/models'
+import TeamData = App.Domain.Team.Data.TeamData
 
-interface Props {
-  user: CurrentUser
+type Props = {
+  user: User
 }
 
 const props = defineProps<Props>()
@@ -118,14 +119,10 @@ const props = defineProps<Props>()
 const showModal = ref<boolean>(false)
 
 const currentTeamName = computed<string>(() => {
-  return props.user.teams.find((team) => team.id === props.user.current_team_id)?.name ?? ''
+  return props.user.teams?.find((team) => team.id === props.user.current_team?.id)?.name as string
 })
 
-type CreateTeamForm = {
-  name: string
-}
-
-const form = useForm<CreateTeamForm>({
+const form = useForm<TeamData>({
   name: '',
 })
 

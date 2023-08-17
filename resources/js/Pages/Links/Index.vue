@@ -20,17 +20,19 @@ import ConstrainedContainer from '@/Components/Containers/ConstrainedContainer.v
 import LinkShortener from '@/Components/LinkShortener/LinkShortener.vue'
 import { Link } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
-import LinksPanel, { Filters } from '@/Pages/Links/Partials/LinksPanel.vue'
+import LinksPanel from '@/Pages/Links/Partials/LinksPanel.vue'
 import AppHead from '@/Components/App/AppHead.vue'
 
 defineOptions({
   layout: AppLayout,
 })
 
-interface Props {
+type Props = {
   shortenedLink?: Link
   links: PaginatedResponse<Link>
-  filters: Filters
+  filters: {
+    query?: string
+  }
 }
 
 defineProps<Props>()

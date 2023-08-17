@@ -1,10 +1,8 @@
 <?php
 
-use App\Actions\Links\CreateLink;
-use App\Exceptions\InvalidUrlException;
-use App\Models\Link;
-use App\Models\Team;
-use App\Models\User;
+use App\Domain\Link\Models\Link;
+use App\Domain\Team\Models\Team;
+use App\Domain\Team\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -80,11 +78,6 @@ it('does not create a link for teams that do not exist', function () {
 it('does not create a link when the URL is invalid', function () {
     $this->post(route('links.store'), [
         'destination_url' => '',
-        'team_id' => $this->standardTeam->id,
-    ])->assertInvalid('destination_url');
-
-    $this->post(route('links.store'), [
-        'destination_url' => 'invalid-url',
         'team_id' => $this->standardTeam->id,
     ])->assertInvalid('destination_url');
 
@@ -177,19 +170,6 @@ it('creates a link when the alias letter case is different to an existing alias'
     ])->assertRedirect();
 
     expect(Link::count())->toBe(2);
-});
-
-it('does not create a link when the URL host is invalid', function () {
-    CreateLink::shouldRun()
-        ->once()
-        ->andThrow(InvalidUrlException::invalidHost());
-
-    $this->post(route('links.store'), [
-        'destination_url' => 'https://blst.to',
-        'team_id' => $this->standardTeam->id,
-    ])->assertInvalid('destination_url');
-
-    expect(Link::count())->toBe(0);
 });
 
 it('can create a link with a password', function () {

@@ -1,13 +1,13 @@
 import Chainable = Cypress.Chainable
-import { CurrentUser, Link } from '@/types/models'
+import { Link, User } from '@/types/models'
 
 /**
  * Get the OTP code for the given user.
  */
-export function getOtpCodeForUser(user: CurrentUser): Chainable<string> {
+export function getOtpCodeForUser(user: User): Chainable<string> {
   return cy
     .php(
-      `app(PragmaRX\\Google2FA\\Google2FA::class)->getCurrentOtp(Illuminate\\Support\\Facades\\Crypt::decrypt(App\\Models\\User::find('${user.id}')->two_factor_secret));`
+      `app(PragmaRX\\Google2FA\\Google2FA::class)->getCurrentOtp(Illuminate\\Support\\Facades\\Crypt::decrypt(App\\Domain\\Team\\Models\\User::find('${user.id}')->two_factor_secret));`
     )
     .then((response) => {
       expect(response).to.be.a('string')
@@ -18,11 +18,7 @@ export function getOtpCodeForUser(user: CurrentUser): Chainable<string> {
 /**
  * Create a new user.
  */
-export function createUser(
-  attributes: Partial<CurrentUser> = {},
-  state: string[] = [],
-  load: string[] = []
-): Chainable<CurrentUser> {
+export function createUser(attributes: Partial<User> = {}, state: string[] = [], load: string[] = []): Chainable<User> {
   if (Object.keys(attributes).length === 0) {
     attributes = {
       email: 'user@blst.to',
@@ -31,7 +27,7 @@ export function createUser(
 
   return cy
     .create({
-      model: 'App\\Models\\User',
+      model: 'App\\Domain\\Team\\Models\\User',
       attributes,
       state,
       load,
@@ -53,7 +49,7 @@ export function createLink(attributes: Partial<Link> = {}, state: string[] = [],
 
   return cy
     .create({
-      model: 'App\\Models\\Link',
+      model: 'App\\Domain\\Link\\Models\\Link',
       attributes,
       state,
       load,

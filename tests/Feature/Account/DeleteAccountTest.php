@@ -1,7 +1,7 @@
 <?php
 
-use App\Actions\Users\DeleteUser;
-use App\Models\User;
+use App\Domain\Team\Actions\Users\DeleteUser;
+use App\Domain\Team\Models\User;
 use Mockery\MockInterface;
 
 beforeEach(function () {

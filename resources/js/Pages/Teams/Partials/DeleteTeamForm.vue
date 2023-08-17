@@ -44,7 +44,7 @@ import { useForm } from '@inertiajs/vue3'
 import Alert from '@/Components/Alerts/Alert.vue'
 import { Team } from '@/types/models'
 
-interface Props {
+type Props = {
   team: Team
 }
 

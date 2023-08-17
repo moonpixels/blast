@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Link;
+use App\Domain\Link\Models\Link;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {

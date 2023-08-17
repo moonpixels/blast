@@ -64,7 +64,7 @@ defineOptions({
 
 const attrs = useAttrs()
 
-interface Props {
+type Props = {
   show: boolean
   title: string
 }
@@ -72,6 +72,6 @@ interface Props {
 defineProps<Props>()
 
 defineEmits<{
-  (e: 'close'): void
+  close: []
 }>()
 </script>

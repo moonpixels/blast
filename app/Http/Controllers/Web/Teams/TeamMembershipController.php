@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers\Web\Teams;
 
-use App\Actions\TeamMemberships\DeleteTeamMembership;
+use App\Domain\Team\Actions\Memberships\DeleteTeamMembership;
+use App\Domain\Team\Models\TeamMembership;
 use App\Http\Controllers\Controller;
-use App\Models\TeamMembership;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class TeamMembershipController extends Controller
 {
     /**
      * Delete the given team member.
      */
-    public function destroy(Request $request, TeamMembership $teamMembership): RedirectResponse
+    public function destroy(TeamMembership $teamMembership): RedirectResponse
     {
         $this->authorize('delete', $teamMembership);
 
         DeleteTeamMembership::run($teamMembership);
 
-        if ($request->user()->ownsTeam($teamMembership->team)) {
+        if (request()->user()->ownsTeam($teamMembership->team)) {
             return back()->with('success', [
                 'title' => __('Member removed'),
                 'message' => __('The member has been removed from the team.'),

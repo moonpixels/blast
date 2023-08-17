@@ -51,8 +51,9 @@ import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import { Team } from '@/types/models'
+import TeamInvitationData = App.Domain.Team.Data.TeamInvitationData
 
-interface Props {
+type Props = {
   team: Team
 }
 
@@ -60,11 +61,7 @@ const props = defineProps<Props>()
 
 const showModal = ref<boolean>(false)
 
-type InviteForm = {
-  email: string
-}
-
-const form = useForm<InviteForm>({
+const form = useForm<TeamInvitationData>({
   email: '',
 })
 

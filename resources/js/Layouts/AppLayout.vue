@@ -62,13 +62,13 @@ import { PageProps } from '@/types'
 import FlashNotification from '@/Components/Notifications/FlashMessages.vue'
 import TeamSwitcher from '@/Layouts/Partials/TeamSwitcher.vue'
 import ProfileMenu from '@/Layouts/Partials/ProfileMenu.vue'
-import { CurrentUser } from '@/types/models'
+import { User } from '@/types/models'
 
-const user = computed<CurrentUser>(() => {
-  return usePage<PageProps>().props.user as CurrentUser
+const user = computed<User>(() => {
+  return usePage<PageProps>().props.user
 })
 
-interface NavLink {
+type NavLink = {
   name: string
   href: string
   route: string
@@ -82,7 +82,7 @@ const links = computed<NavLink[]>(() => [
   },
   {
     name: transChoice('Team|Teams', 1),
-    href: route('teams.show', user.value.current_team_id),
+    href: route('teams.show', user.value.current_team?.id as string),
     route: '/teams',
   },
 ])

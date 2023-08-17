@@ -35,13 +35,13 @@ import PasswordForm from '@/Pages/CurrentUser/Partials/PasswordForm.vue'
 import TwoFactorForm from '@/Pages/CurrentUser/Partials/TwoFactorForm.vue'
 import PersonalInfoForm from '@/Pages/CurrentUser/Partials/ProfileInformationForm.vue'
 import DeleteForm from '@/Pages/CurrentUser/Partials/DeleteForm.vue'
-import { CurrentUser } from '@/types/models'
+import { User } from '@/types/models'
 
 defineOptions({
   layout: AppLayout,
 })
 
-interface Props {
+type Props = {
   status?: string
   twoFactorQrCode?: string
   twoFactorRecoveryCodes?: string[]
@@ -49,7 +49,7 @@ interface Props {
 
 defineProps<Props>()
 
-const user = computed<CurrentUser>(() => {
-  return usePage<PageProps>().props.user as CurrentUser
+const user = computed<User>(() => {
+  return usePage<PageProps>().props.user
 })
 </script>

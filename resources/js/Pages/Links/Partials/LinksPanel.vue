@@ -72,7 +72,11 @@
 
               <div
                 v-if="link.visit_limit"
-                v-tippy="{ content: $t('Limited to :limit visits', { limit: link.visit_limit.toString() }) }"
+                v-tippy="{
+                  content:
+                    $t('Limited to :limit ', { limit: link.visit_limit.toString() }) +
+                    $tChoice('visit|visits', link.visit_limit),
+                }"
                 data-cy="visit-limit-icon"
               >
                 <CursorArrowRaysIcon
@@ -208,13 +212,11 @@ import MenuItemButton from '@/Components/Dropdown/MenuItemButton.vue'
 import UpdateLinkModal from '@/Pages/Links/Partials/UpdateLinkModal.vue'
 import DeleteLinkModal from '@/Pages/Links/Partials/DeleteLinkModal.vue'
 
-export interface Filters {
-  query?: string
-}
-
-interface Props {
+type Props = {
   links: PaginatedResponse<Link>
-  filters: Filters
+  filters: {
+    query?: string
+  }
 }
 
 const props = defineProps<Props>()
