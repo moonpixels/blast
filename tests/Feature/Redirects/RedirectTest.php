@@ -2,35 +2,38 @@
 
 use App\Domain\Link\Models\Link;
 use App\Domain\Redirect\Enums\DeviceTypes;
+use App\Domain\Redirect\Models\Visit;
+use Illuminate\Support\Facades\Hash;
+use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
     $this->link = Link::factory()->create();
 });
 
 it('redirects the user to the destination URL', function () {
-    $this->get(route('redirect', $this->link->alias))
+    $this->get(route('redirects.show', $this->link->alias))
         ->assertRedirect($this->link->destination_url);
 });
 
 it('creates a visit for the link', function () {
-    $this->get(route('redirect', $this->link->alias));
+    $this->get(route('redirects.show', $this->link->alias));
 
     expect($this->link->visits)->toHaveCount(1)
         ->and($this->link->fresh()->total_visits)->toBe(1);
 });
 
 it('uses the cache-control header to prevent caching', function () {
-    $this->get(route('redirect', $this->link->alias))
+    $this->get(route('redirects.show', $this->link->alias))
         ->assertHeader('cache-control', 'no-cache, no-store, private');
 });
 
 it('uses a 301 redirect', function () {
-    $this->get(route('redirect', $this->link->alias))
+    $this->get(route('redirects.show', $this->link->alias))
         ->assertStatus(301);
 });
 
 it('creates a visit with the user agent information', function () {
-    $this->get(route('redirect', $this->link->alias), [
+    $this->get(route('redirects.show', $this->link->alias), [
         'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0',
     ]);
 
@@ -44,7 +47,7 @@ it('creates a visit with the user agent information', function () {
 });
 
 it('creates a visit with referer information', function () {
-    $this->get(route('redirect', $this->link->alias), [
+    $this->get(route('redirects.show', $this->link->alias), [
         'referer' => 'https://example.com/foo/bar?query=string#fragment',
     ]);
 
@@ -53,7 +56,7 @@ it('creates a visit with referer information', function () {
 });
 
 it('creates a visit with robot information', function () {
-    $this->get(route('redirect', $this->link->alias), [
+    $this->get(route('redirects.show', $this->link->alias), [
         'user-agent' => 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Googlebot/2.1; +http://www.google.com/bot.html) Chrome/W.X.Y.Z Safari/537.36',
     ]);
 
@@ -61,32 +64,51 @@ it('creates a visit with robot information', function () {
         ->and($this->link->visits->first()->robot_name)->toBe('Googlebot');
 });
 
-it('redirects the user to the authenticated redirect route if the link has a password', function () {
-    $link = Link::factory()->withPassword()->create();
+it('shows the password page if the link is protected', function () {
+    $this->link->update(['password' => Hash::make('password')]);
 
-    $this->get(route('redirect', $link->alias))
-        ->assertRedirectToRoute('authenticated-redirect', $link->alias);
+    $this->get(route('redirects.show', $this->link->alias))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Redirects/Protected')
+            ->where('alias', $this->link->alias)
+        );
 });
 
-it('redirects the user to the destination URL if the link has a password and the user has authenticated', function () {
-    $link = Link::factory()->withPassword()->create();
+it('redirects the user to the destination URL when the password is correct', function () {
+    $this->link->update(['password' => Hash::make('password')]);
 
-    session()->put("authenticated:{$link->alias}", true);
-
-    $this->get(route('redirect', $link->alias))
-        ->assertRedirect($link->destination_url);
+    $this->post(route('redirects.authenticate', $this->link->alias), [
+        'password' => 'password',
+    ])->assertRedirect($this->link->destination_url);
 });
 
-it('redirects the user to the expired redirects route if the link has expired', function () {
-    $link = Link::factory()->expired()->create();
+it('does not redirect the user when the password is incorrect', function () {
+    $this->link->update(['password' => Hash::make('password')]);
 
-    $this->get(route('redirect', $link->alias))
-        ->assertRedirectToRoute('expired-redirect');
+    $this->post(route('redirects.authenticate', $this->link->alias), [
+        'password' => 'wrong-password',
+    ])->assertInvalid(['password']);
 });
 
-it('redirects the user to the reached visit limit route if the link has reached its visit limit', function () {
-    $link = Link::factory()->withReachedVisitLimit()->create();
+it('shows the expired page if the link has expired', function () {
+    $this->link->update(['expires_at' => now()->subDay()]);
 
-    $this->get(route('redirect', $link->alias))
-        ->assertRedirectToRoute('reached-visit-limit-redirect');
+    $this->get(route('redirects.show', $this->link->alias))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Redirects/Expired')
+        );
+});
+
+it('shows the reached visit limit page if the link has reached its visit limit', function () {
+    $this->link->update(['visit_limit' => 1]);
+
+    Visit::factory()->for($this->link)->create();
+
+    $this->get(route('redirects.show', $this->link->alias))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Redirects/Limited')
+        );
 });

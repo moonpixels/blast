@@ -4,7 +4,7 @@ namespace App\Domain\Team\Actions;
 
 use App\Domain\Team\Data\TeamData;
 use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class CreateTeam

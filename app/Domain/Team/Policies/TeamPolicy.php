@@ -3,7 +3,7 @@
 namespace App\Domain\Team\Policies;
 
 use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TeamPolicy
@@ -15,7 +15,7 @@ class TeamPolicy
      */
     public function view(User $user, Team $team): bool
     {
-        return $user->id === $team->owner_id
+        return $user->ownsTeam($team)
             || $user->belongsToTeam($team);
     }
 
@@ -24,7 +24,7 @@ class TeamPolicy
      */
     public function update(User $user, Team $team): bool
     {
-        return $user->id === $team->owner_id;
+        return $user->ownsTeam($team);
     }
 
     /**
@@ -32,14 +32,25 @@ class TeamPolicy
      */
     public function delete(User $user, Team $team): bool
     {
-        return $user->id === $team->owner_id && ! $team->personal_team;
+        return $user->ownsTeam($team)
+            && ! $team->personal_team;
     }
 
     /**
-     * Determine whether the user can invite a team member.
+     * Determine whether the user can create a team member.
      */
-    public function inviteMember(User $user, Team $team): bool
+    public function createMember(User $user, Team $team): bool
     {
-        return $user->id === $team->owner_id && ! $team->personal_team;
+        return $user->ownsTeam($team)
+            && ! $team->personal_team;
+    }
+
+    /**
+     * Determine whether the user can delete a team member.
+     */
+    public function deleteMember(User $user, Team $team, User $member): bool
+    {
+        return $user->ownsTeam($team)
+            || $user->id === $member->id;
     }
 }

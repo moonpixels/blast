@@ -1,12 +1,12 @@
 <?php
 
-use App\Domain\Team\Models\User;
 use App\Domain\Team\Policies\TeamPolicy;
+use App\Domain\User\Models\User;
 
 beforeEach(function () {
     $this->user = User::factory()->withStandardTeam()->withTeamMembership()->create();
 
-    $this->standardTeam = $this->user->ownedTeams()->where('personal_team', false)->first();
+    $this->standardTeam = $this->user->ownedTeams()->notPersonal()->first();
     $this->membershipTeam = $this->user->teams->first();
 
     $this->nonTeamMember = User::factory()->create();
@@ -34,12 +34,12 @@ it('does not allow owners to delete personal teams', function () {
     expect($this->policy->delete($this->user, $this->user->personalTeam()))->toBeFalse();
 });
 
-it('allows owners to invite team members', function () {
-    expect($this->policy->inviteMember($this->user, $this->standardTeam))->toBeTrue();
+it('allows owners to create team members', function () {
+    expect($this->policy->createMember($this->user, $this->standardTeam))->toBeTrue();
 });
 
-it('does not allow owners to invite team members to personal teams', function () {
-    expect($this->policy->inviteMember($this->user, $this->user->personalTeam()))->toBeFalse();
+it('does not allow owners to create team members for personal teams', function () {
+    expect($this->policy->createMember($this->user, $this->user->personalTeam()))->toBeFalse();
 });
 
 it('does not allow users without membership to view the team', function () {
@@ -56,7 +56,7 @@ it('does not allow non-owners to delete teams', function () {
         ->and($this->policy->delete($this->nonTeamMember, $this->standardTeam))->toBeFalse();
 });
 
-it('does not allow non-owners to invite team members', function () {
-    expect($this->policy->inviteMember($this->user, $this->membershipTeam))->toBeFalse()
-        ->and($this->policy->inviteMember($this->nonTeamMember, $this->standardTeam))->toBeFalse();
+it('does not allow non-owners to create team members', function () {
+    expect($this->policy->createMember($this->user, $this->membershipTeam))->toBeFalse()
+        ->and($this->policy->createMember($this->nonTeamMember, $this->standardTeam))->toBeFalse();
 });

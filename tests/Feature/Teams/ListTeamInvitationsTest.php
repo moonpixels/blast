@@ -2,14 +2,14 @@
 
 use App\Domain\Team\Mail\TeamInvitationMail;
 use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\Team\Models\User;
 use App\Domain\Team\Notifications\TeamInvitationNotification;
+use App\Domain\User\Models\User;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->user = User::factory()->withStandardTeam()->withTeamMembership()->create();
 
-    $this->standardTeam = $this->user->ownedTeams()->where('personal_team', false)->first();
+    $this->standardTeam = $this->user->ownedTeams()->notPersonal()->first();
     $this->membershipTeam = $this->user->teams->first();
 
     $this->actingAs($this->user);
@@ -117,7 +117,7 @@ it('does not allow the user to accept the invitation if they are already on the 
 it('allows owners to cancel invitations', function () {
     $teamInvitation = TeamInvitation::factory()->for($this->standardTeam)->create();
 
-    $this->delete(route('invitations.destroy', [$teamInvitation]))
+    $this->delete(route('teams.invitations.destroy', [$this->standardTeam, $teamInvitation]))
         ->assertRedirect()
         ->assertSessionHas('success');
 
@@ -127,7 +127,7 @@ it('allows owners to cancel invitations', function () {
 it('does not allow non-owners to cancel invitations', function () {
     $teamInvitation = TeamInvitation::factory()->for($this->membershipTeam)->create();
 
-    $this->delete(route('invitations.destroy', [$teamInvitation]))
+    $this->delete(route('teams.invitations.destroy', [$this->membershipTeam, $teamInvitation]))
         ->assertForbidden();
 
     $this->assertModelExists($teamInvitation);
@@ -138,7 +138,7 @@ it('allows owners to resend invitations', function () {
 
     $teamInvitation = TeamInvitation::factory()->for($this->standardTeam)->create();
 
-    $this->post(route('resent-invitations.store'), ['invitation_id' => $teamInvitation->id])
+    $this->get(route('teams.invitations.resend', [$this->standardTeam, $teamInvitation]))
         ->assertRedirect()
         ->assertSessionHas('success');
 
@@ -150,7 +150,7 @@ it('does not allow non-owners to resend invitations', function () {
 
     $teamInvitation = TeamInvitation::factory()->for($this->membershipTeam)->create();
 
-    $this->post(route('resent-invitations.store'), ['invitation_id' => $teamInvitation->id])
+    $this->get(route('teams.invitations.resend', [$this->membershipTeam, $teamInvitation]))
         ->assertForbidden();
 
     Notification::assertNothingSent();

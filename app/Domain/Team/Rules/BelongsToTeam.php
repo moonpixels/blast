@@ -3,7 +3,7 @@
 namespace App\Domain\Team\Rules;
 
 use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 

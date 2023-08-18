@@ -1,16 +1,15 @@
 <?php
 
 use App\Domain\Team\Actions\Invitations\AcceptTeamInvitation;
-use App\Domain\Team\Exceptions\InvalidTeamMembershipException;
+use App\Domain\Team\Exceptions\InvalidTeamMemberException;
 use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\Team\Models\TeamMembership;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 beforeEach(function () {
     $this->user = User::factory()->withStandardTeam()->create();
 
-    $this->team = $this->user->ownedTeams()->where('personal_team', false)->first();
+    $this->team = $this->user->ownedTeams()->notPersonal()->first();
 
     $this->invitedUser = User::factory()->create();
 
@@ -26,22 +25,22 @@ it('can accept a team invitation', function () {
 
     $this->assertModelMissing($this->teamInvitation);
 
-    $this->assertDatabaseHas('team_memberships', [
+    $this->assertDatabaseHas('team_user', [
         'user_id' => $this->invitedUser->id,
         'team_id' => $this->team->id,
     ]);
 });
 
 it('throws an exception when accepting an invitation if the user is already on the team', function () {
-    TeamMembership::factory()->for($this->invitedUser)->for($this->team)->create();
+    $this->invitedUser->teams()->attach($this->team);
 
     try {
         AcceptTeamInvitation::run($this->teamInvitation);
-    } catch (InvalidTeamMembershipException $e) {
+    } catch (InvalidTeamMemberException $e) {
         $this->assertModelMissing($this->teamInvitation);
         throw $e;
     }
-})->throws(InvalidTeamMembershipException::class);
+})->throws(InvalidTeamMemberException::class);
 
 it('throws an exception when accepting an invitation if the user does not exist', function () {
     $this->teamInvitation->update(['email' => 'invalid-email@blst.to']);

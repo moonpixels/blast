@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
@@ -20,7 +20,7 @@ it('confirms the users password and shows the account settings page', function (
     $this->get(route('user.edit'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('CurrentUser/Edit')
+            ->component('User/Edit')
         );
 });
 

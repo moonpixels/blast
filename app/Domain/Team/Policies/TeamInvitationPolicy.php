@@ -3,7 +3,7 @@
 namespace App\Domain\Team\Policies;
 
 use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TeamInvitationPolicy
@@ -15,7 +15,8 @@ class TeamInvitationPolicy
      */
     public function delete(User $user, TeamInvitation $teamInvitation): bool
     {
-        return $user->id === $teamInvitation->team->owner_id;
+        return $user->ownsTeam($teamInvitation->team)
+            || $user->email === $teamInvitation->email;
     }
 
     /**
@@ -23,6 +24,14 @@ class TeamInvitationPolicy
      */
     public function resend(User $user, TeamInvitation $teamInvitation): bool
     {
-        return $user->id === $teamInvitation->team->owner_id;
+        return $user->ownsTeam($teamInvitation->team);
+    }
+
+    /**
+     * Determine whether the user can accept the team invitation.
+     */
+    public function accept(User $user, TeamInvitation $teamInvitation): bool
+    {
+        return $user->email === $teamInvitation->email;
     }
 }

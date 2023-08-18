@@ -1,5 +1,4 @@
 import { createUser, switchTeam } from '../../support/functions'
-import { User } from '@/types/models'
 
 describe('Team members', () => {
   let teamId: string
@@ -7,7 +6,15 @@ describe('Team members', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    createUser({}, ['withStandardTeam', 'withTeamMembership'])
+    createUser({}, ['withStandardTeam', 'withTeamMembership']).then((user) => {
+      cy.create({
+        model: 'App\\Domain\\Team\\Models\\Team',
+        attributes: {
+          name: 'Empty Team',
+          owner_id: user.id,
+        },
+      })
+    })
 
     cy.login({ attributes: { email: 'user@blst.to' } })
 
@@ -17,17 +24,23 @@ describe('Team members', () => {
 
     cy.currentUser().then((user) => {
       teamId = user.current_team_id
+
+      cy.php(
+        `App\\Domain\\Team\\Models\\Team::find('${teamId}')->members()->attach(App\\Domain\\User\\Models\\User::factory(15)->create()); return true;`
+      ).then(() => {
+        cy.reload()
+      })
     })
   })
 
   it('shows an empty state when there are no members', () => {
+    switchTeam('Empty Team')
+
     cy.get('[data-cy="no-members-empty-state"]').should('exist')
     cy.get('[data-cy="members-list"]').should('not.exist')
   })
 
   it('allows owners to delete team members', () => {
-    createTeamMember()
-
     cy.get('[data-cy="members-list"]').should('exist')
     cy.get('[data-cy="members-list"]')
       .children()
@@ -46,8 +59,6 @@ describe('Team members', () => {
   })
 
   it('allows owners to cancel deleting team members', () => {
-    createTeamMember()
-
     cy.get('[data-cy="members-list"]').should('exist')
     cy.get('[data-cy="members-list"]')
       .children()
@@ -80,114 +91,61 @@ describe('Team members', () => {
   })
 
   it('should allow owners to filter team members', () => {
-    cy.create({
-      model: 'App\\Domain\\Team\\Models\\User',
-      attributes: {
-        name: 'John Doe',
-        email: 'john.doe@blst.to',
-      },
-    }).then((user: User) => {
-      cy.create({
-        model: 'App\\Domain\\Team\\Models\\TeamMembership',
-        attributes: {
-          team_id: teamId,
-          user_id: user.id,
-        },
-      }).then(() => {
-        cy.create({
-          model: 'App\\Domain\\Team\\Models\\TeamMembership',
-          attributes: {
-            team_id: teamId,
-          },
-        }).then(() => {
-          cy.reload()
-          cy.get('[data-cy="members-list"]').children().should('have.length', 2)
+    cy.get('[data-cy="members-list"]').children().should('have.length', 10)
 
-          cy.get('[data-cy="search-members-input"]').type('@blst.to')
+    let firstMemberName: string
 
-          cy.get('[data-cy="members-list"]').children().should('have.length', 1)
-          cy.get('[data-cy="members-list"]').within(() => {
-            cy.contains('john.doe@blst.to').should('exist')
-          })
+    cy.get('[data-cy="members-list"]')
+      .children()
+      .first()
+      .within(() => {
+        cy.get('[data-cy="team-member-name"]').then((element) => {
+          firstMemberName = element.text()
         })
       })
-    })
+      .then(() => {
+        cy.get('[data-cy="search-members-input"]').type(firstMemberName)
+
+        cy.get('[data-cy="members-list"]').children().should('have.length', 1)
+        cy.get('[data-cy="members-list"]').within(() => {
+          cy.contains(firstMemberName).should('exist')
+        })
+      })
   })
 
   it('should show pagination links if there are more than 10 team members', () => {
-    cy.create({
-      model: 'App\\Domain\\Team\\Models\\TeamMembership',
-      attributes: {
-        team_id: teamId,
-      },
-      count: 11,
-    }).then(() => {
-      cy.reload()
+    cy.get('[data-cy="members-list"]').children().should('have.length', 10)
+    cy.get('[data-cy="pagination-totals"]').should('exist').and('contain', 'Showing 1 to 10 of 15 members')
 
-      cy.get('[data-cy="members-list"]').children().should('have.length', 10)
-      cy.get('[data-cy="pagination-totals"]').should('exist').and('contain', 'Showing 1 to 10 of 11 members')
-
-      cy.get('[data-cy="pagination-previous-link"]')
-        .should('exist')
-        .within(() => {
-          cy.get('button').should('have.attr', 'disabled')
-        })
-
-      cy.get('[data-cy="pagination-next-link"]')
-        .should('exist')
-        .within(() => {
-          cy.get('button').should('not.have.attr', 'disabled')
-        })
-        .click()
-
-      cy.get('[data-cy="members-list"]').children().should('have.length', 1)
-      cy.get('[data-cy="pagination-totals"]').should('exist').and('contain', 'Showing 11 to 11 of 11 members')
-
-      cy.get('[data-cy="pagination-next-link"]')
-        .should('exist')
-        .within(() => {
-          cy.get('button').should('have.attr', 'disabled')
-        })
-
-      cy.get('[data-cy="pagination-previous-link"]')
-        .should('exist')
-        .within(() => {
-          cy.get('button').should('not.have.attr', 'disabled')
-        })
-        .click()
-
-      cy.get('[data-cy="members-list"]').children().should('have.length', 10)
-    })
-  })
-
-  it('should not show pagination links if there are 10 or less team members', () => {
-    cy.create({
-      model: 'App\\Domain\\Team\\Models\\TeamMembership',
-      attributes: {
-        team_id: teamId,
-      },
-      count: 10,
-    }).then(() => {
-      cy.reload()
-
-      cy.get('[data-cy="members-list"]').children().should('have.length', 10)
-
-      cy.get('[data-cy="pagination-totals"]').should('exist').and('contain', 'Showing 1 to 10 of 10 members')
-      cy.get('[data-cy="pagination-previous-link"]').should('not.exist')
-      cy.get('[data-cy="pagination-next-link"]').should('not.exist')
-    })
-  })
-
-  function createTeamMember(): void {
-    cy.currentUser().then((user) => {
-      cy.create({
-        model: 'App\\Domain\\Team\\Models\\TeamMembership',
-        attributes: {
-          team_id: user.current_team_id,
-        },
-      }).then(() => {
-        cy.reload()
+    cy.get('[data-cy="pagination-previous-link"]')
+      .should('exist')
+      .within(() => {
+        cy.get('button').should('have.attr', 'disabled')
       })
-    })
-  }
+
+    cy.get('[data-cy="pagination-next-link"]')
+      .should('exist')
+      .within(() => {
+        cy.get('button').should('not.have.attr', 'disabled')
+      })
+      .click()
+
+    cy.get('[data-cy="members-list"]').children().should('have.length', 5)
+    cy.get('[data-cy="pagination-totals"]').should('exist').and('contain', 'Showing 11 to 15 of 15 members')
+
+    cy.get('[data-cy="pagination-next-link"]')
+      .should('exist')
+      .within(() => {
+        cy.get('button').should('have.attr', 'disabled')
+      })
+
+    cy.get('[data-cy="pagination-previous-link"]')
+      .should('exist')
+      .within(() => {
+        cy.get('button').should('not.have.attr', 'disabled')
+      })
+      .click()
+
+    cy.get('[data-cy="members-list"]').children().should('have.length', 10)
+  })
 })

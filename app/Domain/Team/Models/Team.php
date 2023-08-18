@@ -4,7 +4,11 @@ namespace App\Domain\Team\Models;
 
 use App\Domain\Link\Models\Link;
 use App\Domain\Redirect\Models\Visit;
+use App\Domain\User\Models\User;
+use Database\Factories\TeamFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -42,35 +46,35 @@ class Team extends Model
     ];
 
     /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): Factory
+    {
+        return TeamFactory::new();
+    }
+
+    /**
      * Get the owner of the team.
      */
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'owner_id');
+        return $this->belongsTo(User::class);
     }
 
     /**
-     * Get the teams memberships.
+     * Get the team members.
      */
-    public function memberships(): HasMany
+    public function members(): BelongsToMany
     {
-        return $this->hasMany(TeamMembership::class);
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 
     /**
-     * Get the users that have memberships with the team.
+     * Get all the team members including the owner.
      */
-    public function users(): BelongsToMany
+    public function membersAndOwner(): Collection
     {
-        return $this->belongsToMany(User::class, 'team_memberships');
-    }
-
-    /**
-     * Get all the team's users including the owner.
-     */
-    public function allUsers(): Collection
-    {
-        return $this->users->merge([$this->owner]);
+        return $this->members->merge([$this->owner]);
     }
 
     /**
@@ -95,5 +99,21 @@ class Team extends Model
     public function linkVisits(): HasManyThrough
     {
         return $this->hasManyThrough(Visit::class, Link::class);
+    }
+
+    /**
+     * Scope a query to only include personal teams.
+     */
+    public function scopePersonal(Builder $query): void
+    {
+        $query->where('personal_team', true);
+    }
+
+    /**
+     * Scope a query to not include personal teams.
+     */
+    public function scopeNotPersonal(Builder $query): void
+    {
+        $query->where('personal_team', false);
     }
 }

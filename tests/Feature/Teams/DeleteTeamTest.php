@@ -2,41 +2,38 @@
 
 use App\Domain\Team\Actions\DeleteTeam;
 use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\TeamMembership;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Mockery\MockInterface;
 
 beforeEach(function () {
-    $this->user = User::factory()->withStandardTeam()->create();
-    $this->team = $this->user->ownedTeams()->where('personal_team', false)->first();
+    $this->user = User::factory()->withStandardTeam()->withTeamMembership()->create();
+
+    $this->standardTeam = $this->user->ownedTeams()->notPersonal()->first();
+    $this->membershipTeam = $this->user->teams->first();
 
     $this->actingAs($this->user);
 });
 
 it('deletes the team', function () {
-    $this->delete(route('teams.destroy', $this->team))
+    $this->delete(route('teams.destroy', $this->standardTeam))
         ->assertRedirectToRoute('links.index')
         ->assertSessionHas('success');
 
-    $this->assertSoftDeleted($this->team);
+    $this->assertSoftDeleted($this->standardTeam);
 });
 
 it('only allows owners to delete the team', function () {
-    $team = Team::factory()->create();
-
-    $this->delete(route('teams.destroy', $team))
+    $this->delete(route('teams.destroy', $this->membershipTeam))
         ->assertForbidden();
 
-    TeamMembership::factory()->for($this->user)->for($team)->create();
+    $team = Team::factory()->create();
 
     $this->delete(route('teams.destroy', $team))
         ->assertForbidden();
 });
 
 it('does not delete personal teams', function () {
-    $this->team->update(['personal_team' => true]);
-
-    $this->delete(route('teams.destroy', $this->team))
+    $this->delete(route('teams.destroy', $this->user->personalTeam()))
         ->assertForbidden();
 });
 
@@ -45,9 +42,9 @@ it('alerts the user if there was an error deleting the team', function () {
         $mock->shouldReceive('handle')->once()->andReturnFalse();
     });
 
-    $this->delete(route('teams.destroy', $this->team))
+    $this->delete(route('teams.destroy', $this->standardTeam))
         ->assertRedirect()
         ->assertSessionHas('error');
 
-    $this->assertModelExists($this->team);
+    $this->assertModelExists($this->standardTeam);
 });

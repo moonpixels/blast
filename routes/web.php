@@ -1,18 +1,12 @@
 <?php
 
 use App\Http\Controllers\Web\Links\LinkController;
-use App\Http\Controllers\Web\Redirects\AuthenticatedRedirectController;
-use App\Http\Controllers\Web\Redirects\ExpiredRedirectController;
-use App\Http\Controllers\Web\Redirects\ReachedVisitLimitRedirectController;
 use App\Http\Controllers\Web\Redirects\RedirectController;
-use App\Http\Controllers\Web\Teams\AcceptedInvitationController;
-use App\Http\Controllers\Web\Teams\InvitationController;
-use App\Http\Controllers\Web\Teams\ResentInvitationController;
 use App\Http\Controllers\Web\Teams\TeamController;
 use App\Http\Controllers\Web\Teams\TeamInvitationController;
-use App\Http\Controllers\Web\Teams\TeamMembershipController;
-use App\Http\Controllers\Web\Users\UserController;
-use App\Http\Controllers\Web\Users\UserCurrentTeamController;
+use App\Http\Controllers\Web\Teams\TeamMemberController;
+use App\Http\Controllers\Web\User\CurrentTeamController;
+use App\Http\Controllers\Web\User\CurrentUserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -47,19 +41,21 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         });
 
     // Current user...
-    Route::controller(UserController::class)
-        ->middleware(['password.confirm'])
+    Route::controller(CurrentUserController::class)
         ->name('user.')
         ->group(function () {
-            Route::delete('/user', 'destroy')->name('destroy');
-            Route::get('/user/edit', 'edit')->name('edit');
-        });
+            // Protected routes...
+            Route::middleware(['password.confirm'])->group(function () {
+                Route::delete('/user', 'destroy')->name('destroy');
+                Route::get('/user/edit', 'edit')->name('edit');
+            });
 
-    // Current team...
-    Route::controller(UserCurrentTeamController::class)
-        ->name('user.current-team.')
-        ->group(function () {
-            Route::put('/user/current-team', 'update')->name('update');
+            // Current team...
+            Route::controller(CurrentTeamController::class)
+                ->name('current-team.')
+                ->group(function () {
+                    Route::put('/user/current-team', 'update')->name('update');
+                });
         });
 
     // Teams...
@@ -74,53 +70,28 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Team invitations...
     Route::controller(TeamInvitationController::class)
+        ->scopeBindings()
         ->name('teams.invitations.')
         ->group(function () {
             Route::post('/teams/{team}/invitations', 'store')->name('store');
+            Route::delete('/teams/{team}/invitations/{invitation}', 'destroy')->name('destroy');
+            Route::get('/teams/{team}/invitations/{invitation}/accept', 'accept')->name('accept');
+            Route::get('/teams/{team}/invitations/{invitation}/resend', 'resend')->name('resend');
         });
 
-    // Invitations...
-    Route::controller(InvitationController::class)
-        ->name('invitations.')
+    // Team members...
+    Route::controller(TeamMemberController::class)
+        ->scopeBindings()
+        ->name('teams.members.')
         ->group(function () {
-            Route::delete('invitations/{invitation}', 'destroy')->name('destroy');
-        });
-
-    // Accepted invitations...
-    Route::controller(AcceptedInvitationController::class)
-        ->name('accepted-invitations.')
-        ->group(function () {
-            Route::get('accepted-invitations/{invitation}', 'show')
-                ->middleware(['signed'])
-                ->name('show');
-        });
-
-    // Resent invitations...
-    Route::controller(ResentInvitationController::class)
-        ->name('resent-invitations.')
-        ->group(function () {
-            Route::post('resent-invitations', 'store')->name('store');
-        });
-
-    // Team memberships...
-    Route::controller(TeamMembershipController::class)
-        ->name('team-memberships.')
-        ->group(function () {
-            Route::delete('/team-memberships/{teamMembership}', 'destroy')->name('destroy');
+            Route::delete('/teams/{team}/members/{member}', 'destroy')->name('destroy');
         });
 });
 
-// Authenticated redirects...
-Route::get('/{link:alias}/password', [AuthenticatedRedirectController::class, 'create'])
-    ->name('authenticated-redirect');
-Route::post('/{link:alias}/password', [AuthenticatedRedirectController::class, 'store']);
-
-// Expired redirects...
-Route::get('redirects/expired', [ExpiredRedirectController::class, 'show'])->name('expired-redirect');
-
-// Reached visit limit redirects...
-Route::get('redirects/reached-visit-limit', [ReachedVisitLimitRedirectController::class, 'show'])
-    ->name('reached-visit-limit-redirect');
-
 // Redirects...
-Route::get('/{link:alias}', [RedirectController::class, 'create'])->name('redirect');
+Route::controller(RedirectController::class)
+    ->name('redirects.')
+    ->group(function () {
+        Route::get('/{link:alias}', 'show')->name('show');
+        Route::post('/{link:alias}', 'authenticate')->name('authenticate');
+    });

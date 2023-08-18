@@ -4,28 +4,60 @@ namespace App\Http\Controllers\Web\Redirects;
 
 use App\Domain\Link\Models\Link;
 use App\Domain\Redirect\Actions\CreateVisit;
+use App\Domain\Redirect\Data\RedirectData;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Inertia\Inertia;
+use Inertia\Response;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 class RedirectController extends Controller
 {
     /**
-     * Redirect the user to the destination URL for the given alias.
+     * Redirect the user to the destination URL.
      */
-    public function create(Link $link): RedirectResponse
+    public function show(Link $link): Response|RedirectResponse
     {
-        if ($link->has_password && ! session()->pull("authenticated:{$link->alias}", false)) {
-            return redirect()->route('authenticated-redirect', $link->alias);
+        if ($link->has_password) {
+            return inertia('Redirects/Protected', [
+                'alias' => $link->alias,
+            ]);
         }
 
         if ($link->hasExpired()) {
-            return redirect()->route('expired-redirect');
+            return inertia('Redirects/Expired');
         }
 
         if ($link->hasReachedVisitLimit()) {
-            return redirect()->route('reached-visit-limit-redirect');
+            return inertia('Redirects/Limited');
         }
 
+        return $this->handleRedirect($link);
+    }
+
+    /**
+     * Authenticate the redirect request.
+     */
+    public function authenticate(Link $link, RedirectData $data): HttpResponse|RedirectResponse
+    {
+        if (! $link->has_password) {
+            return redirect()->route('redirect', $link->alias);
+        }
+
+        if (! $link->passwordMatches($data->password)) {
+            return back()->withErrors([
+                'password' => __('The provided password is incorrect.'),
+            ]);
+        }
+
+        return Inertia::location($this->handleRedirect($link));
+    }
+
+    /**
+     * Handle the redirect.
+     */
+    protected function handleRedirect(Link $link): RedirectResponse
+    {
         CreateVisit::run($link, request()->userAgent(), request()->header('referer'));
 
         return redirect()->away($link->destination_url, 301, [

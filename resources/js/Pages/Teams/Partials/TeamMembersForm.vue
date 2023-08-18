@@ -48,7 +48,7 @@
 
       <template v-if="filters.view === 'members'">
         <SimpleEmptyState
-          v-if="!memberships?.data.length"
+          v-if="!members?.data.length"
           :description="
             searchQuery ? $t('There are no members matching your search.') : $t('There are no members in this team.')
           "
@@ -61,30 +61,27 @@
         </SimpleEmptyState>
 
         <ResourcePanelList v-else data-cy="members-list">
-          <ResourcePanelListItem v-for="membership in memberships.data" :key="membership.id">
+          <ResourcePanelListItem v-for="member in members.data" :key="member.id">
             <template #content>
               <div class="flex items-center gap-3">
-                <PlaceholderAvatar :initials="membership.user?.initials as string" class="flex-none" size="md" />
+                <PlaceholderAvatar :initials="member.initials" class="flex-none" size="md" />
 
                 <div class="flex flex-auto gap-x-4 overflow-hidden">
                   <div class="flex-auto overflow-hidden">
-                    <p class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white">
-                      {{ membership.user?.name }}
+                    <p
+                      class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white"
+                      data-cy="team-member-name"
+                    >
+                      {{ member.name }}
                     </p>
-                    <p class="truncate text-xs leading-5">{{ membership.user?.email }}</p>
-                  </div>
-
-                  <div v-if="membership.user?.id === team.owner?.id" class="flex-none">
-                    <Badge data-cy="owner-badge">
-                      {{ $t('Owner') }}
-                    </Badge>
+                    <p class="truncate text-xs leading-5">{{ member.email }}</p>
                   </div>
                 </div>
               </div>
             </template>
 
             <template #actions>
-              <DeleteTeamMembershipModal :membership="membership" />
+              <DeleteTeamMemberModal :member="member" :team="team" />
             </template>
           </ResourcePanelListItem>
         </ResourcePanelList>
@@ -156,7 +153,6 @@
 import TwoColumnForm from '@/Components/Forms/TwoColumnForm.vue'
 import Alert from '@/Components/Alerts/Alert.vue'
 import PlaceholderAvatar from '@/Components/Avatars/PlaceholderAvatar.vue'
-import Badge from '@/Components/Badges/Badge.vue'
 import InviteMemberForm from '@/Pages/Teams/Partials/InviteMemberForm.vue'
 import { router } from '@inertiajs/vue3'
 import TextInput from '@/Components/Inputs/TextInput.vue'
@@ -165,10 +161,10 @@ import { UserGroupIcon, UserPlusIcon } from '@heroicons/vue/24/outline'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import BaseButton from '@/Components/Buttons/BaseButton.vue'
 import useFormatDate from '@/composables/useFormatDate'
-import { Team, TeamInvitation, TeamMembership } from '@/types/models'
+import { Team, TeamInvitation, User } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
 import SimpleEmptyState from '@/Components/EmptyStates/SimpleEmptyState.vue'
-import DeleteTeamMembershipModal from '@/Pages/Teams/Partials/DeleteTeamMembershipModal.vue'
+import DeleteTeamMemberModal from '@/Pages/Teams/Partials/DeleteTeamMemberModal.vue'
 import { computed, ref, watch } from 'vue'
 import debounce from 'lodash/debounce'
 import PaginationTotals from '@/Components/Pagination/PaginationTotals.vue'
@@ -181,7 +177,7 @@ import ResourcePanelFooter from '@/Components/ResourcePanel/ResourcePanelFooter.
 
 type Props = {
   team: Team
-  memberships?: PaginatedResponse<TeamMembership>
+  members?: PaginatedResponse<User>
   invitations?: PaginatedResponse<TeamInvitation>
   filters: {
     view: 'members' | 'invitations'
@@ -193,8 +189,8 @@ const props = defineProps<Props>()
 
 const searchQuery = ref<string>(props.filters.query ?? '')
 
-const currentResource = computed<PaginatedResponse<TeamMembership | TeamInvitation> | undefined>(() => {
-  return props.filters.view === 'members' ? props.memberships : props.invitations
+const currentResource = computed<PaginatedResponse<User | TeamInvitation> | undefined>(() => {
+  return props.filters.view === 'members' ? props.members : props.invitations
 })
 
 function search(): void {
@@ -204,7 +200,7 @@ function search(): void {
       query: searchQuery.value,
       page: 1,
     },
-    only: ['filters', 'memberships', 'invitations'],
+    only: ['filters', 'members', 'invitations'],
   })
 }
 
@@ -215,28 +211,35 @@ function switchView(): void {
       query: props.filters.query,
       page: 1,
     },
-    only: ['filters', 'memberships', 'invitations'],
+    only: ['filters', 'members', 'invitations'],
   })
 }
 
 function cancelInvitation(invitation: TeamInvitation): void {
-  router.delete(route('invitations.destroy', { invitation: invitation.id }), {
-    preserveScroll: true,
-    preserveState: true,
-    only: ['flash', 'invitations'],
-  })
-}
-
-function resendInvitation(invitation: TeamInvitation): void {
-  router.post(
-    route('resent-invitations.store'),
-    {
-      invitation_id: invitation.id,
-    },
+  router.delete(
+    route('teams.invitations.destroy', {
+      team: props.team.id,
+      invitation: invitation.id,
+    }),
     {
       preserveScroll: true,
       preserveState: true,
       only: ['flash', 'invitations'],
+    }
+  )
+}
+
+function resendInvitation(invitation: TeamInvitation): void {
+  router.get(
+    route('teams.invitations.resend', {
+      team: props.team.id,
+      invitation: invitation.id,
+    }),
+    {},
+    {
+      preserveScroll: true,
+      preserveState: true,
+      only: ['flash'],
     }
   )
 }
