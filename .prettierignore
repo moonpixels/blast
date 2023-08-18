@@ -11,12 +11,11 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-.DS_Store
 lang/php_*.json
 /tests/cypress/videos
 /tests/cypress/screenshots
 /tests/cypress/support/routes.json
 composer.lock
-docker-compose.yml
 /public/vendor
 /public/build
+package-lock.json
