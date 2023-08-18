@@ -1,13 +1,13 @@
 <?php
 
 use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\User;
 use App\Domain\Team\Rules\BelongsToTeam;
+use App\Domain\User\Models\User;
 
 beforeEach(function () {
     $this->user = User::factory()->withStandardTeam()->create();
 
-    $this->team = $this->user->ownedTeams()->where('personal_team', false)->first();
+    $this->team = $this->user->ownedTeams()->notPersonal()->first();
 
     $this->rule = new BelongsToTeam($this->user);
 });

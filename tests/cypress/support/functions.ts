@@ -7,7 +7,7 @@ import { Link, User } from '@/types/models'
 export function getOtpCodeForUser(user: User): Chainable<string> {
   return cy
     .php(
-      `app(PragmaRX\\Google2FA\\Google2FA::class)->getCurrentOtp(Illuminate\\Support\\Facades\\Crypt::decrypt(App\\Domain\\Team\\Models\\User::find('${user.id}')->two_factor_secret));`
+      `app(PragmaRX\\Google2FA\\Google2FA::class)->getCurrentOtp(Illuminate\\Support\\Facades\\Crypt::decrypt(App\\Domain\\User\\Models\\User::find('${user.id}')->two_factor_secret));`
     )
     .then((response) => {
       expect(response).to.be.a('string')
@@ -27,7 +27,7 @@ export function createUser(attributes: Partial<User> = {}, state: string[] = [],
 
   return cy
     .create({
-      model: 'App\\Domain\\Team\\Models\\User',
+      model: 'App\\Domain\\User\\Models\\User',
       attributes,
       state,
       load,

@@ -31,14 +31,6 @@ export type TeamInvitation = {
   team?: Team
 }
 
-export type TeamMembership = {
-  id: string
-  created_at: string
-  updated_at: string
-  team?: Team
-  user?: User
-}
-
 export type Link = {
   id: string
   short_url: string

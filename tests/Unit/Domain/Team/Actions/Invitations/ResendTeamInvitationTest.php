@@ -3,14 +3,14 @@
 use App\Domain\Team\Actions\Invitations\ResendTeamInvitation;
 use App\Domain\Team\Mail\TeamInvitationMail;
 use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\Team\Models\User;
 use App\Domain\Team\Notifications\TeamInvitationNotification;
+use App\Domain\User\Models\User;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
     $this->user = User::factory()->withStandardTeam()->create();
 
-    $this->team = $this->user->ownedTeams()->where('personal_team', false)->first();
+    $this->team = $this->user->ownedTeams()->notPersonal()->first();
 
     $this->invitedUser = User::factory()->create();
 

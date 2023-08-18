@@ -42,7 +42,7 @@ class TeamInvitationData extends Data
                 'email',
                 'max:255',
                 Rule::unique('team_invitations', 'email')->where('team_id', $team->id),
-                Rule::notIn($team->allUsers()->pluck('email')->toArray()),
+                Rule::notIn($team->membersAndOwner()->pluck('email')->toArray()),
             ],
         ];
     }

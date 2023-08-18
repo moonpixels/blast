@@ -3,7 +3,7 @@
 namespace App\Domain\Link\Policies;
 
 use App\Domain\Link\Models\Link;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class LinkPolicy

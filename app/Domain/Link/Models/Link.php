@@ -4,8 +4,10 @@ namespace App\Domain\Link\Models;
 
 use App\Domain\Redirect\Models\Visit;
 use App\Domain\Team\Models\Team;
+use Database\Factories\LinkFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -65,6 +67,14 @@ class Link extends Model
      * @var array
      */
     protected $with = ['domain'];
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): Factory
+    {
+        return LinkFactory::new();
+    }
 
     /**
      * Get the domain that the link belongs to.

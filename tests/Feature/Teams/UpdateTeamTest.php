@@ -1,12 +1,12 @@
 <?php
 
 use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 
 beforeEach(function () {
     $this->user = User::factory()->withStandardTeam()->withTeamMembership()->create();
 
-    $this->standardTeam = $this->user->ownedTeams()->where('personal_team', false)->first();
+    $this->standardTeam = $this->user->ownedTeams()->notPersonal()->first();
     $this->membershipTeam = $this->user->teams->first();
 
     $this->actingAs($this->user);

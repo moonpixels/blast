@@ -1,7 +1,7 @@
 <?php
 
 use App\Domain\Link\Models\Link;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 
 beforeEach(function () {
     $this->user = User::factory()
@@ -9,7 +9,7 @@ beforeEach(function () {
         ->withTeamMembership()
         ->create();
 
-    $this->standardTeam = $this->user->ownedTeams()->where('personal_team', false)->first();
+    $this->standardTeam = $this->user->ownedTeams()->notPersonal()->first();
     $this->membershipTeam = $this->user->teams->first();
 
     $this->personalTeamLink = Link::factory()->for($this->user->personalTeam())->create();

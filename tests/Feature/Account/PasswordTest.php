@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 
 beforeEach(function () {
     $this->user = User::factory()->create();

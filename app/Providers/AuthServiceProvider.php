@@ -7,9 +7,7 @@ use App\Domain\Link\Models\Link;
 use App\Domain\Link\Policies\LinkPolicy;
 use App\Domain\Team\Models\Team;
 use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\Team\Models\TeamMembership;
 use App\Domain\Team\Policies\TeamInvitationPolicy;
-use App\Domain\Team\Policies\TeamMembershipPolicy;
 use App\Domain\Team\Policies\TeamPolicy;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -25,7 +23,6 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Team::class => TeamPolicy::class,
         TeamInvitation::class => TeamInvitationPolicy::class,
-        TeamMembership::class => TeamMembershipPolicy::class,
         Link::class => LinkPolicy::class,
     ];
 

@@ -57,7 +57,7 @@ import TextInput from '@/Components/Inputs/TextInput.vue'
 import { Link, useForm } from '@inertiajs/vue3'
 import PrimaryButton from '@/Components/Buttons/PrimaryButton.vue'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
-import UserData = App.Domain.Team.Data.UserData
+import UserData = App.Domain.User.Data.UserData
 
 defineOptions({
   layout: AuthLayout,

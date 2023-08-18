@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Domain\Team\Actions\Users\CreateNewUser;
-use App\Domain\Team\Actions\Users\ResetUserPassword;
-use App\Domain\Team\Actions\Users\UpdateUserPassword;
-use App\Domain\Team\Actions\Users\UpdateUserProfileInformation;
+use App\Domain\User\Actions\CreateUser;
+use App\Domain\User\Actions\ResetUserPassword;
+use App\Domain\User\Actions\UpdateUserPassword;
+use App\Domain\User\Actions\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -28,7 +28,7 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Fortify::createUsersUsing(CreateNewUser::class);
+        Fortify::createUsersUsing(CreateUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         Fortify::updateUserPasswordsUsing(UpdateUserPassword::class);
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);

@@ -2,10 +2,10 @@
 
 namespace App\Domain\Team\Actions\Invitations;
 
-use App\Domain\Team\Actions\Memberships\CreateTeamMembership;
-use App\Domain\Team\Exceptions\InvalidTeamMembershipException;
+use App\Domain\Team\Actions\Members\CreateTeamMember;
+use App\Domain\Team\Exceptions\InvalidTeamMemberException;
 use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class AcceptTeamInvitation
@@ -15,7 +15,7 @@ class AcceptTeamInvitation
     /**
      * Accept a team invitation.
      *
-     * @throws InvalidTeamMembershipException
+     * @throws InvalidTeamMemberException
      */
     public function handle(TeamInvitation $invitation): bool
     {
@@ -23,10 +23,10 @@ class AcceptTeamInvitation
 
         if ($user->belongsToTeam($invitation->team)) {
             $invitation->delete();
-            throw InvalidTeamMembershipException::alreadyOnTeam();
+            throw InvalidTeamMemberException::alreadyOnTeam();
         }
 
-        CreateTeamMembership::run($invitation->team, $user);
+        CreateTeamMember::run($invitation->team, $user);
 
         $user->switchTeam($invitation->team);
 

@@ -2,8 +2,10 @@
 
 namespace App\Domain\Team\Models;
 
+use Database\Factories\TeamInvitationFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,6 +32,14 @@ class TeamInvitation extends Model
     protected $appends = [
         'accept_url',
     ];
+
+    /**
+     * Create a new factory instance for the model.
+     */
+    protected static function newFactory(): Factory
+    {
+        return TeamInvitationFactory::new();
+    }
 
     /**
      * Get the team that the invitation belongs to.
@@ -61,8 +71,9 @@ class TeamInvitation extends Model
     protected function acceptUrl(): Attribute
     {
         return Attribute::make(
-            get: fn () => URL::signedRoute('accepted-invitations.show', [
-                'invitation' => $this->id,
+            get: fn () => URL::signedRoute('teams.invitations.accept', [
+                'team' => $this->team,
+                'invitation' => $this,
             ])
         );
     }

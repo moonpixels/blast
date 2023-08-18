@@ -5,13 +5,11 @@ namespace App\Http\Controllers\Web\Teams;
 use App\Domain\Team\Actions\CreateTeam;
 use App\Domain\Team\Actions\DeleteTeam;
 use App\Domain\Team\Actions\Invitations\FilterTeamInvitations;
-use App\Domain\Team\Actions\Memberships\FilterTeamMemberships;
+use App\Domain\Team\Actions\Members\FilterTeamMembers;
 use App\Domain\Team\Actions\UpdateTeam;
 use App\Domain\Team\Data\TeamData;
 use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\TeamMembership;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\TeamMembershipResource;
 use App\Http\Resources\TeamResource;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
@@ -38,12 +36,9 @@ class TeamController extends Controller
                 $props['invitations'] = FilterTeamInvitations::run($team, request()->query('query'))
                     ->withQuery(['view' => request()->query('view')]);
             } else {
-                $props['memberships'] = FilterTeamMemberships::run($team, request()->query('query'))
+                $props['members'] = FilterTeamMembers::run($team, request()->query('query'))
                     ->withQuery(['view' => request()->query('view')]);
             }
-        } else {
-            $membership = TeamMembership::whereUserId(request()->user()->id)->whereTeamId($team->id)->first();
-            $props['teamMembership'] = TeamMembershipResource::createWithoutWrapping($membership);
         }
 
         return inertia('Teams/Show', $props);

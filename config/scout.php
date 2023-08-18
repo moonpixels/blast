@@ -2,7 +2,7 @@
 
 use App\Domain\Link\Models\Link;
 use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\Team\Models\TeamMembership;
+use App\Domain\User\Models\User;
 
 return [
 
@@ -145,9 +145,9 @@ return [
                 'filterableAttributes' => ['team_id'],
                 'sortableAttributes' => ['created_at'],
             ],
-            TeamMembership::class => [
-                'filterableAttributes' => ['team_id'],
-                'sortableAttributes' => ['user_name'],
+            User::class => [
+                'filterableAttributes' => ['id'],
+                'sortableAttributes' => ['name'],
             ],
         ],
     ],

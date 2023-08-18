@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use App\Support\Concerns\Unwrappable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;

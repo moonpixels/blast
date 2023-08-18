@@ -4,7 +4,7 @@ namespace App\Domain\Team\Actions;
 
 use App\Domain\Link\Actions\DeleteLinksForTeam;
 use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -22,7 +22,7 @@ class DeleteTeam
         }
 
         return DB::transaction(function () use ($team) {
-            $team->users()->where('current_team_id', $team->id)->each(function (User $user) {
+            $team->members()->where('current_team_id', $team->id)->each(function (User $user) {
                 $user->switchTeam($user->personalTeam());
             });
 
@@ -30,7 +30,7 @@ class DeleteTeam
                 $team->owner->switchTeam($team->owner->personalTeam());
             }
 
-            $team->users()->detach();
+            $team->members()->detach();
 
             DeleteLinksForTeam::dispatch($team);
 

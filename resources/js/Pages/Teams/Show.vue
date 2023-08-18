@@ -7,13 +7,17 @@
     </h1>
 
     <TwoColumnFormContainer>
-      <GeneralSettingsForm v-if="currentUserIsOwner" :team="team" />
+      <template v-if="currentUserIsOwner">
+        <GeneralSettingsForm :team="team" />
 
-      <TeamMembersForm v-if="currentUserIsOwner" v-bind="$props" />
+        <TeamMembersForm :filters="filters" :invitations="invitations" :members="members" :team="team" />
 
-      <DeleteTeamForm v-if="currentUserIsOwner" :team="team" />
+        <DeleteTeamForm :team="team" />
+      </template>
 
-      <LeaveTeamForm v-if="!currentUserIsOwner && teamMembership" :team="team" :team-membership="teamMembership" />
+      <template v-else>
+        <LeaveTeamForm :team="team" :user="user" />
+      </template>
     </TwoColumnFormContainer>
   </ConstrainedContainer>
 </template>
@@ -25,7 +29,7 @@ import AppHead from '@/Components/App/AppHead.vue'
 import TwoColumnFormContainer from '@/Components/Forms/TwoColumnFormContainer.vue'
 import TeamMembersForm from '@/Pages/Teams/Partials/TeamMembersForm.vue'
 import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm.vue'
-import { Team, TeamInvitation, TeamMembership } from '@/types/models'
+import { Team, TeamInvitation, User } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
 import { usePage } from '@inertiajs/vue3'
 import { PageProps } from '@/types'
@@ -39,8 +43,7 @@ defineOptions({
 
 type Props = {
   team: Team
-  teamMembership?: TeamMembership
-  memberships?: PaginatedResponse<TeamMembership>
+  members?: PaginatedResponse<User>
   invitations?: PaginatedResponse<TeamInvitation>
   filters: {
     view: 'members' | 'invitations'
@@ -50,7 +53,11 @@ type Props = {
 
 const props = defineProps<Props>()
 
+const user = computed<User>(() => {
+  return usePage<PageProps>().props.user
+})
+
 const currentUserIsOwner = computed<boolean>(() => {
-  return usePage<PageProps>().props.user.id === props.team.owner?.id
+  return user.value.id === props.team.owner?.id
 })
 </script>

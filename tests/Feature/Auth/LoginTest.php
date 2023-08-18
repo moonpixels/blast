@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {

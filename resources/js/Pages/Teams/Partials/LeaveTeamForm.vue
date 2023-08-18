@@ -45,11 +45,11 @@ import { ref } from 'vue'
 import SecondaryButton from '@/Components/Buttons/SecondaryButton.vue'
 import Modal from '@/Components/Modals/Modal.vue'
 import { useForm } from '@inertiajs/vue3'
-import { Team, TeamMembership } from '@/types/models'
+import { Team, User } from '@/types/models'
 
 type Props = {
   team: Team
-  teamMembership: TeamMembership
+  user: User
 }
 
 const props = defineProps<Props>()
@@ -59,11 +59,17 @@ const showModal = ref<boolean>(false)
 const form = useForm({})
 
 function submit(): void {
-  form.delete(route('team-memberships.destroy', props.teamMembership.id), {
-    preserveScroll: true,
-    onFinish: () => {
-      showModal.value = false
-    },
-  })
+  form.delete(
+    route('teams.members.destroy', {
+      team: props.team.id,
+      member: props.user.id,
+    }),
+    {
+      preserveScroll: true,
+      onFinish: () => {
+        showModal.value = false
+      },
+    }
+  )
 }
 </script>

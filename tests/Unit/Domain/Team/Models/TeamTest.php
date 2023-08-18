@@ -4,8 +4,7 @@ use App\Domain\Link\Models\Link;
 use App\Domain\Redirect\Models\Visit;
 use App\Domain\Team\Models\Team;
 use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\Team\Models\TeamMembership;
-use App\Domain\Team\Models\User;
+use App\Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 beforeEach(function () {
@@ -16,34 +15,24 @@ it('belongs to an owner', function () {
     expect($this->team->owner)->toBeInstanceOf(User::class);
 });
 
-it('has many memberships', function () {
-    TeamMembership::factory(5)->for($this->team)->create();
+it('has many members', function () {
+    $this->team->members()->attach(User::factory(5)->create());
 
-    $memberships = $this->team->memberships;
+    $members = $this->team->members;
 
-    expect($memberships)->toHaveCount(5)
-        ->and($memberships)->toBeInstanceOf(Collection::class)
-        ->and($memberships)->each->toBeInstanceOf(TeamMembership::class);
+    expect($members)->toHaveCount(5)
+        ->and($members)->toBeInstanceOf(Collection::class)
+        ->and($members)->each->toBeInstanceOf(User::class);
 });
 
-it('belongs to many users', function () {
-    TeamMembership::factory(5)->for($this->team)->create();
+it('can get all members including the owner', function () {
+    $this->team->members()->attach(User::factory(5)->create());
 
-    $users = $this->team->users;
+    $membersAndOwner = $this->team->membersAndOwner();
 
-    expect($users)->toHaveCount(5)
-        ->and($users)->toBeInstanceOf(Collection::class)
-        ->and($users)->each->toBeInstanceOf(User::class);
-});
-
-it('can get all users including the owner', function () {
-    TeamMembership::factory(5)->for($this->team)->create();
-
-    $allUsers = $this->team->allUsers();
-
-    expect($allUsers)->toHaveCount(6)
-        ->and($allUsers)->toBeInstanceOf(Collection::class)
-        ->and($allUsers)->each->toBeInstanceOf(User::class);
+    expect($membersAndOwner)->toHaveCount(6)
+        ->and($membersAndOwner)->toBeInstanceOf(Collection::class)
+        ->and($membersAndOwner)->each->toBeInstanceOf(User::class);
 });
 
 it('has many invitations', function () {
