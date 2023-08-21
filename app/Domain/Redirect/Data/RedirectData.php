@@ -2,13 +2,13 @@
 
 namespace App\Domain\Redirect\Data;
 
+use App\Support\Data\Contracts\DataRules;
 use Spatie\LaravelData\Attributes\MapName;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Optional;
 
 #[MapName(SnakeCaseMapper::class)]
-class RedirectData extends Data
+class RedirectData extends DataRules
 {
     /**
      * Instantiate a new team data instance.
@@ -19,9 +19,17 @@ class RedirectData extends Data
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * The validation rules that apply when updating the resource.
      */
-    public static function rules(): array
+    protected static function updateRules(): array
+    {
+        return [];
+    }
+
+    /**
+     * The validation rules that apply when creating the resource.
+     */
+    protected static function createRules(): array
     {
         return [
             'password' => ['required', 'string'],

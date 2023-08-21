@@ -2,16 +2,15 @@
 
 namespace App\Domain\Team\Data;
 
-use Illuminate\Http\Request;
+use App\Support\Data\Contracts\DataRules;
 use Illuminate\Validation\Rule;
 use Spatie\LaravelData\Attributes\FromRouteParameterProperty;
 use Spatie\LaravelData\Attributes\MapName;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Optional;
 
 #[MapName(SnakeCaseMapper::class)]
-class TeamData extends Data
+class TeamData extends DataRules
 {
     /**
      * Instantiate a new team data instance.
@@ -24,42 +23,53 @@ class TeamData extends Data
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     */
-    public static function rules(): array
-    {
-        $baseRules = collect([
-            'name' => ['required', 'string', 'max:255'],
-        ]);
-
-        if (request()->isMethod(Request::METHOD_PUT)) {
-            return $baseRules->mergeRecursive([
-                'name' => [
-                    Rule::unique('teams', 'name')
-                        ->where('owner_id', auth()->user()->id)
-                        ->ignore(request()->route('team'))
-                        ->withoutTrashed(),
-                ],
-            ])->toArray();
-        }
-
-        return $baseRules->mergeRecursive([
-            'name' => [
-                Rule::unique('teams', 'name')
-                    ->where('owner_id', auth()->user()->id)
-                    ->withoutTrashed(),
-            ],
-        ])->toArray();
-    }
-
-    /**
      * Get the error messages for the defined validation rules.
      */
     public static function messages(): array
     {
         return [
-            'name.unique' => __('You already have a team called :team_name.',
-                ['team_name' => request()->input('name')]),
+            'name.unique' => __('You already have a team called :team_name.', [
+                'team_name' => request()->input('name'),
+            ]),
+        ];
+    }
+
+    /**
+     * The validation rules that apply when updating the resource.
+     */
+    protected static function updateRules(): array
+    {
+        return array_merge_recursive(self::baseRules(), [
+            'name' => [
+                Rule::unique('teams', 'name')
+                    ->where('owner_id', auth()->user()->id)
+                    ->ignore(request()->route('team'))
+                    ->withoutTrashed(),
+            ],
+        ]);
+    }
+
+    /**
+     * The validation rules that apply when creating the resource.
+     */
+    protected static function createRules(): array
+    {
+        return array_merge_recursive(self::baseRules(), [
+            'name' => [
+                Rule::unique('teams', 'name')
+                    ->where('owner_id', auth()->user()->id)
+                    ->withoutTrashed(),
+            ],
+        ]);
+    }
+
+    /**
+     * Base validation rules.
+     */
+    protected static function baseRules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255'],
         ];
     }
 }

@@ -1,7 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+
+use function Pest\Laravel\assertModelExists;
+use function Pest\Laravel\assertModelMissing;
+use function Pest\Laravel\assertSoftDeleted;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +17,7 @@ use Tests\TestCase;
 |
 */
 
-uses(TestCase::class, RefreshDatabase::class)->in('Feature', 'Unit');
+uses(TestCase::class)->in('Feature', 'Unit');
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +30,22 @@ uses(TestCase::class, RefreshDatabase::class)->in('Feature', 'Unit');
 |
 */
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
+expect()->extend('toBeDeleted', function () {
+    assertModelMissing($this->value);
+
+    return $this;
+});
+
+expect()->extend('toBeSoftDeleted', function () {
+    assertSoftDeleted($this->value);
+
+    return $this;
+});
+
+expect()->extend('toExistInDatabase', function () {
+    assertModelExists($this->value);
+
+    return $this;
 });
 
 /*
@@ -41,8 +58,3 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
-
-function something()
-{
-    // ..
-}

@@ -20,7 +20,7 @@ class TeamInvitationController extends Controller
      */
     public function store(Team $team, TeamInvitationData $data): RedirectResponse
     {
-        $this->authorize('createMember', $team);
+        $this->authorize('attachAnyMember', $team);
 
         CreateTeamInvitation::run($team, $data);
 

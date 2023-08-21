@@ -1,32 +1,22 @@
 <?php
 
 use App\Domain\Team\Actions\Invitations\ResendTeamInvitation;
-use App\Domain\Team\Mail\TeamInvitationMail;
-use App\Domain\Team\Models\TeamInvitation;
 use App\Domain\Team\Notifications\TeamInvitationNotification;
-use App\Domain\User\Models\User;
 use Illuminate\Support\Facades\Notification;
 
 beforeEach(function () {
-    $this->user = User::factory()->withStandardTeam()->create();
-
-    $this->team = $this->user->ownedTeams()->notPersonal()->first();
-
-    $this->invitedUser = User::factory()->create();
-
-    $this->teamInvitation = TeamInvitation::factory()->for($this->team)->create([
-        'email' => $this->invitedUser->email,
-    ]);
+    $this->invitation = createTeamInvitation();
 });
 
-it('can resend a team invitation', function () {
+it('resends a team invitation', function () {
     Notification::fake();
 
-    expect(ResendTeamInvitation::run($this->teamInvitation))->toBeTrue();
+    expect(ResendTeamInvitation::run($this->invitation))->toBeTrue();
 
-    Notification::assertSentTo($this->teamInvitation, TeamInvitationNotification::class, function ($notification) {
-        $mail = $notification->toMail($this->teamInvitation);
-
-        return expect($mail)->toBeInstanceOf(TeamInvitationMail::class);
-    });
+    Notification::assertSentTo(
+        $this->invitation,
+        function (TeamInvitationNotification $notification) {
+            return expect($notification->invitation->is($this->invitation))->toBeTrue();
+        }
+    );
 });

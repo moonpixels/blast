@@ -2,136 +2,55 @@
 
 use App\Domain\Link\Actions\UpdateLink;
 use App\Domain\Link\Data\LinkData;
-use App\Domain\Link\Models\Link;
-use App\Domain\Team\Models\Team;
+use Spatie\LaravelData\Optional;
 
 beforeEach(function () {
-    $this->link = Link::factory()->create();
+    $this->link = createLink();
 });
 
-it('can update a link with a new destination URL', function () {
-    $newUrl = 'https://blst.to/new-url';
+it('updates a link', function () {
+    $team = createTeam();
+    $expiresAt = now()->subDay();
 
-    UpdateLink::run($this->link, LinkData::from(array_merge($this->link->toArray(), [
-        'destination_url' => $newUrl,
-    ])));
-
-    $this->link->refresh();
-
-    expect($this->link->destination_url)->toBe($newUrl);
-});
-
-it('can update a link with a new alias', function () {
-    $newAlias = 'new-alias';
-
-    UpdateLink::run($this->link, LinkData::from(array_merge($this->link->toArray(), [
-        'alias' => $newAlias,
-    ])));
-
-    $this->link->refresh();
-
-    expect($this->link->alias)->toBe($newAlias);
-});
-
-it('can update a link with a new password', function () {
-    $newPassword = 'new-password';
-
-    UpdateLink::run($this->link, LinkData::from(array_merge($this->link->toArray(), [
-        'password' => $newPassword,
-    ])));
-
-    $this->link->refresh();
-
-    expect(Hash::check($newPassword, $this->link->password))->toBeTrue();
-});
-
-it('can remove the password from a link', function () {
-    $this->link->update([
-        'password' => Hash::make('password'),
-    ]);
-
-    UpdateLink::run($this->link, LinkData::from(array_merge($this->link->toArray(), [
-        'password' => null,
-    ])));
-
-    $this->link->refresh();
-
-    expect($this->link->password)->toBeNull();
-});
-
-it('does not update the password if one is not provided', function () {
-    $this->link->update([
-        'password' => Hash::make('password'),
-    ]);
-
-    UpdateLink::run($this->link, LinkData::from($this->link->toArray()));
-
-    $this->link->refresh();
-
-    expect($this->link->password)->not->toBeNull()
-        ->and(Hash::check('password', $this->link->password))->toBeTrue();
-});
-
-it('can update a link with a new expiry date', function () {
-    $newExpiryDate = now()->addDay();
-
-    UpdateLink::run($this->link, LinkData::from(array_merge($this->link->toArray(), [
-        'expires_at' => $newExpiryDate,
-    ])));
-
-    $this->link->refresh();
-
-    expect($this->link->expires_at->toIso8601String())->toBe($newExpiryDate->toIso8601String());
-});
-
-it('can remove the expiry date from a link', function () {
-    $this->link->update([
-        'expires_at' => now()->addDay(),
-    ]);
-
-    UpdateLink::run($this->link, LinkData::from(array_merge($this->link->toArray(), [
-        'expires_at' => null,
-    ])));
-
-    $this->link->refresh();
-
-    expect($this->link->expires_at)->toBeNull();
-});
-
-it('can update a link with a new visit limit', function () {
-    $newVisitLimit = 10;
-
-    UpdateLink::run($this->link, LinkData::from(array_merge($this->link->toArray(), [
-        'visit_limit' => $newVisitLimit,
-    ])));
-
-    $this->link->refresh();
-
-    expect($this->link->visit_limit)->toBe($newVisitLimit);
-});
-
-it('can remove the visit limit from a link', function () {
-    $this->link->update([
+    $result = UpdateLink::run($this->link, LinkData::from([
+        'team_id' => $team->id,
+        'destination_url' => 'https://example.com',
+        'alias' => 'testing',
+        'password' => 'password',
         'visit_limit' => 10,
-    ]);
-
-    UpdateLink::run($this->link, LinkData::from(array_merge($this->link->toArray(), [
-        'visit_limit' => null,
-    ])));
+        'expires_at' => $expiresAt,
+    ]));
 
     $this->link->refresh();
 
-    expect($this->link->visit_limit)->toBeNull();
+    expect($result)->toBeTrue()
+        ->and($this->link->team_id)->toBe($team->id)
+        ->and($this->link->destination_url)->toBe('https://example.com')
+        ->and($this->link->alias)->toBe('testing')
+        ->and($this->link->passwordMatches('password'))->toBeTrue()
+        ->and($this->link->visit_limit)->toBe(10)
+        ->and($this->link->expires_at->toIso8601String())->toBe($expiresAt->toIso8601String());
 });
 
-it('can update a link with a new team', function () {
-    $newTeam = Team::factory()->for($this->link->team->owner, 'owner')->create();
+it('does not update attributes that are not provided', function () {
+    $result = UpdateLink::run($this->link, LinkData::from([
+        'team_id' => Optional::create(),
+        'destination_url' => Optional::create(),
+        'alias' => Optional::create(),
+        'password' => Optional::create(),
+        'visit_limit' => Optional::create(),
+        'expires_at' => Optional::create(),
+    ]));
 
-    UpdateLink::run($this->link, LinkData::from(array_merge($this->link->toArray(), [
-        'team_id' => $newTeam->id,
-    ])));
+    $originalLink = $this->link->replicate();
 
     $this->link->refresh();
 
-    expect($this->link->team_id)->toBe($newTeam->id);
+    expect($result)->toBeTrue()
+        ->and($this->link->team_id)->toBe($originalLink->team_id)
+        ->and($this->link->destination_url)->toBe($originalLink->destination_url)
+        ->and($this->link->alias)->toBe($originalLink->alias)
+        ->and($this->link->password)->toBeNull()
+        ->and($this->link->visit_limit)->toBeNull()
+        ->and($this->link->expires_at)->toBeNull();
 });

@@ -122,7 +122,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the teams that the user owns.
+     * Get the teams that the user owns excluding personal team.
      */
     public function ownedTeams(): HasMany
     {
@@ -142,7 +142,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function allTeams(): Collection
     {
-        return $this->teams->merge($this->ownedTeams);
+        return $this->teams
+            ->merge($this->ownedTeams);
     }
 
     /**

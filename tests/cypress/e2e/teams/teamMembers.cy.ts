@@ -6,7 +6,7 @@ describe('Team members', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    createUser({}, ['withStandardTeam', 'withTeamMembership']).then((user) => {
+    createUser({}, ['withOwnedTeam', 'withMemberTeam']).then((user) => {
       cy.create({
         model: 'App\\Domain\\Team\\Models\\Team',
         attributes: {
@@ -20,7 +20,7 @@ describe('Team members', () => {
 
     cy.visit({ route: 'links.index' })
 
-    switchTeam('Standard Team')
+    switchTeam('Owned Team')
 
     cy.currentUser().then((user) => {
       teamId = user.current_team_id
@@ -77,7 +77,7 @@ describe('Team members', () => {
   })
 
   it('allows team members to leave the team', () => {
-    switchTeam('Membership Team')
+    switchTeam('Member Team')
 
     cy.get('[data-cy="leave-team-button"]').click()
 

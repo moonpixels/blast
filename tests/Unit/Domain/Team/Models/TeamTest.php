@@ -8,62 +8,75 @@ use App\Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 beforeEach(function () {
-    $this->team = Team::factory()->create();
+    $this->team = createTeam();
 });
 
 it('belongs to an owner', function () {
     expect($this->team->owner)->toBeInstanceOf(User::class);
 });
 
-it('has many members', function () {
-    $this->team->members()->attach(User::factory(5)->create());
+it('belongs to many members', function () {
+    $this->team->members()->attach(createUser(states: ['count' => 5]));
 
-    $members = $this->team->members;
-
-    expect($members)->toHaveCount(5)
-        ->and($members)->toBeInstanceOf(Collection::class)
-        ->and($members)->each->toBeInstanceOf(User::class);
+    expect($this->team->members)->toBeInstanceOf(Collection::class)
+        ->and($this->team->members)->toHaveCount(5)
+        ->and($this->team->members)->each->toBeInstanceOf(User::class);
 });
 
-it('can get all members including the owner', function () {
-    $this->team->members()->attach(User::factory(5)->create());
+it('creates a collection of members and owner', function () {
+    $this->team->members()->attach(createUser(states: ['count' => 5]));
 
-    $membersAndOwner = $this->team->membersAndOwner();
-
-    expect($membersAndOwner)->toHaveCount(6)
-        ->and($membersAndOwner)->toBeInstanceOf(Collection::class)
-        ->and($membersAndOwner)->each->toBeInstanceOf(User::class);
+    expect($this->team->membersAndOwner())->toBeInstanceOf(Collection::class)
+        ->and($this->team->membersAndOwner())->toHaveCount(6)
+        ->and($this->team->membersAndOwner())->each->toBeInstanceOf(User::class);
 });
 
 it('has many invitations', function () {
-    TeamInvitation::factory(5)->for($this->team)->create();
+    createTeamInvitation(
+        attributes: ['team_id' => $this->team->id],
+        states: ['count' => 5]
+    );
 
-    $invitations = $this->team->invitations;
-
-    expect($invitations)->toHaveCount(5)
-        ->and($invitations)->toBeInstanceOf(Collection::class)
-        ->and($invitations)->each->toBeInstanceOf(TeamInvitation::class);
+    expect($this->team->invitations)->toBeInstanceOf(Collection::class)
+        ->and($this->team->invitations)->toHaveCount(5)
+        ->and($this->team->invitations)->each->toBeInstanceOf(TeamInvitation::class);
 });
 
 it('has many links', function () {
-    Link::factory(5)->for($this->team)->create();
+    createLink(
+        attributes: ['team_id' => $this->team->id],
+        states: ['count' => 5]
+    );
 
-    $links = $this->team->links;
-
-    expect($links)->toHaveCount(5)
-        ->and($links)->toBeInstanceOf(Collection::class)
-        ->and($links)->each->toBeInstanceOf(Link::class);
+    expect($this->team->links)->toBeInstanceOf(Collection::class)
+        ->and($this->team->links)->toHaveCount(5)
+        ->and($this->team->links)->each->toBeInstanceOf(Link::class);
 });
 
 it('has many link visits', function () {
-    Link::factory(5)
-        ->for($this->team)
-        ->has(Visit::factory(3))
-        ->create();
+    $link = createLink(attributes: ['team_id' => $this->team->id]);
 
-    $visits = $this->team->linkVisits;
+    createVisit(
+        attributes: ['link_id' => $link->id],
+        states: ['count' => 5]
+    );
 
-    expect($visits)->toHaveCount(15)
-        ->and($visits)->toBeInstanceOf(Collection::class)
-        ->and($visits)->each->toBeInstanceOf(Visit::class);
+    expect($this->team->linkVisits)->toBeInstanceOf(Collection::class)
+        ->and($this->team->linkVisits)->toHaveCount(5)
+        ->and($this->team->linkVisits)->each->toBeInstanceOf(Visit::class);
+});
+
+it('scopes personal teams', function () {
+    createTeam(states: [
+        'personalTeam',
+        'count' => 5,
+    ]);
+
+    expect(Team::personal()->get()->toArray())->each->toHaveKey('personal_team', true);
+});
+
+it('scopes non personal teams', function () {
+    createTeam(states: ['count' => 5]);
+
+    expect(Team::notPersonal()->get()->toArray())->each->toHaveKey('personal_team', false);
 });

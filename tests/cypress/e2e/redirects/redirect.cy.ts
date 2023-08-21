@@ -6,7 +6,13 @@ describe('redirects.show', () => {
   })
 
   it('should redirect the user to the destination URL when the password is correct', () => {
-    createLink({ alias: 'passwordTest' }, ['withPassword', 'toExampleDotCom']).then((link) => {
+    createLink(
+      { alias: 'passwordTest' },
+      {
+        withPassword: '',
+        withDestinationUrl: 'https://example.com',
+      }
+    ).then((link) => {
       cy.visit({ route: 'redirects.show', parameters: { link: link.alias } })
 
       cy.get('[data-cy="authenticated-redirect-form"]')
@@ -23,7 +29,13 @@ describe('redirects.show', () => {
   })
 
   it('should show an error if the password is invalid', () => {
-    createLink({ alias: 'passwordTest' }, ['withPassword', 'toExampleDotCom']).then((link) => {
+    createLink(
+      { alias: 'passwordTest' },
+      {
+        withPassword: '',
+        withDestinationUrl: 'https://example.com',
+      }
+    ).then((link) => {
       cy.visit({ route: 'redirects.show', parameters: { link: link.alias } })
 
       // Missing password

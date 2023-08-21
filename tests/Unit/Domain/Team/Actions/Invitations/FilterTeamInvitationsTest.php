@@ -1,33 +1,14 @@
 <?php
 
 use App\Domain\Team\Actions\Invitations\FilterTeamInvitations;
-use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\TeamInvitation;
 
 beforeEach(function () {
-    $this->team = Team::factory()->create();
+    $this->team = createTeam();
 
-    TeamInvitation::factory(15)->for($this->team)->create();
-    TeamInvitation::factory()->for($this->team)->create(['email' => 'john.doe@blst.to']);
-    TeamInvitation::factory()->create(['email' => 'john.doe@blst.to']);
-});
-
-it('returns all results if a search term is not sent', function () {
-    $invitations = FilterTeamInvitations::run($this->team);
-
-    expect($invitations->count())->toBe(10);
-});
-
-it('returns filtered results if a search term is sent', function () {
-    $invitations = FilterTeamInvitations::run($this->team, '@blst.to');
-
-    expect($invitations->count())->toBe(1);
-});
-
-it('returns an empty collection if no results are found', function () {
-    $invitations = FilterTeamInvitations::run($this->team, 'invitation does not exist');
-
-    expect($invitations->count())->toBe(0);
+    createTeamInvitation(
+        attributes: ['team_id' => $this->team->id],
+        states: ['count' => 20]
+    );
 });
 
 it('returns a paginated collection', function () {
@@ -39,4 +20,22 @@ it('returns a paginated collection', function () {
         ->and($invitations->hasMorePages())->toBeTrue()
         ->and($invitations->lastPage())->toBe(2)
         ->and($invitations->previousPageUrl())->toBeNull();
+});
+
+it('filters invitations by a search term', function () {
+    createTeamInvitation(attributes: [
+        'team_id' => $this->team->id,
+        'email' => 'test@example.com',
+    ]);
+
+    $invitations = FilterTeamInvitations::run($this->team, 'test@example.com');
+
+    expect($invitations->count())->toBe(1)
+        ->and($invitations->first()->email)->toBe('test@example.com');
+});
+
+it('returns an empty collection if no results are found', function () {
+    $invitations = FilterTeamInvitations::run($this->team, 'invitation does not exist');
+
+    expect($invitations->count())->toBe(0);
 });

@@ -1,13 +1,12 @@
 <?php
 
 use App\Domain\Link\Actions\DeleteLinksForTeam;
-use App\Domain\Team\Models\Team;
 
 beforeEach(function () {
-    $this->team = Team::factory()->hasLinks(10)->create();
+    $this->team = createTeam(states: ['hasLinks' => 10]);
 });
 
-it('can soft delete all links for a team', function () {
-    expect(DeleteLinksForTeam::run($this->team))->toBe(10)
+it('deletes all links from a team', function () {
+    expect(DeleteLinksForTeam::run($this->team))->toBeTrue()
         ->and($this->team->links)->each(fn ($link) => $this->assertSoftDeleted($link));
 });

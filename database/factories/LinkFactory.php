@@ -5,11 +5,14 @@ namespace Database\Factories;
 use App\Domain\Link\Models\Domain;
 use App\Domain\Link\Models\Link;
 use App\Domain\Team\Models\Team;
+use App\Support\Concerns\HasUrlInput;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
 class LinkFactory extends Factory
 {
+    use HasUrlInput;
+
     /**
      * The name of the factory's corresponding model.
      */
@@ -43,15 +46,17 @@ class LinkFactory extends Factory
     }
 
     /**
-     * Indicate that the link should go to example.com.
+     * Indicate that the link has the given destination URL.
      */
-    public function toExampleDotCom(): self
+    public function withDestinationUrl(string $url): self
     {
-        $domain = Domain::where('host', 'example.com')->first();
+        $url = $this->parseUrlInput($url);
 
         return $this->state([
-            'domain_id' => $domain ? $domain->id : Domain::factory()->toExampleDotCom(),
-            'destination_path' => null,
+            'domain_id' => Domain::firstOrCreate([
+                'host' => $url['host'],
+            ]),
+            'destination_path' => $url['path'],
         ]);
     }
 

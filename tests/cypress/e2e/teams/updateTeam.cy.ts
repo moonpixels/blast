@@ -4,7 +4,7 @@ describe('Update team', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    createUser({}, ['withStandardTeam'])
+    createUser({}, ['withOwnedTeam'])
 
     cy.login({ attributes: { email: 'user@blst.to' } })
     cy.visit({ route: 'links.index' })
@@ -44,9 +44,9 @@ describe('Update team', () => {
 
     // Invalid name
     cy.get('@generalSettingsForm').within(() => {
-      cy.get('@nameInput').type('Standard Team')
+      cy.get('@nameInput').type('Owned Team')
       cy.get('@submitButton').click()
-      cy.get('[data-cy="input-error-message"]').should('contain', 'You already have a team called Standard Team.')
+      cy.get('[data-cy="input-error-message"]').should('contain', 'You already have a team called Owned Team.')
     })
   })
 })

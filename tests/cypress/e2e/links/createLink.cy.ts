@@ -5,7 +5,7 @@ describe('Create link', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    createUser({}, ['withStandardTeam', 'withTeamMembership'])
+    createUser({}, ['withOwnedTeam', 'withMemberTeam'])
 
     cy.login({ attributes: { email: 'user@blst.to' } })
     cy.visit({ route: 'links.index' })
@@ -161,7 +161,7 @@ describe('Create link', () => {
       cy.get('[data-cy="set-team_id-button"]').click()
 
       cy.get('[data-cy="link-options-popover"]').within(() => {
-        cy.getFormInput('Team').select('Standard Team')
+        cy.getFormInput('Team').select('Owned Team')
         cy.get('[data-cy="dismiss-options-popover-button"]').click()
       })
 

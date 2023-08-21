@@ -9,14 +9,14 @@ trait HasUrlInput
     /**
      * Parse the given URL input.
      */
-    public static function parseUrlInput(string $url): array
+    public function parseUrlInput(string $url): array
     {
-        $host = Str::lower(parse_url($url, PHP_URL_HOST));
+        $host = parse_url($url, PHP_URL_HOST);
 
         $path = Str::after($url, $host) ?: null;
 
         return [
-            'host' => $host,
+            'host' => Str::lower($host),
             'path' => $path,
         ];
     }

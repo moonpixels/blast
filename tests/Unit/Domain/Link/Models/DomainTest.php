@@ -1,19 +1,21 @@
 <?php
 
-use App\Domain\Link\Models\Domain;
 use App\Domain\Link\Models\Link;
 use Illuminate\Database\Eloquent\Collection;
 
 beforeEach(function () {
-    $this->domain = Domain::factory()->create();
+    $this->domain = createDomain();
 });
 
 it('has many links', function () {
-    Link::factory(5)->for($this->domain)->create();
+    createLink(
+        attributes: ['domain_id' => $this->domain->id],
+        states: ['count' => 5]
+    );
 
     $links = $this->domain->links;
 
-    expect($links)->toHaveCount(5)
-        ->and($links)->toBeInstanceOf(Collection::class)
+    expect($links)->toBeInstanceOf(Collection::class)
+        ->and($links)->toHaveCount(5)
         ->and($links)->each->toBeInstanceOf(Link::class);
 });

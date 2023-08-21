@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "lint": "eslint .",
+    "lint": "eslint ./resources/js",
     "prettier": "prettier --write .",
     "prettier:check": "prettier --check .",
     "cypress": "cypress run"

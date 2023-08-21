@@ -7,13 +7,13 @@ describe('Update links', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    createUser({}, ['withStandardTeam', 'withTeamMembership'])
+    createUser({}, ['withOwnedTeam', 'withMemberTeam'])
 
     cy.login({ attributes: { email: 'user@blst.to' } })
 
     cy.visit({ route: 'links.index' })
 
-    switchTeam('Standard Team')
+    switchTeam('Owned Team')
 
     cy.currentUser().then((user) => {
       teamId = user.current_team_id
@@ -45,7 +45,7 @@ describe('Update links', () => {
           cy.getFormInput('Alias').type('test')
           cy.getFormInput('Expires at').type(dayjs().add(1, 'day').format('DD/MM/YYYY HH:mm'))
           cy.getFormInput('Visit limit').type('10')
-          cy.getFormInput('Team').select('Standard Team')
+          cy.getFormInput('Team').select('Owned Team')
           cy.getFormInput('Require a password to access the link').click()
           cy.getFormInput('Password').type('password')
         })

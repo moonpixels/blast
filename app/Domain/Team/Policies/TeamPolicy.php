@@ -11,7 +11,7 @@ class TeamPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can edit the team.
+     * Determine whether the user can view the team.
      */
     public function view(User $user, Team $team): bool
     {
@@ -37,18 +37,18 @@ class TeamPolicy
     }
 
     /**
-     * Determine whether the user can create a team member.
+     * Determine whether the user can attach a team member.
      */
-    public function createMember(User $user, Team $team): bool
+    public function attachAnyMember(User $user, Team $team): bool
     {
         return $user->ownsTeam($team)
             && ! $team->personal_team;
     }
 
     /**
-     * Determine whether the user can delete a team member.
+     * Determine whether the user can detach a team member.
      */
-    public function deleteMember(User $user, Team $team, User $member): bool
+    public function detachMember(User $user, Team $team, User $member): bool
     {
         return $user->ownsTeam($team)
             || $user->id === $member->id;

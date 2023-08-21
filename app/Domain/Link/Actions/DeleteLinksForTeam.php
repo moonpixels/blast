@@ -13,8 +13,8 @@ class DeleteLinksForTeam
     /**
      * Delete all links for the given team.
      */
-    public function handle(Team $team): int
+    public function handle(Team $team): bool
     {
-        return $team->links()->delete();
+        return (bool) $team->links()->delete();
     }
 }

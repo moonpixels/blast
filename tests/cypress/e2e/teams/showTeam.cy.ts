@@ -4,13 +4,13 @@ describe('Show team', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    createUser({}, ['withStandardTeam', 'withTeamMembership'])
+    createUser({}, ['withOwnedTeam', 'withMemberTeam'])
 
     cy.login({ attributes: { email: 'user@blst.to' } })
 
     cy.visit({ route: 'links.index' })
 
-    switchTeam('Standard Team')
+    switchTeam('Owned Team')
   })
 
   it('shows the owner the correct sections', () => {
@@ -24,7 +24,7 @@ describe('Show team', () => {
   it('shows team members the correct sections', () => {
     const sections: string[] = ['Leave team']
 
-    switchTeam('Membership Team')
+    switchTeam('Member Team')
 
     cy.get('h2').each(($el, index) => {
       cy.wrap($el).should('contain', sections[index])
