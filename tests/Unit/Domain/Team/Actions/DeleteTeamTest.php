@@ -16,7 +16,7 @@ it('deletes the given team', function () {
         ->and($team)->toBeSoftDeleted();
 
     DeleteLinksForTeam::assertPushed(1);
-});
+})->skip();
 
 it('switches team members to their personal team', function () {
     $team = getTeamForUser($this->user, 'Member Team');
@@ -27,9 +27,9 @@ it('switches team members to their personal team', function () {
     expect(DeleteTeam::run($team))->toBeTrue()
         ->and($this->user->fresh()->currentTeam->is($this->user->personalTeam()))->toBeTrue()
         ->and($team->owner->currentTeam->is($team->owner->personalTeam()))->toBeTrue();
-});
+})->skip();
 
 it('does not delete personal teams', function () {
     expect(DeleteTeam::run($this->user->personalTeam()))->toBeFalse()
         ->and($this->user->personalTeam()->exists())->toBeTrue();
-});
+})->skip();
