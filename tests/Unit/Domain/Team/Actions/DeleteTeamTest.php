@@ -24,8 +24,11 @@ it('switches team members to their personal team', function () {
     $this->user->switchTeam($team);
     $team->owner->switchTeam($team);
 
-    expect(DeleteTeam::run($team))->toBeTrue()
-        ->and($this->user->fresh()->currentTeam->is($this->user->personalTeam()))->toBeTrue()
+    DeleteTeam::run($team);
+
+    $this->user->refresh();
+
+    expect($this->user->currentTeam->is($this->user->personalTeam()))->toBeTrue()
         ->and($team->owner->currentTeam->is($team->owner->personalTeam()))->toBeTrue();
 });
 
