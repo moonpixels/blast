@@ -2,7 +2,6 @@
 
 use App\Domain\Team\Models\Team;
 use App\Domain\User\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\Support\Fty;
 
@@ -21,9 +20,8 @@ function createTeam(array $attributes = [], array $states = []): Team|Collection
  */
 function getTeamForUser(User $user, string $name): Team
 {
-    return Team::where('name', $name)
-        ->where(function (Builder $query) use ($user) {
-            $query->whereRelation('members', 'id', $user->id)
-                ->orWhere('owner_id', $user->id);
-        })->firstOrFail();
+    return Team::whereRelation('members', 'id', $user->id)
+        ->orWhere('owner_id', $user->id)
+        ->where('name', $name)
+        ->firstOrFail();
 }
