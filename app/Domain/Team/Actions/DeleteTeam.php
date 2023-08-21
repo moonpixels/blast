@@ -22,16 +22,9 @@ class DeleteTeam
         }
 
         return DB::transaction(function () use ($team) {
-            $team->members()
-                ->where('current_team_id', $team->id)
-                ->lazyById()
-                ->each(function (User $user) {
-                    $user->switchTeam($user->personalTeam());
-                });
-
-            if ($team->owner->current_team_id === $team->id) {
-                $team->owner->switchTeam($team->owner->personalTeam());
-            }
+            User::where('current_team_id', $team->id)->each(function (User $user) {
+                $user->switchTeam($user->personalTeam());
+            });
 
             $team->members()->detach();
 
