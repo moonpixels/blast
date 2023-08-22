@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Domain\Team\Events\TeamDeleted;
 use App\Domain\Team\Listeners\DeleteTeamLinks;
+use App\Domain\Team\Models\Team;
+use App\Domain\Team\Observers\TeamObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,7 +29,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Team::observe(TeamObserver::class);
     }
 
     /**

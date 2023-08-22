@@ -2,7 +2,6 @@
 
 namespace App\Domain\Team\Actions;
 
-use App\Domain\Team\Events\TeamDeleted;
 use App\Domain\Team\Models\Team;
 use App\Domain\User\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +20,7 @@ class DeleteTeam
             return false;
         }
 
-        $deleted = DB::transaction(function () use ($team) {
+        return DB::transaction(function () use ($team) {
             User::where('current_team_id', $team->id)->each(function (User $user) {
                 $user->switchTeam($user->personalTeam());
             });
@@ -30,9 +29,5 @@ class DeleteTeam
 
             return $team->delete();
         });
-
-        TeamDeleted::dispatchIf($deleted, $team);
-
-        return $deleted;
     }
 }
