@@ -2,7 +2,7 @@
 
 namespace App\Domain\Team\Actions;
 
-use App\Domain\Link\Actions\DeleteLinksForTeam;
+use App\Domain\Team\Events\TeamDeleted;
 use App\Domain\Team\Models\Team;
 use App\Domain\User\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -21,16 +21,18 @@ class DeleteTeam
             return false;
         }
 
-        return DB::transaction(function () use ($team) {
+        $deleted = DB::transaction(function () use ($team) {
             User::where('current_team_id', $team->id)->each(function (User $user) {
                 $user->switchTeam($user->personalTeam());
             });
 
             $team->members()->detach();
 
-            DeleteLinksForTeam::dispatch($team);
-
             return $team->delete();
         });
+
+        TeamDeleted::dispatchIf($deleted, $team);
+
+        return $deleted;
     }
 }

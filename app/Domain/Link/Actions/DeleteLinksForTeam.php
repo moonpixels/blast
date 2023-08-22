@@ -4,6 +4,7 @@ namespace App\Domain\Link\Actions;
 
 use App\Domain\Team\Models\Team;
 use App\Support\Concerns\HasUrlInput;
+use Illuminate\Database\Eloquent\Collection;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class DeleteLinksForTeam
@@ -15,6 +16,8 @@ class DeleteLinksForTeam
      */
     public function handle(Team $team): bool
     {
-        return (bool) $team->links()->delete();
+        return $team->links()->chunkById(1000, function (Collection $links) {
+            $links->toQuery()->update(['deleted_at' => now()]);
+        });
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-use App\Domain\Link\Actions\DeleteLinksForTeam;
 use App\Domain\Team\Models\Team;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -71,8 +70,6 @@ test('users cannot update teams they do not own', function () {
 });
 
 test('users can delete teams they own', function () {
-    Queue::fake();
-
     $team = getTeamForUser($this->user, 'Owned Team');
     $this->user->switchTeam($team);
 
@@ -87,8 +84,6 @@ test('users can delete teams they own', function () {
 
     expect($team)->toBeSoftDeleted()
         ->and($this->user->currentTeam->is($this->user->personalTeam()))->toBeTrue();
-
-    DeleteLinksForTeam::assertPushed(1);
 });
 
 test('users cannot delete their personal team', function () {
