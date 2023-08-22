@@ -64,25 +64,25 @@ class LinkData extends DataRules
     }
 
     /**
+     * The validation rules that apply when creating the resource.
+     */
+    public static function creationRules(): array
+    {
+        return array_merge_recursive(self::baseRules(), [
+            'alias' => ['unique:links,alias'],
+            'expires_at' => ['after:now'],
+        ]);
+    }
+
+    /**
      * The validation rules that apply when updating the resource.
      */
-    protected static function updateRules(): array
+    public static function updateRules(): array
     {
         return array_merge_recursive(self::baseRules(), [
             'team_id' => ['sometimes'],
             'destination_url' => ['sometimes'],
             'alias' => [Rule::unique('links', 'alias')->ignore(request()->route('link'))],
-        ]);
-    }
-
-    /**
-     * The validation rules that apply when creating the resource.
-     */
-    protected static function createRules(): array
-    {
-        return array_merge_recursive(self::baseRules(), [
-            'alias' => ['unique:links,alias'],
-            'expires_at' => ['after:now'],
         ]);
     }
 
