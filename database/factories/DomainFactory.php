@@ -21,14 +21,4 @@ class DomainFactory extends Factory
             'host' => $this->faker->unique()->domainName,
         ];
     }
-
-    /**
-     * Indicate that the domain should be example.com.
-     */
-    public function toExampleDotCom(): self
-    {
-        return $this->state([
-            'host' => 'example.com',
-        ]);
-    }
 }

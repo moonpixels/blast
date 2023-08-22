@@ -66,26 +66,26 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user has a standard team.
+     * Indicate that the user has a team which they own.
      */
-    public function withStandardTeam(): self
+    public function withOwnedTeam(): self
     {
         return $this->afterCreating(function (User $user) {
             Team::factory()->for($user, 'owner')->create([
-                'name' => 'Standard Team',
+                'name' => 'Owned Team',
             ]);
         });
     }
 
     /**
-     * Indicate that the user has membership in a team.
+     * Indicate that the user is a member of a team.
      */
-    public function withTeamMembership(): self
+    public function withMemberTeam(): self
     {
         return $this->afterCreating(function (User $user) {
             $user->teams()->attach(
                 Team::factory()->create([
-                    'name' => 'Membership Team',
+                    'name' => 'Member Team',
                 ])
             );
         });

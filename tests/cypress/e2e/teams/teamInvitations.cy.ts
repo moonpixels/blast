@@ -6,12 +6,12 @@ describe('Team invitations', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    createUser({}, ['withStandardTeam'])
+    createUser({}, ['withOwnedTeam'])
 
     cy.login({ attributes: { email: 'user@blst.to' } })
     cy.visit({ route: 'links.index' })
 
-    switchTeam('Standard Team')
+    switchTeam('Owned Team')
 
     cy.currentUser().then((user) => {
       teamId = user.current_team_id

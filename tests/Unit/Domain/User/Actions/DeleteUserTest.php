@@ -1,14 +1,12 @@
 <?php
 
 use App\Domain\User\Actions\DeleteUser;
-use App\Domain\User\Models\User;
 
 beforeEach(function () {
-    $this->user = User::factory()->create();
+    $this->user = createUser();
 });
 
-it('can delete a user', function () {
-    $this->assertTrue(DeleteUser::run($this->user));
-
-    $this->assertModelMissing($this->user);
+it('deletes the user', function () {
+    expect(DeleteUser::run($this->user))->toBeTrue()
+        ->and($this->user)->toBeDeleted();
 });

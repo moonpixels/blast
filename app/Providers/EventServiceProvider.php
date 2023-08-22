@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Domain\Team\Events\TeamDeleted;
+use App\Domain\Team\Listeners\DeleteTeamLinks;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -14,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        TeamDeleted::class => [
+            DeleteTeamLinks::class,
         ],
     ];
 

@@ -9,8 +9,8 @@ use App\Domain\Team\Actions\Members\FilterTeamMembers;
 use App\Domain\Team\Actions\UpdateTeam;
 use App\Domain\Team\Data\TeamData;
 use App\Domain\Team\Models\Team;
+use App\Domain\Team\Resources\TeamResource;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\TeamResource;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Response;
 

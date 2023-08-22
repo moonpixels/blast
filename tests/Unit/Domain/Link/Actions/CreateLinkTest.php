@@ -2,118 +2,35 @@
 
 use App\Domain\Link\Actions\CreateLink;
 use App\Domain\Link\Data\LinkData;
-use App\Domain\Team\Models\Team;
-use Illuminate\Support\Facades\Hash;
+use Spatie\LaravelData\Optional;
 
 beforeEach(function () {
-    $this->team = Team::factory()->create();
-    $this->url = 'https://blst.to/this-is-a-path?query=string#fragment';
-    $this->linkData = [
-        'team_id' => $this->team->id,
-        'destination_url' => $this->url,
-    ];
+    $this->linkData = LinkData::from([
+        'team_id' => createTeam()->id,
+        'destination_url' => 'https://example.com/this-is-a-path?query=string#fragment',
+        'alias' => 'testing',
+        'password' => 'password',
+        'visit_limit' => 10,
+        'expires_at' => now()->addDay(),
+    ]);
 });
 
-it('can create a new link for a valid URL', function () {
-    $link = CreateLink::run(LinkData::from($this->linkData));
+it('creates a new link', function () {
+    $link = CreateLink::run($this->linkData);
 
-    $this->assertDatabaseHas('domains', [
-        'host' => 'blst.to',
-    ]);
+    expect($link)->toExistInDatabase()
+        ->and($link->team_id)->toBe($this->linkData->teamId)
+        ->and($link->destination_url)->toBe('https://example.com/this-is-a-path?query=string#fragment')
+        ->and($link->alias)->toBe('testing')
+        ->and($link->passwordMatches('password'))->toBeTrue()
+        ->and($link->visit_limit)->toBe(10)
+        ->and($link->expires_at->toIso8601String())->toBe($this->linkData->expiresAt->toIso8601String());
+});
 
-    $this->assertDatabaseHas('links', [
-        'team_id' => $this->team->id,
-        'domain_id' => $link->domain_id,
-        'destination_path' => '/this-is-a-path?query=string#fragment',
-    ]);
+it('generates an alias if none is provided', function () {
+    $this->linkData->alias = Optional::create();
+
+    $link = CreateLink::run($this->linkData);
 
     expect($link->alias)->toBeString();
-});
-
-it('stores the domain host in lowercase', function () {
-    $link = CreateLink::run(LinkData::from([
-        ...$this->linkData,
-        'destinationUrl' => 'https://BLST.TO',
-    ]));
-
-    expect($link->domain->host)->toBe('blst.to');
-
-    $link = CreateLink::run(LinkData::from([
-        ...$this->linkData,
-        'destinationUrl' => 'https://BlSt.To',
-    ]));
-
-    expect($link->domain->host)->toBe('blst.to');
-});
-
-it('does not create a new domain if it already exists', function () {
-    $link1 = CreateLink::run(LinkData::from($this->linkData));
-
-    $link2 = CreateLink::run(LinkData::from([
-        ...$this->linkData,
-        'destinationUrl' => 'https://blst.to/another-path',
-    ]));
-
-    $this->assertDatabaseCount('domains', 1);
-
-    expect($link1->domain_id)->toBe($link2->domain_id);
-});
-
-it('stores the destination path in the same format as the input', function () {
-    $link = CreateLink::run(LinkData::from($this->linkData));
-
-    expect($link->destination_path)->toBe('/this-is-a-path?query=string#fragment');
-});
-
-it('allows a custom alias to be set', function () {
-    $link = CreateLink::run(LinkData::from([
-        ...$this->linkData,
-        'alias' => 'custom-alias',
-    ]));
-
-    expect($link->alias)->toBe('custom-alias');
-});
-
-it('can create new links with case sensitive aliases', function () {
-    $link = CreateLink::run(LinkData::from([
-        ...$this->linkData,
-        'alias' => 'CustomAlias',
-    ]));
-
-    expect($link->alias)->toBe('CustomAlias');
-
-    $link = CreateLink::run(LinkData::from([
-        ...$this->linkData,
-        'alias' => 'customalias',
-    ]));
-
-    expect($link->alias)->toBe('customalias');
-});
-
-it('can create a new link with a password', function () {
-    $link = CreateLink::run(LinkData::from([
-        ...$this->linkData,
-        'password' => 'password',
-    ]));
-
-    expect($link->password)->not->toBeNull()
-        ->and(Hash::check('password', $link->password))->toBeTrue();
-});
-
-it('can create a new link with an expiry date', function () {
-    $link = CreateLink::run(LinkData::from([
-        ...$this->linkData,
-        'expires_at' => now()->addDay(),
-    ]));
-
-    expect($link->expires_at)->not->toBeNull();
-});
-
-it('can create a new link with a visit limit', function () {
-    $link = CreateLink::run(LinkData::from([
-        ...$this->linkData,
-        'visit_limit' => 10,
-    ]));
-
-    expect($link->visit_limit)->toBe(10);
 });

@@ -3,16 +3,16 @@
 namespace App\Domain\User\Data;
 
 use App\Domain\Team\Rules\BelongsToTeam;
-use App\Support\DataTransformers\HashableTransformer;
+use App\Support\Data\Contracts\DataRules;
+use App\Support\Data\Transformers\HashableTransformer;
 use Laravel\Fortify\Rules\Password;
 use Spatie\LaravelData\Attributes\MapName;
 use Spatie\LaravelData\Attributes\WithTransformer;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Mappers\SnakeCaseMapper;
 use Spatie\LaravelData\Optional;
 
 #[MapName(SnakeCaseMapper::class)]
-class UserData extends Data
+class UserData extends DataRules
 {
     /**
      * Instantiate a new user data instance.
@@ -27,31 +27,41 @@ class UserData extends Data
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * The validation rules that apply when updating the resource.
      */
-    public static function rules(): array
+    protected static function updateRules(): array
     {
-        $baseRules = collect([
+        return array_merge_recursive(self::baseRules(), [
+            'name' => ['sometimes'],
+            'email' => ['sometimes'],
+            'password' => ['sometimes'],
+            'current_team_id' => [
+                'sometimes',
+                'required',
+                'ulid',
+                'exists:teams,id',
+                new BelongsToTeam(request()->user()),
+            ],
+        ]);
+    }
+
+    /**
+     * The validation rules that apply when creating the resource.
+     */
+    protected static function createRules(): array
+    {
+        return self::baseRules();
+    }
+
+    /**
+     * Base validation rules.
+     */
+    protected static function baseRules(): array
+    {
+        return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', new Password],
-        ]);
-
-        if (request()->isMethod('PUT')) {
-            return $baseRules->mergeRecursive([
-                'name' => ['sometimes'],
-                'email' => ['sometimes'],
-                'password' => ['sometimes'],
-                'current_team_id' => [
-                    'sometimes',
-                    'required',
-                    'ulid',
-                    'exists:teams,id',
-                    new BelongsToTeam(request()->user()),
-                ],
-            ])->toArray();
-        }
-
-        return $baseRules->toArray();
+        ];
     }
 }

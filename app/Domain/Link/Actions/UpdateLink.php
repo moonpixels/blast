@@ -2,8 +2,8 @@
 
 namespace App\Domain\Link\Actions;
 
+use App\Domain\Link\Data\DomainData;
 use App\Domain\Link\Data\LinkData;
-use App\Domain\Link\Models\Domain;
 use App\Domain\Link\Models\Link;
 use App\Support\Concerns\HasUrlInput;
 use Illuminate\Support\Facades\DB;
@@ -25,9 +25,9 @@ class UpdateLink
             if (! $data->destinationUrl instanceof Optional) {
                 $url = $this->parseUrlInput($data->destinationUrl);
 
-                $domain = Domain::firstOrCreate([
+                $domain = CreateDomain::run(DomainData::from([
                     'host' => $url['host'],
-                ]);
+                ]));
 
                 $link->domain_id = $domain->id;
                 $link->destination_path = $url['path'];

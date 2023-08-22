@@ -2,8 +2,8 @@
 
 namespace App\Domain\Link\Actions;
 
+use App\Domain\Link\Data\DomainData;
 use App\Domain\Link\Data\LinkData;
-use App\Domain\Link\Models\Domain;
 use App\Domain\Link\Models\Link;
 use App\Support\Concerns\HasUrlInput;
 use Illuminate\Support\Facades\DB;
@@ -21,9 +21,9 @@ class CreateLink
         return DB::transaction(function () use ($data) {
             $url = $this->parseUrlInput($data->destinationUrl);
 
-            $domain = Domain::firstOrCreate([
+            $domain = CreateDomain::run(DomainData::from([
                 'host' => $url['host'],
-            ]);
+            ]));
 
             $link = new Link($data->except('destinationUrl')->toArray());
 

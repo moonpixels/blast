@@ -41,6 +41,6 @@ export interface CreateRequest {
   model: string
   count?: number
   attributes?: Record<string, any>
-  state?: string[]
+  state?: string[] | { [key: string]: any }
   load?: string[]
 }

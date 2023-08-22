@@ -6,9 +6,9 @@ beforeEach(function () {
     $this->rule = new NotReservedAlias;
 });
 
-it('passes when the alias is not on the reserved list', function () {
+it('passes when the alias is valid', function () {
     $validator = Validator::make([
-        'alias' => 'my-alias',
+        'alias' => 'testing',
     ], [
         'alias' => $this->rule,
     ]);
@@ -16,22 +16,13 @@ it('passes when the alias is not on the reserved list', function () {
     expect($validator->passes())->toBeTrue();
 });
 
-it('fails when the alias is on the reserved list', function () {
+it('fails when the alias in invalid', function () {
     $validator = Validator::make([
         'alias' => 'admin',
     ], [
         'alias' => $this->rule,
     ]);
 
-    expect($validator->passes())->toBeFalse();
-});
-
-it('fails when the alias is an app route', function () {
-    $validator = Validator::make([
-        'alias' => 'login',
-    ], [
-        'alias' => $this->rule,
-    ]);
-
-    expect($validator->passes())->toBeFalse();
+    expect($validator->passes())->toBeFalse()
+        ->and($validator->errors()->first('alias'))->toBe('The alias has already been taken.');
 });

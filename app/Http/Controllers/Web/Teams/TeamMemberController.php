@@ -15,7 +15,7 @@ class TeamMemberController extends Controller
      */
     public function destroy(Team $team, User $member): RedirectResponse
     {
-        $this->authorize('deleteMember', [$team, $member]);
+        $this->authorize('detachMember', [$team, $member]);
 
         DeleteTeamMember::run($team, $member);
 

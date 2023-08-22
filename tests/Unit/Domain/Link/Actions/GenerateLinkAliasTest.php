@@ -1,30 +1,37 @@
 <?php
 
+use App\Domain\Link\Actions\CheckLinkAliasIsAllowed;
 use App\Domain\Link\Actions\GenerateLinkAlias;
 use Illuminate\Support\Facades\Log;
+use Mockery\MockInterface;
 
-it('can generate a unique alias', function () {
+it('generates an alias', function () {
     $alias = GenerateLinkAlias::run();
 
-    expect($alias)->not->toBeNull();
+    expect($alias)->toBeString()
+        ->and(strlen($alias))->toBe(7);
 });
 
-it('can generate a unique alias in a reasonable amount of time', function () {
-    $start = microtime(true);
-
-    GenerateLinkAlias::run();
-
-    $end = microtime(true);
-
-    expect($end - $start)->toBeLessThan(0.1);
-});
-
-it('logs the number of attempts it took to generate a unique alias', function () {
-    Log::shouldReceive('info')
+it('logs a warning if it took multiple attempts to generate an alias', function () {
+    Log::shouldReceive('warning')
         ->once()
         ->withArgs(function ($message, $context) {
-            return $message === 'Link alias generated.' && $context['attempts'] === 1;
+            return $message === 'Link alias took multiple attempts to generate.'
+                && is_string($context['alias'])
+                && $context['attempts'] === 2;
         });
+
+    $this->mock(CheckLinkAliasIsAllowed::class, function (MockInterface $mock) {
+        $mock->shouldReceive('handle')
+            ->andReturnFalse()
+            ->once()
+            ->ordered();
+
+        $mock->shouldReceive('handle')
+            ->andReturnTrue()
+            ->once()
+            ->ordered();
+    });
 
     GenerateLinkAlias::run();
 });

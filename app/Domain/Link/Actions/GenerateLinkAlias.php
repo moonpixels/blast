@@ -26,10 +26,12 @@ class GenerateLinkAlias
             $attempts++;
         }
 
-        Log::info('Link alias generated.', [
-            'alias' => $alias,
-            'attempts' => $attempts,
-        ]);
+        if ($attempts > 1) {
+            Log::warning('Link alias took multiple attempts to generate.', [
+                'alias' => $alias,
+                'attempts' => $attempts,
+            ]);
+        }
 
         return $alias;
     }

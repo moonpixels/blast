@@ -1,5 +1,6 @@
 import Chainable = Cypress.Chainable
 import { Link, User } from '@/types/models'
+import { CreateRequest } from '../types/commands'
 
 /**
  * Get the OTP code for the given user.
@@ -40,7 +41,11 @@ export function createUser(attributes: Partial<User> = {}, state: string[] = [],
 /**
  * Create a new link.
  */
-export function createLink(attributes: Partial<Link> = {}, state: string[] = [], load: string[] = []): Chainable<Link> {
+export function createLink(
+  attributes: Partial<Link> = {},
+  state: CreateRequest['state'] = [],
+  load: CreateRequest['load'] = []
+): Chainable<Link> {
   if (Object.keys(attributes).length === 0) {
     attributes = {
       alias: 'test',

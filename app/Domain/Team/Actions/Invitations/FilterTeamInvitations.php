@@ -4,7 +4,7 @@ namespace App\Domain\Team\Actions\Invitations;
 
 use App\Domain\Team\Models\Team;
 use App\Domain\Team\Models\TeamInvitation;
-use App\Http\Resources\TeamInvitationResource;
+use App\Domain\Team\Resources\TeamInvitationResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Lorisleiva\Actions\Concerns\AsAction;
 

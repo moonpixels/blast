@@ -1,33 +1,11 @@
 <?php
 
 use App\Domain\Team\Actions\Members\FilterTeamMembers;
-use App\Domain\Team\Models\Team;
-use App\Domain\User\Models\User;
 
 beforeEach(function () {
-    $this->user = User::factory()->create(['email' => 'test@blst.to']);
-    $this->team = Team::factory()->create();
+    $this->team = createTeam();
 
-    $this->team->members()->attach(User::factory(15)->create());
-    $this->team->members()->attach($this->user);
-});
-
-it('returns all results if a search term is not sent', function () {
-    $members = FilterTeamMembers::run($this->team);
-
-    expect($members->count())->toBe(10);
-});
-
-it('returns filtered results if a search term is sent', function () {
-    $members = FilterTeamMembers::run($this->team, '@blst.to');
-
-    expect($members->count())->toBe(1);
-});
-
-it('returns an empty collection if no results are found', function () {
-    $members = FilterTeamMembers::run($this->team, 'membership does not exist');
-
-    expect($members->count())->toBe(0);
+    $this->team->members()->attach(createUser(states: ['count' => 20]));
 });
 
 it('returns a paginated collection', function () {
@@ -39,4 +17,19 @@ it('returns a paginated collection', function () {
         ->and($members->hasMorePages())->toBeTrue()
         ->and($members->lastPage())->toBe(2)
         ->and($members->previousPageUrl())->toBeNull();
+});
+
+it('filters members by a search term', function () {
+    $this->team->members()->attach(createUser(attributes: ['name' => 'Test User']));
+
+    $members = FilterTeamMembers::run($this->team, 'Test User');
+
+    expect($members->count())->toBe(1)
+        ->and($members->first()->name)->toBe('Test User');
+});
+
+it('returns an empty collection if no results are found', function () {
+    $members = FilterTeamMembers::run($this->team, 'member does not exist');
+
+    expect($members->count())->toBe(0);
 });

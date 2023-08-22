@@ -1,37 +1,36 @@
-]<?php
+<?php
 
-use App\Domain\Team\Models\TeamInvitation;
 use App\Domain\Team\Policies\TeamInvitationPolicy;
-use App\Domain\User\Models\User;
 
 beforeEach(function () {
-    $this->user = User::factory()->withStandardTeam()->withTeamMembership()->create();
-
-    $this->standardTeam = $this->user->ownedTeams()->notPersonal()->first();
-    $this->membershipTeam = $this->user->teams->first();
-
-    $this->standardTeamInvitation = TeamInvitation::factory()->for($this->standardTeam)->create();
-    $this->membershipTeamInvitation = TeamInvitation::factory()->for($this->membershipTeam)->create();
-
-    $this->nonTeamMember = User::factory()->create();
-
     $this->policy = new TeamInvitationPolicy();
+
+    $this->owner = createUser(attributes: ['email' => 'owner@example.com']);
+
+    $this->invitee = createUser(attributes: ['email' => 'invitee@example.com']);
+
+    $this->user = createUser();
+
+    $this->invitation = createTeamInvitation(attributes: [
+        'team_id' => getTeamForUser($this->owner, 'Owned Team')->id,
+        'email' => $this->invitee->email,
+    ]);
 });
 
-it('allows owners to delete team invitations', function () {
-    expect($this->policy->delete($this->user, $this->standardTeamInvitation))->toBeTrue();
+it('only lets the owner or invitee delete the invitation', function () {
+    expect($this->policy->delete($this->owner, $this->invitation))->toBeTrue()
+        ->and($this->policy->delete($this->invitee, $this->invitation))->toBeTrue()
+        ->and($this->policy->delete($this->user, $this->invitation))->toBeFalse();
 });
 
-it('does not allow non-owners to delete team invitations', function () {
-    expect($this->policy->delete($this->user, $this->membershipTeamInvitation))->toBeFalse()
-        ->and($this->policy->delete($this->nonTeamMember, $this->standardTeamInvitation))->toBeFalse();
+it('only lets the owner resend the invitation', function () {
+    expect($this->policy->resend($this->owner, $this->invitation))->toBeTrue()
+        ->and($this->policy->resend($this->invitee, $this->invitation))->toBeFalse()
+        ->and($this->policy->resend($this->user, $this->invitation))->toBeFalse();
 });
 
-it('allows owners to resend team invitations', function () {
-    expect($this->policy->resend($this->user, $this->standardTeamInvitation))->toBeTrue();
-});
-
-it('does not allow non-owners to resend team invitations', function () {
-    expect($this->policy->resend($this->user, $this->membershipTeamInvitation))->toBeFalse()
-        ->and($this->policy->resend($this->nonTeamMember, $this->standardTeamInvitation))->toBeFalse();
+it('only lets the invitee accept the invitation', function () {
+    expect($this->policy->accept($this->owner, $this->invitation))->toBeFalse()
+        ->and($this->policy->accept($this->invitee, $this->invitation))->toBeTrue()
+        ->and($this->policy->accept($this->user, $this->invitation))->toBeFalse();
 });

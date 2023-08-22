@@ -1,32 +1,36 @@
 <?php
 
 use App\Domain\Link\Models\Domain;
-use App\Domain\Link\Models\Link;
 use App\Domain\Redirect\Models\Visit;
 use App\Domain\Team\Models\Team;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Hash;
 
 beforeEach(function () {
-    $this->domain = Domain::factory()->create([
-        'host' => 'blst.to',
-    ]);
-
-    $this->link = Link::factory()->for($this->domain)->create([
-        'destination_path' => '/test',
-    ]);
+    $this->link = createLink(states: ['withDestinationUrl' => 'https://example.com/testing']);
 });
 
-it('generates a short link based on the app url config', function () {
-    config(['app.url' => 'https://blst.to']);
-
-    expect($this->link->short_url)->toBe('https://blst.to/'.$this->link->alias);
+it('belongs to a domain', function () {
+    expect($this->link->domain)->toBeInstanceOf(Domain::class)
+        ->and($this->link->domain->host)->toBe('example.com');
 });
 
-it('generates the correct destination URL', function () {
-    expect($this->link->destination_url)->toBe('https://blst.to/test');
+it('belongs to a team', function () {
+    expect($this->link->team)->toBeInstanceOf(Team::class);
 });
 
-it('increments the total visits for the link', function () {
+it('has many visits', function () {
+    createVisit(
+        attributes: ['link_id' => $this->link->id],
+        states: ['count' => 5]
+    );
+
+    expect($this->link->visits)->toBeInstanceOf(Collection::class)
+        ->and($this->link->visits)->toHaveCount(5)
+        ->and($this->link->visits)->each->toBeInstanceOf(Visit::class);
+});
+
+it('increments total visits', function () {
     expect($this->link->total_visits)->toBe(0);
 
     $this->link->incrementTotalVisits();
@@ -34,7 +38,7 @@ it('increments the total visits for the link', function () {
     expect($this->link->total_visits)->toBe(1);
 });
 
-it('returns the correct indexable array', function () {
+it('has a searchable array', function () {
     expect($this->link->toSearchableArray())->toHaveKeys([
         'id',
         'team_id',
@@ -47,56 +51,45 @@ it('returns the correct indexable array', function () {
     ]);
 });
 
-it('belongs to a domain', function () {
-    expect($this->link->domain)->toBeInstanceOf(Domain::class);
+it('determines if a password matches', function () {
+    $this->link->update(['password' => Hash::make('password')]);
+
+    expect($this->link->passwordMatches('password'))->toBeTrue()
+        ->and($this->link->passwordMatches('wrong-password'))->toBeFalse();
 });
 
-it('belongs to a team', function () {
-    expect($this->link->team)->toBeInstanceOf(Team::class);
+it('determines if the link has expired', function () {
+    $this->link->update(['expires_at' => now()->addDay()]);
+
+    expect($this->link->hasExpired())->toBeFalse();
+
+    $this->travel(1)->days();
+
+    expect($this->link->hasExpired())->toBeTrue();
 });
 
-it('has many visits', function () {
-    Visit::factory(5)->for($this->link)->create();
+it('determines if the link has reached its visit limit', function () {
+    $this->link->update(['visit_limit' => 1]);
 
-    $visits = $this->link->visits;
+    expect($this->link->hasReachedVisitLimit())->toBeFalse();
 
-    expect($visits)->toHaveCount(5)
-        ->and($visits)->toBeInstanceOf(Collection::class)
-        ->and($visits)->each->toBeInstanceOf(Visit::class);
+    $this->link->incrementTotalVisits();
+
+    expect($this->link->hasReachedVisitLimit())->toBeTrue();
 });
 
-it('can check if the password matches', function () {
-    $link = Link::factory()->withPassword()->create();
-
-    expect($link->passwordMatches('password'))->toBeTrue()
-        ->and($link->passwordMatches('wrong-password'))->toBeFalse();
+it('has a destination URL', function () {
+    expect($this->link->destination_url)->toBe('https://example.com/testing');
 });
 
-it('can determine if a password has been set', function () {
-    $link = Link::factory()->withPassword()->create();
-
-    expect($this->link->has_password)->toBeFalse()
-        ->and($link->has_password)->toBeTrue();
+it('has a short URL', function () {
+    expect($this->link->short_url)->toBe(config('app.url')."/{$this->link->alias}");
 });
 
-it('can determine if the link has expired', function () {
-    $link = Link::factory()->create([
-        'expires_at' => now()->subDay(),
-    ]);
+it('determines if the link has a password', function () {
+    expect($this->link->has_password)->toBeFalse();
 
-    expect($this->link->hasExpired())->toBeFalse()
-        ->and($link->hasExpired())->toBeTrue();
-});
+    $this->link->update(['password' => Hash::make('password')]);
 
-it('can determine if the link has reached its visit limit', function () {
-    $link = Link::factory()->create([
-        'visit_limit' => 5,
-    ]);
-
-    expect($this->link->hasReachedVisitLimit())->toBeFalse()
-        ->and($link->hasReachedVisitLimit())->toBeFalse();
-
-    Visit::factory(5)->for($link)->create();
-
-    expect($link->refresh()->hasReachedVisitLimit())->toBeTrue();
+    expect($this->link->has_password)->toBeTrue();
 });

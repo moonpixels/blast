@@ -3,8 +3,8 @@
 namespace App\Domain\Link\Actions;
 
 use App\Domain\Link\Models\Link;
+use App\Domain\Link\Resources\LinkResource;
 use App\Domain\Team\Models\Team;
-use App\Http\Resources\LinkResource;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Lorisleiva\Actions\Concerns\AsAction;

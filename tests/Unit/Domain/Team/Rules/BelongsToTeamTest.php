@@ -2,12 +2,11 @@
 
 use App\Domain\Team\Models\Team;
 use App\Domain\Team\Rules\BelongsToTeam;
-use App\Domain\User\Models\User;
 
 beforeEach(function () {
-    $this->user = User::factory()->withStandardTeam()->create();
+    $this->user = createUser();
 
-    $this->team = $this->user->ownedTeams()->notPersonal()->first();
+    $this->team = getTeamForUser($this->user, 'Member Team');
 
     $this->rule = new BelongsToTeam($this->user);
 });
@@ -29,5 +28,6 @@ it('fails when the user does not belong to the team', function () {
         'team_id' => $this->rule,
     ]);
 
-    expect($validator->passes())->toBeFalse();
+    expect($validator->passes())->toBeFalse()
+        ->and($validator->errors()->first('team_id'))->toBe('The team id field must contain a valid team ID that you belong to.');
 });

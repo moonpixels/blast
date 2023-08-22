@@ -4,7 +4,7 @@ describe('Switch team', () => {
   beforeEach(() => {
     cy.refreshDatabase()
 
-    createUser({}, ['withStandardTeam'])
+    createUser({}, ['withOwnedTeam'])
 
     cy.login({ attributes: { email: 'user@blst.to' } })
     cy.visit({ route: 'links.index' })
@@ -18,13 +18,13 @@ describe('Switch team', () => {
     cy.get('[data-cy="team-switcher-menu"]').within(() => {
       cy.get('button').should('have.length', 3)
       cy.get('button').contains('Personal Team').should('exist')
-      cy.get('button').contains('Standard Team').should('exist')
-      cy.contains('button', 'Standard Team').click()
+      cy.get('button').contains('Owned Team').should('exist')
+      cy.contains('button', 'Owned Team').click()
     })
 
     cy.get('[data-cy="team-switcher-menu"]').should('not.exist')
 
     cy.assertRedirect('links')
-    cy.get('@teamSwitcherButton').should('contain', 'Standard Team')
+    cy.get('@teamSwitcherButton').should('contain', 'Owned Team')
   })
 })

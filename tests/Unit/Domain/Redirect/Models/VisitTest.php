@@ -1,11 +1,10 @@
 <?php
 
 use App\Domain\Link\Models\Link;
-use App\Domain\Redirect\Models\Visit;
 use App\Domain\Team\Models\Team;
 
 beforeEach(function () {
-    $this->visit = Visit::factory()->create();
+    $this->visit = createVisit();
 });
 
 it('belongs to a link', function () {

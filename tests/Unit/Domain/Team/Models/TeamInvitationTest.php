@@ -1,23 +1,17 @@
 <?php
 
 use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\TeamInvitation;
 
 beforeEach(function () {
-    $this->teamInvitation = TeamInvitation::factory()->create([
-        'email' => 'john.doe@blst.to',
-    ]);
+    $this->invitation = createTeamInvitation();
 });
 
-it('generates a URL to accept the invitation', function () {
-    expect($this->teamInvitation->accept_url)->toBeString()
-        ->and($this->teamInvitation->accept_url)->toContain("/teams/{$this->teamInvitation->team_id}/invitations/{$this->teamInvitation->id}/accept")
-        ->and($this->teamInvitation->accept_url)->toContain($this->teamInvitation->id)
-        ->and($this->teamInvitation->accept_url)->toContain('signature');
+it('belongs to a team', function () {
+    expect($this->invitation->team)->toBeInstanceOf(Team::class);
 });
 
-it('returns the correct indexable array', function () {
-    expect($this->teamInvitation->toSearchableArray())->toHaveKeys([
+it('has a searchable array', function () {
+    expect($this->invitation->toSearchableArray())->toHaveKeys([
         'id',
         'team_id',
         'email',
@@ -26,6 +20,11 @@ it('returns the correct indexable array', function () {
     ]);
 });
 
-it('belongs to a team', function () {
-    expect($this->teamInvitation->team)->toBeInstanceOf(Team::class);
+it('generates an accept URL', function () {
+    expect($this->invitation->accept_url)->toBe(
+        URL::signedRoute('teams.invitations.accept', [
+            'team' => $this->invitation->team,
+            'invitation' => $this->invitation,
+        ])
+    );
 });

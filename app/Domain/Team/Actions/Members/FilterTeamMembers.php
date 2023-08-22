@@ -4,7 +4,7 @@ namespace App\Domain\Team\Actions\Members;
 
 use App\Domain\Team\Models\Team;
 use App\Domain\User\Models\User;
-use App\Http\Resources\UserResource;
+use App\Domain\User\Resources\UserResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Lorisleiva\Actions\Concerns\AsAction;
 

@@ -33,12 +33,4 @@ class LinkPolicy
     {
         return $user->belongsToTeam($link->team);
     }
-
-    /**
-     * Determine whether the user can restore the link.
-     */
-    public function restore(User $user, Link $link): bool
-    {
-        return $user->belongsToTeam($link->team);
-    }
 }
