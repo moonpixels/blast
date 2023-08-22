@@ -35,29 +35,29 @@ class TeamData extends DataRules
     }
 
     /**
-     * The validation rules that apply when updating the resource.
+     * The validation rules that apply when creating the resource.
      */
-    protected static function updateRules(): array
+    public static function creationRules(): array
     {
         return array_merge_recursive(self::baseRules(), [
             'name' => [
                 Rule::unique('teams', 'name')
                     ->where('owner_id', auth()->user()->id)
-                    ->ignore(request()->route('team'))
                     ->withoutTrashed(),
             ],
         ]);
     }
 
     /**
-     * The validation rules that apply when creating the resource.
+     * The validation rules that apply when updating the resource.
      */
-    protected static function createRules(): array
+    public static function updateRules(): array
     {
         return array_merge_recursive(self::baseRules(), [
             'name' => [
                 Rule::unique('teams', 'name')
                     ->where('owner_id', auth()->user()->id)
+                    ->ignore(request()->route('team'))
                     ->withoutTrashed(),
             ],
         ]);

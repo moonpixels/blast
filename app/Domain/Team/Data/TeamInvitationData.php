@@ -35,17 +35,9 @@ class TeamInvitationData extends DataRules
     }
 
     /**
-     * The validation rules that apply when updating the resource.
-     */
-    protected static function updateRules(): array
-    {
-        return [];
-    }
-
-    /**
      * The validation rules that apply when creating the resource.
      */
-    protected static function createRules(): array
+    public static function creationRules(): array
     {
         /**
          * @var Team $team
@@ -67,5 +59,13 @@ class TeamInvitationData extends DataRules
                 Rule::notIn($team->membersAndOwner()->pluck('email')->toArray()),
             ],
         ];
+    }
+
+    /**
+     * The validation rules that apply when updating the resource.
+     */
+    public static function updateRules(): array
+    {
+        return [];
     }
 }

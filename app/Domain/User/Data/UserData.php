@@ -27,9 +27,17 @@ class UserData extends DataRules
     }
 
     /**
+     * The validation rules that apply when creating the resource.
+     */
+    public static function creationRules(): array
+    {
+        return self::baseRules();
+    }
+
+    /**
      * The validation rules that apply when updating the resource.
      */
-    protected static function updateRules(): array
+    public static function updateRules(): array
     {
         return array_merge_recursive(self::baseRules(), [
             'name' => ['sometimes'],
@@ -43,14 +51,6 @@ class UserData extends DataRules
                 new BelongsToTeam(request()->user()),
             ],
         ]);
-    }
-
-    /**
-     * The validation rules that apply when creating the resource.
-     */
-    protected static function createRules(): array
-    {
-        return self::baseRules();
     }
 
     /**

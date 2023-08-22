@@ -14,16 +14,16 @@ abstract class DataRules extends Data
     {
         return request()->isMethod(Request::METHOD_PUT)
             ? static::updateRules()
-            : static::createRules();
+            : static::creationRules();
     }
 
     /**
      * The validation rules that apply when updating the resource.
      */
-    abstract protected static function updateRules(): array;
+    abstract public static function updateRules(): array;
 
     /**
      * The validation rules that apply when creating the resource.
      */
-    abstract protected static function createRules(): array;
+    abstract public static function creationRules(): array;
 }
