@@ -11,11 +11,27 @@ class LinkPolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can view any links.
+     */
+    public function viewAny(User $user): bool
+    {
+        return true;
+    }
+
+    /**
      * Determine whether the user can view the link.
      */
     public function view(User $user, Link $link): bool
     {
         return $user->belongsToTeam($link->team);
+    }
+
+    /**
+     * Determine whether the user can create links.
+     */
+    public function create(User $user): bool
+    {
+        return true;
     }
 
     /**

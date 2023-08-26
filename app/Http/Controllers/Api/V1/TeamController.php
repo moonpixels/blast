@@ -16,7 +16,7 @@ use Illuminate\Http\Response;
 class TeamController extends Controller
 {
     /**
-     * Display a listing of teams.
+     * Display a list of teams.
      */
     public function index(): ResourceCollection
     {

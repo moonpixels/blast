@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\LinkController;
 use App\Http\Controllers\Api\V1\TeamController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,4 +21,7 @@ Route::middleware(['auth:sanctum'])
     ->group(function () {
         // Teams...
         Route::apiResource('teams', TeamController::class);
+
+        // Links...
+        Route::apiResource('links', LinkController::class);
     });

@@ -34,6 +34,15 @@ it('filters links by a search term', function () {
         ->and($links->first()->alias)->toBe('testing');
 });
 
+it('filters links by users', function () {
+    $usersTeams = $this->team->owner->allTeams()->pluck('id');
+
+    $links = FilterLinks::run(user: $this->team->owner);
+
+    expect($links->count())->toBe(15)
+        ->and($links->collection->pluck('team_id'))->each->toBeIn($usersTeams);
+});
+
 it('returns an empty collection if no results are found', function () {
     $links = FilterLinks::run($this->team, 'link does not exist');
 

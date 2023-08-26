@@ -55,9 +55,7 @@ class LinkData extends DataRules
     public static function prepareForPipeline(Collection $properties): Collection
     {
         if (is_string($destinationUrl = $properties->get('destination_url'))) {
-            $properties->merge([
-                'destination_url' => FormatRawUrl::run($destinationUrl),
-            ]);
+            $properties->put('destination_url', FormatRawUrl::run($destinationUrl));
         }
 
         return $properties;
