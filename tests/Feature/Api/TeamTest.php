@@ -6,16 +6,25 @@ use Laravel\Sanctum\Sanctum;
 beforeEach(function () {
     $this->user = createUser();
     Sanctum::actingAs($this->user);
+    $this->team = getTeamForUser($this->user, 'Owned Team');
+
+    $this->jsonStructure = [
+        'id',
+        'name',
+        'personal_team',
+    ];
+
+    $this->jsonCollectionStructure = [
+        'data' => [
+            '*' => $this->jsonStructure,
+        ],
+    ];
 });
 
 test('users can create teams', function () {
     $response = $this->postJson(route('api.teams.store'), [
         'name' => 'Test Team',
-    ])->assertJson([
-        'data' => [
-            'name' => 'Test Team',
-        ],
-    ])->assertCreated();
+    ])->assertCreated()->assertJsonStructure(['data' => $this->jsonStructure]);
 
     $team = Team::find($response->json('data.id'));
 
@@ -25,37 +34,31 @@ test('users can create teams', function () {
 });
 
 test('users can retrieve teams', function () {
-    $team = createTeam(attributes: ['owner_id' => $this->user->id]);
-
-    $this->getJson(route('api.teams.show', $team))
-        ->assertJson([
-            'data' => [
-                'name' => $team->name,
-            ],
-        ])->assertOk();
+    $this->getJson(route('api.teams.show', $this->team))
+        ->assertOk()
+        ->assertJsonStructure(['data' => $this->jsonStructure]);
 });
 
 test('users can update teams', function () {
-    $team = createTeam(attributes: ['owner_id' => $this->user->id]);
-
-    $this->putJson(route('api.teams.update', $team), [
+    $this->putJson(route('api.teams.update', $this->team), [
         'name' => 'Updated Team',
-    ])->assertJson([
-        'data' => [
-            'name' => 'Updated Team',
-        ],
-    ])->assertOk();
+    ])->assertOk()->assertJsonStructure(['data' => $this->jsonStructure]);
 
-    $team->refresh();
+    $this->team->refresh();
 
-    expect($team->name)->toBe('Updated Team');
+    expect($this->team->name)->toBe('Updated Team');
 });
 
 test('users can delete teams', function () {
-    $team = createTeam(attributes: ['owner_id' => $this->user->id]);
-
-    $this->deleteJson(route('api.teams.destroy', $team))
+    $this->deleteJson(route('api.teams.destroy', $this->team))
         ->assertNoContent();
 
-    expect($team)->toBeSoftDeleted();
+    expect($this->team)->toBeSoftDeleted();
+});
+
+test('users can list teams', function () {
+    $this->getJson(route('api.teams.index'))
+        ->assertOk()
+        ->assertJsonStructure($this->jsonCollectionStructure)
+        ->assertJsonCount($this->user->allTeams()->count(), 'data');
 });

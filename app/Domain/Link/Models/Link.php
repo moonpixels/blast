@@ -4,7 +4,9 @@ namespace App\Domain\Link\Models;
 
 use App\Domain\Redirect\Models\Visit;
 use App\Domain\Team\Models\Team;
+use App\Domain\User\Models\User;
 use Database\Factories\LinkFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -149,6 +151,14 @@ class Link extends Model
     public function hasReachedVisitLimit(): bool
     {
         return $this->visit_limit && $this->total_visits >= $this->visit_limit;
+    }
+
+    /**
+     * Scope a query to only include links the given user can view.
+     */
+    public function scopeForUser(Builder $query, User $user): void
+    {
+        $query->whereIn('team_id', $user->allTeams()->pluck('id'));
     }
 
     /**
