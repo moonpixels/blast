@@ -11,6 +11,14 @@ class TeamInvitationPolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can view the team invitation.
+     */
+    public function view(User $user, TeamInvitation $teamInvitation): bool
+    {
+        return $user->ownsTeam($teamInvitation->team);
+    }
+
+    /**
      * Determine whether the user can delete the team invitation.
      */
     public function delete(User $user, TeamInvitation $teamInvitation): bool
