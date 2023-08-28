@@ -53,6 +53,14 @@ class TeamPolicy
     }
 
     /**
+     * Determine whether the user can view any team members.
+     */
+    public function viewAnyMember(User $user, Team $team): bool
+    {
+        return $user->ownsTeam($team);
+    }
+
+    /**
      * Determine whether the user can attach a team member.
      */
     public function attachAnyMember(User $user, Team $team): bool
