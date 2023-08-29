@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\LinkController;
 use App\Http\Controllers\Api\V1\TeamController;
 use App\Http\Controllers\Api\V1\TeamInvitationController;
+use App\Http\Controllers\Api\V1\TeamMemberController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,10 @@ Route::middleware(['auth:sanctum'])
         // Team invitations...
         Route::apiResource('teams.invitations', TeamInvitationController::class)
             ->except(['update']);
+
+        // Team members...
+        Route::apiResource('teams.members', TeamMemberController::class)
+            ->only(['index', 'show', 'destroy']);
 
         // Links...
         Route::apiResource('links', LinkController::class);
