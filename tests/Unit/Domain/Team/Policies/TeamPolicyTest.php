@@ -31,6 +31,23 @@ it('only lets owners delete non-personal teams', function () {
         ->and($this->policy->delete($this->user, $this->otherTeam))->toBeFalse();
 });
 
+it('only lets owners view any team members', function () {
+    expect($this->policy->viewAnyMember($this->user, $this->ownedTeam))->toBeTrue()
+        ->and($this->policy->viewAnyMember($this->user, $this->memberTeam))->toBeFalse()
+        ->and($this->policy->viewAnyMember($this->user, $this->otherTeam))->toBeFalse();
+});
+
+it('only lets owners or member view team members', function () {
+    $this->ownedTeam->members()->attach($this->memberTeam->owner);
+    $this->memberTeam->members()->attach($this->otherTeam->owner);
+    $this->otherTeam->members()->attach($this->memberTeam->owner);
+
+    expect($this->policy->viewMember($this->user, $this->ownedTeam, $this->memberTeam->owner))->toBeTrue()
+        ->and($this->policy->viewMember($this->user, $this->memberTeam, $this->user))->toBeTrue()
+        ->and($this->policy->viewMember($this->user, $this->memberTeam, $this->otherTeam->owner))->toBeFalse()
+        ->and($this->policy->viewMember($this->user, $this->otherTeam, $this->memberTeam->owner))->toBeFalse();
+});
+
 it('only lets owners attach team members for non-personal teams', function () {
     expect($this->policy->attachAnyMember($this->user, $this->ownedTeam))->toBeTrue()
         ->and($this->policy->attachAnyMember($this->user, $this->user->personalTeam()))->toBeFalse()
