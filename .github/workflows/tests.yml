@@ -107,7 +107,7 @@ jobs:
         run: php artisan migrate --force --no-interaction
 
       - name: Run tests
-        uses: cypress-io/github-action@v5
+        uses: cypress-io/github-action@v6
         env:
           CYPRESS_ENV: ci
         with:
