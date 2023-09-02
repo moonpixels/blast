@@ -7,16 +7,12 @@ export default defineConfig({
   base: '/docs/',
 
   themeConfig: {
-    nav: [
-      { text: 'Blast', link: 'https://blst.to' },
-    ],
+    nav: [{ text: 'Blast', link: 'https://blst.to' }],
 
     sidebar: [
       {
         text: 'Getting Started',
-        items: [
-          { text: 'Introduction', link: '/introduction' },
-        ],
+        items: [{ text: 'Introduction', link: '/introduction' }],
       },
       {
         text: 'Teams',
@@ -28,9 +24,7 @@ export default defineConfig({
       },
       {
         text: 'Links',
-        items: [
-          { text: 'Links', link: '/links' },
-        ],
+        items: [{ text: 'Links', link: '/links' }],
       },
     ],
 
