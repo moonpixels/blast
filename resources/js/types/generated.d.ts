@@ -1,4 +1,7 @@
 declare namespace App.Domain.Link.Data {
+  export type DomainData = {
+    host?: string
+  }
   export type LinkData = {
     team_id?: string
     destination_url?: string
@@ -8,14 +11,17 @@ declare namespace App.Domain.Link.Data {
     expires_at?: string | null
   }
 }
+
 declare namespace App.Domain.Redirect.Data {
   export type RedirectData = {
     password?: string
   }
 }
+
 declare namespace App.Domain.Redirect.Enums {
   export type DeviceTypes = 'desktop' | 'mobile' | 'tablet'
 }
+
 declare namespace App.Domain.Team.Data {
   export type TeamData = {
     name?: string
@@ -26,7 +32,11 @@ declare namespace App.Domain.Team.Data {
     email?: string
   }
 }
+
 declare namespace App.Domain.User.Data {
+  export type PersonalAccessTokenData = {
+    name?: string
+  }
   export type UserData = {
     name?: string
     email?: string

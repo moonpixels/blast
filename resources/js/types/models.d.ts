@@ -43,3 +43,13 @@ export type Link = {
   updated_at: string
   team?: Team
 }
+
+export type Token = {
+  id: string
+  name: string
+  abilities: string[]
+  last_used_at: string | null
+  expires_at: string | null
+  created_at: string
+  updated_at: string
+}

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Web\CurrentTeamController;
 use App\Http\Controllers\Web\CurrentUserController;
 use App\Http\Controllers\Web\LinkController;
+use App\Http\Controllers\Web\PersonalAccessTokenController;
 use App\Http\Controllers\Web\RedirectController;
 use App\Http\Controllers\Web\TeamController;
 use App\Http\Controllers\Web\TeamInvitationController;
@@ -85,6 +86,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         ->name('teams.members.')
         ->group(function () {
             Route::delete('/teams/{team}/members/{member}', 'destroy')->name('destroy');
+        });
+
+    // API settings...
+    Route::controller(PersonalAccessTokenController::class)
+        ->name('personal-access-tokens.')
+        ->group(function () {
+            Route::get('/settings/api', 'index')->name('index');
+            Route::post('/settings/api', 'store')->name('store');
+            Route::delete('/settings/api/{token}', 'destroy')->name('destroy');
         });
 });
 

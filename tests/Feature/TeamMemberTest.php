@@ -3,7 +3,7 @@
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
-    $this->user = login();
+    $this->user = login(['name' => 'Test User']);
     $this->ownedTeam = getTeamForUser($this->user, 'Owned Team');
     $this->memberTeam = getTeamForUser($this->user, 'Member Team');
     $this->user->switchTeam($this->memberTeam);

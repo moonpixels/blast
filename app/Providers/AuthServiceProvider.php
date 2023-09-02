@@ -9,9 +9,11 @@ use App\Domain\Team\Models\Team;
 use App\Domain\Team\Models\TeamInvitation;
 use App\Domain\Team\Policies\TeamInvitationPolicy;
 use App\Domain\Team\Policies\TeamPolicy;
+use App\Domain\User\Policies\PersonalAccessTokenPolicy;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Notifications\Messages\MailMessage;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         Team::class => TeamPolicy::class,
         TeamInvitation::class => TeamInvitationPolicy::class,
         Link::class => LinkPolicy::class,
+        PersonalAccessToken::class => PersonalAccessTokenPolicy::class,
     ];
 
     /**
