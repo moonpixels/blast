@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\Web\Links\LinkController;
-use App\Http\Controllers\Web\Redirects\RedirectController;
-use App\Http\Controllers\Web\Teams\TeamController;
-use App\Http\Controllers\Web\Teams\TeamInvitationController;
-use App\Http\Controllers\Web\Teams\TeamMemberController;
-use App\Http\Controllers\Web\User\CurrentTeamController;
-use App\Http\Controllers\Web\User\CurrentUserController;
+use App\Http\Controllers\Web\CurrentTeamController;
+use App\Http\Controllers\Web\CurrentUserController;
+use App\Http\Controllers\Web\LinkController;
+use App\Http\Controllers\Web\RedirectController;
+use App\Http\Controllers\Web\TeamController;
+use App\Http\Controllers\Web\TeamInvitationController;
+use App\Http\Controllers\Web\TeamMemberController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;

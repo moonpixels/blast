@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Redirects;
+namespace App\Http\Controllers\Web;
 
 use App\Domain\Link\Models\Link;
 use App\Domain\Redirect\Actions\CreateVisit;

@@ -28,7 +28,7 @@ use Laravel\Scout\Searchable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable, TwoFactorAuthenticatable, HasUlids, Searchable;
+    use HasApiTokens, HasFactory, HasUlids, Notifiable, Searchable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that aren't mass assignable.

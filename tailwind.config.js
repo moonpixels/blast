@@ -9,6 +9,7 @@ module.exports = {
     './storage/framework/views/*.php',
     './resources/views/**/*.blade.php',
     './resources/js/**/*.vue',
+    './docs/.vitepress/**/*.{html,js,vue,ts}',
   ],
 
   theme: {
@@ -19,5 +20,5 @@ module.exports = {
     },
   },
 
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
 }

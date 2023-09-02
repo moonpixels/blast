@@ -18,15 +18,19 @@ class FilterLinks
     /**
      * Filter links.
      */
-    public function handle(Team $team = null, string $query = null, User $user = null): ResourceCollection
-    {
+    public function handle(
+        Team $team = null,
+        string $query = null,
+        User $user = null,
+        int $perPage = 15
+    ): ResourceCollection {
         return LinkResource::collection(
             Link::search($query)
                 ->when($team, fn (ScoutBuilder $query) => $query->where('team_id', $team->id))
                 ->orderBy('created_at', 'desc')
                 ->query(fn (Builder $query) => $query->with('team'))
                 ->query(fn (Builder $query) => $query->when($user, fn (Builder|Link $query) => $query->forUser($user)))
-                ->paginate(15)
+                ->paginate($perPage)
         );
     }
 }

@@ -33,7 +33,8 @@ class LinkController extends Controller
         return FilterLinks::run(
             team: $team ?? null,
             query: request('query'),
-            user: auth()->user()
+            user: auth()->user(),
+            perPage: request('perPage', 15)
         );
     }
 

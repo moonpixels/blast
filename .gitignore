@@ -21,3 +21,6 @@ lang/php_*.json
 /tests/cypress/videos
 /tests/cypress/screenshots
 /tests/cypress/support/routes.json
+docs/.vitepress/dist
+docs/.vitepress/cache
+public/docs
