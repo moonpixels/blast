@@ -27,7 +27,7 @@ test('users can register', function () {
 });
 
 test('registration fails with duplicate email', function () {
-    createUser();
+    createUser(attributes: ['email' => 'test@example.com']);
 
     $this->post(route('register'), [
         'name' => 'Test User',
@@ -37,7 +37,7 @@ test('registration fails with duplicate email', function () {
 });
 
 test('users can login', function () {
-    $user = createUser();
+    $user = createUser(attributes: ['email' => 'test@example.com']);
 
     $this->post(route('login'), [
         'email' => 'test@example.com',
@@ -61,7 +61,10 @@ test('login fails with incorrect password', function () {
 });
 
 test('users can login with two-factor authentication', function () {
-    $user = createUser(states: ['withTwoFactorAuthentication']);
+    $user = createUser(
+        attributes: ['email' => 'test@example.com'],
+        states: ['withTwoFactorAuthentication']
+    );
 
     $this->post(route('login'), [
         'email' => 'test@example.com',
@@ -83,7 +86,10 @@ test('users can login with two-factor authentication', function () {
 });
 
 test('login fails with incorrect two-factor authentication code', function () {
-    createUser(states: ['withTwoFactorAuthentication']);
+    createUser(
+        attributes: ['email' => 'test@example.com'],
+        states: ['withTwoFactorAuthentication']
+    );
 
     $this->post(route('login'), [
         'email' => 'test@example.com',
@@ -108,7 +114,7 @@ test('users can log out', function () {
 test('users can request a password reset', function () {
     Notification::fake();
 
-    $user = createUser();
+    $user = createUser(attributes: ['email' => 'test@example.com']);
 
     $this->post(route('password.email'), [
         'email' => 'test@example.com',
@@ -118,7 +124,7 @@ test('users can request a password reset', function () {
 });
 
 test('users can reset their password', function () {
-    $user = createUser();
+    $user = createUser(attributes: ['email' => 'test@example.com']);
 
     $token = app(PasswordBroker::class)->createToken($user);
 

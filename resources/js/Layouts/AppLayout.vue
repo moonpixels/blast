@@ -56,7 +56,7 @@
 <script lang="ts" setup>
 import BlastLogo from '@/Components/Logo/BlastLogo.vue'
 import { Link, usePage } from '@inertiajs/vue3'
-import { transChoice } from 'laravel-vue-i18n'
+import { trans, transChoice } from 'laravel-vue-i18n'
 import { computed } from 'vue'
 import { PageProps } from '@/types'
 import FlashNotification from '@/Components/Notifications/FlashMessages.vue'
@@ -84,6 +84,11 @@ const links = computed<NavLink[]>(() => [
     name: transChoice('Team|Teams', 1),
     href: route('teams.show', user.value.current_team?.id as string),
     route: '/teams',
+  },
+  {
+    name: trans('API'),
+    href: route('personal-access-tokens.index'),
+    route: '/settings/api',
   },
 ])
 </script>

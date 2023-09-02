@@ -14,12 +14,7 @@ function createUser(array $attributes = [], array $states = [], bool $withTeams 
         $states = array_merge($states, ['withOwnedTeam', 'withMemberTeam']);
     }
 
-    $defaultAttributes = isset($states['count']) ? [] : [
-        'name' => 'Test User',
-        'email' => 'test@example.com',
-    ];
-
-    return Fty::build(User::factory(), $states)->create(array_merge($defaultAttributes, $attributes));
+    return Fty::build(User::factory(), $states)->create($attributes);
 }
 
 /**

@@ -88,5 +88,7 @@ it('determines if two factor authentication is enabled', function () {
 });
 
 it('has the users initials', function () {
+    $this->user->update(['name' => 'Test User']);
+
     expect($this->user->initials)->toBe('TU');
 });
