@@ -20,7 +20,7 @@ class TeamMemberController extends Controller
     {
         $this->authorize('viewAnyMember', $team);
 
-        return FilterTeamMembers::run($team, request('query'));
+        return FilterTeamMembers::run($team, request('query'), request('perPage', 10));
     }
 
     /**

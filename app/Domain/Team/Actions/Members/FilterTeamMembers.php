@@ -15,13 +15,13 @@ class FilterTeamMembers
     /**
      * Filter the team members.
      */
-    public function handle(Team $team, string $query = null): ResourceCollection
+    public function handle(Team $team, string $query = null, int $perPage = 10): ResourceCollection
     {
         return UserResource::collection(
             User::search($query)
                 ->whereIn('id', $team->members()->pluck('id')->toArray())
                 ->orderBy('name')
-                ->paginate(10)
+                ->paginate($perPage)
         );
     }
 }

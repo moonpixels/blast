@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Teams;
+namespace App\Http\Controllers\Web;
 
 use App\Domain\Team\Actions\Invitations\AcceptTeamInvitation;
 use App\Domain\Team\Actions\Invitations\CreateTeamInvitation;

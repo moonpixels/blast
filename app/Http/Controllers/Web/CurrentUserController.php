@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\User;
+namespace App\Http\Controllers\Web;
 
 use App\Domain\User\Actions\DeleteUser;
 use App\Http\Controllers\Controller;

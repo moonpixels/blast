@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Web\Links;
+namespace App\Http\Controllers\Web;
 
 use App\Domain\Link\Actions\CreateLink;
 use App\Domain\Link\Actions\DeleteLink;

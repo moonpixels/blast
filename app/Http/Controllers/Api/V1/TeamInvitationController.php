@@ -23,7 +23,7 @@ class TeamInvitationController extends Controller
     {
         $this->authorize('viewAnyMember', $team);
 
-        return FilterTeamInvitations::run($team, request('query'));
+        return FilterTeamInvitations::run($team, request('query'), request('perPage', 10));
     }
 
     /**

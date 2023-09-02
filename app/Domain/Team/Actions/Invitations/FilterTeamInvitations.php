@@ -16,14 +16,14 @@ class FilterTeamInvitations
     /**
      * Filter the team invitations.
      */
-    public function handle(Team $team, string $query = null): ResourceCollection
+    public function handle(Team $team, string $query = null, int $perPage = 10): ResourceCollection
     {
         return TeamInvitationResource::collection(
             TeamInvitation::search($query)
                 ->where('team_id', $team->id)
                 ->orderBy('created_at', 'desc')
                 ->query(fn (Builder $query) => $query->with('team'))
-                ->paginate(10)
+                ->paginate($perPage)
         );
     }
 }
