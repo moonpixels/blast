@@ -8,7 +8,6 @@ use App\Http\Controllers\Web\RedirectController;
 use App\Http\Controllers\Web\TeamController;
 use App\Http\Controllers\Web\TeamInvitationController;
 use App\Http\Controllers\Web\TeamMemberController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -24,11 +23,20 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Home', [
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    if (auth()->check()) {
+        return redirect()->route('links.index');
+    }
+
+    return Inertia::render('Home');
 })->name('home');
+
+Route::get('/privacy', function () {
+    return Inertia::render('Privacy');
+})->name('privacy');
+
+Route::get('/terms', function () {
+    return Inertia::render('Terms');
+})->name('terms');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Links...

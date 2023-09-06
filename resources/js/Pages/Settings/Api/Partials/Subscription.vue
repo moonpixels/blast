@@ -16,7 +16,7 @@
         <p class="mt-2">
           {{
             $t(
-              'Our paid plan is currently in development, but will be available soon. The paid plan will increase the API request limit.'
+              'Our paid plan with an increased rate limit is currently in closed beta. We will be opening it up to everyone soon.'
             )
           }}
         </p>
