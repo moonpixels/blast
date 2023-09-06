@@ -23,6 +23,8 @@
     "meilisearch/meilisearch-php": "^1.2",
     "spatie/laravel-data": "^3.7",
     "spatie/laravel-typescript-transformer": "^2.3",
+    "symfony/http-client": "^6.3",
+    "symfony/postmark-mailer": "^6.3",
     "tightenco/ziggy": "^1.5"
   },
   "require-dev": {
