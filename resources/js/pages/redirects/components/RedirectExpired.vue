@@ -1,0 +1,14 @@
+<template>
+  <AppHead :title="$t('The link has expired')" />
+
+  <FullPageHeading :title="$t('The link has expired')">
+    <p>
+      {{ $t('The link you are trying to access has expired.') }}
+    </p>
+  </FullPageHeading>
+</template>
+
+<script lang="ts" setup>
+import FullPageHeading from '@/components/FullPageHeading.vue'
+import AppHead from '@/components/AppHead.vue'
+</script>

@@ -19,17 +19,24 @@ class RedirectController extends Controller
     public function show(Link $link): Response|RedirectResponse
     {
         if ($link->has_password) {
-            return inertia('Redirects/Protected', [
+            return inertia('redirects/index', [
                 'alias' => $link->alias,
+                'status' => 'protected',
             ]);
         }
 
         if ($link->hasExpired()) {
-            return inertia('Redirects/Expired');
+            return inertia('redirects/index', [
+                'alias' => $link->alias,
+                'status' => 'expired',
+            ]);
         }
 
         if ($link->hasReachedVisitLimit()) {
-            return inertia('Redirects/Limited');
+            return inertia('redirects/index', [
+                'alias' => $link->alias,
+                'status' => 'limited',
+            ]);
         }
 
         return $this->handleRedirect($link);

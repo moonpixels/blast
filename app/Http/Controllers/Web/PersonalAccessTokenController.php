@@ -18,7 +18,7 @@ class PersonalAccessTokenController extends Controller
      */
     public function index(): Response
     {
-        return inertia('Settings/Api/Index', [
+        return inertia('settings/api/index', [
             'tokens' => PersonalAccessTokenResource::collection(auth()->user()->tokens),
             'plainTextToken' => session('plainTextToken'),
         ]);

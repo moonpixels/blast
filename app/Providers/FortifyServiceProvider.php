@@ -48,34 +48,34 @@ class FortifyServiceProvider extends ServiceProvider
                 abort(403, __('Registration is currently disabled'));
             }
 
-            return Inertia::render('Auth/Register');
+            return Inertia::render('register');
         });
 
         Fortify::loginView(function () {
-            return Inertia::render('Auth/Login', [
+            return Inertia::render('login', [
                 'status' => session('status'),
             ]);
         });
 
         Fortify::requestPasswordResetLinkView(function () {
-            return Inertia::render('Auth/ForgotPassword', [
+            return Inertia::render('forgot-password', [
                 'status' => session('status'),
             ]);
         });
 
         Fortify::resetPasswordView(function (Request $request) {
-            return Inertia::render('Auth/ResetPassword', [
+            return Inertia::render('reset-password', [
                 'email' => $request->input('email'),
                 'token' => $request->route('token'),
             ]);
         });
 
         Fortify::confirmPasswordView(function () {
-            return Inertia::render('Auth/ConfirmPassword');
+            return Inertia::render('confirm-password');
         });
 
         Fortify::twoFactorChallengeView(function () {
-            return Inertia::render('Auth/TwoFactorChallenge');
+            return Inertia::render('two-factor-challenge');
         });
 
         Fortify::verifyEmailView(function (Request $request) {
@@ -87,7 +87,7 @@ class FortifyServiceProvider extends ServiceProvider
                 ]);
             }
 
-            return Inertia::render('Auth/VerifyEmail', [
+            return Inertia::render('verify-email', [
                 'status' => session('status'),
                 'email' => $request->user()->email,
             ]);
