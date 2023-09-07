@@ -15,16 +15,12 @@ describe('redirects.show', () => {
     ).then((link) => {
       cy.visit({ route: 'redirects.show', parameters: { link: link.alias } })
 
-      cy.get('[data-cy="authenticated-redirect-form"]')
-        .within(() => {
-          cy.getFormInput('Password').type('password')
-          cy.get('[data-cy="submit-button"]').click()
-        })
-        .then(() => {
-          cy.on('url:changed', (newUrl) => {
-            expect(newUrl).to.include(link.destination_url)
-          })
-        })
+      cy.get('[data-cy="authenticated-redirect-form"]').within(() => {
+        cy.getFormInput('Password').type('password')
+        cy.get('[data-cy="submit-button"]').click()
+      })
+
+      cy.url().should('not.contain', link.alias)
     })
   })
 
