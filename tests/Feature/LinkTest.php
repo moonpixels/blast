@@ -87,7 +87,7 @@ test('users can view the list of links', function () {
     $this->get(route('links.index'))
         ->assertOK()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Links/Index')
+            ->component('links/index')
             ->has('links')
             ->has('filters')
         );
@@ -107,7 +107,7 @@ test('users can filter the list of links', function () {
     $this->get(route('links.index', ['query' => 'filtered']))
         ->assertOK()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Links/Index')
+            ->component('links/index')
             ->has('links.data', 1)
             ->has('links.data.0', fn (Assert $page) => $page
                 ->where('destination_url', 'https://example.com/filtered')

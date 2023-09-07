@@ -30,7 +30,7 @@ test('users can view teams', function () {
     $this->get(route('teams.show', $team))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Teams/Show')
+            ->component('teams/show')
             ->has('team', fn (Assert $page) => $page
                 ->where('id', $team->id)
                 ->where('name', $team->name)

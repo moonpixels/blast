@@ -134,7 +134,7 @@ test('users can filter team invitations', function () {
         'view' => 'invitations',
         'query' => 'test@example.com',
     ]))->assertInertia(fn (Assert $page) => $page
-        ->component('Teams/Show')
+        ->component('teams/show')
         ->where('filters.view', 'invitations')
         ->where('filters.query', 'test@example.com')
         ->has('invitations.data', 1)

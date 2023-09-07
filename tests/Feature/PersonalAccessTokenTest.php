@@ -37,7 +37,7 @@ test('users can view personal access tokens', function () {
     $this->get(route('personal-access-tokens.index'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Settings/Api/Index')
+            ->component('settings/api/index')
             ->has('tokens', 1)
             ->has('tokens.0', fn (Assert $page) => $page
                 ->where('id', $this->user->tokens->first()->id)

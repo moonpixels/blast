@@ -18,7 +18,7 @@ test('user settings page requires password confirmation', function () {
     $this->get(route('user.edit'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
-            ->component('User/Edit')
+            ->component('settings/profile/index')
         );
 });
 

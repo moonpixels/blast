@@ -38,6 +38,6 @@ describe('Delete account', () => {
       cy.get('[data-cy="cancel-button"]').click()
     })
 
-    cy.assertRedirect('user/edit')
+    cy.assertRedirect('settings/profile')
   })
 })

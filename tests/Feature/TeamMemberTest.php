@@ -43,7 +43,7 @@ test('users can filter team members', function () {
         'view' => 'members',
         'query' => 'Test User',
     ]))->assertInertia(fn (Assert $page) => $page
-        ->component('Teams/Show')
+        ->component('teams/show')
         ->where('filters.view', 'members')
         ->where('filters.query', 'Test User')
         ->has('members.data', 1)

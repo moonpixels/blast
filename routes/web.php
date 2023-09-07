@@ -9,7 +9,6 @@ use App\Http\Controllers\Web\TeamController;
 use App\Http\Controllers\Web\TeamInvitationController;
 use App\Http\Controllers\Web\TeamMemberController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,15 +26,15 @@ Route::get('/', function () {
         return redirect()->route('links.index');
     }
 
-    return Inertia::render('Home');
+    return inertia('index');
 })->name('home');
 
 Route::get('/privacy', function () {
-    return Inertia::render('Privacy');
+    return inertia('privacy');
 })->name('privacy');
 
 Route::get('/terms', function () {
-    return Inertia::render('Terms');
+    return inertia('terms');
 })->name('terms');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
@@ -49,21 +48,21 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::delete('/links/{link}', 'destroy')->name('destroy');
         });
 
-    // Current user...
+    // Profile settings...
     Route::controller(CurrentUserController::class)
         ->name('user.')
         ->group(function () {
             // Protected routes...
             Route::middleware(['password.confirm'])->group(function () {
-                Route::delete('/user', 'destroy')->name('destroy');
-                Route::get('/user/edit', 'edit')->name('edit');
+                Route::delete('/settings/profile', 'destroy')->name('destroy');
+                Route::get('/settings/profile', 'edit')->name('edit');
             });
 
             // Current team...
             Route::controller(CurrentTeamController::class)
                 ->name('current-team.')
                 ->group(function () {
-                    Route::put('/user/current-team', 'update')->name('update');
+                    Route::put('/settings/profile/current-team', 'update')->name('update');
                 });
         });
 

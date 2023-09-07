@@ -21,7 +21,7 @@ class LinkController extends Controller
      */
     public function index(): Response
     {
-        return Inertia::render('Links/Index', [
+        return inertia('links/index', [
             'filters' => [
                 'query' => request()->query('query'),
             ],

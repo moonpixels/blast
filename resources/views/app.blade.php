@@ -7,7 +7,7 @@
   <title inertia>{{ __('Blast - The privacy-focused open source URL shortener') }}</title>
 
   @routes
-  @vite(['resources/js/app.ts', "resources/js/Pages/{$page['component']}.vue"])
+  @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
   @inertiaHead
 </head>
 <body class="font-sans antialiased text-zinc-500 dark:text-zinc-400 bg-zinc-50 dark:bg-zinc-900">

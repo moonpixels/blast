@@ -41,7 +41,7 @@ class TeamController extends Controller
             }
         }
 
-        return inertia('Teams/Show', $props);
+        return inertia('teams/show', $props);
     }
 
     /**

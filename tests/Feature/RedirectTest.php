@@ -24,8 +24,9 @@ test('users are redirected when using protected links', function () {
 
     $this->get(route('redirects.show', $this->link))
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Redirects/Protected')
+            ->component('redirects/index')
             ->where('alias', $this->link->alias)
+            ->where('status', 'protected')
         );
 
     $this->post(route('redirects.authenticate', $this->link), [
@@ -56,7 +57,9 @@ test('users are not redirected when the link has expired', function () {
 
     $this->get(route('redirects.show', $this->link))
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Redirects/Expired')
+            ->component('redirects/index')
+            ->where('alias', $this->link->alias)
+            ->where('status', 'expired')
         );
 
     $this->link->refresh();
@@ -72,7 +75,9 @@ test('users are not redirected when the link has reached its visit limit', funct
 
     $this->get(route('redirects.show', $this->link))
         ->assertInertia(fn (Assert $page) => $page
-            ->component('Redirects/Limited')
+            ->component('redirects/index')
+            ->where('alias', $this->link->alias)
+            ->where('status', 'limited')
         );
 
     $this->link->refresh();
