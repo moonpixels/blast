@@ -10,7 +10,6 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
-use Inertia\Inertia;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -48,34 +47,34 @@ class FortifyServiceProvider extends ServiceProvider
                 abort(403, __('Registration is currently disabled'));
             }
 
-            return Inertia::render('register');
+            return inertia('register');
         });
 
         Fortify::loginView(function () {
-            return Inertia::render('login', [
+            return inertia('login', [
                 'status' => session('status'),
             ]);
         });
 
         Fortify::requestPasswordResetLinkView(function () {
-            return Inertia::render('forgot-password', [
+            return inertia('forgot-password', [
                 'status' => session('status'),
             ]);
         });
 
         Fortify::resetPasswordView(function (Request $request) {
-            return Inertia::render('reset-password', [
+            return inertia('reset-password', [
                 'email' => $request->input('email'),
                 'token' => $request->route('token'),
             ]);
         });
 
         Fortify::confirmPasswordView(function () {
-            return Inertia::render('confirm-password');
+            return inertia('confirm-password');
         });
 
         Fortify::twoFactorChallengeView(function () {
-            return Inertia::render('two-factor-challenge');
+            return inertia('two-factor-challenge');
         });
 
         Fortify::verifyEmailView(function (Request $request) {
@@ -87,7 +86,7 @@ class FortifyServiceProvider extends ServiceProvider
                 ]);
             }
 
-            return Inertia::render('verify-email', [
+            return inertia('verify-email', [
                 'status' => session('status'),
                 'email' => $request->user()->email,
             ]);

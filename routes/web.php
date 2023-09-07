@@ -9,7 +9,6 @@ use App\Http\Controllers\Web\TeamController;
 use App\Http\Controllers\Web\TeamInvitationController;
 use App\Http\Controllers\Web\TeamMemberController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,15 +26,15 @@ Route::get('/', function () {
         return redirect()->route('links.index');
     }
 
-    return Inertia::render('index');
+    return inertia('index');
 })->name('home');
 
 Route::get('/privacy', function () {
-    return Inertia::render('privacy');
+    return inertia('privacy');
 })->name('privacy');
 
 Route::get('/terms', function () {
-    return Inertia::render('terms');
+    return inertia('terms');
 })->name('terms');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {

@@ -38,7 +38,7 @@ class CurrentUserController extends Controller
      */
     public function edit(): Response
     {
-        return Inertia::render('settings/profile/index', [
+        return inertia('settings/profile/index', [
             'status' => Inertia::lazy(fn () => session('status')),
             'twoFactorQrCode' => Inertia::lazy(fn () => auth()->user()?->twoFactorQrCodeSvg()),
             'twoFactorRecoveryCodes' => Inertia::lazy(fn () => auth()->user()?->recoveryCodes()),
