@@ -35,7 +35,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<string>
      */
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'is_admin', 'email_verified_at'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -53,6 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<string, string>
      */
     protected $casts = [
+        'is_admin' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
 
