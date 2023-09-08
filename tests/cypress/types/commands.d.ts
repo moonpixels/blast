@@ -24,7 +24,7 @@ declare global {
 
       seed(seederClass: string): Chainable<any>
 
-      artisan(command: string, parameters: Record<string, string>, options: { log: boolean }): Chainable<any>
+      artisan(command: string, parameters: Record<string, string>, options: Record<string, any>): Chainable<any>
 
       php(command: string): Chainable<any>
     }
