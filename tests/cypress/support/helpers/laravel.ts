@@ -164,7 +164,7 @@ Cypress.Commands.overwrite('visit', (originalFn, options) => {
  * Refresh the database state.
  */
 Cypress.Commands.add('refreshDatabase', (options = {}) => {
-  return cy.artisan('migrate:fresh', options)
+  return cy.artisan('migrate:fresh', {}, options)
 })
 
 /**
@@ -177,7 +177,7 @@ Cypress.Commands.add('seed', (seederClass = '') => {
     options['--class'] = seederClass
   }
 
-  return cy.artisan('db:seed', options)
+  return cy.artisan('db:seed', {}, options)
 })
 
 /**
