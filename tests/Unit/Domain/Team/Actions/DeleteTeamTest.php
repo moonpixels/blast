@@ -33,8 +33,3 @@ it('switches team members to their personal team', function () {
 
     DeleteLinksForTeam::assertPushed(1);
 });
-
-it('does not delete personal teams', function () {
-    expect(DeleteTeam::run($this->user->personalTeam()))->toBeFalse()
-        ->and($this->user->personalTeam()->exists())->toBeTrue();
-});

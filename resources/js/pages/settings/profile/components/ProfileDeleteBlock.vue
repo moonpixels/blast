@@ -24,6 +24,16 @@
           )
         }}
       </p>
+
+      <p class="mt-2 text-sm">
+        {{ $t('The following resources will be deleted:') }}
+      </p>
+
+      <ul class="mt-1 list-inside list-disc text-sm">
+        <li>{{ $t('All of your owned teams.') }}</li>
+        <li>{{ $t('All of the links associated with your owned teams.') }}</li>
+        <li>{{ $t('Your user account and its data.') }}</li>
+      </ul>
     </template>
 
     <template #footer>
