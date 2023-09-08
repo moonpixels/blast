@@ -16,14 +16,12 @@ class DeleteTeam
      */
     public function handle(Team $team): bool
     {
-        if ($team->personal_team) {
-            return false;
-        }
-
         return DB::transaction(function () use ($team) {
-            User::where('current_team_id', $team->id)->each(function (User $user) {
-                $user->switchTeam($user->personalTeam());
-            });
+            if (! $team->personal_team) {
+                User::where('current_team_id', $team->id)->each(function (User $user) {
+                    $user->switchTeam($user->personalTeam());
+                });
+            }
 
             $team->members()->detach();
 
