@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'Blast',
-  description: 'Privacy focused, open source URL shortener.',
+  description: 'This is the documentation for the Blast API. It is intended for developers who want to integrate Blast into their own applications.',
   outDir: '../public/docs',
   base: '/docs/',
 
