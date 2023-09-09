@@ -10,7 +10,6 @@ use Spatie\Health\Checks\Checks\DatabaseConnectionCountCheck;
 use Spatie\Health\Checks\Checks\DebugModeCheck;
 use Spatie\Health\Checks\Checks\EnvironmentCheck;
 use Spatie\Health\Checks\Checks\HorizonCheck;
-use Spatie\Health\Checks\Checks\MeiliSearchCheck;
 use Spatie\Health\Checks\Checks\OptimizedAppCheck;
 use Spatie\Health\Checks\Checks\QueueCheck;
 use Spatie\Health\Checks\Checks\RedisCheck;
@@ -45,8 +44,6 @@ class HealthCheckServiceProvider extends ServiceProvider
             DebugModeCheck::new(),
             EnvironmentCheck::new(),
             HorizonCheck::new(),
-            MeiliSearchCheck::new()
-                ->url(config('scout.meilisearch.host')),
             QueueCheck::new(),
             RedisCheck::new(),
             SecurityAdvisoriesCheck::new(),
