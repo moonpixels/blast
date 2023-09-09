@@ -28,8 +28,10 @@ class FilterLinks
             Link::search($query)
                 ->when($team, fn (ScoutBuilder $query) => $query->where('team_id', $team->id))
                 ->orderBy('created_at', 'desc')
-                ->query(fn (Builder $query) => $query->with('team'))
-                ->query(fn (Builder $query) => $query->when($user, fn (Builder|Link $query) => $query->forUser($user)))
+                ->query(function (Builder $query) use ($user) {
+                    $query->with('team')
+                        ->when($user, fn (Builder|Link $query) => $query->forUser($user));
+                })
                 ->paginate($perPage)
         );
     }
