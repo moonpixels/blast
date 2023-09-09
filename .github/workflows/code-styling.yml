@@ -1,11 +1,7 @@
 name: Code Styling
 
 on:
-  push:
-    branches: [main]
   pull_request:
-  release:
-    types: [created]
 
 concurrency:
   group: code-styling-${{ github.ref }}
