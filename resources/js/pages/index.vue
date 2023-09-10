@@ -119,7 +119,7 @@
 
             {{ feature.name }}
           </dt>
-          <dd class="mt-1">{{ feature.description }}</dd>
+          <dd class="mt-1" v-html="feature.description"></dd>
         </div>
       </dl>
     </AppContainer>
@@ -178,7 +178,7 @@ import {
   KeyIcon,
   MagnifyingGlassIcon,
   PencilIcon,
-  RocketLaunchIcon,
+  ShareIcon,
   TagIcon,
   UserGroupIcon,
 } from '@heroicons/vue/20/solid'
@@ -190,7 +190,6 @@ import {
 } from '@heroicons/vue/24/outline'
 import GuestLayout from '@/layouts/GuestLayout.vue'
 import AppHead from '@/components/AppHead.vue'
-import { FunctionalComponent } from 'vue'
 
 defineOptions({
   layout: GuestLayout,
@@ -199,7 +198,7 @@ defineOptions({
 type Feature = {
   name: string
   description: string
-  icon: FunctionalComponent
+  icon: any
 }
 
 const features: Feature[] = [
@@ -287,10 +286,10 @@ const additionalFeatures: Feature[] = [
     icon: EyeSlashIcon,
   },
   {
-    name: 'Amazingly fast.',
+    name: 'Open source.',
     description:
-      'We use a global infrastructure of servers and edge caching to redirect your users at lightning speeds.',
-    icon: RocketLaunchIcon,
+      'Our code is open source and available on <a href="https://github.com/moonpixels/blast" class="underline decoration-dashed underline-offset-2 transition-all duration-200 ease-in-out hover:text-zinc-900 dark:hover:text-white" rel="noopener noreferrer">GitHub</a>. You can also self-host Blast if you prefer to do so.',
+    icon: ShareIcon,
   },
 ]
 </script>
