@@ -24,3 +24,4 @@ lang/php_*.json
 docs/.vitepress/dist
 docs/.vitepress/cache
 public/docs
+/public/sitemap.xml

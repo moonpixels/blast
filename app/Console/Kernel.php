@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
 
         // Application tasks...
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
+        $schedule->command('sitemap:generate')->daily()->graceTimeInMinutes(25);
     }
 
     /**
