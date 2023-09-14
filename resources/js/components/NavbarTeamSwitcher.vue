@@ -33,14 +33,14 @@
                 <span class="-ml-2 flex-1 truncate">
                   {{ team.name }}
                 </span>
-                <AppBadge
+                <BaseBadge
                   v-if="user.current_team?.id === team.id"
                   class="-mr-2 ml-2 shrink-0"
                   data-cy="current-team-badge"
                   variant="primary"
                 >
                   {{ $t('Current') }}
-                </AppBadge>
+                </BaseBadge>
               </div>
             </DropdownMenuItemLink>
           </div>
@@ -71,7 +71,7 @@
         </p>
 
         <form id="create-team-form" class="space-y-6" data-cy="create-team-form" @submit.prevent="submit">
-          <TextInput
+          <BaseInput
             v-model="form.name"
             :error="form.errors.name"
             :label="$t('Team name')"
@@ -83,13 +83,13 @@
       </template>
 
       <template #footer>
-        <ButtonPrimary :loading="form.processing" data-cy="submit-button" form="create-team-form" type="submit">
+        <BaseButton :loading="form.processing" data-cy="submit-button" form="create-team-form" type="submit">
           {{ $t('Create team') }}
-        </ButtonPrimary>
+        </BaseButton>
 
-        <ButtonSecondary data-cy="cancel-button" @click="showModal = false">
+        <BaseButton data-cy="cancel-button" variant="secondary" @click="showModal = false">
           {{ $t('Cancel') }}
-        </ButtonSecondary>
+        </BaseButton>
       </template>
     </Modal>
   </div>
@@ -99,17 +99,16 @@
 import { ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 import DropdownMenuItemLink from '@/components/DropdownMenuItemLink.vue'
 import { PlusCircleIcon } from '@heroicons/vue/24/outline'
-import AppBadge from '@/components/AppBadge.vue'
+import BaseBadge from '@/components/BaseBadge.vue'
 import DropdownMenuItemButton from '@/components/DropdownMenuItemButton.vue'
 import { MenuButton } from '@headlessui/vue'
 import DropdownMenu from '@/components/DropdownMenu.vue'
 import { computed, ref } from 'vue'
-import Modal from '@/components/AppModal.vue'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
+import Modal from '@/components/BaseModal.vue'
 import { useForm } from '@inertiajs/vue3'
-import TextInput from '@/components/AppInput.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import { User } from '@/types/models'
+import BaseButton from '@/components/BaseButton.vue'
 import TeamData = App.Domain.Team.Data.TeamData
 
 type Props = {

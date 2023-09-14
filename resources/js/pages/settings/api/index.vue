@@ -1,7 +1,7 @@
 <template>
-  <AppHead :title="$t('API Settings')" />
+  <BaseHead :title="$t('API Settings')" />
 
-  <AppContainer>
+  <BaseContainer>
     <h1 class="text-xl font-semibold text-zinc-900 dark:text-white">
       {{ $t('API settings') }}
     </h1>
@@ -13,9 +13,9 @@
       >
         <div class="flex h-full items-center">
           <a href="https://blst.to/docs">
-            <PrimaryButton>
+            <BaseButton>
               {{ $t('View API docs') }}
-            </PrimaryButton>
+            </BaseButton>
           </a>
         </div>
       </TwoColumnBlockItem>
@@ -42,28 +42,27 @@
         </template>
 
         <template #footer>
-          <SecondaryButton @click="showNewTokenModal = false">
+          <BaseButton variant="secondary" @click="showNewTokenModal = false">
             {{ $t('Close') }}
-          </SecondaryButton>
+          </BaseButton>
         </template>
       </Modal>
     </TwoColumnBlock>
-  </AppContainer>
+  </BaseContainer>
 </template>
 
 <script lang="ts" setup>
 import AppLayout from '@/layouts/AppLayout.vue'
-import AppContainer from '@/components/AppContainer.vue'
-import AppHead from '@/components/AppHead.vue'
+import BaseContainer from '@/components/BaseContainer.vue'
+import BaseHead from '@/components/BaseHead.vue'
 import TwoColumnBlock from '@/components/TwoColumnBlock.vue'
 import ApiTokensBlock from '@/pages/settings/api/components/ApiTokensBlock.vue'
 import { Token } from '@/types/models'
-import Modal from '@/components/AppModal.vue'
-import SecondaryButton from '@/components/ButtonSecondary.vue'
+import Modal from '@/components/BaseModal.vue'
 import { ref, watch } from 'vue'
 import ApiSubscriptionBlock from '@/pages/settings/api/components/ApiSubscriptionBlock.vue'
-import PrimaryButton from '@/components/ButtonPrimary.vue'
 import TwoColumnBlockItem from '@/components/TwoColumnBlockItem.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 defineOptions({
   layout: AppLayout,

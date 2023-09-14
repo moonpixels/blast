@@ -1,19 +1,19 @@
 <template>
-  <AppHead :title="$t('Links')" />
+  <BaseHead :title="$t('Links')" />
 
-  <AppContainer>
+  <BaseContainer>
     <div class="space-y-6 lg:flex lg:space-x-6 lg:space-y-0">
       <div class="flex-none">
         <LinkShortener :shortened-link="shortenedLink" />
       </div>
 
       <div class="flex-auto overflow-hidden pb-10">
-        <ResourcePanel>
-          <ResourcePanelHeader>
+        <ResourcePanel list-cypress-selector="links-list">
+          <template #header>
             <div />
 
             <div class="mt-3 lg:mt-0 lg:w-60">
-              <TextInput
+              <BaseInput
                 v-model="searchQuery"
                 :label="$t('Search')"
                 :placeholder="$t('Find a link...')"
@@ -25,9 +25,9 @@
                 <template #icon>
                   <MagnifyingGlassIcon class="pointer-events-none h-4 w-4" />
                 </template>
-              </TextInput>
+              </BaseInput>
             </div>
-          </ResourcePanelHeader>
+          </template>
 
           <SimpleEmptyState
             v-if="!links.data.length"
@@ -39,7 +39,7 @@
             data-cy="no-links-empty-state"
           />
 
-          <ResourcePanelList v-else data-cy="links-list">
+          <template v-if="links.data.length" #list>
             <ResourcePanelListItem v-for="link in links.data" :key="link.id">
               <template #content>
                 <div class="flex items-center gap-3">
@@ -100,9 +100,10 @@
               </template>
 
               <template #actions>
-                <ButtonSecondary
+                <BaseButton
                   data-cy="copy-to-clipboard-button"
                   size="icon"
+                  variant="plain"
                   @click="copyLinkToClipboard(link, $event)"
                 >
                   <span class="sr-only">{{ recentlyCopiedLink === link ? $t('Copied') : $t('Copy') }}</span>
@@ -111,15 +112,16 @@
                     class="h-4 w-4 text-zinc-900 dark:text-white"
                   />
                   <ClipboardDocumentIcon v-else class="h-4 w-4" />
-                </ButtonSecondary>
+                </BaseButton>
 
                 <DropdownMenu data-cy="link-options-menu" size="xs">
                   <template #button>
                     <MenuButton
-                      :as="ButtonSecondary"
+                      :as="BaseButton"
                       class="focus-ring rounded-full transition-all duration-200 ease-in-out"
                       data-cy="link-options-menu-button"
                       size="icon"
+                      variant="plain"
                     >
                       <span class="sr-only">{{ $t('Show options') }}</span>
                       <EllipsisHorizontalIcon aria-hidden="true" class="h-4 w-4" />
@@ -158,9 +160,9 @@
                 </DropdownMenu>
               </template>
             </ResourcePanelListItem>
-          </ResourcePanelList>
+          </template>
 
-          <ResourcePanelFooter v-if="links.data.length">
+          <template v-if="links.data.length" #footer>
             <PaginationTotals
               :paginated-resource="links"
               :resource-name="$tChoice('link|links', links.meta.total)"
@@ -168,11 +170,11 @@
             />
 
             <PaginationButtons :paginated-resource="links" />
-          </ResourcePanelFooter>
+          </template>
         </ResourcePanel>
       </div>
     </div>
-  </AppContainer>
+  </BaseContainer>
 
   <LinkEditModal
     v-if="showUpdateLinkModal && currentLink"
@@ -191,14 +193,12 @@
 
 <script lang="ts" setup>
 import AppLayout from '@/layouts/AppLayout.vue'
-import AppContainer from '@/components/AppContainer.vue'
+import BaseContainer from '@/components/BaseContainer.vue'
 import LinkShortener from '@/components/LinkShortener.vue'
 import { Link } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
-import AppHead from '@/components/AppHead.vue'
+import BaseHead from '@/components/BaseHead.vue'
 import useFormatDate from '@/composables/useFormatDate'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
-import ResourcePanelFooter from '@/components/ResourcePanelFooter.vue'
 import PaginationButtons from '@/components/PaginationButtons.vue'
 import {
   ClipboardDocumentCheckIcon,
@@ -212,17 +212,15 @@ import {
   TrashIcon,
 } from '@heroicons/vue/20/solid'
 import LinkDeleteModal from '@/pages/links/components/LinkDeleteModal.vue'
-import ResourcePanelList from '@/components/ResourcePanelList.vue'
 import PaginationTotals from '@/components/PaginationTotals.vue'
-import SimpleEmptyState from '@/components/AppEmptyState.vue'
+import SimpleEmptyState from '@/components/BaseEmptyState.vue'
 import { LinkIcon } from '@heroicons/vue/24/outline'
 import DropdownMenu from '@/components/DropdownMenu.vue'
 import { MenuButton } from '@headlessui/vue'
 import LinkEditModal from '@/pages/links/components/LinkEditModal.vue'
 import ResourcePanel from '@/components/ResourcePanel.vue'
 import ResourcePanelListItem from '@/components/ResourcePanelListItem.vue'
-import TextInput from '@/components/AppInput.vue'
-import ResourcePanelHeader from '@/components/ResourcePanelHeader.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import DropdownMenuItemButton from '@/components/DropdownMenuItemButton.vue'
 import { router } from '@inertiajs/vue3'
 import ClipboardJS from 'clipboard'
@@ -230,6 +228,7 @@ import { ref, watch } from 'vue'
 import { useTippy } from 'vue-tippy'
 import { trans } from 'laravel-vue-i18n'
 import debounce from 'lodash/debounce'
+import BaseButton from '@/components/BaseButton.vue'
 
 defineOptions({
   layout: AppLayout,

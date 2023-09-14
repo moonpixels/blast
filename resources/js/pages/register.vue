@@ -1,11 +1,11 @@
 <template>
-  <AppHead :title="$t('Register')" />
+  <BaseHead :title="$t('Register')" />
 
   <FullPageHeading :title="$t('Create your account')" />
 
   <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" data-cy="register-form" @submit.prevent="submit">
-      <TextInput
+      <BaseInput
         v-model="form.name"
         :error="form.errors.name"
         :label="$t('Full name')"
@@ -14,7 +14,7 @@
         @input="form.clearErrors('name')"
       />
 
-      <TextInput
+      <BaseInput
         v-model="form.email"
         :error="form.errors.email"
         :label="$t('Email')"
@@ -24,7 +24,7 @@
         @input="form.clearErrors('email')"
       />
 
-      <TextInput
+      <BaseInput
         v-model="form.password"
         :error="form.errors.password"
         :label="$t('Password')"
@@ -34,29 +34,26 @@
         @input="form.clearErrors('password')"
       />
 
-      <ButtonPrimary :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
+      <BaseButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('Create account') }}
-      </ButtonPrimary>
-    </form>
+      </BaseButton>
 
-    <div>
       <Link :href="route('login')" data-cy="login-link">
-        <ButtonSecondary class="w-full">
+        <BaseButton class="mt-4 w-full" variant="plain">
           {{ $t('Already have an account? Login here') }}
-        </ButtonSecondary>
+        </BaseButton>
       </Link>
-    </div>
+    </form>
   </div>
 </template>
 
 <script lang="ts" setup>
 import FullPageLayout from '@/layouts/FullPageLayout.vue'
 import FullPageHeading from '@/components/FullPageHeading.vue'
-import AppHead from '@/components/AppHead.vue'
-import TextInput from '@/components/AppInput.vue'
+import BaseHead from '@/components/BaseHead.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import { Link, useForm } from '@inertiajs/vue3'
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
+import BaseButton from '@/components/BaseButton.vue'
 import UserData = App.Domain.User.Data.UserData
 
 defineOptions({

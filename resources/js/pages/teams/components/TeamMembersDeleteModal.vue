@@ -1,13 +1,13 @@
 <template>
-  <ButtonSecondary data-cy="delete-team-member-button" size="icon" @click="open = true">
+  <BaseButton data-cy="delete-team-member-button" size="icon" variant="plain" @click="open = true">
     <span class="sr-only">{{ $t('Delete team member') }}</span>
     <TrashIcon
       aria-hidden="true"
       class="h-4 w-4 transition-all duration-200 ease-in-out group-hover:text-rose-600 dark:group-hover:text-rose-500"
     />
-  </ButtonSecondary>
+  </BaseButton>
 
-  <AppModal :show="open" :title="$t('Delete team member')" data-cy="delete-team-member-modal" @close="open = false">
+  <BaseModal :show="open" :title="$t('Delete team member')" data-cy="delete-team-member-modal" @close="open = false">
     <template #body>
       <p class="text-sm">
         {{
@@ -20,25 +20,24 @@
     </template>
 
     <template #footer>
-      <ButtonDanger :loading="form.processing" data-cy="delete-team-member-button" @click="submit">
+      <BaseButton :loading="form.processing" data-cy="delete-team-member-button" variant="danger" @click="submit">
         {{ $t('Delete team member') }}
-      </ButtonDanger>
+      </BaseButton>
 
-      <ButtonSecondary data-cy="cancel-button" @click="open = false">
+      <BaseButton data-cy="cancel-button" variant="secondary" @click="open = false">
         {{ $t('Cancel') }}
-      </ButtonSecondary>
+      </BaseButton>
     </template>
-  </AppModal>
+  </BaseModal>
 </template>
 
 <script lang="ts" setup>
 import { Team, User } from '@/types/models'
 import { useForm } from '@inertiajs/vue3'
-import AppModal from '@/components/AppModal.vue'
-import ButtonDanger from '@/components/ButtonDanger.vue'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
+import BaseModal from '@/components/BaseModal.vue'
 import { TrashIcon } from '@heroicons/vue/20/solid'
 import { ref } from 'vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 type Props = {
   team: Team

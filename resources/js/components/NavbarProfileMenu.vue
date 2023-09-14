@@ -3,7 +3,7 @@
     <template #button>
       <MenuButton class="focus-ring rounded-full transition-all ease-in-out">
         <span class="sr-only">{{ $t('Open menu') }}</span>
-        <AppAvatar :initials="user.initials" />
+        <BaseAvatar :initials="user.initials" />
       </MenuButton>
     </template>
 
@@ -22,7 +22,7 @@
 import DropdownMenuItemLink from '@/components/DropdownMenuItemLink.vue'
 import { MenuButton } from '@headlessui/vue'
 import DropdownMenu from '@/components/DropdownMenu.vue'
-import AppAvatar from '@/components/AppAvatar.vue'
+import BaseAvatar from '@/components/BaseAvatar.vue'
 import { User } from '@/types/models'
 
 type Props = {

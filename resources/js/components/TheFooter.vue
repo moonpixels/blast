@@ -7,12 +7,7 @@
 
       <div class="text-xs">
         {{ $t('Copyright') }} &copy; {{ year }}
-        <a
-          class="underline decoration-dashed underline-offset-2 transition-all duration-200 ease-in-out hover:text-zinc-900 dark:hover:text-white"
-          href="https://moonpixels.co.uk"
-        >
-          Moon Pixels Ltd.
-        </a>
+        <BaseLink :external="true" href="https://moonpixels.co.uk"> Moon Pixels Ltd.</BaseLink>
         {{ $t('All rights reserved.') }}
 
         <span class="mt-2 block">
@@ -20,15 +15,15 @@
         </span>
 
         <span class="mt-2 flex items-center gap-2">
-          <AppLink :href="route('terms')">
+          <BaseLink :href="route('terms')">
             {{ $t('Terms of Service') }}
-          </AppLink>
+          </BaseLink>
 
           <span>|</span>
 
-          <AppLink :href="route('privacy')">
+          <BaseLink :href="route('privacy')">
             {{ $t('Privacy Policy') }}
-          </AppLink>
+          </BaseLink>
         </span>
       </div>
     </div>
@@ -37,7 +32,7 @@
 
 <script lang="ts" setup>
 import dayjs from 'dayjs'
-import AppLink from '@/components/AppLink.vue'
+import BaseLink from '@/components/BaseLink.vue'
 
 const year = dayjs().year()
 </script>

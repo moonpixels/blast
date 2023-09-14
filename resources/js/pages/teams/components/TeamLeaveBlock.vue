@@ -4,13 +4,13 @@
     :title="$t('Leave team')"
   >
     <div class="flex h-full items-center">
-      <ButtonDanger data-cy="leave-team-button" @click="showModal = true">
+      <BaseButton data-cy="leave-team-button" variant="danger" @click="showModal = true">
         {{ $t('Leave team') }}
-      </ButtonDanger>
+      </BaseButton>
     </div>
   </TwoColumnBlockItem>
 
-  <AppModal
+  <BaseModal
     :show="showModal"
     :title="$t('Leave :team_name', { team_name: team.name })"
     data-cy="leave-team-modal"
@@ -27,25 +27,24 @@
     </template>
 
     <template #footer>
-      <ButtonDanger :loading="form.processing" data-cy="leave-team-button" @click="submit">
+      <BaseButton :loading="form.processing" data-cy="leave-team-button" variant="danger" @click="submit">
         {{ $t('Leave team') }}
-      </ButtonDanger>
+      </BaseButton>
 
-      <ButtonSecondary data-cy="cancel-button" @click="showModal = false">
+      <BaseButton data-cy="cancel-button" variant="secondary" @click="showModal = false">
         {{ $t('Cancel') }}
-      </ButtonSecondary>
+      </BaseButton>
     </template>
-  </AppModal>
+  </BaseModal>
 </template>
 
 <script lang="ts" setup>
 import TwoColumnBlockItem from '@/components/TwoColumnBlockItem.vue'
-import ButtonDanger from '@/components/ButtonDanger.vue'
 import { ref } from 'vue'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
-import AppModal from '@/components/AppModal.vue'
+import BaseModal from '@/components/BaseModal.vue'
 import { useForm } from '@inertiajs/vue3'
 import { Team, User } from '@/types/models'
+import BaseButton from '@/components/BaseButton.vue'
 
 type Props = {
   team: Team

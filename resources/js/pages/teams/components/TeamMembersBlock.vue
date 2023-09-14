@@ -1,18 +1,19 @@
 <template>
   <TwoColumnBlockItem :description="$t('Manage the members of your team.')" :title="$t('Members')">
-    <AppAlert v-if="team.personal_team" data-cy="manage-members-personal-team-alert">
+    <BaseAlert v-if="team.personal_team" data-cy="manage-members-personal-team-alert">
       {{ $t('You cannot invite members to your personal team.') }}
-    </AppAlert>
+    </BaseAlert>
 
     <ResourcePanel v-else>
-      <ResourcePanelHeader>
+      <template #header>
         <div class="flex flex-grow justify-between gap-2">
           <TeamMembersCreateModal :team="team" />
 
-          <AppButton
+          <BaseButton
             class="flex items-center gap-2 shadow-none focus:ring-0 focus:ring-offset-0"
             data-cy="switch-view-mode-button"
             no-shadow
+            variant="plain"
             @click="switchView"
           >
             <span :class="[filters.view === 'members' ? 'text-zinc-900 dark:text-white' : '']">
@@ -26,11 +27,11 @@
             <span :class="[filters.view === 'invitations' ? 'text-zinc-900 dark:text-white' : '']">
               {{ $tChoice('Invite|Invites', 2) }}
             </span>
-          </AppButton>
+          </BaseButton>
         </div>
 
         <div class="mt-3 lg:mt-0 lg:w-60">
-          <TextInput
+          <BaseInput
             v-model="searchQuery"
             :label="$t('Search')"
             :placeholder="$t('Find a team member...')"
@@ -42,26 +43,42 @@
             <template #icon>
               <MagnifyingGlassIcon class="pointer-events-none h-4 w-4" />
             </template>
-          </TextInput>
+          </BaseInput>
         </div>
-      </ResourcePanelHeader>
+      </template>
 
-      <template v-if="filters.view === 'members'">
-        <AppEmptyState
-          v-if="!members?.data.length"
-          :description="
-            searchQuery ? $t('There are no members matching your search.') : $t('There are no members in this team.')
-          "
-          :icon="UserGroupIcon"
-          :title="$t('No members')"
-          data-cy="no-members-empty-state"
-        />
+      <BaseEmptyState
+        v-if="!members?.data.length && filters.view === 'members'"
+        :description="
+          searchQuery ? $t('There are no members matching your search.') : $t('There are no members in this team.')
+        "
+        :icon="UserGroupIcon"
+        :title="$t('No members')"
+        data-cy="no-members-empty-state"
+      />
 
-        <ResourcePanelList v-else data-cy="members-list">
+      <BaseEmptyState
+        v-if="!invitations?.data.length && filters.view === 'invitations'"
+        :description="
+          searchQuery
+            ? $t('There are no pending invitations matching your search.')
+            : $t('There are no pending invitations for this team.')
+        "
+        :icon="UserPlusIcon"
+        :title="$t('No pending invitations')"
+        data-cy="no-invitations-empty-state"
+      />
+
+      <template #list>
+        <div
+          v-if="members?.data.length && filters.view === 'members'"
+          class="divide-y divide-zinc-900/10 dark:divide-white/10"
+          data-cy="members-list"
+        >
           <ResourcePanelListItem v-for="member in members.data" :key="member.id">
             <template #content>
               <div class="flex items-center gap-3">
-                <AppAvatar :initials="member.initials" class="flex-none" size="md" />
+                <BaseAvatar :initials="member.initials" class="flex-none" size="md" />
 
                 <div class="flex flex-auto gap-x-4 overflow-hidden">
                   <div class="flex-auto overflow-hidden">
@@ -81,23 +98,13 @@
               <TeamMembersDeleteModal :member="member" :team="team" />
             </template>
           </ResourcePanelListItem>
-        </ResourcePanelList>
-      </template>
+        </div>
 
-      <template v-else>
-        <AppEmptyState
-          v-if="!invitations?.data.length"
-          :description="
-            searchQuery
-              ? $t('There are no pending invitations matching your search.')
-              : $t('There are no pending invitations for this team.')
-          "
-          :icon="UserPlusIcon"
-          :title="$t('No pending invitations')"
-          data-cy="no-invitations-empty-state"
-        />
-
-        <ResourcePanelList v-else data-cy="invitations-list">
+        <div
+          v-if="invitations?.data.length && filters.view === 'invitations'"
+          class="divide-y divide-zinc-900/10 dark:divide-white/10"
+          data-cy="invitations-list"
+        >
           <ResourcePanelListItem v-for="invitation in invitations.data" :key="invitation.id">
             <template #content>
               <p class="truncate text-sm font-semibold leading-6 text-zinc-900 dark:text-white">
@@ -109,24 +116,34 @@
             </template>
 
             <template #actions>
-              <ButtonSecondary data-cy="resend-invitation-button" size="icon" @click="resendInvitation(invitation)">
+              <BaseButton
+                data-cy="resend-invitation-button"
+                size="icon"
+                variant="plain"
+                @click="resendInvitation(invitation)"
+              >
                 <span class="sr-only">{{ $t('Resend invitation') }}</span>
                 <ArrowPathIcon aria-hidden="true" class="h-4 w-4" />
-              </ButtonSecondary>
+              </BaseButton>
 
-              <ButtonSecondary data-cy="cancel-invitation-button" size="icon" @click="cancelInvitation(invitation)">
+              <BaseButton
+                data-cy="cancel-invitation-button"
+                size="icon"
+                variant="plain"
+                @click="cancelInvitation(invitation)"
+              >
                 <span class="sr-only">{{ $t('Cancel invitation') }}</span>
                 <TrashIcon
                   aria-hidden="true"
                   class="h-4 w-4 transition-all duration-200 ease-in-out group-hover:text-rose-600 dark:group-hover:text-rose-500"
                 />
-              </ButtonSecondary>
+              </BaseButton>
             </template>
           </ResourcePanelListItem>
-        </ResourcePanelList>
+        </div>
       </template>
 
-      <ResourcePanelFooter v-if="currentResource?.data.length">
+      <template v-if="currentResource?.data.length" #footer>
         <PaginationTotals
           :paginated-resource="currentResource"
           :resource-name="
@@ -138,36 +155,32 @@
         />
 
         <PaginationButtons :paginated-resource="currentResource" />
-      </ResourcePanelFooter>
+      </template>
     </ResourcePanel>
   </TwoColumnBlockItem>
 </template>
 
 <script lang="ts" setup>
 import TwoColumnBlockItem from '@/components/TwoColumnBlockItem.vue'
-import AppAlert from '@/components/AppAlert.vue'
-import AppAvatar from '@/components/AppAvatar.vue'
+import BaseAlert from '@/components/BaseAlert.vue'
+import BaseAvatar from '@/components/BaseAvatar.vue'
 import TeamMembersCreateModal from '@/pages/teams/components/TeamMembersCreateModal.vue'
 import { router } from '@inertiajs/vue3'
-import TextInput from '@/components/AppInput.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import { ArrowPathIcon, ArrowsRightLeftIcon, MagnifyingGlassIcon, TrashIcon } from '@heroicons/vue/20/solid'
 import { UserGroupIcon, UserPlusIcon } from '@heroicons/vue/24/outline'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
-import AppButton from '@/components/AppButton.vue'
 import useFormatDate from '@/composables/useFormatDate'
 import { Team, TeamInvitation, User } from '@/types/models'
 import { PaginatedResponse } from '@/types/framework'
-import AppEmptyState from '@/components/AppEmptyState.vue'
+import BaseEmptyState from '@/components/BaseEmptyState.vue'
 import TeamMembersDeleteModal from '@/pages/teams/components/TeamMembersDeleteModal.vue'
 import { computed, ref, watch } from 'vue'
 import debounce from 'lodash/debounce'
 import PaginationTotals from '@/components/PaginationTotals.vue'
 import PaginationButtons from '@/components/PaginationButtons.vue'
 import ResourcePanel from '@/components/ResourcePanel.vue'
-import ResourcePanelHeader from '@/components/ResourcePanelHeader.vue'
-import ResourcePanelList from '@/components/ResourcePanelList.vue'
 import ResourcePanelListItem from '@/components/ResourcePanelListItem.vue'
-import ResourcePanelFooter from '@/components/ResourcePanelFooter.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 type Props = {
   team: Team

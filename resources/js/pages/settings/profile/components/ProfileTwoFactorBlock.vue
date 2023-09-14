@@ -11,23 +11,24 @@
         <div class="flex items-center gap-4">
           <LockClosedIcon v-if="user.two_factor_enabled" class="h-5 w-5 text-emerald-600 dark:text-emerald-500" />
           <LockOpenIcon v-else class="h-5 w-5 text-rose-600 dark:text-rose-500" />
-          <AppBadge :variant="user.two_factor_enabled ? 'success' : 'danger'">
+          <BaseBadge :variant="user.two_factor_enabled ? 'success' : 'danger'">
             {{ user.two_factor_enabled ? $t('Enabled') : $t('Disabled') }}
-          </AppBadge>
+          </BaseBadge>
         </div>
 
-        <ButtonSecondary
+        <BaseButton
           v-if="user.two_factor_enabled"
           :loading="loading"
           data-cy="disable-2fa-button"
+          variant="secondary"
           @click="disableTwoFactor"
         >
           {{ $t('Disable 2FA') }}
-        </ButtonSecondary>
+        </BaseButton>
 
-        <ButtonPrimary v-else :loading="loading" data-cy="enable-2fa-button" @click="enableTwoFactor">
+        <BaseButton v-else :loading="loading" data-cy="enable-2fa-button" @click="enableTwoFactor">
           {{ $t('Enable 2FA') }}
-        </ButtonPrimary>
+        </BaseButton>
       </div>
 
       <template v-else>
@@ -74,7 +75,7 @@
             }}
           </p>
           <form class="mt-4 space-y-4" @submit.prevent="confirmCode">
-            <TextInput
+            <BaseInput
               v-model="form.code"
               :error="form.errors.code"
               :label="$t('Two-factor code')"
@@ -84,9 +85,9 @@
               @input="form.clearErrors('code')"
             />
 
-            <ButtonPrimary :loading="form.processing" data-cy="submit-button" type="submit">
+            <BaseButton :loading="form.processing" data-cy="submit-button" type="submit">
               {{ $t('Confirm code') }}
-            </ButtonPrimary>
+            </BaseButton>
           </form>
         </article>
       </template>
@@ -98,12 +99,11 @@
 import TwoColumnBlockItem from '@/components/TwoColumnBlockItem.vue'
 import { router, useForm } from '@inertiajs/vue3'
 import { LockClosedIcon, LockOpenIcon } from '@heroicons/vue/24/outline'
-import AppBadge from '@/components/AppBadge.vue'
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
-import TextInput from '@/components/AppInput.vue'
+import BaseBadge from '@/components/BaseBadge.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import { computed, ref } from 'vue'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
 import { User } from '@/types/models'
+import BaseButton from '@/components/BaseButton.vue'
 
 type Props = {
   user: User

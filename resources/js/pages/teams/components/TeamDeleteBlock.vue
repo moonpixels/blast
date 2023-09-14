@@ -3,18 +3,18 @@
     :description="$t('Permanently delete this team and all of its resources.')"
     :title="$t('Delete team')"
   >
-    <AppAlert v-if="team.personal_team" data-cy="delete-personal-team-alert">
+    <BaseAlert v-if="team.personal_team" data-cy="delete-personal-team-alert">
       {{ $t('You cannot delete your personal team.') }}
-    </AppAlert>
+    </BaseAlert>
 
     <div v-else class="flex h-full items-center">
-      <ButtonDanger data-cy="delete-team-button" @click="showModal = true">
+      <BaseButton data-cy="delete-team-button" variant="danger" @click="showModal = true">
         {{ $t('Delete team') }}
-      </ButtonDanger>
+      </BaseButton>
     </div>
   </TwoColumnBlockItem>
 
-  <AppModal :show="showModal" :title="$t('Delete team')" data-cy="delete-team-modal" @close="showModal = false">
+  <BaseModal :show="showModal" :title="$t('Delete team')" data-cy="delete-team-modal" @close="showModal = false">
     <template #body>
       <p class="text-sm">
         {{
@@ -26,26 +26,25 @@
     </template>
 
     <template #footer>
-      <ButtonDanger :loading="form.processing" data-cy="delete-team-button" @click="submit">
+      <BaseButton :loading="form.processing" data-cy="delete-team-button" variant="danger" @click="submit">
         {{ $t('Delete team') }}
-      </ButtonDanger>
+      </BaseButton>
 
-      <ButtonSecondary data-cy="cancel-button" @click="showModal = false">
+      <BaseButton data-cy="cancel-button" variant="secondary" @click="showModal = false">
         {{ $t('Cancel') }}
-      </ButtonSecondary>
+      </BaseButton>
     </template>
-  </AppModal>
+  </BaseModal>
 </template>
 
 <script lang="ts" setup>
 import TwoColumnBlockItem from '@/components/TwoColumnBlockItem.vue'
-import ButtonDanger from '@/components/ButtonDanger.vue'
 import { ref } from 'vue'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
-import AppModal from '@/components/AppModal.vue'
+import BaseModal from '@/components/BaseModal.vue'
 import { useForm } from '@inertiajs/vue3'
-import AppAlert from '@/components/AppAlert.vue'
+import BaseAlert from '@/components/BaseAlert.vue'
 import { Team } from '@/types/models'
+import BaseButton from '@/components/BaseButton.vue'
 
 type Props = {
   team: Team

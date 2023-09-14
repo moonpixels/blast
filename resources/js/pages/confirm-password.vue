@@ -1,5 +1,5 @@
 <template>
-  <AppHead :title="$t('Confirm your password')" />
+  <BaseHead :title="$t('Confirm your password')" />
 
   <FullPageHeading :title="$t('Confirm your password')">
     <p>
@@ -9,7 +9,7 @@
 
   <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" data-cy="confirm-password-form" @submit.prevent="submit">
-      <TextInput
+      <BaseInput
         v-model="form.password"
         :error="form.errors.password"
         :label="$t('Password')"
@@ -19,9 +19,9 @@
         @input="form.clearErrors('password')"
       />
 
-      <ButtonPrimary :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
+      <BaseButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('Confirm password') }}
-      </ButtonPrimary>
+      </BaseButton>
     </form>
   </div>
 </template>
@@ -29,10 +29,10 @@
 <script lang="ts" setup>
 import FullPageLayout from '@/layouts/FullPageLayout.vue'
 import FullPageHeading from '@/components/FullPageHeading.vue'
-import AppHead from '@/components/AppHead.vue'
-import TextInput from '@/components/AppInput.vue'
+import BaseHead from '@/components/BaseHead.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import { useForm } from '@inertiajs/vue3'
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 defineOptions({
   layout: FullPageLayout,

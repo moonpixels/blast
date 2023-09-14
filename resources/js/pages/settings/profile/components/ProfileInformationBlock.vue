@@ -4,7 +4,7 @@
     :title="$t('Profile information')"
   >
     <form class="max-w-md space-y-6" data-cy="profile-information-form" @submit.prevent="submit">
-      <TextInput
+      <BaseInput
         v-model="form.name"
         :error="form.errors.name"
         :label="$t('Full name')"
@@ -13,7 +13,7 @@
         @input="form.clearErrors('name')"
       />
 
-      <TextInput
+      <BaseInput
         v-model="form.email"
         :error="form.errors.email"
         :label="$t('Email')"
@@ -23,19 +23,19 @@
         @input="form.clearErrors('email')"
       />
 
-      <ButtonPrimary :loading="form.processing" data-cy="submit-button" type="submit">
+      <BaseButton :loading="form.processing" data-cy="submit-button" type="submit">
         {{ $t('Update information') }}
-      </ButtonPrimary>
+      </BaseButton>
     </form>
   </TwoColumnBlockItem>
 </template>
 
 <script lang="ts" setup>
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
 import TwoColumnBlockItem from '@/components/TwoColumnBlockItem.vue'
-import TextInput from '@/components/AppInput.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import { useForm } from '@inertiajs/vue3'
 import { User } from '@/types/models'
+import BaseButton from '@/components/BaseButton.vue'
 
 type Props = {
   user: User

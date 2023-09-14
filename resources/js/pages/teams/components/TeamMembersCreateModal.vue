@@ -1,9 +1,9 @@
 <template>
-  <ButtonPrimary data-cy="invite-team-member-button" @click="showModal = true">
+  <BaseButton data-cy="invite-team-member-button" @click="showModal = true">
     {{ $t('Add member') }}
-  </ButtonPrimary>
+  </BaseButton>
 
-  <AppModal
+  <BaseModal
     :show="showModal"
     :title="$t('Invite a new team member')"
     data-cy="invite-team-member-modal"
@@ -19,7 +19,7 @@
       </p>
 
       <form id="invite-team-member-form" class="space-y-6" data-cy="invite-team-member-form" @submit.prevent="submit">
-        <TextInput
+        <BaseInput
           v-model="form.email"
           :error="form.errors.email"
           :label="$t('Email')"
@@ -32,25 +32,24 @@
     </template>
 
     <template #footer>
-      <ButtonPrimary :loading="form.processing" data-cy="submit-button" form="invite-team-member-form" type="submit">
+      <BaseButton :loading="form.processing" data-cy="submit-button" form="invite-team-member-form" type="submit">
         {{ $t('Send invitation') }}
-      </ButtonPrimary>
+      </BaseButton>
 
-      <ButtonSecondary data-cy="cancel-button" @click="handleClose">
+      <BaseButton data-cy="cancel-button" variant="secondary" @click="handleClose">
         {{ $t('Cancel') }}
-      </ButtonSecondary>
+      </BaseButton>
     </template>
-  </AppModal>
+  </BaseModal>
 </template>
 
 <script lang="ts" setup>
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
-import TextInput from '@/components/AppInput.vue'
-import AppModal from '@/components/AppModal.vue'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
+import BaseInput from '@/components/BaseInput.vue'
+import BaseModal from '@/components/BaseModal.vue'
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
 import { Team } from '@/types/models'
+import BaseButton from '@/components/BaseButton.vue'
 import TeamInvitationData = App.Domain.Team.Data.TeamInvitationData
 
 type Props = {

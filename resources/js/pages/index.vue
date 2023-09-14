@@ -1,5 +1,5 @@
 <template>
-  <AppHead />
+  <BaseHead />
 
   <div class="relative isolate px-6 pt-14 lg:px-8">
     <div class="mx-auto max-w-2xl py-32">
@@ -30,23 +30,19 @@
 
         <div class="mt-10 flex items-center justify-center gap-x-4">
           <Link :href="route('register')">
-            <ButtonPrimary :size="'lg'" class="text-sm">
+            <BaseButton size="lg">
               <div class="flex items-center justify-between gap-2">
                 {{ $t('Get started') }}
-
-                <ChevronRightIcon class="-mr-2 h-4 w-4" />
               </div>
-            </ButtonPrimary>
+            </BaseButton>
           </Link>
 
           <a href="/docs">
-            <AppButton :size="'lg'" class="text-sm">
+            <BaseButton size="lg" variant="secondary">
               <div class="flex items-center justify-between gap-2">
                 {{ $t('Documentation') }}
-
-                <ChevronRightIcon class="-mr-2 h-4 w-4" />
               </div>
-            </AppButton>
+            </BaseButton>
           </a>
         </div>
       </div>
@@ -54,7 +50,7 @@
   </div>
 
   <div class="overflow-hidden py-24 sm:py-32">
-    <AppContainer>
+    <BaseContainer>
       <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
         <div class="lg:pr-8 lg:pt-4">
           <div class="lg:max-w-lg">
@@ -92,11 +88,11 @@
           width="2432"
         />
       </div>
-    </AppContainer>
+    </BaseContainer>
   </div>
 
   <div class="py-24 sm:py-32">
-    <AppContainer>
+    <BaseContainer>
       <div class="mx-auto max-w-2xl lg:mx-0">
         <h2 class="mt-2 text-3xl font-medium tracking-tight text-white sm:text-4xl">
           {{ $t('Features you will love.') }}
@@ -122,10 +118,10 @@
           <dd class="mt-1" v-html="feature.description"></dd>
         </div>
       </dl>
-    </AppContainer>
+    </BaseContainer>
   </div>
 
-  <AppContainer class="pt-24 sm:pt-32">
+  <BaseContainer class="pt-24 sm:pt-32">
     <div
       class="relative isolate overflow-hidden rounded-3xl bg-zinc-800 px-6 pt-16 shadow-2xl sm:px-16 md:pt-24 lg:flex lg:gap-x-20 lg:px-24 lg:pt-0"
     >
@@ -139,13 +135,13 @@
         </p>
         <div class="mt-10 flex items-center justify-center gap-x-6 lg:justify-start">
           <Link :href="route('register')">
-            <ButtonPrimary :size="'lg'" class="text-sm">
+            <BaseButton size="lg">
               <div class="flex items-center justify-between gap-2">
                 {{ $t('Get started') }}
 
                 <ChevronRightIcon class="-mr-2 h-4 w-4" />
               </div>
-            </ButtonPrimary>
+            </BaseButton>
           </Link>
         </div>
       </div>
@@ -160,13 +156,11 @@
         />
       </div>
     </div>
-  </AppContainer>
+  </BaseContainer>
 </template>
 
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3'
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
-import AppButton from '@/components/AppButton.vue'
 import {
   ArrowTrendingUpIcon,
   BookOpenIcon,
@@ -182,14 +176,15 @@ import {
   TagIcon,
   UserGroupIcon,
 } from '@heroicons/vue/20/solid'
-import AppContainer from '@/components/AppContainer.vue'
+import BaseContainer from '@/components/BaseContainer.vue'
 import {
   CodeBracketSquareIcon,
   EyeSlashIcon as EyeSlashOutlineIcon,
   RectangleGroupIcon,
 } from '@heroicons/vue/24/outline'
 import GuestLayout from '@/layouts/GuestLayout.vue'
-import AppHead from '@/components/AppHead.vue'
+import BaseHead from '@/components/BaseHead.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 defineOptions({
   layout: GuestLayout,

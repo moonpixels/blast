@@ -1,7 +1,7 @@
 <template>
-  <AppHead :title="$t('Team settings')" />
+  <BaseHead :title="$t('Team settings')" />
 
-  <AppContainer>
+  <BaseContainer>
     <h1 class="text-xl font-semibold text-zinc-900 dark:text-white">
       {{ $t(':team_name settings', { team_name: team.name }) }}
     </h1>
@@ -19,13 +19,13 @@
         <TeamLeaveBlock :team="team" :user="user" />
       </template>
     </TwoColumnBlock>
-  </AppContainer>
+  </BaseContainer>
 </template>
 
 <script lang="ts" setup>
 import AppLayout from '@/layouts/AppLayout.vue'
-import AppContainer from '@/components/AppContainer.vue'
-import AppHead from '@/components/AppHead.vue'
+import BaseContainer from '@/components/BaseContainer.vue'
+import BaseHead from '@/components/BaseHead.vue'
 import TwoColumnBlock from '@/components/TwoColumnBlock.vue'
 import TeamMembersBlock from '@/pages/teams/components/TeamMembersBlock.vue'
 import TeamDeleteBlock from '@/pages/teams/components/TeamDeleteBlock.vue'

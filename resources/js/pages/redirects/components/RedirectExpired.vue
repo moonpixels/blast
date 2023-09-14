@@ -1,5 +1,5 @@
 <template>
-  <AppHead :title="$t('The link has expired')" />
+  <BaseHead :title="$t('The link has expired')" />
 
   <FullPageHeading :title="$t('The link has expired')">
     <p>
@@ -10,5 +10,5 @@
 
 <script lang="ts" setup>
 import FullPageHeading from '@/components/FullPageHeading.vue'
-import AppHead from '@/components/AppHead.vue'
+import BaseHead from '@/components/BaseHead.vue'
 </script>

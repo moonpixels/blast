@@ -4,7 +4,7 @@
       <slot name="content" />
     </div>
 
-    <div class="flex flex-none items-center gap-2">
+    <div class="flex flex-none items-center">
       <slot name="actions" />
     </div>
   </li>

@@ -1,11 +1,11 @@
 <template>
-  <SecondaryButton size="icon" @click="open = true">
+  <BaseButton size="icon" variant="plain" @click="open = true">
     <span class="sr-only">{{ $t('Delete token') }}</span>
     <TrashIcon
       aria-hidden="true"
       class="h-4 w-4 transition-all duration-200 ease-in-out group-hover:text-rose-600 dark:group-hover:text-rose-500"
     />
-  </SecondaryButton>
+  </BaseButton>
 
   <Modal :show="open" :title="$t('Delete token')" @close="open = false">
     <template #body>
@@ -22,13 +22,13 @@
     </template>
 
     <template #footer>
-      <ButtonDanger :loading="form.processing" @click="submit">
+      <BaseButton :loading="form.processing" variant="danger" @click="submit">
         {{ $t('Delete token') }}
-      </ButtonDanger>
+      </BaseButton>
 
-      <SecondaryButton @click="open = false">
+      <BaseButton variant="secondary" @click="open = false">
         {{ $t('Cancel') }}
-      </SecondaryButton>
+      </BaseButton>
     </template>
   </Modal>
 </template>
@@ -36,11 +36,10 @@
 <script lang="ts" setup>
 import { Token } from '@/types/models'
 import { useForm } from '@inertiajs/vue3'
-import Modal from '@/components/AppModal.vue'
-import ButtonDanger from '@/components/ButtonDanger.vue'
-import SecondaryButton from '@/components/ButtonSecondary.vue'
+import Modal from '@/components/BaseModal.vue'
 import { TrashIcon } from '@heroicons/vue/20/solid'
 import { ref } from 'vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 type Props = {
   token: Token

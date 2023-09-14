@@ -1,5 +1,5 @@
 <template>
-  <AppModal :show="open" :title="$t('Delete link')" data-cy="delete-link-modal" @close="$emit('close')">
+  <BaseModal :show="open" :title="$t('Delete link')" data-cy="delete-link-modal" @close="$emit('close')">
     <template #body>
       <p class="text-sm">
         {{ $t('Are you sure you want to delete this link? The alias will not be available for use again.') }}
@@ -7,23 +7,22 @@
     </template>
 
     <template #footer>
-      <ButtonDanger :loading="form.processing" data-cy="delete-link-button" @click="submit">
+      <BaseButton :loading="form.processing" data-cy="delete-link-button" variant="danger" @click="submit">
         {{ $t('Delete link') }}
-      </ButtonDanger>
+      </BaseButton>
 
-      <ButtonSecondary data-cy="cancel-button" @click="$emit('close')">
+      <BaseButton data-cy="cancel-button" variant="secondary" @click="$emit('close')">
         {{ $t('Cancel') }}
-      </ButtonSecondary>
+      </BaseButton>
     </template>
-  </AppModal>
+  </BaseModal>
 </template>
 
 <script lang="ts" setup>
-import ButtonDanger from '@/components/ButtonDanger.vue'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
-import AppModal from '@/components/AppModal.vue'
+import BaseModal from '@/components/BaseModal.vue'
 import { useForm } from '@inertiajs/vue3'
 import { Link } from '@/types/models'
+import BaseButton from '@/components/BaseButton.vue'
 
 type Props = {
   link: Link

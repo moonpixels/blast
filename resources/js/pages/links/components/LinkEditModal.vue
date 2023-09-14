@@ -1,8 +1,8 @@
 <template>
-  <AppModal :show="open" :title="$t('Edit link')" data-cy="update-link-modal" @close="$emit('close')">
+  <BaseModal :show="open" :title="$t('Edit link')" data-cy="update-link-modal" @close="$emit('close')">
     <template #body>
       <form id="update-link-form" class="space-y-6" data-cy="update-link-form" @submit.prevent="submit">
-        <TextInput
+        <BaseInput
           v-model="form.destination_url"
           :error="form.errors.destination_url"
           inputmode="url"
@@ -13,7 +13,7 @@
           @input="form.clearErrors('destination_url')"
         />
 
-        <TextInput
+        <BaseInput
           v-model="form.alias"
           :error="form.errors.alias"
           :label="$t('Alias')"
@@ -30,7 +30,7 @@
             @input="form.clearErrors('expires_at')"
           />
 
-          <TextInput
+          <BaseInput
             v-model="form.visit_limit"
             :error="form.errors.visit_limit"
             :label="$t('Visit limit')"
@@ -54,7 +54,7 @@
 
         <InputCheckbox v-model="passwordProtected" :label="$t('Require a password to access the link')" />
 
-        <TextInput
+        <BaseInput
           v-if="passwordProtected"
           v-model="form.password"
           :error="form.errors.password"
@@ -68,30 +68,29 @@
     </template>
 
     <template #footer>
-      <ButtonPrimary :loading="form.processing" data-cy="submit-button" form="update-link-form" type="submit">
+      <BaseButton :loading="form.processing" data-cy="submit-button" form="update-link-form" type="submit">
         {{ $t('Update link') }}
-      </ButtonPrimary>
+      </BaseButton>
 
-      <ButtonSecondary data-cy="cancel-button" @click="$emit('close')">
+      <BaseButton data-cy="cancel-button" variant="secondary" @click="$emit('close')">
         {{ $t('Cancel') }}
-      </ButtonSecondary>
+      </BaseButton>
     </template>
-  </AppModal>
+  </BaseModal>
 </template>
 
 <script lang="ts" setup>
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
 import { useForm, usePage } from '@inertiajs/vue3'
 import { Link, User } from '@/types/models'
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
-import TextInput from '@/components/AppInput.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import InputSelect from '@/components/InputSelect.vue'
 import InputDate from '@/components/InputDate.vue'
 import { computed, ref } from 'vue'
 import { PageProps } from '@/types'
 import dayjs from 'dayjs'
 import InputCheckbox from '@/components/InputCheckbox.vue'
-import AppModal from '@/components/AppModal.vue'
+import BaseModal from '@/components/BaseModal.vue'
+import BaseButton from '@/components/BaseButton.vue'
 import LinkData = App.Domain.Link.Data.LinkData
 
 type Props = {
