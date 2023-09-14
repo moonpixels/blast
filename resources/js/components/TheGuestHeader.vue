@@ -12,15 +12,15 @@
 
         <div class="flex items-center space-x-2">
           <Link :href="route('login')">
-            <SecondaryButton>
+            <BaseButton variant="plain">
               {{ $t('Log in') }}
-            </SecondaryButton>
+            </BaseButton>
           </Link>
 
           <Link :href="route('register')">
-            <PrimaryButton>
+            <BaseButton>
               {{ $t('Register') }}
-            </PrimaryButton>
+            </BaseButton>
           </Link>
         </div>
       </div>
@@ -28,8 +28,7 @@
   </header>
 </template>
 <script lang="ts" setup>
-import PrimaryButton from '@/components/ButtonPrimary.vue'
 import { Link } from '@inertiajs/vue3'
 import BlastLogo from '@/components/BlastLogo.vue'
-import SecondaryButton from '@/components/ButtonSecondary.vue'
+import BaseButton from '@/components/BaseButton.vue'
 </script>

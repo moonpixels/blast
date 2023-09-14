@@ -6,7 +6,7 @@
       @submit.prevent="submit"
     >
       <div class="p-3">
-        <TextInput
+        <BaseInput
           v-model="form.destination_url"
           :error="form.errors.destination_url"
           inputmode="url"
@@ -22,12 +22,7 @@
         <div class="flex items-center gap-2">
           <Popover v-for="option in linkOptions" :key="option.name">
             <Tippy :content="option.title">
-              <PopoverButton
-                :as="ButtonSecondary"
-                :data-cy="`set-${option.name}-button`"
-                class="relative overflow-hidden"
-                size="icon"
-              >
+              <PopoverButton :as="BaseButton" :data-cy="`set-${option.name}-button`" size="icon" variant="secondary">
                 <span class="sr-only">{{ option.title }}</span>
 
                 <span
@@ -75,7 +70,7 @@
                 </p>
 
                 <div class="mt-6">
-                  <TextInput
+                  <BaseInput
                     v-if="option.name === 'alias'"
                     v-model="form.alias"
                     :error="form.errors.alias"
@@ -85,7 +80,7 @@
                     @keydown.enter.prevent="close"
                   />
 
-                  <TextInput
+                  <BaseInput
                     v-if="option.name === 'password'"
                     v-model="form.password"
                     :error="form.errors.password"
@@ -106,7 +101,7 @@
                     @keydown.enter.prevent="close"
                   />
 
-                  <TextInput
+                  <BaseInput
                     v-if="option.name === 'visit_limit'"
                     v-model="form.visit_limit"
                     :error="form.errors.visit_limit"
@@ -144,11 +139,11 @@
       </div>
 
       <div class="p-3">
-        <PrimaryButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
+        <BaseButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
           <LinkIcon v-if="!form.processing" class="-ml-1 mr-2 h-4 w-4" />
 
           {{ $t('Shorten URL') }}
-        </PrimaryButton>
+        </BaseButton>
       </div>
     </form>
 
@@ -182,16 +177,17 @@
         </div>
 
         <div class="shrink-0">
-          <ButtonSecondary
+          <BaseButton
             id="copy-to-clipboard"
             data-cy="copy-to-clipboard-button"
             size="icon"
+            variant="plain"
             @click="copyLinkToClipboard"
           >
             <span class="sr-only">{{ recentlyCopiedLink ? $t('Copied') : $t('Copy') }}</span>
             <ClipboardDocumentCheckIcon v-if="recentlyCopiedLink" class="h-5 w-5 text-zinc-900 dark:text-white" />
             <ClipboardDocumentIcon v-else class="h-5 w-5" />
-          </ButtonSecondary>
+          </BaseButton>
         </div>
       </div>
     </Transition>
@@ -199,12 +195,10 @@
 </template>
 
 <script lang="ts" setup>
-import TextInput from '@/components/AppInput.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import { useForm, usePage } from '@inertiajs/vue3'
-import PrimaryButton from '@/components/ButtonPrimary.vue'
 import { ClipboardDocumentCheckIcon, ClipboardDocumentIcon, LinkIcon } from '@heroicons/vue/24/outline'
 import { ClockIcon, CursorArrowRaysIcon, FolderIcon, LockClosedIcon, TagIcon } from '@heroicons/vue/20/solid'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
 import { Component as VueComponent, computed, ref } from 'vue'
 import { trans } from 'laravel-vue-i18n'
 import { Link, User } from '@/types/models'
@@ -216,6 +210,7 @@ import InputSelect from '@/components/InputSelect.vue'
 import ClipboardJS from 'clipboard'
 import { Tippy, useTippy } from 'vue-tippy'
 import InputDate from '@/components/InputDate.vue'
+import BaseButton from '@/components/BaseButton.vue'
 import LinkData = App.Domain.Link.Data.LinkData
 
 type Props = {

@@ -1,5 +1,5 @@
 <template>
-  <AppHead :title="recoveryMode ? $t('Enter your recovery code') : $t('Enter your two-factor code')" />
+  <BaseHead :title="recoveryMode ? $t('Enter your recovery code') : $t('Enter your two-factor code')" />
 
   <FullPageHeading :title="recoveryMode ? $t('Enter your recovery code') : $t('Enter your two-factor code')">
     <p>
@@ -11,9 +11,9 @@
     </p>
   </FullPageHeading>
 
-  <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
+  <div class="mt-10 space-y-4 sm:mx-auto sm:w-full sm:max-w-sm">
     <form v-if="recoveryMode" class="space-y-6" data-cy="2fa-recovery-form" @submit.prevent="submit">
-      <TextInput
+      <BaseInput
         v-model="recoveryForm.recovery_code"
         :error="recoveryForm.errors.code || recoveryForm.errors.recovery_code"
         :label="$t('Recovery code')"
@@ -21,13 +21,13 @@
         @input="recoveryForm.clearErrors('recovery_code')"
       />
 
-      <ButtonPrimary :loading="recoveryForm.processing" class="w-full" data-cy="submit-button" type="submit">
+      <BaseButton :loading="recoveryForm.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('Confirm code') }}
-      </ButtonPrimary>
+      </BaseButton>
     </form>
 
     <form v-else class="space-y-6" data-cy="2fa-challenge-form" @submit.prevent="submit">
-      <TextInput
+      <BaseInput
         v-model="challengeForm.code"
         :error="challengeForm.errors.code"
         :label="$t('Two-factor code')"
@@ -36,15 +36,15 @@
         @input="challengeForm.clearErrors('code')"
       />
 
-      <ButtonPrimary :loading="challengeForm.processing" class="w-full" data-cy="submit-button" type="submit">
+      <BaseButton :loading="challengeForm.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('Confirm code') }}
-      </ButtonPrimary>
+      </BaseButton>
     </form>
 
     <div>
-      <ButtonSecondary as="button" class="w-full" data-cy="switch-mode-button" @click="switchMode">
+      <BaseButton class="w-full" data-cy="switch-mode-button" variant="plain" @click="switchMode">
         {{ recoveryMode ? $t('Use two-factor code') : $t('Use recovery code') }}
-      </ButtonSecondary>
+      </BaseButton>
     </div>
   </div>
 </template>
@@ -52,12 +52,11 @@
 <script lang="ts" setup>
 import FullPageLayout from '@/layouts/FullPageLayout.vue'
 import FullPageHeading from '@/components/FullPageHeading.vue'
-import AppHead from '@/components/AppHead.vue'
-import TextInput from '@/components/AppInput.vue'
+import BaseHead from '@/components/BaseHead.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import { useForm } from '@inertiajs/vue3'
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
 import { ref } from 'vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 defineOptions({
   layout: FullPageLayout,

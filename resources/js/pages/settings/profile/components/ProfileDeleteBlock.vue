@@ -4,13 +4,13 @@
     :title="$t('Delete account')"
   >
     <div class="flex h-full items-center">
-      <ButtonDanger data-cy="delete-account-button" @click="showModal = true">
+      <BaseButton data-cy="delete-account-button" variant="danger" @click="showModal = true">
         {{ $t('Delete account') }}
-      </ButtonDanger>
+      </BaseButton>
     </div>
   </TwoColumnBlockItem>
 
-  <AppModal
+  <BaseModal
     :show="showModal"
     :title="$t('Are you sure you want to delete your account?')"
     data-cy="delete-account-modal"
@@ -37,24 +37,23 @@
     </template>
 
     <template #footer>
-      <ButtonDanger :loading="form.processing" data-cy="delete-account-button" @click="submit">
+      <BaseButton :loading="form.processing" data-cy="delete-account-button" variant="danger" @click="submit">
         {{ $t('Delete account') }}
-      </ButtonDanger>
+      </BaseButton>
 
-      <ButtonSecondary data-cy="cancel-button" @click="showModal = false">
+      <BaseButton data-cy="cancel-button" variant="secondary" @click="showModal = false">
         {{ $t('Cancel') }}
-      </ButtonSecondary>
+      </BaseButton>
     </template>
-  </AppModal>
+  </BaseModal>
 </template>
 
 <script lang="ts" setup>
 import TwoColumnBlockItem from '@/components/TwoColumnBlockItem.vue'
-import ButtonDanger from '@/components/ButtonDanger.vue'
 import { useForm } from '@inertiajs/vue3'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
 import { ref } from 'vue'
-import AppModal from '@/components/AppModal.vue'
+import BaseModal from '@/components/BaseModal.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 const showModal = ref(false)
 

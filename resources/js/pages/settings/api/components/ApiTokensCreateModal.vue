@@ -1,12 +1,12 @@
 <template>
-  <PrimaryButton @click="showModal = true">
+  <BaseButton @click="showModal = true">
     {{ $t('Create token') }}
-  </PrimaryButton>
+  </BaseButton>
 
   <Modal :show="showModal" :title="$t('Create a new personal access token')" @close="handleClose">
     <template #body>
       <form id="create-token-form" class="space-y-6" @submit.prevent="submit">
-        <TextInput
+        <BaseInput
           v-model="form.name"
           :error="form.errors.name"
           :label="$t('Name')"
@@ -18,24 +18,23 @@
     </template>
 
     <template #footer>
-      <PrimaryButton :loading="form.processing" form="create-token-form" type="submit">
+      <BaseButton :loading="form.processing" form="create-token-form" type="submit">
         {{ $t('Create token') }}
-      </PrimaryButton>
+      </BaseButton>
 
-      <SecondaryButton data-cy="cancel-button" @click="handleClose">
+      <BaseButton data-cy="cancel-button" variant="secondary" @click="handleClose">
         {{ $t('Cancel') }}
-      </SecondaryButton>
+      </BaseButton>
     </template>
   </Modal>
 </template>
 
 <script lang="ts" setup>
-import PrimaryButton from '@/components/ButtonPrimary.vue'
-import TextInput from '@/components/AppInput.vue'
-import Modal from '@/components/AppModal.vue'
-import SecondaryButton from '@/components/ButtonSecondary.vue'
+import BaseInput from '@/components/BaseInput.vue'
+import Modal from '@/components/BaseModal.vue'
 import { ref } from 'vue'
 import { useForm } from '@inertiajs/vue3'
+import BaseButton from '@/components/BaseButton.vue'
 import PersonalAccessTokenData = App.Domain.User.Data.PersonalAccessTokenData
 
 const showModal = ref<boolean>(false)

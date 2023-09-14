@@ -1,11 +1,11 @@
 <template>
-  <AppHead :title="$t('Set new password')" />
+  <BaseHead :title="$t('Set new password')" />
 
   <FullPageHeading :title="$t('Set new password')" />
 
   <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" data-cy="reset-password-form" @submit.prevent="submit">
-      <TextInput
+      <BaseInput
         v-model="form.email"
         :error="form.errors.email"
         :label="$t('Email')"
@@ -15,7 +15,7 @@
         @input="form.clearErrors('email')"
       />
 
-      <TextInput
+      <BaseInput
         v-model="form.password"
         :error="form.errors.password"
         :label="$t('New password')"
@@ -25,9 +25,9 @@
         @input="form.clearErrors('password')"
       />
 
-      <ButtonPrimary :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
+      <BaseButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('Reset password') }}
-      </ButtonPrimary>
+      </BaseButton>
     </form>
   </div>
 </template>
@@ -35,10 +35,10 @@
 <script lang="ts" setup>
 import FullPageLayout from '@/layouts/FullPageLayout.vue'
 import FullPageHeading from '@/components/FullPageHeading.vue'
-import AppHead from '@/components/AppHead.vue'
-import TextInput from '@/components/AppInput.vue'
+import BaseHead from '@/components/BaseHead.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import { useForm } from '@inertiajs/vue3'
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 defineOptions({
   layout: FullPageLayout,

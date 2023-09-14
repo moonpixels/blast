@@ -27,5 +27,5 @@
 
 <script lang="ts" setup>
 import TwoColumnBlockItem from '@/components/TwoColumnBlockItem.vue'
-import Alert from '@/components/AppAlert.vue'
+import Alert from '@/components/BaseAlert.vue'
 </script>

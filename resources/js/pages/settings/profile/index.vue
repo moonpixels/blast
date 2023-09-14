@@ -1,7 +1,7 @@
 <template>
-  <AppHead :title="$t('Account settings')" />
+  <BaseHead :title="$t('Account settings')" />
 
-  <AppContainer>
+  <BaseContainer>
     <h1 class="text-xl font-semibold text-zinc-900 dark:text-white">
       {{ $t('Account settings') }}
     </h1>
@@ -20,13 +20,13 @@
 
       <ProfileDeleteBlock />
     </TwoColumnBlock>
-  </AppContainer>
+  </BaseContainer>
 </template>
 
 <script lang="ts" setup>
-import AppHead from '@/components/AppHead.vue'
+import BaseHead from '@/components/BaseHead.vue'
 import AppLayout from '@/layouts/AppLayout.vue'
-import AppContainer from '@/components/AppContainer.vue'
+import BaseContainer from '@/components/BaseContainer.vue'
 import { usePage } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import { PageProps } from '@/types'

@@ -1,7 +1,7 @@
 <template>
   <TwoColumnBlockItem :description="$t('Update your account\'s password.')" :title="$t('Password')">
     <form class="max-w-md space-y-6" data-cy="password-form" @submit.prevent="submit">
-      <TextInput
+      <BaseInput
         v-model="form.current_password"
         :error="form.errors.current_password"
         :label="$t('Current password')"
@@ -11,7 +11,7 @@
         @input="form.clearErrors('current_password')"
       />
 
-      <TextInput
+      <BaseInput
         v-model="form.password"
         :error="form.errors.password"
         :label="$t('New password')"
@@ -21,19 +21,19 @@
         @input="form.clearErrors('password')"
       />
 
-      <ButtonPrimary :loading="form.processing" data-cy="submit-button" type="submit">
+      <BaseButton :loading="form.processing" data-cy="submit-button" type="submit">
         {{ $t('Update password') }}
-      </ButtonPrimary>
+      </BaseButton>
     </form>
   </TwoColumnBlockItem>
 </template>
 
 <script lang="ts" setup>
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
 import TwoColumnBlockItem from '@/components/TwoColumnBlockItem.vue'
 import { useForm } from '@inertiajs/vue3'
-import TextInput from '@/components/AppInput.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import { User } from '@/types/models'
+import BaseButton from '@/components/BaseButton.vue'
 
 type Props = {
   user: User

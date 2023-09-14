@@ -1,5 +1,5 @@
 <template>
-  <AppHead :title="$t('Login')" />
+  <BaseHead :title="$t('Login')" />
 
   <FullPageHeading :title="$t('Log in to Blast')">
     <p class="text-emerald-600 dark:text-emerald-500" data-cy="status-message">
@@ -9,7 +9,7 @@
 
   <div class="mt-10 space-y-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" data-cy="login-form" @submit.prevent="submit">
-      <TextInput
+      <BaseInput
         v-model="form.email"
         :error="form.errors.email"
         :label="$t('Email')"
@@ -19,7 +19,7 @@
         @input="form.clearErrors('email')"
       />
 
-      <TextInput
+      <BaseInput
         v-model="form.password"
         :error="form.errors.password"
         :label="$t('Password')"
@@ -32,36 +32,33 @@
       <div class="flex items-center justify-between">
         <InputCheckbox v-model="form.remember" :error="form.errors.remember" :label="$t('Remember me')" />
 
-        <AppLink :href="route('password.request')" class="text-sm no-underline" data-cy="forgot-password-link">
+        <BaseLink :href="route('password.request')" class="text-sm no-underline" data-cy="forgot-password-link">
           {{ $t('Forgot your password?') }}
-        </AppLink>
+        </BaseLink>
       </div>
 
-      <ButtonPrimary :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
+      <BaseButton :loading="form.processing" class="w-full" data-cy="submit-button" type="submit">
         {{ $t('Log in') }}
-      </ButtonPrimary>
-    </form>
+      </BaseButton>
 
-    <div>
       <Link :href="route('register')" data-cy="register-link">
-        <ButtonSecondary class="w-full">
+        <BaseButton class="mt-4 w-full" variant="plain">
           {{ $t("Don't have an account? Register here") }}
-        </ButtonSecondary>
+        </BaseButton>
       </Link>
-    </div>
+    </form>
   </div>
 </template>
 
 <script lang="ts" setup>
 import FullPageLayout from '@/layouts/FullPageLayout.vue'
 import FullPageHeading from '@/components/FullPageHeading.vue'
-import AppHead from '@/components/AppHead.vue'
-import TextInput from '@/components/AppInput.vue'
+import BaseHead from '@/components/BaseHead.vue'
+import BaseInput from '@/components/BaseInput.vue'
 import { Link, useForm } from '@inertiajs/vue3'
-import ButtonPrimary from '@/components/ButtonPrimary.vue'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
-import AppLink from '@/components/AppLink.vue'
+import BaseLink from '@/components/BaseLink.vue'
 import InputCheckbox from '@/components/InputCheckbox.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
 defineOptions({
   layout: FullPageLayout,

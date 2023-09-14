@@ -1,28 +1,23 @@
 <template>
-  <AppButton
-    class="text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
-    no-shadow
-    size="icon"
-    type="button"
-  >
+  <BaseButton size="icon" variant="plain">
     <span class="sr-only">
-      {{ $t('common.close') }}
+      {{ $t('Close') }}
     </span>
 
     <XMarkIcon :class="classes" aria-hidden="true" />
-  </AppButton>
+  </BaseButton>
 </template>
 
 <script lang="ts" setup>
 import { XMarkIcon } from '@heroicons/vue/20/solid'
 import { computed } from 'vue'
-import AppButton from '@/components/AppButton.vue'
+import BaseButton from '@/components/BaseButton.vue'
 
-type Props = {
+type ButtonDismissProps = {
   size?: 'sm' | 'md' | 'lg'
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<ButtonDismissProps>(), {
   size: 'md',
 })
 

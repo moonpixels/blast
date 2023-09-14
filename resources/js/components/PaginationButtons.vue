@@ -6,9 +6,9 @@
       data-cy="pagination-previous-link"
       preserve-state
     >
-      <ButtonSecondary :disabled="!paginatedResource.links.prev" :size="'sm'">
+      <BaseButton :disabled="!paginatedResource.links.prev" :size="'sm'" variant="secondary">
         {{ $t('Previous') }}
-      </ButtonSecondary>
+      </BaseButton>
     </component>
 
     <component
@@ -17,17 +17,17 @@
       data-cy="pagination-next-link"
       preserve-state
     >
-      <ButtonSecondary :disabled="!paginatedResource.links.next" :size="'sm'">
+      <BaseButton :disabled="!paginatedResource.links.next" :size="'sm'" variant="secondary">
         {{ $t('Next') }}
-      </ButtonSecondary>
+      </BaseButton>
     </component>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { Link } from '@inertiajs/vue3'
-import ButtonSecondary from '@/components/ButtonSecondary.vue'
 import { PaginatedResponse } from '@/types/framework'
+import BaseButton from '@/components/BaseButton.vue'
 
 type Props = {
   paginatedResource: PaginatedResponse<any>

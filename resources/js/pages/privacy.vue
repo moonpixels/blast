@@ -1,7 +1,7 @@
 <template>
-  <AppHead :title="$t('Privacy Policy')" />
+  <BaseHead :title="$t('Privacy Policy')" />
 
-  <AppContainer class="mt-32">
+  <BaseContainer class="mt-32">
     <article class="prose mx-auto dark:prose-invert">
       <h1>Privacy Policy</h1>
 
@@ -227,13 +227,13 @@
         <a href="mailto:hello@moonpixels.co.uk">hello@moonpixels.co.uk.</a>
       </p>
     </article>
-  </AppContainer>
+  </BaseContainer>
 </template>
 
 <script lang="ts" setup>
 import GuestLayout from '@/layouts/GuestLayout.vue'
-import AppHead from '@/components/AppHead.vue'
-import AppContainer from '@/components/AppContainer.vue'
+import BaseHead from '@/components/BaseHead.vue'
+import BaseContainer from '@/components/BaseContainer.vue'
 
 defineOptions({
   layout: GuestLayout,
