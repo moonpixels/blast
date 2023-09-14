@@ -15,6 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           ref: ${{ github.event.release.target_commitish }}
 
       - name: Update changelog
