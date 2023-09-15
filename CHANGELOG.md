@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.0.3 - 2023-09-15
+
+### What's Changed
+
+- Update changelog workflow to use personal access token by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/129
+- Temporarily disable JS sitemap crawler by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/130
+
+**Full Changelog**: https://github.com/moonpixels/blast/compare/v2.0.2...v2.0.3
+
 ## v2.0.2 - 2023-09-14
 
 ### What's Changed
