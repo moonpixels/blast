@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.0.4 - 2023-10-02
+
+### What's Changed
+
+- Update dependencies by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/142
+- Increase bcrypt rounds by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/143
+
+**Full Changelog**: https://github.com/moonpixels/blast/compare/v2.0.3...v2.0.4
+
 ## v2.0.3 - 2023-09-15
 
 ### What's Changed
