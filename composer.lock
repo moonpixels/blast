@@ -5552,16 +5552,16 @@
         },
         {
             "name": "spatie/cpu-load-health-check",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/cpu-load-health-check.git",
-                "reference": "162e132f4ffffbbd0f015f9d9c1b7b8bf742958b"
+                "reference": "7653cd34540dba36d0052826c3aa4abdb7fa5435"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/cpu-load-health-check/zipball/162e132f4ffffbbd0f015f9d9c1b7b8bf742958b",
-                "reference": "162e132f4ffffbbd0f015f9d9c1b7b8bf742958b",
+                "url": "https://api.github.com/repos/spatie/cpu-load-health-check/zipball/7653cd34540dba36d0052826c3aa4abdb7fa5435",
+                "reference": "7653cd34540dba36d0052826c3aa4abdb7fa5435",
                 "shasum": ""
             },
             "require": {
@@ -5605,7 +5605,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/cpu-load-health-check/issues",
-                "source": "https://github.com/spatie/cpu-load-health-check/tree/1.0.3"
+                "source": "https://github.com/spatie/cpu-load-health-check/tree/1.0.4"
             },
             "funding": [
                 {
@@ -5613,7 +5613,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-12-12T13:45:25+00:00"
+            "time": "2023-10-03T08:36:33+00:00"
         },
         {
             "name": "spatie/crawler",
