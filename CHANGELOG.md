@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.0.5 - 2023-10-11
+
+### What's Changed
+
+- Bump stefanzweifel/git-auto-commit-action from 4 to 5 by [@dependabot](https://github.com/dependabot) in https://github.com/moonpixels/blast/pull/144
+- Update dependencies by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/155
+- Enable sitemap generator to run JS by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/156
+- Bump puppeteer by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/157
+
+**Full Changelog**: https://github.com/moonpixels/blast/compare/v2.0.4...v2.0.5
+
 ## v2.0.4 - 2023-10-02
 
 ### What's Changed
