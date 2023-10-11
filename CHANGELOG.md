@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.0.6 - 2023-10-11
+
+### What's Changed
+
+- Remove JS sitemap generator by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/158
+
+**Full Changelog**: https://github.com/moonpixels/blast/compare/v2.0.5...v2.0.6
+
 ## v2.0.5 - 2023-10-11
 
 ### What's Changed
