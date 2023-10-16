@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.0.7 - 2023-10-16
+
+### What's Changed
+
+- Ensure API routes require email verification by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/159
+
+**Full Changelog**: https://github.com/moonpixels/blast/compare/v2.0.6...v2.0.7
+
 ## v2.0.6 - 2023-10-11
 
 ### What's Changed
