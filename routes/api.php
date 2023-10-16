@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])
+Route::middleware(['auth:sanctum', 'verified'])
     ->prefix('v1')
     ->name('api.')
     ->group(function () {

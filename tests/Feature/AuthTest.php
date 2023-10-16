@@ -146,3 +146,13 @@ test('users can confirm their password', function () {
 
     expect(session()->has('auth.password_confirmed_at'))->toBeTrue();
 });
+
+test('users are required to verify their email address', function () {
+    login(states: ['unverified']);
+
+    $this->get(route('links.index'))
+        ->assertRedirectToRoute('verification.notice');
+
+    $this->getJson(route('api.links.index'))
+        ->assertForbidden();
+});
