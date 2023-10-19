@@ -22,8 +22,6 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_ROOT_HOST: '%'
           MYSQL_DATABASE: testing
-          MYSQL_USER: blast
-          MYSQL_PASSWORD: password
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -46,6 +44,11 @@ jobs:
       - name: Prepare environment
         run: cp .env.example .env
 
+      - name: Prepare environment
+        run: |
+          sed -i "s/^DB_PASSWORD=.*/DB_PASSWORD=password/g" .env
+          sed -i "s/^DB_USERNAME=.*/DB_USERNAME=root/g" .env
+
       - name: Generate key
         run: php artisan key:generate
 
@@ -53,7 +56,7 @@ jobs:
         run: npm install && npm run build
 
       - name: Run tests
-        run: vendor/bin/pest
+        run: vendor/bin/pest --parallel --compact
 
   browser:
     runs-on: ubuntu-22.04
@@ -95,6 +98,8 @@ jobs:
         run: |
           cp .env.cypress .env
           sed -i 's/DB_HOST=.*/DB_HOST=127.0.0.1/' .env
+          sed -i "s/^DB_PASSWORD=.*/DB_PASSWORD=password/g" .env
+          sed -i "s/^DB_USERNAME=.*/DB_USERNAME=root/g" .env
           sed -i 's/MAIL_HOST=.*/MAIL_HOST=127.0.0.1/' .env
 
       - name: Generate key
