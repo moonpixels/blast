@@ -6,6 +6,7 @@
 
   <title inertia>{{ __('Blast - The privacy-focused open source URL shortener') }}</title>
 
+  @lemonJS
   @routes
   @vite(['resources/js/app.ts', "resources/js/pages/{$page['component']}.vue"])
   @inertiaHead

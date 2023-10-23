@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\CurrentUserController;
 use App\Http\Controllers\Web\LinkController;
 use App\Http\Controllers\Web\PersonalAccessTokenController;
 use App\Http\Controllers\Web\RedirectController;
+use App\Http\Controllers\Web\SubscriptionController;
 use App\Http\Controllers\Web\TeamController;
 use App\Http\Controllers\Web\TeamInvitationController;
 use App\Http\Controllers\Web\TeamMemberController;
@@ -102,6 +103,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('/settings/api', 'index')->name('index');
             Route::post('/settings/api', 'store')->name('store');
             Route::delete('/settings/api/{token}', 'destroy')->name('destroy');
+        });
+
+    // Subscription settings...
+    Route::controller(SubscriptionController::class)
+        ->name('subscriptions.')
+        ->group(function () {
+            Route::get('/settings/api/subscribe', 'create')->name('create');
+            Route::get('/settings/api/billing', 'edit')->name('edit');
         });
 });
 

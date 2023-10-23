@@ -266,7 +266,7 @@ const additionalFeatures: Feature[] = [
   },
   {
     name: 'High rate limits.',
-    description: 'A generous free tier with a rate limit of 60 requests per minute, upgradable with our paid plans.',
+    description: 'Our Blast Pro plan comes with a generous API rate limit of 180 requests per minute.',
     icon: HandRaisedIcon,
   },
   {
