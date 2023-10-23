@@ -31,4 +31,8 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'lemon_squeezy' => [
+        'sub_variant_id' => env('LEMON_SQUEEZY_SUB_VARIANT_ID'),
+    ],
+
 ];

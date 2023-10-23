@@ -9,6 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Fortify\RecoveryCode;
+use LemonSqueezy\Laravel\Subscription;
 use PragmaRX\Google2FA\Google2FA;
 
 class UserFactory extends Factory
@@ -100,6 +101,19 @@ class UserFactory extends Factory
             return [
                 'email_verified_at' => null,
             ];
+        });
+    }
+
+    /**
+     * Indicate that the user has a subscription.
+     */
+    public function subscribed(): self
+    {
+        return $this->afterCreating(function (User $user) {
+            Subscription::factory()->create([
+                'billable_id' => $user->id,
+                'billable_type' => User::class,
+            ]);
         });
     }
 }

@@ -19,6 +19,7 @@ export type User = {
   email: string
   initials: string
   two_factor_enabled?: boolean
+  subscribed?: boolean
   current_team?: Team
   teams: ?Team[]
 }

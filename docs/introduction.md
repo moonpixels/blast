@@ -46,11 +46,11 @@ that caused the request to fail.
 
 ## Rate limiting
 
-The Blast API has a rate limit of 60 requests per minute on the free tier. If you exceed this limit, you will receive
-a `429 Too Many Requests` response. If you receive this response, you should wait 60 seconds before making another
-request.
+The Blast API has a rate limit of 180 requests per minute with our Pro plan, or 10 requests per minute on the free tier.
+If you exceed this limit, you will receive a `429 Too Many Requests` response. If you receive this response, you should
+wait 60 seconds before making another request.
 
-You can increase your rate limit by [upgrading your account](https://blst.to/settings/api).
+You can upgrade to the Pro plan within [your API settings](https://blst.to/settings/api).
 
 Rate limits are per account, not per API token. If you have multiple API tokens, they will all share the same rate
 limit.

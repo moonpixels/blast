@@ -25,10 +25,11 @@ use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
+use LemonSqueezy\Laravel\Billable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, HasUlids, Notifiable, Searchable, TwoFactorAuthenticatable;
+    use Billable, HasApiTokens, HasFactory, HasUlids, Notifiable, Searchable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that aren't mass assignable.
