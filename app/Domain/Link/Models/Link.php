@@ -5,6 +5,7 @@ namespace App\Domain\Link\Models;
 use App\Domain\Redirect\Models\Visit;
 use App\Domain\Team\Models\Team;
 use App\Domain\User\Models\User;
+use App\Support\Concerns\Blockable;
 use Database\Factories\LinkFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -25,14 +26,14 @@ use Laravel\Scout\Searchable;
  */
 class Link extends Model
 {
-    use HasFactory, HasUlids, Searchable, SoftDeletes;
+    use Blockable, HasFactory, HasUlids, Searchable, SoftDeletes;
 
     /**
      * The attributes that aren't mass assignable.
      *
      * @var array<string>
      */
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'blocked'];
 
     /**
      * The attributes that should be hidden.
@@ -49,6 +50,7 @@ class Link extends Model
     protected $casts = [
         'visit_limit' => 'integer',
         'total_visits' => 'integer',
+        'blocked' => 'boolean',
         'expires_at' => 'datetime',
     ];
 
@@ -76,6 +78,28 @@ class Link extends Model
     protected static function newFactory(): Factory
     {
         return LinkFactory::new();
+    }
+
+    /**
+     * Retrieve the model for a bound value.
+     */
+    public function resolveRouteBinding(mixed $value, $field = null): self
+    {
+        return $this
+            ->when(
+                $field,
+                function () use ($value, $field) {
+                    return $this->where($field, $value);
+                },
+                function () use ($value) {
+                    return $this->where('id', $value);
+                }
+            )
+            ->unblocked()
+            ->whereHas('domain', function (Builder $query) {
+                $query->where('blocked', false);
+            })
+            ->firstOrFail();
     }
 
     /**

@@ -85,3 +85,27 @@ test('users are not redirected when the link has reached its visit limit', funct
     expect($this->link->visits)->toHaveCount(1)
         ->and($this->link->total_visits)->toBe(1);
 });
+
+test('users are not redirected when the link is blocked', function () {
+    $this->link->forceFill(['blocked' => true])->save();
+
+    $this->get(route('redirects.show', $this->link))
+        ->assertNotFound();
+
+    $this->link->refresh();
+
+    expect($this->link->visits)->toHaveCount(0)
+        ->and($this->link->total_visits)->toBe(0);
+});
+
+test('users are not redirected when the domain is blocked', function () {
+    $this->link->domain->forceFill(['blocked' => true])->save();
+
+    $this->get(route('redirects.show', $this->link))
+        ->assertNotFound();
+
+    $this->link->refresh();
+
+    expect($this->link->visits)->toHaveCount(0)
+        ->and($this->link->total_visits)->toBe(0);
+});

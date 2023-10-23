@@ -60,6 +60,17 @@ test('login fails with incorrect password', function () {
     expect(auth()->check())->toBeFalse();
 });
 
+test('login fails when the user is blocked', function () {
+    createUser(states: ['blocked']);
+
+    $this->post(route('login'), [
+        'email' => 'test@example.com',
+        'password' => 'password',
+    ])->assertInvalid(['email']);
+
+    expect(auth()->check())->toBeFalse();
+});
+
 test('users can login with two-factor authentication', function () {
     $user = createUser(
         attributes: ['email' => 'test@example.com'],
