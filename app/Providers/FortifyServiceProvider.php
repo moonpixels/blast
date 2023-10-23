@@ -6,10 +6,13 @@ use App\Domain\User\Actions\CreateUser;
 use App\Domain\User\Actions\ResetUserPassword;
 use App\Domain\User\Actions\UpdateUserPassword;
 use App\Domain\User\Actions\UpdateUserProfileInformation;
+use App\Domain\User\Models\User;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -90,6 +93,26 @@ class FortifyServiceProvider extends ServiceProvider
                 'status' => session('status'),
                 'email' => $request->user()->email,
             ]);
+        });
+
+        Fortify::authenticateUsing(function (Request $request) {
+            $user = User::where('email', $request->input('email'))->first();
+
+            if (! $user) {
+                return null;
+            }
+
+            if (! Hash::check($request->input('password'), $user->password)) {
+                return null;
+            }
+
+            if ($user->isBlocked()) {
+                throw ValidationException::withMessages([
+                    'email' => __('Your account has been blocked.'),
+                ]);
+            }
+
+            return $user;
         });
     }
 }

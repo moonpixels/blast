@@ -116,4 +116,16 @@ class UserFactory extends Factory
             ]);
         });
     }
+
+    /**
+     * Indicate that the user is blocked.
+     */
+    public function blocked(): self
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'blocked' => true,
+            ];
+        });
+    }
 }

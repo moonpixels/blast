@@ -30,6 +30,8 @@ class FilterLinks
                 ->orderBy('created_at', 'desc')
                 ->query(function (Builder $query) use ($user) {
                     $query->with('team')
+                        ->where('blocked', false)
+                        ->whereHas('domain', fn (Builder $query) => $query->where('blocked', false))
                         ->when($user, fn (Builder|Link $query) => $query->forUser($user));
                 })
                 ->paginate($perPage)

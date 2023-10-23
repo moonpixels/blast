@@ -3,6 +3,7 @@
 namespace App\Domain\User\Models;
 
 use App\Domain\Team\Models\Team;
+use App\Support\Concerns\Blockable;
 use BaconQrCode\Renderer\Color\Rgb;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -29,14 +30,19 @@ use LemonSqueezy\Laravel\Billable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Billable, HasApiTokens, HasFactory, HasUlids, Notifiable, Searchable, TwoFactorAuthenticatable;
+    use Billable, Blockable, HasApiTokens, HasFactory, HasUlids, Notifiable, Searchable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that aren't mass assignable.
      *
      * @var array<string>
      */
-    protected $guarded = ['id', 'is_admin', 'email_verified_at'];
+    protected $guarded = [
+        'id',
+        'blocked',
+        'is_admin',
+        'email_verified_at',
+    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -56,6 +62,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'is_admin' => 'boolean',
         'email_verified_at' => 'datetime',
+        'blocked' => 'boolean',
     ];
 
     /**

@@ -21,4 +21,16 @@ class DomainFactory extends Factory
             'host' => $this->faker->unique()->domainName,
         ];
     }
+
+    /**
+     * Indicate that the domain is blocked.
+     */
+    public function blocked(): self
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'blocked' => true,
+            ];
+        });
+    }
 }
