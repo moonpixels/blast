@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.1.0 - 2023-10-23
+
+### What's Changed
+
+- Run tests in parallel by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/160
+- Implement subscription by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/161
+- Add ability to block users, domains and links by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/162
+
+**Full Changelog**: https://github.com/moonpixels/blast/compare/v2.0.7...v2.1.0
+
 ## v2.0.7 - 2023-10-16
 
 ### What's Changed
