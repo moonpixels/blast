@@ -24,7 +24,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'initials' => $this->initials,
             'two_factor_enabled' => $this->when(auth()->user()->is($this->resource), $this->two_factor_enabled),
-            'subscribed' => $this->when(auth()->user()->is($this->resource), $this->subscribed()),
+            'subscribed' => $this->when(auth()->user()->is($this->resource), fn () => $this->subscribed()),
             'current_team' => new TeamResource($this->whenLoaded('currentTeam')),
             'teams' => $this->when(
                 $this->relationLoaded('teams') && $this->relationLoaded('ownedTeams'),
