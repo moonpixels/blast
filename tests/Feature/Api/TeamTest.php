@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Models\Team;
+use Domain\Team\Models\Team;
 use Laravel\Sanctum\Sanctum;
 
 beforeEach(function () {

@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Domain\Team\Models\Team;
-use App\Domain\User\Models\User;
+use Domain\Team\Models\Team;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TeamFactory extends Factory
@@ -30,7 +30,7 @@ class TeamFactory extends Factory
      */
     public function personalTeam(): self
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function () {
             return [
                 'name' => 'Personal Team',
                 'personal_team' => true,

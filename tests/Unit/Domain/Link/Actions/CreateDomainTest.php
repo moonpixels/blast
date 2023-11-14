@@ -1,7 +1,7 @@
 <?php
 
-use App\Domain\Link\Actions\CreateDomain;
-use App\Domain\Link\Data\DomainData;
+use Domain\Link\Actions\CreateDomainAction;
+use Domain\Link\DTOs\DomainData;
 
 beforeEach(function () {
     $this->domainData = DomainData::from([
@@ -10,7 +10,7 @@ beforeEach(function () {
 });
 
 it('creates a new domain', function () {
-    $domain = CreateDomain::run($this->domainData);
+    $domain = CreateDomainAction::run($this->domainData);
 
     expect($domain)->toExistInDatabase()
         ->and($domain->host)->toBe('example.com');
@@ -19,5 +19,5 @@ it('creates a new domain', function () {
 it('returns an existing domain if it exists', function () {
     $domain = createDomain(attributes: ['host' => 'example.com']);
 
-    expect($domain->is(CreateDomain::run($this->domainData)))->toBeTrue();
+    expect($domain->is(CreateDomainAction::run($this->domainData)))->toBeTrue();
 });

@@ -1,8 +1,8 @@
 <?php
 
-use App\Domain\Link\Models\Domain;
-use App\Domain\Redirect\Models\Visit;
-use App\Domain\Team\Models\Team;
+use Domain\Link\Models\Domain;
+use Domain\Redirect\Models\Visit;
+use Domain\Team\Models\Team;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Hash;
 
@@ -36,19 +36,6 @@ it('increments total visits', function () {
     $this->link->incrementTotalVisits();
 
     expect($this->link->total_visits)->toBe(1);
-});
-
-it('has a searchable array', function () {
-    expect($this->link->toSearchableArray())->toHaveKeys([
-        'id',
-        'team_id',
-        'alias',
-        'destination_path',
-        'destination_url',
-        'short_url',
-        'created_at',
-        'updated_at',
-    ]);
 });
 
 it('determines if a password matches', function () {

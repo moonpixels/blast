@@ -1,11 +1,11 @@
 <?php
 
-use App\Domain\User\Actions\CreateUser;
+use Domain\User\Actions\CreateUserAction;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 beforeEach(function () {
-    $this->action = new CreateUser;
+    $this->action = new CreateUserAction;
 });
 
 it('creates a new user', function () {

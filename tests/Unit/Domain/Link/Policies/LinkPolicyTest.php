@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Link\Policies\LinkPolicy;
+use Domain\Link\Policies\LinkPolicy;
 
 beforeEach(function () {
     $this->policy = new LinkPolicy();

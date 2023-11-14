@@ -1,22 +1,17 @@
 <?php
 
-use App\Domain\Team\Actions\Invitations\ResendTeamInvitation;
-use App\Domain\Team\Notifications\TeamInvitationNotification;
-use Illuminate\Support\Facades\Notification;
+use Domain\Team\Actions\Invitations\ResendTeamInvitationAction;
+use Domain\Team\Mail\TeamInvitationMail;
+use Illuminate\Support\Facades\Mail;
 
 beforeEach(function () {
     $this->invitation = createTeamInvitation();
 });
 
 it('resends a team invitation', function () {
-    Notification::fake();
+    Mail::fake();
 
-    expect(ResendTeamInvitation::run($this->invitation))->toBeTrue();
+    expect(ResendTeamInvitationAction::run($this->invitation))->toBeTrue();
 
-    Notification::assertSentTo(
-        $this->invitation,
-        function (TeamInvitationNotification $notification) {
-            return expect($notification->invitation->is($this->invitation))->toBeTrue();
-        }
-    );
+    Mail::assertSent(TeamInvitationMail::class);
 });

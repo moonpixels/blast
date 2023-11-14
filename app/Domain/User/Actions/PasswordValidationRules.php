@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Domain\User\Actions;
+namespace Domain\User\Actions;
 
 use Laravel\Fortify\Rules\Password;
 
 trait PasswordValidationRules
 {
     /**
-     * Get the validation rules used to validate passwords.
+     * Get the password validation rules.
      */
     protected function passwordRules(): array
     {

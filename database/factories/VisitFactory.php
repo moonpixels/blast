@@ -2,17 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Domain\Link\Models\Link;
-use App\Domain\Redirect\Enums\DeviceTypes;
-use App\Domain\Redirect\Models\Visit;
-use App\Support\Concerns\HasUrlInput;
+use Domain\Link\Models\Link;
+use Domain\Link\Support\Helpers\Url;
+use Domain\Redirect\Enums\DeviceType;
+use Domain\Redirect\Models\Visit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Jenssegers\Agent\Agent;
 
 class VisitFactory extends Factory
 {
-    use HasUrlInput;
-
     /**
      * The name of the factory's corresponding model.
      */
@@ -57,7 +55,7 @@ class VisitFactory extends Factory
 
         return $this->state(function () use ($agent) {
             return [
-                'device_type' => DeviceTypes::fromUserAgent($agent),
+                'device_type' => DeviceType::fromUserAgent($agent),
                 'browser' => $agent->browser() ?: null,
                 'browser_version' => $agent->version($agent->browser()) ?: null,
                 'platform' => $agent->platform() ?: null,
@@ -84,7 +82,7 @@ class VisitFactory extends Factory
      */
     public function withReferer(string $referer = 'https://blst.to'): self
     {
-        $url = $this->parseUrlInput($referer);
+        $url = Url::parseUrl($referer);
 
         return $this->state(function () use ($url) {
             return [

@@ -1,63 +1,66 @@
 <?php
 
-namespace App\Domain\Link\Models;
+namespace Domain\Link\Models;
 
-use App\Domain\Redirect\Models\Visit;
-use App\Domain\Team\Models\Team;
-use App\Domain\User\Models\User;
-use App\Support\Concerns\Blockable;
 use Database\Factories\LinkFactory;
+use Domain\Link\Builders\LinkBuilder;
+use Domain\Redirect\Models\Visit;
+use Domain\Team\Models\Team;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Scout\Searchable;
+use Support\Concerns\Blockable;
+use Support\Eloquent\Attributes\WithBuilder;
+use Support\Eloquent\Attributes\WithFactory;
+use Support\Eloquent\Concerns\HasBuilder;
+use Support\Eloquent\Concerns\HasFactory;
 
 /**
+ * @method static LinkBuilder query()
+ *
  * @property string $destination_url
  * @property string $short_url
  * @property bool $has_password
  */
+#[WithFactory(LinkFactory::class)]
+#[WithBuilder(LinkBuilder::class)]
 class Link extends Model
 {
-    use Blockable, HasFactory, HasUlids, Searchable, SoftDeletes;
+    use Blockable, HasBuilder, HasFactory, HasUlids, SoftDeletes;
 
     /**
      * The attributes that aren't mass assignable.
-     *
-     * @var array<string>
      */
-    protected $guarded = ['id', 'blocked'];
-
-    /**
-     * The attributes that should be hidden.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = ['password'];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'visit_limit' => 'integer',
-        'total_visits' => 'integer',
-        'blocked' => 'boolean',
-        'expires_at' => 'datetime',
+    protected $guarded = [
+        'id',
+        'blocked',
     ];
 
     /**
-     * The attributes to be appended to the model's array form.
-     *
-     * @var array<string>
+     * The attributes that should be hidden for serialization.
+     */
+    protected $hidden = [
+        'password',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     */
+    protected $casts = [
+        'password' => 'hashed',
+        'visit_limit' => 'integer',
+        'total_visits' => 'integer',
+        'expires_at' => 'datetime',
+        'blocked' => 'boolean',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
      */
     protected $appends = [
         'destination_url',
@@ -66,19 +69,11 @@ class Link extends Model
     ];
 
     /**
-     * The relationships that should always be loaded.
-     *
-     * @var array
+     * The relations to eager load on every query.
      */
-    protected $with = ['domain'];
-
-    /**
-     * Create a new factory instance for the model.
-     */
-    protected static function newFactory(): Factory
-    {
-        return LinkFactory::new();
-    }
+    protected $with = [
+        'domain',
+    ];
 
     /**
      * Retrieve the model for a bound value.
@@ -103,7 +98,7 @@ class Link extends Model
     }
 
     /**
-     * Get the domain that the link belongs to.
+     * The domain that the link belongs to.
      */
     public function domain(): BelongsTo
     {
@@ -111,7 +106,7 @@ class Link extends Model
     }
 
     /**
-     * Get the team that the link belongs to.
+     * The team that the link belongs to.
      */
     public function team(): BelongsTo
     {
@@ -119,7 +114,7 @@ class Link extends Model
     }
 
     /**
-     * Get the visits for the link.
+     * The visits that belong to the link.
      */
     public function visits(): HasMany
     {
@@ -135,26 +130,7 @@ class Link extends Model
     }
 
     /**
-     * Get the indexable data array for the model.
-     *
-     * @return array<string, mixed>
-     */
-    public function toSearchableArray(): array
-    {
-        return [
-            'id' => $this->id,
-            'team_id' => $this->team_id,
-            'alias' => $this->alias,
-            'destination_path' => $this->destination_path,
-            'destination_url' => $this->destination_url,
-            'short_url' => $this->short_url,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ];
-    }
-
-    /**
-     * Determine if the link's password matches the given password.
+     * Determine if the password matches the given value.
      */
     public function passwordMatches(string $password): bool
     {
@@ -178,15 +154,7 @@ class Link extends Model
     }
 
     /**
-     * Scope a query to only include links the given user can view.
-     */
-    public function scopeForUser(Builder $query, User $user): void
-    {
-        $query->whereIn('team_id', $user->allTeams()->pluck('id'));
-    }
-
-    /**
-     * Get the link's long link.
+     * Get the link's destination URL.
      */
     protected function destinationUrl(): Attribute
     {
@@ -198,7 +166,7 @@ class Link extends Model
     }
 
     /**
-     * Get the link's short link.
+     * Get the link's short URL.
      */
     protected function shortUrl(): Attribute
     {
@@ -210,7 +178,7 @@ class Link extends Model
     }
 
     /**
-     * Determine if the link is password protected.
+     * Determine if the link has a password.
      */
     protected function hasPassword(): Attribute
     {

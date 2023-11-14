@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\Api\V1\LinkController;
-use App\Http\Controllers\Api\V1\TeamController;
-use App\Http\Controllers\Api\V1\TeamInvitationController;
-use App\Http\Controllers\Api\V1\TeamMemberController;
+use App\Api\Controllers\V1\LinkController;
+use App\Api\Controllers\V1\TeamController;
+use App\Api\Controllers\V1\TeamInvitationController;
+use App\Api\Controllers\V1\TeamMemberController;
 use Illuminate\Support\Facades\Route;
 
 /*

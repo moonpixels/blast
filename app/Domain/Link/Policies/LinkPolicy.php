@@ -1,14 +1,26 @@
 <?php
 
-namespace App\Domain\Link\Policies;
+namespace Domain\Link\Policies;
 
-use App\Domain\Link\Models\Link;
-use App\Domain\User\Models\User;
+use Domain\Link\Models\Link;
+use Domain\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class LinkPolicy
 {
     use HandlesAuthorization;
+
+    /**
+     * Perform pre-authorization checks.
+     */
+    public function before(User $user): ?bool
+    {
+        if ($user->isBlocked()) {
+            return false;
+        }
+
+        return null;
+    }
 
     /**
      * Determine whether the user can view any links.

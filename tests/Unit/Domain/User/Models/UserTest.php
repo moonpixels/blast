@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Models\Team;
+use Domain\Team\Models\Team;
 use Illuminate\Database\Eloquent\Collection;
 
 beforeEach(function () {
@@ -71,16 +71,6 @@ it('belongs to many teams', function () {
 it('can generate a two factor QR code', function () {
     expect($this->user->twoFactorQrCodeSvg())->toBeString()
         ->and($this->user->twoFactorQrCodeSvg())->toContain('svg');
-});
-
-it('has a searchable array', function () {
-    expect($this->user->toSearchableArray())->toHaveKeys([
-        'id',
-        'name',
-        'email',
-        'created_at',
-        'updated_at',
-    ]);
 });
 
 it('determines if two factor authentication is enabled', function () {

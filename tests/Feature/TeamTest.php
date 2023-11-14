@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Models\Team;
+use Domain\Team\Models\Team;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
@@ -36,7 +36,7 @@ test('users can view teams', function () {
                 ->where('name', $team->name)
                 ->etc())
             ->has('filters.view')
-            ->has('filters.query')
+            ->has('filters.search')
             ->has('members')
             ->missing('invitations')
         );

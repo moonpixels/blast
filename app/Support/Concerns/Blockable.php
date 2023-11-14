@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Support\Concerns;
+namespace Support\Concerns;
 
 use Illuminate\Database\Eloquent\Builder;
 
@@ -12,6 +12,14 @@ trait Blockable
     public function isBlocked(): bool
     {
         return (bool) $this->blocked;
+    }
+
+    /**
+     * Determine if the model is not blocked.
+     */
+    public function isNotBlocked(): bool
+    {
+        return ! $this->isBlocked();
     }
 
     /**

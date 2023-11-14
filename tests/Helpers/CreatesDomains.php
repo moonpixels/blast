@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Link\Models\Domain;
+use Domain\Link\Models\Domain;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\Support\Fty;
 

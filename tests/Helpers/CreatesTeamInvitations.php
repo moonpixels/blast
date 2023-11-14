@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Models\TeamInvitation;
+use Domain\Team\Models\TeamInvitation;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\Support\Fty;
 

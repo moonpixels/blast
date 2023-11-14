@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Domain\Team\Exceptions;
+namespace Domain\Team\Exceptions;
 
 use Exception;
 
 class InvalidTeamMemberException extends Exception
 {
     /**
-     * Indicate that the user is already on the team.
+     * Create an exception for when the user is already on the team.
      */
     public static function alreadyOnTeam(): self
     {

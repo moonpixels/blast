@@ -1,13 +1,13 @@
 <?php
 
-use App\Domain\User\Actions\CreatePersonalAccessToken;
-use App\Domain\User\Data\PersonalAccessTokenData;
+use Domain\User\Actions\CreatePersonalAccessTokenAction;
+use Domain\User\DTOs\PersonalAccessTokenData;
 use Laravel\Sanctum\NewAccessToken;
 
 it('creates a personal access token for a user', function () {
     $user = createUser();
 
-    $token = CreatePersonalAccessToken::run($user, PersonalAccessTokenData::from([
+    $token = CreatePersonalAccessTokenAction::run($user, PersonalAccessTokenData::from([
         'name' => 'Test Token',
     ]));
 

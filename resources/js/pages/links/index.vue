@@ -238,13 +238,13 @@ type Props = {
   shortenedLink?: Link
   links: PaginatedResponse<Link>
   filters: {
-    query?: string
+    search?: string
   }
 }
 
 const props = defineProps<Props>()
 
-const searchQuery = ref<string>(props.filters.query ?? '')
+const searchQuery = ref<string>(props.filters.search ?? '')
 
 const recentlyCopiedLink = ref<Link | null>(null)
 
@@ -283,8 +283,10 @@ function copyLinkToClipboard(link: Link, event: Event): void {
 function search() {
   router.reload({
     data: {
-      query: searchQuery.value,
-      page: 1,
+      filter: {
+        search: searchQuery.value || undefined,
+      },
+      page: searchQuery.value ? 1 : undefined,
     },
     only: ['filters', 'links'],
   })

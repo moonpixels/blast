@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\User\Policies\PersonalAccessTokenPolicy;
+use Domain\User\Policies\PersonalAccessTokenPolicy;
 
 beforeEach(function () {
     $this->policy = new PersonalAccessTokenPolicy();

@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Exceptions\InvalidTeamMemberException;
+use Domain\Team\Exceptions\InvalidTeamMemberException;
 
 it('throws an already on team exception', function () {
     throw InvalidTeamMemberException::alreadyOnTeam();

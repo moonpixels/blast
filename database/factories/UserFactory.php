@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Domain\Team\Models\Team;
-use App\Domain\User\Models\User;
+use Domain\Team\Models\Team;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
@@ -52,7 +52,7 @@ class UserFactory extends Factory
      */
     public function withTwoFactorAuthentication(): self
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function () {
             $tfaEngine = app(Google2FA::class);
             $userSecret = $tfaEngine->generateSecretKey();
 
@@ -97,7 +97,7 @@ class UserFactory extends Factory
      */
     public function unverified(): self
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function () {
             return [
                 'email_verified_at' => null,
             ];
@@ -122,7 +122,7 @@ class UserFactory extends Factory
      */
     public function blocked(): self
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function () {
             return [
                 'blocked' => true,
             ];

@@ -1,7 +1,8 @@
 <?php
 
-use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\Team\Notifications\TeamInvitationNotification;
+use Domain\Team\Mail\TeamInvitationMail;
+use Domain\Team\Models\TeamInvitation;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
@@ -11,7 +12,7 @@ beforeEach(function () {
 });
 
 test('users can create invitations for teams they own', function () {
-    Notification::fake();
+    Mail::fake();
 
     $this->post(route('teams.invitations.store', [$this->ownedTeam]), [
         'email' => 'user@example.com',
@@ -25,11 +26,11 @@ test('users can create invitations for teams they own', function () {
     expect($invitation->team->is($this->ownedTeam))->toBeTrue()
         ->and($invitation->email)->toBe('user@example.com');
 
-    Notification::assertSentTo($invitation, TeamInvitationNotification::class);
+    Mail::assertSent(TeamInvitationMail::class);
 });
 
 test('users cannot create invitations for teams they do not own', function () {
-    Notification::fake();
+    Mail::fake();
 
     $this->post(route('teams.invitations.store', [$this->memberTeam]), [
         'email' => 'user@example.com',
@@ -37,7 +38,7 @@ test('users cannot create invitations for teams they do not own', function () {
 
     expect(TeamInvitation::count())->toBe(0);
 
-    Notification::assertNothingSent();
+    Mail::assertNothingSent();
 });
 
 test('users can accept team invitations', function () {
@@ -58,7 +59,7 @@ test('users can accept team invitations', function () {
 });
 
 test('users can resend invitations for teams the own', function () {
-    Notification::fake();
+    Mail::fake();
 
     $invitation = createTeamInvitation(attributes: ['team_id' => $this->ownedTeam->id]);
 
@@ -69,18 +70,18 @@ test('users can resend invitations for teams the own', function () {
             'message' => "The invitation for {$invitation->email} has been resent.",
         ]);
 
-    Notification::assertSentTo($invitation, TeamInvitationNotification::class);
+    Mail::assertSent(TeamInvitationMail::class);
 });
 
 test('users cannot resend invitations for teams they do not own', function () {
-    Notification::fake();
+    Mail::fake();
 
     $invitation = createTeamInvitation();
 
     $this->get(route('teams.invitations.resend', [$invitation->team, $invitation]))
         ->assertForbidden();
 
-    Notification::assertNothingSent();
+    Mail::assertNothingSent();
 });
 
 test('users can delete invitations for teams they own', function () {
@@ -132,11 +133,11 @@ test('users can filter team invitations', function () {
     $this->get(route('teams.show', [
         'team' => $this->ownedTeam,
         'view' => 'invitations',
-        'query' => 'test@example.com',
+        'filter[search]' => 'test@example.com',
     ]))->assertInertia(fn (Assert $page) => $page
         ->component('teams/show')
         ->where('filters.view', 'invitations')
-        ->where('filters.query', 'test@example.com')
+        ->where('filters.search', 'test@example.com')
         ->has('invitations.data', 1)
         ->has('invitations.data.0', fn (Assert $page) => $page
             ->where('email', 'test@example.com')

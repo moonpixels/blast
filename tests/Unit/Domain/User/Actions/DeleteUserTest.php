@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\User\Actions\DeleteUser;
+use Domain\User\Actions\DeleteUserAction;
 use Illuminate\Support\Facades\DB;
 
 beforeEach(function () {
@@ -8,7 +8,7 @@ beforeEach(function () {
 });
 
 it('deletes the user', function () {
-    expect(DeleteUser::run($this->user))->toBeTrue()
+    expect(DeleteUserAction::run($this->user))->toBeTrue()
         ->and($this->user)->toBeDeleted()
         ->and(DB::table('team_user')->where('user_id', $this->user->id)->exists())->toBeFalse()
         ->and(DB::table('teams')->where('owner_id', $this->user->id)->exists())->toBeFalse();

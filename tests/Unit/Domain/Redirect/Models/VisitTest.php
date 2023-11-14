@@ -1,7 +1,7 @@
 <?php
 
-use App\Domain\Link\Models\Link;
-use App\Domain\Team\Models\Team;
+use Domain\Link\Models\Link;
+use Domain\Team\Models\Team;
 
 beforeEach(function () {
     $this->visit = createVisit();

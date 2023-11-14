@@ -1,14 +1,14 @@
 <?php
 
-use App\Domain\Team\Actions\CreateTeam;
-use App\Domain\Team\Data\TeamData;
+use Domain\Team\Actions\CreateTeamAction;
+use Domain\Team\DTOs\TeamData;
 
 beforeEach(function () {
     $this->user = createUser();
 });
 
 it('creates a team for the given user', function () {
-    $team = CreateTeam::run($this->user, TeamData::from([
+    $team = CreateTeamAction::run($this->user, TeamData::from([
         'name' => 'Test Team',
     ]));
 
@@ -19,9 +19,10 @@ it('creates a team for the given user', function () {
 });
 
 it('creates a personal team for the given user', function () {
-    $team = CreateTeam::run($this->user, TeamData::from([
+    $team = CreateTeamAction::run($this->user, TeamData::from([
         'name' => 'Test Team',
-    ]), true);
+        'personal_team' => true,
+    ]));
 
     expect($team->name)->toBe('Test Team')
         ->and($team->owner->is($this->user))->toBeTrue()

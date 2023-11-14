@@ -1,18 +1,19 @@
 <?php
 
-namespace App\Domain\Team\Listeners;
+namespace Domain\Team\Listeners;
 
-use App\Domain\Link\Actions\DeleteLinksForTeam;
-use App\Domain\Team\Events\TeamDeleted;
+use Domain\Link\Actions\DeleteAllLinksForTeamAction;
+use Domain\Team\Events\TeamDeletedEvent;
+use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class DeleteTeamLinks implements ShouldQueue
+class DeleteTeamLinks implements ShouldHandleEventsAfterCommit, ShouldQueue
 {
     /**
-     * Delete all the links for the given team.
+     * Delete all links for a team.
      */
-    public function handle(TeamDeleted $event): void
+    public function handle(TeamDeletedEvent $event): void
     {
-        DeleteLinksForTeam::run($event->team);
+        DeleteAllLinksForTeamAction::run($event->team);
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
-use App\Domain\User\Actions\UpdateUserProfileInformation;
+use Domain\User\Actions\UpdateUserProfileInformationAction;
 
 beforeEach(function () {
-    $this->action = new UpdateUserProfileInformation;
+    $this->action = new UpdateUserProfileInformationAction;
 
     $this->user = createUser();
 });

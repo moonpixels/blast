@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\User\Models\User;
+use Domain\User\Models\User;
 use Illuminate\Auth\Middleware\RequirePassword;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\Support\Fty;

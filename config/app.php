@@ -185,19 +185,18 @@ return [
         /*
          * Package Service Providers...
          */
+        Support\Providers\HealthCheckServiceProvider::class,
 
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\HorizonServiceProvider::class,
-        App\Providers\FortifyServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-
-        App\Providers\HealthCheckServiceProvider::class,
+        Support\Providers\AppServiceProvider::class,
+        Support\Providers\AuthServiceProvider::class,
+        // Support\Providers\BroadcastServiceProvider::class,
+        Support\Providers\EventServiceProvider::class,
+        Support\Providers\HorizonServiceProvider::class,
+        Support\Providers\FortifyServiceProvider::class,
+        Support\Providers\RouteServiceProvider::class,
     ],
 
     /*

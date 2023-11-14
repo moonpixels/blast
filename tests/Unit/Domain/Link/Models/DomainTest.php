@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Link\Models\Link;
+use Domain\Link\Models\Link;
 use Illuminate\Database\Eloquent\Collection;
 
 beforeEach(function () {

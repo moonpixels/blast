@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\Team\Policies;
+namespace Domain\Team\Policies;
 
-use App\Domain\Team\Models\Team;
-use App\Domain\User\Models\User;
+use Domain\Team\Models\Team;
+use Domain\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TeamPolicy
@@ -53,7 +53,7 @@ class TeamPolicy
     }
 
     /**
-     * Determine whether the user can view any team members.
+     * Determine whether the user view any team members.
      */
     public function viewAnyMember(User $user, Team $team): bool
     {
@@ -70,7 +70,7 @@ class TeamPolicy
     }
 
     /**
-     * Determine whether the user can attach a team member.
+     * Determine whether the user can add team members.
      */
     public function attachAnyMember(User $user, Team $team): bool
     {
@@ -79,7 +79,7 @@ class TeamPolicy
     }
 
     /**
-     * Determine whether the user can detach a team member.
+     * Determine whether the user can remove team members.
      */
     public function detachMember(User $user, Team $team, User $member): bool
     {

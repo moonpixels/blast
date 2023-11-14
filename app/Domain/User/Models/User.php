@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Domain\User\Models;
+namespace Domain\User\Models;
 
-use App\Domain\Team\Models\Team;
-use App\Support\Concerns\Blockable;
 use BaconQrCode\Renderer\Color\Rgb;
 use BaconQrCode\Renderer\Image\SvgImageBackEnd;
 use BaconQrCode\Renderer\ImageRenderer;
@@ -11,11 +9,10 @@ use BaconQrCode\Renderer\RendererStyle\Fill;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
 use Database\Factories\UserFactory;
+use Domain\Team\Models\Team;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,50 +22,54 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Sanctum\HasApiTokens;
-use Laravel\Scout\Searchable;
 use LemonSqueezy\Laravel\Billable;
+use Support\Concerns\Blockable;
+use Support\Eloquent\Attributes\WithFactory;
+use Support\Eloquent\Concerns\HasFactory;
 
+/**
+ * @property bool $two_factor_enabled
+ * @property string $initials
+ */
+#[WithFactory(UserFactory::class)]
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Billable, Blockable, HasApiTokens, HasFactory, HasUlids, Notifiable, Searchable, TwoFactorAuthenticatable;
+    use Billable, Blockable, HasApiTokens, HasFactory, HasUlids, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that aren't mass assignable.
-     *
-     * @var array<string>
      */
     protected $guarded = [
         'id',
-        'blocked',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
+        'two_factor_confirmed_at',
+        'remember_token',
         'is_admin',
+        'blocked',
         'email_verified_at',
     ];
 
     /**
      * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
      */
     protected $hidden = [
         'password',
+        'two_factor_secret',
         'remember_token',
     ];
 
     /**
      * The attributes that should be cast.
-     *
-     * @var array<string, string>
      */
     protected $casts = [
         'is_admin' => 'boolean',
-        'email_verified_at' => 'datetime',
         'blocked' => 'boolean',
+        'email_verified_at' => 'datetime',
     ];
 
     /**
-     * The attributes to be appended to the model's array form.
-     *
-     * @var array<string>
+     * The accessors to append to the model's array form.
      */
     protected $appends = [
         'two_factor_enabled',
@@ -76,15 +77,14 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Create a new factory instance for the model.
+     * The model's default values for attributes.
      */
-    protected static function newFactory(): Factory
-    {
-        return UserFactory::new();
-    }
+    protected $attributes = [
+        'is_admin' => false,
+    ];
 
     /**
-     * Get user's current team.
+     * The user's current team.
      */
     public function currentTeam(): BelongsTo
     {
@@ -127,11 +127,12 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function personalTeam(): Team
     {
+        /** @phpstan-ignore-next-line */
         return $this->ownedTeams()->personal()->first();
     }
 
     /**
-     * Get the teams that the user owns excluding personal team.
+     * The teams that the user has ownership of.
      */
     public function ownedTeams(): HasMany
     {
@@ -147,7 +148,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get all the user's teams including owned teams.
+     * Get all teams that the user owns or belongs to.
      */
     public function allTeams(): Collection
     {
@@ -156,7 +157,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the teams the user is a member of.
+     * The teams the user is a member of.
      */
     public function teams(): BelongsToMany
     {
@@ -164,7 +165,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the QR code SVG of the user's two-factor authentication QR code URL.
+     * Get the two factor authentication QR code SVG.
      */
     public function twoFactorQrCodeSvg(): string
     {
@@ -180,23 +181,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the indexable data array for the model.
-     *
-     * @return array<string, mixed>
-     */
-    public function toSearchableArray(): array
-    {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'email' => $this->email,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ];
-    }
-
-    /**
-     * Get the user's two-factor authentication status.
+     * Determine if two factor authentication is enabled.
      */
     protected function twoFactorEnabled(): Attribute
     {

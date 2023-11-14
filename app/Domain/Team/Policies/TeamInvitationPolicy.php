@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Domain\Team\Policies;
+namespace Domain\Team\Policies;
 
-use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\User\Models\User;
+use Domain\Team\Models\TeamInvitation;
+use Domain\User\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TeamInvitationPolicy

@@ -1,21 +1,21 @@
 <?php
 
-use App\Domain\Redirect\Actions\CreateVisit;
-use App\Domain\Redirect\Enums\DeviceTypes;
+use Domain\Redirect\Actions\CreateVisitAction;
+use Domain\Redirect\DTOs\VisitData;
+use Domain\Redirect\Enums\DeviceType;
 
 beforeEach(function () {
     $this->link = createLink();
 });
 
 it('creates a visit', function () {
-    $visit = CreateVisit::run(
-        $this->link,
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0',
-        'https://example.com/foo/bar?query=string#fragment'
-    );
+    $visit = CreateVisitAction::run($this->link, VisitData::from([
+        'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0',
+        'referer' => 'https://example.com/foo/bar?query=string#fragment',
+    ]));
 
     expect($visit->link_id)->toBe($this->link->id)
-        ->and($visit->device_type)->toBe(DeviceTypes::Desktop)
+        ->and($visit->device_type)->toBe(DeviceType::Desktop)
         ->and($visit->browser)->toBe('Firefox')
         ->and($visit->browser_version)->toBe('115.0')
         ->and($visit->platform)->toBe('OS X')
@@ -29,7 +29,10 @@ it('creates a visit', function () {
 it('increments the links total visits', function () {
     expect($this->link->total_visits)->toBe(0);
 
-    CreateVisit::run($this->link);
+    CreateVisitAction::run($this->link, VisitData::from([
+        'user_agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/115.0',
+        'referer' => 'https://example.com/foo/bar?query=string#fragment',
+    ]));
 
     $this->link->refresh();
 

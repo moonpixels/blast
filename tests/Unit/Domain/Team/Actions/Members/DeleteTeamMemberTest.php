@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Actions\Members\DeleteTeamMember;
+use Domain\Team\Actions\Members\DeleteTeamMemberAction;
 
 beforeEach(function () {
     $this->user = createUser();
@@ -10,7 +10,7 @@ beforeEach(function () {
 });
 
 it('deletes a team member', function () {
-    expect(DeleteTeamMember::run($this->memberTeam, $this->user))->toBeTrue()
+    expect(DeleteTeamMemberAction::run($this->memberTeam, $this->user))->toBeTrue()
         ->and($this->user->belongsToTeam($this->memberTeam))->toBeFalse()
         ->and($this->user->currentTeam->is($this->user->personalTeam()))->toBeTrue();
 });
