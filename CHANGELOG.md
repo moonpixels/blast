@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.1.1 - 2023-11-15
+
+### What's Changed
+
+- Refactor backend code by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/165
+- Bump actions/setup-node from 3 to 4 by [@dependabot](https://github.com/dependabot) in https://github.com/moonpixels/blast/pull/163
+- Update environment files by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/166
+
+**Full Changelog**: https://github.com/moonpixels/blast/compare/v2.1.0...v2.1.1
+
 ## v2.1.0 - 2023-10-23
 
 ### What's Changed
