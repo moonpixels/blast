@@ -2,17 +2,15 @@
 
 namespace Database\Factories;
 
-use App\Domain\Link\Models\Domain;
-use App\Domain\Link\Models\Link;
-use App\Domain\Team\Models\Team;
-use App\Support\Concerns\HasUrlInput;
+use Domain\Link\Models\Domain;
+use Domain\Link\Models\Link;
+use Domain\Link\Support\Helpers\Url;
+use Domain\Team\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
 class LinkFactory extends Factory
 {
-    use HasUrlInput;
-
     /**
      * The name of the factory's corresponding model.
      */
@@ -50,7 +48,7 @@ class LinkFactory extends Factory
      */
     public function withDestinationUrl(string $url): self
     {
-        $url = $this->parseUrlInput($url);
+        $url = Url::parseUrl($url);
 
         return $this->state([
             'domain_id' => Domain::firstOrCreate([
@@ -86,7 +84,7 @@ class LinkFactory extends Factory
      */
     public function blocked(): self
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function () {
             return [
                 'blocked' => true,
             ];

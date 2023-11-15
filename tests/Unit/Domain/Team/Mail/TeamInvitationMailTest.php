@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Mail\TeamInvitationMail;
+use Domain\Team\Mail\TeamInvitationMail;
 
 it('has mail content', function () {
     $invitation = createTeamInvitation();

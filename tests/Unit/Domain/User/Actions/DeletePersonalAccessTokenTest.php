@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\User\Actions\DeletePersonalAccessToken;
+use Domain\User\Actions\DeletePersonalAccessTokenAction;
 
 it('deletes a personal access token', function () {
     $user = createUser();
@@ -9,7 +9,7 @@ it('deletes a personal access token', function () {
 
     $token = $user->tokens()->first();
 
-    DeletePersonalAccessToken::run($token);
+    DeletePersonalAccessTokenAction::run($token);
 
     expect($token)->toBeDeleted();
 });

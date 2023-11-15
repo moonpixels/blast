@@ -1,10 +1,10 @@
 <?php
 
-use App\Domain\Link\Models\Link;
-use App\Domain\Redirect\Models\Visit;
-use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\User\Models\User;
+use Domain\Link\Models\Link;
+use Domain\Redirect\Models\Visit;
+use Domain\Team\Models\Team;
+use Domain\Team\Models\TeamInvitation;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 
 beforeEach(function () {

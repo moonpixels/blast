@@ -41,11 +41,11 @@ test('users can filter team members', function () {
     $this->get(route('teams.show', [
         'team' => $this->memberTeam,
         'view' => 'members',
-        'query' => 'Test User',
+        'filter[search]' => 'Test User',
     ]))->assertInertia(fn (Assert $page) => $page
         ->component('teams/show')
         ->where('filters.view', 'members')
-        ->where('filters.query', 'Test User')
+        ->where('filters.search', 'Test User')
         ->has('members.data', 1)
         ->has('members.data.0', fn (Assert $page) => $page
             ->where('id', $this->user->id)

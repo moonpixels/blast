@@ -5,7 +5,5 @@ parameters:
   paths:
     - app
   level: 5
-  ignoreErrors:
-    - '#Access to an undefined property App\\Domain\\.*\\Resources\\.*::.*\.#'
   checkMissingIterableValueType: false
   reportUnmatchedIgnoredErrors: true

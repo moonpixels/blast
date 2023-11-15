@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Actions\Members\CreateTeamMember;
+use Domain\Team\Actions\Members\CreateTeamMemberAction;
 
 beforeEach(function () {
     $this->team = createTeam();
@@ -8,6 +8,6 @@ beforeEach(function () {
 });
 
 it('can create a team membership', function () {
-    expect(CreateTeamMember::run($this->team, $this->user))->toBeTrue()
+    expect(CreateTeamMemberAction::run($this->team, $this->user))->toBeTrue()
         ->and($this->user->belongsToTeam($this->team))->toBeTrue();
 });

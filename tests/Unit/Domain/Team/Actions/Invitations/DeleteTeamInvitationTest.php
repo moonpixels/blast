@@ -1,12 +1,12 @@
 <?php
 
-use App\Domain\Team\Actions\Invitations\DeleteTeamInvitation;
+use Domain\Team\Actions\Invitations\DeleteTeamInvitationAction;
 
 beforeEach(function () {
     $this->invitation = createTeamInvitation();
 });
 
 it('deletes a team invitation', function () {
-    expect(DeleteTeamInvitation::run($this->invitation))->toBeTrue()
+    expect(DeleteTeamInvitationAction::run($this->invitation))->toBeTrue()
         ->and($this->invitation)->toBeDeleted();
 });

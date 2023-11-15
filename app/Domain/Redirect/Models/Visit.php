@@ -1,49 +1,45 @@
 <?php
 
-namespace App\Domain\Redirect\Models;
+namespace Domain\Redirect\Models;
 
-use App\Domain\Link\Models\Link;
-use App\Domain\Redirect\Enums\DeviceTypes;
-use App\Domain\Team\Models\Team;
 use Database\Factories\VisitFactory;
+use Domain\Link\Models\Link;
+use Domain\Redirect\Enums\DeviceType;
+use Domain\Team\Models\Team;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Support\Eloquent\Attributes\WithFactory;
+use Support\Eloquent\Concerns\HasFactory;
 
+#[WithFactory(VisitFactory::class)]
 class Visit extends Model
 {
     use HasFactory, HasUlids;
 
     /**
      * The attributes that aren't mass assignable.
-     *
-     * @var array<string>
      */
     protected $guarded = ['id'];
 
     /**
      * The attributes that should be cast.
-     *
-     * @var array<string, string>
      */
     protected $casts = [
-        'device_type' => DeviceTypes::class,
+        'device_type' => DeviceType::class,
         'is_robot' => 'boolean',
     ];
 
     /**
-     * Create a new factory instance for the model.
+     * The model's default values for attributes.
      */
-    protected static function newFactory(): Factory
-    {
-        return VisitFactory::new();
-    }
+    protected $attributes = [
+        'is_robot' => false,
+    ];
 
     /**
-     * Get the link that the visit belongs to.
+     * The link that the visit is for..
      */
     public function link(): BelongsTo
     {
@@ -51,7 +47,7 @@ class Visit extends Model
     }
 
     /**
-     * Get the team that the visit belongs to.
+     * The team that the visit is for.
      */
     public function team(): HasOneThrough
     {

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\Team\Mail;
+namespace Domain\Team\Mail;
 
-use App\Domain\Team\Models\TeamInvitation as TeamInvitationModel;
+use Domain\Team\Models\TeamInvitation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -13,11 +13,9 @@ class TeamInvitationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(public TeamInvitationModel $invitation)
-    {
+    public function __construct(
+        public TeamInvitation $invitation
+    ) {
     }
 
     /**
@@ -31,7 +29,7 @@ class TeamInvitationMail extends Mailable
     }
 
     /**
-     * Get the message content.
+     * Get the message content definition.
      */
     public function content(): Content
     {

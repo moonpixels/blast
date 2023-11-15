@@ -1,10 +1,10 @@
 <?php
 
-use App\Domain\User\Actions\ResetUserPassword;
+use Domain\User\Actions\ResetUserPasswordAction;
 use Illuminate\Support\Facades\Hash;
 
 beforeEach(function () {
-    $this->action = new ResetUserPassword;
+    $this->action = new ResetUserPasswordAction;
 
     $this->user = createUser();
 });

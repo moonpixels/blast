@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Link\Models\Link;
+use Domain\Link\Models\Link;
 use Laravel\Sanctum\Sanctum;
 
 beforeEach(function () {
@@ -32,7 +32,7 @@ test('users can create links', function () {
         'alias' => 'testing',
         'password' => 'password',
         'visit_limit' => 10,
-        'expires_at' => now()->addDay()->toIso8601String(),
+        'expires_at' => now()->addDay()->toAtomString(),
     ])->assertCreated()->assertJsonStructure(['data' => $this->jsonStructure]);
 
     $link = Link::find($response->json('data.id'));
@@ -44,7 +44,7 @@ test('users can create links', function () {
         ->and($link->has_password)->toBeTrue()
         ->and(Hash::check('password', $link->password))->toBeTrue()
         ->and($link->visit_limit)->toBe(10)
-        ->and($link->expires_at->toIso8601String())->toBe(now()->addDay()->toIso8601String());
+        ->and($link->expires_at->isSameAs(now()->addDay()))->toBeTrue();
 });
 
 test('users can retrieve links', function () {
@@ -115,13 +115,13 @@ test('users can list links by team', function () {
     );
 
     $this->getJson(route('api.links.index', [
-        'team_id' => $this->team->id,
+        'filter[team_id]' => $this->team->id,
     ]))->assertOk()
         ->assertJsonStructure($this->jsonCollectionStructure)
         ->assertJsonCount(5, 'data');
 
     $this->getJson(route('api.links.index', [
-        'team_id' => $memberTeam->id,
+        'filter[team_id]' => $memberTeam->id,
     ]))->assertOk()
         ->assertJsonStructure($this->jsonCollectionStructure)
         ->assertJsonCount(10, 'data');
@@ -136,6 +136,6 @@ test('users cannot list links for teams they are not a member of', function () {
     );
 
     $this->getJson(route('api.links.index', [
-        'team_id' => $team->id,
-    ]))->assertForbidden();
+        'filter[team_id]' => $team->id,
+    ]))->assertInvalid(['filter.team_id']);
 });

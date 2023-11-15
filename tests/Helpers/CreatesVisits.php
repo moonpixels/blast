@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Redirect\Models\Visit;
+use Domain\Redirect\Models\Visit;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\Support\Fty;
 

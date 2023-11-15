@@ -1,12 +1,7 @@
 <?php
 
-namespace App\Support\Concerns;
+namespace Support\Concerns;
 
-/**
- * A trait to make a resource unwrappable.
- *
- * Expects the implementing class to be a subclass of `JsonResource`.
- */
 trait Unwrappable
 {
     /**

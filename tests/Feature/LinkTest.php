@@ -1,7 +1,7 @@
 <?php
 
-use App\Domain\Link\Models\Link;
 use Carbon\Carbon;
+use Domain\Link\Models\Link;
 use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
@@ -104,7 +104,7 @@ test('users can filter the list of links', function () {
         states: ['withDestinationUrl' => 'https://example.com/filtered'],
     );
 
-    $this->get(route('links.index', ['query' => 'filtered']))
+    $this->get(route('links.index', ['filter[search]' => 'filtered']))
         ->assertOK()
         ->assertInertia(fn (Assert $page) => $page
             ->component('links/index')

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Domain\Link\Models\Domain;
+use Domain\Link\Models\Domain;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DomainFactory extends Factory
@@ -27,7 +27,7 @@ class DomainFactory extends Factory
      */
     public function blocked(): self
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function () {
             return [
                 'blocked' => true,
             ];

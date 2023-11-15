@@ -79,9 +79,9 @@ To list all team members, you need to send a `GET` request to the `/teams/{team}
 
 ### Parameters
 
-| Name    | Type     | Description                                     |
-| ------- | -------- | ----------------------------------------------- |
-| `query` | `string` | The search query to filter the team members by. |
+| Name             | Type     | Description                                     |
+| ---------------- | -------- | ----------------------------------------------- |
+| `filter[search]` | `string` | The search query to filter the team members by. |
 
 ### Request
 

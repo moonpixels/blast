@@ -188,13 +188,13 @@ type Props = {
   invitations?: PaginatedResponse<TeamInvitation>
   filters: {
     view: 'members' | 'invitations'
-    query?: string
+    search?: string
   }
 }
 
 const props = defineProps<Props>()
 
-const searchQuery = ref<string>(props.filters.query ?? '')
+const searchQuery = ref<string>(props.filters.search ?? '')
 
 const currentResource = computed<PaginatedResponse<User | TeamInvitation> | undefined>(() => {
   return props.filters.view === 'members' ? props.members : props.invitations
@@ -204,7 +204,9 @@ function search(): void {
   router.reload({
     data: {
       view: props.filters.view,
-      query: searchQuery.value,
+      filter: {
+        search: searchQuery.value || undefined,
+      },
       page: 1,
     },
     only: ['filters', 'members', 'invitations'],
@@ -215,7 +217,9 @@ function switchView(): void {
   router.reload({
     data: {
       view: props.filters.view === 'invitations' ? 'members' : 'invitations',
-      query: props.filters.query,
+      filter: {
+        search: searchQuery.value || undefined,
+      },
       page: 1,
     },
     only: ['filters', 'members', 'invitations'],

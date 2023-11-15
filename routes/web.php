@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\Web\CurrentTeamController;
-use App\Http\Controllers\Web\CurrentUserController;
-use App\Http\Controllers\Web\LinkController;
-use App\Http\Controllers\Web\PersonalAccessTokenController;
-use App\Http\Controllers\Web\RedirectController;
-use App\Http\Controllers\Web\SubscriptionController;
-use App\Http\Controllers\Web\TeamController;
-use App\Http\Controllers\Web\TeamInvitationController;
-use App\Http\Controllers\Web\TeamMemberController;
+use App\Web\Controllers\CurrentTeamController;
+use App\Web\Controllers\CurrentUserController;
+use App\Web\Controllers\LinkController;
+use App\Web\Controllers\PersonalAccessTokenController;
+use App\Web\Controllers\RedirectController;
+use App\Web\Controllers\SubscriptionController;
+use App\Web\Controllers\TeamController;
+use App\Web\Controllers\TeamInvitationController;
+use App\Web\Controllers\TeamMemberController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -115,9 +115,5 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 });
 
 // Redirects...
-Route::controller(RedirectController::class)
-    ->name('redirects.')
-    ->group(function () {
-        Route::get('/{link:alias}', 'show')->name('show');
-        Route::post('/{link:alias}', 'authenticate')->name('authenticate');
-    });
+Route::get('/{link:alias}', RedirectController::class)->name('redirects.show');
+Route::post('/{link:alias}', RedirectController::class)->name('redirects.authenticate');

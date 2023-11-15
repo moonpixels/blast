@@ -1,9 +1,9 @@
 <?php
 
-use App\Domain\Link\Rules\NotReservedAlias;
+use Domain\Link\Rules\NotReservedAliasRule;
 
 beforeEach(function () {
-    $this->rule = new NotReservedAlias;
+    $this->rule = new NotReservedAliasRule;
 });
 
 it('passes when the alias is valid', function () {

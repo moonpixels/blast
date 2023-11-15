@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Domain\Team\Models;
+namespace Domain\Team\Models;
 
-use App\Domain\Link\Models\Link;
-use App\Domain\Redirect\Models\Visit;
-use App\Domain\User\Models\User;
 use Database\Factories\TeamFactory;
-use Illuminate\Database\Eloquent\Builder;
+use Domain\Link\Models\Link;
+use Domain\Redirect\Models\Visit;
+use Domain\Team\Builders\TeamBuilder;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,22 +15,27 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use Support\Eloquent\Attributes\WithBuilder;
+use Support\Eloquent\Attributes\WithFactory;
+use Support\Eloquent\Concerns\HasBuilder;
+use Support\Eloquent\Concerns\HasFactory;
 
+/**
+ * @method static TeamBuilder query()
+ */
+#[WithBuilder(TeamBuilder::class)]
+#[WithFactory(TeamFactory::class)]
 class Team extends Model
 {
-    use HasFactory, HasUlids, SoftDeletes;
+    use HasBuilder, HasFactory, HasUlids, SoftDeletes;
 
     /**
      * The attributes that aren't mass assignable.
-     *
-     * @var array<string>
      */
-    protected $guarded = ['id'];
+    protected $guarded = ['id', 'personal_team'];
 
     /**
      * The attributes that should be cast.
-     *
-     * @var array<string, string>
      */
     protected $casts = [
         'personal_team' => 'boolean',
@@ -46,15 +49,7 @@ class Team extends Model
     ];
 
     /**
-     * Create a new factory instance for the model.
-     */
-    protected static function newFactory(): Factory
-    {
-        return TeamFactory::new();
-    }
-
-    /**
-     * Get the owner of the team.
+     * The owner of the team.
      */
     public function owner(): BelongsTo
     {
@@ -62,7 +57,7 @@ class Team extends Model
     }
 
     /**
-     * Get the team members.
+     * The members of the team.
      */
     public function members(): BelongsToMany
     {
@@ -70,7 +65,7 @@ class Team extends Model
     }
 
     /**
-     * Get all the team members including the owner.
+     * The members of the team including the owner.
      */
     public function membersAndOwner(): Collection
     {
@@ -78,7 +73,7 @@ class Team extends Model
     }
 
     /**
-     * Get all the pending invitations for the team.
+     * The pending invitations for the team.
      */
     public function invitations(): HasMany
     {
@@ -86,7 +81,7 @@ class Team extends Model
     }
 
     /**
-     * Get all the links that belong to the team.
+     * The links for the team.
      */
     public function links(): HasMany
     {
@@ -94,26 +89,10 @@ class Team extends Model
     }
 
     /**
-     * Get all the visits for the teams links.
+     * The visits for the team.
      */
     public function linkVisits(): HasManyThrough
     {
         return $this->hasManyThrough(Visit::class, Link::class);
-    }
-
-    /**
-     * Scope a query to only include personal teams.
-     */
-    public function scopePersonal(Builder $query): void
-    {
-        $query->where('personal_team', true);
-    }
-
-    /**
-     * Scope a query to not include personal teams.
-     */
-    public function scopeNotPersonal(Builder $query): void
-    {
-        $query->where('personal_team', false);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Policies\TeamPolicy;
+use Domain\Team\Policies\TeamPolicy;
 
 beforeEach(function () {
     $this->policy = new TeamPolicy();

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Domain\User\Policies;
+namespace Domain\User\Policies;
 
-use App\Domain\User\Models\User;
+use Domain\User\Models\User;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class PersonalAccessTokenPolicy
 {
     /**
-     * Determine whether the user can view any personal access tokens.
+     * Determine whether the user can view any tokens.
      */
     public function viewAny(User $user): bool
     {
@@ -16,7 +16,7 @@ class PersonalAccessTokenPolicy
     }
 
     /**
-     * Determine whether the user can view the personal access token.
+     * Determine whether the user can view the token.
      */
     public function view(User $user, PersonalAccessToken $token): bool
     {
@@ -24,7 +24,7 @@ class PersonalAccessTokenPolicy
     }
 
     /**
-     * Determine whether the user can create personal access tokens.
+     * Determine whether the user can create tokens.
      */
     public function create(User $user): bool
     {
@@ -32,7 +32,7 @@ class PersonalAccessTokenPolicy
     }
 
     /**
-     * Determine whether the user can delete the personal access token.
+     * Determine whether the user can delete the token.
      */
     public function delete(User $user, PersonalAccessToken $token): bool
     {

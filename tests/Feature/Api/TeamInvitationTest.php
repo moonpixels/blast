@@ -1,7 +1,8 @@
 <?php
 
-use App\Domain\Team\Models\TeamInvitation;
-use App\Domain\Team\Notifications\TeamInvitationNotification;
+use Domain\Team\Mail\TeamInvitationMail;
+use Domain\Team\Models\TeamInvitation;
+use Illuminate\Support\Facades\Mail;
 
 beforeEach(function () {
     $this->team = createTeam();
@@ -22,7 +23,7 @@ beforeEach(function () {
 });
 
 test('users can create team invitations', function () {
-    Notification::fake();
+    Mail::fake();
 
     $response = $this->postJson(route('api.teams.invitations.store', $this->team), [
         'email' => 'test@example.com',
@@ -34,7 +35,7 @@ test('users can create team invitations', function () {
         ->and($invitation->team->is($this->team))->toBeTrue()
         ->and($invitation->email)->toBe('test@example.com');
 
-    Notification::assertSentTo($invitation, TeamInvitationNotification::class);
+    Mail::assertSent(TeamInvitationMail::class);
 });
 
 test('users can retrieve team invitations', function () {

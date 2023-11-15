@@ -1,6 +1,6 @@
 <?php
 
-use App\Domain\Team\Policies\TeamInvitationPolicy;
+use Domain\Team\Policies\TeamInvitationPolicy;
 
 beforeEach(function () {
     $this->policy = new TeamInvitationPolicy();

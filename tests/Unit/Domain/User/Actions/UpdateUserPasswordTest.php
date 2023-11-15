@@ -1,9 +1,9 @@
 <?php
 
-use App\Domain\User\Actions\UpdateUserPassword;
+use Domain\User\Actions\UpdateUserPasswordAction;
 
 beforeEach(function () {
-    $this->action = new UpdateUserPassword;
+    $this->action = new UpdateUserPasswordAction;
 
     $this->user = login();
 });

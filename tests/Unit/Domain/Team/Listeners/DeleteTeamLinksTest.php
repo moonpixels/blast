@@ -1,16 +1,19 @@
 <?php
 
-use App\Domain\Team\Events\TeamDeleted;
+use Domain\Team\Events\TeamDeletedEvent;
 
 it('deletes a teams links when the team has been deleted', function () {
     $team = createTeam();
 
-    createLink(
-        attributes: ['team_id' => $team->id],
-        states: ['count' => 20]
-    );
+    createLink(states: [
+        'for' => $team,
+        'count' => 20,
+    ]);
 
-    TeamDeleted::dispatch($team);
+    TeamDeletedEvent::dispatch($team);
 
-    expect($team->links()->withTrashed()->get())->each->toBeSoftDeleted();
+    $links = $team->links()->withTrashed()->get();
+
+    expect($links)->toHaveCount(20)
+        ->and($links)->each->toBeSoftDeleted();
 });

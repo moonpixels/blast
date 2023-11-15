@@ -175,10 +175,10 @@ To list all links, you need to send a `GET` request to the `/links` endpoint.
 
 ### Parameters
 
-| Name      | Type     | Description                                       |
-| --------- | -------- | ------------------------------------------------- |
-| `team_id` | `string` | (optional) The ID of the team to filter by.       |
-| `query`   | `string` | (optional) A search query to filter the links by. |
+| Name              | Type     | Description                                       |
+| ----------------- | -------- | ------------------------------------------------- |
+| `filter[team_id]` | `string` | (optional) The ID of the team to filter by.       |
+| `filter[search]`  | `string` | (optional) A search query to filter the links by. |
 
 ### Request
 

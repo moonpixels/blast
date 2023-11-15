@@ -24,7 +24,7 @@ describe('Update links', () => {
 
   it('should allow users to update a link', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -59,7 +59,7 @@ describe('Update links', () => {
 
   it('should show an error if the URL is invalid', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -103,7 +103,7 @@ describe('Update links', () => {
 
   it('should show an error if the alias is invalid', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -152,7 +152,7 @@ describe('Update links', () => {
 
   it('should not allow an invalid expires at date to be entered', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -177,7 +177,7 @@ describe('Update links', () => {
 
   it('should show an error if the visit limit is invalid', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -216,7 +216,7 @@ describe('Update links', () => {
 
   it('should only show the password field when the password protected option is selected', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },

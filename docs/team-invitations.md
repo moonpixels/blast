@@ -135,9 +135,9 @@ To list all team invitations, you need to send a `GET` request to the `/teams/{t
 
 ### Parameters
 
-| Name    | Type     | Description                                                  |
-| ------- | -------- | ------------------------------------------------------------ |
-| `query` | `string` | (optional) A search query to filter the team invitations by. |
+| Name             | Type     | Description                                                  |
+| ---------------- | -------- | ------------------------------------------------------------ |
+| `filter[search]` | `string` | (optional) A search query to filter the team invitations by. |
 
 ### Request
 

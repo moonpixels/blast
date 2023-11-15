@@ -1,7 +1,9 @@
 <?php
 
-use App\Domain\Link\Actions\DeleteLinksForTeam;
-use App\Domain\Team\Actions\DeleteTeam;
+use Domain\Team\Actions\DeleteTeamAction;
+use Domain\Team\Events\TeamDeletedEvent;
+use Domain\Team\Listeners\DeleteTeamLinks;
+use Illuminate\Support\Facades\Event;
 
 beforeEach(function () {
     $this->user = createUser();
@@ -10,12 +12,12 @@ beforeEach(function () {
 it('deletes the given team', function () {
     $team = getTeamForUser($this->user, 'Owned Team');
 
-    Queue::fake();
+    Event::fake();
 
-    expect(DeleteTeam::run($team))->toBeTrue()
+    expect(DeleteTeamAction::run($team))->toBeTrue()
         ->and($team)->toBeSoftDeleted();
 
-    DeleteLinksForTeam::assertPushed(1);
+    Event::assertListening(TeamDeletedEvent::class, DeleteTeamLinks::class);
 });
 
 it('switches team members to their personal team', function () {
@@ -24,12 +26,12 @@ it('switches team members to their personal team', function () {
     $this->user->switchTeam($team);
     $team->owner->switchTeam($team);
 
-    Queue::fake();
+    Event::fake();
 
-    expect(DeleteTeam::run($team))->toBeTrue()
+    expect(DeleteTeamAction::run($team))->toBeTrue()
         ->and($team->members->count())->toBe(0)
         ->and($this->user->fresh()->currentTeam->is($this->user->personalTeam()))->toBeTrue()
         ->and($team->owner->fresh()->currentTeam->is($team->owner->personalTeam()))->toBeTrue();
 
-    DeleteLinksForTeam::assertPushed(1);
+    Event::assertListening(TeamDeletedEvent::class, DeleteTeamLinks::class);
 });

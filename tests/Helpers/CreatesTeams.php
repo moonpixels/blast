@@ -1,7 +1,7 @@
 <?php
 
-use App\Domain\Team\Models\Team;
-use App\Domain\User\Models\User;
+use Domain\Team\Models\Team;
+use Domain\User\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Tests\Support\Fty;
 

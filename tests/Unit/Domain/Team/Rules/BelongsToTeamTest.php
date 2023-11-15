@@ -1,14 +1,14 @@
 <?php
 
-use App\Domain\Team\Models\Team;
-use App\Domain\Team\Rules\BelongsToTeam;
+use Domain\Team\Models\Team;
+use Domain\Team\Rules\BelongsToTeamRule;
 
 beforeEach(function () {
     $this->user = createUser();
 
     $this->team = getTeamForUser($this->user, 'Member Team');
 
-    $this->rule = new BelongsToTeam($this->user);
+    $this->rule = new BelongsToTeamRule($this->user);
 });
 
 it('passes when the user belongs to the team', function () {

@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Domain\Team\Models\Team;
-use App\Domain\Team\Models\TeamInvitation;
+use Domain\Team\Models\Team;
+use Domain\Team\Models\TeamInvitation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TeamInvitationFactory extends Factory
