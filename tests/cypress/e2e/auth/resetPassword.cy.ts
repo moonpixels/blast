@@ -6,7 +6,7 @@ describe('Reset password', () => {
 
     createUser().then((user) => {
       cy.php(
-        `Illuminate\\Support\\Facades\\Password::createToken(App\\Domain\\User\\Models\\User::find('${user.id}'))`
+        `Illuminate\\Support\\Facades\\Password::createToken(Domain\\User\\Models\\User::find('${user.id}'))`
       ).then((token) => {
         cy.visit({
           route: 'password.reset',

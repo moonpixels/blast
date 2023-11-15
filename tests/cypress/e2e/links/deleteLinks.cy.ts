@@ -23,7 +23,7 @@ describe('Delete links', () => {
 
   it('should allow users to delete a link', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -51,7 +51,7 @@ describe('Delete links', () => {
 
   it('should allow users to cancel deleting a link', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },

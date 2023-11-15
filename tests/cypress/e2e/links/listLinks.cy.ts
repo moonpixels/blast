@@ -28,7 +28,7 @@ describe('List links', () => {
 
   it('should show the links list', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -42,7 +42,7 @@ describe('List links', () => {
 
   it('should show pagination links if there are more than 15 links', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -88,7 +88,7 @@ describe('List links', () => {
 
   it('should not show pagination links if there are 15 or less links', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -106,7 +106,7 @@ describe('List links', () => {
 
   it('should allow each link to be copied to the clipboard', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
       },
@@ -128,7 +128,7 @@ describe('List links', () => {
 
   it('should allows links to be searched', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       attributes: {
         team_id: teamId,
         alias: 'myAlias',
@@ -148,7 +148,7 @@ describe('List links', () => {
 
   it('should indicate if a link has additional features set', () => {
     cy.create({
-      model: 'App\\Domain\\Link\\Models\\Link',
+      model: 'Domain\\Link\\Models\\Link',
       state: ['withPassword', 'expired', 'withReachedVisitLimit'],
       attributes: {
         team_id: teamId,

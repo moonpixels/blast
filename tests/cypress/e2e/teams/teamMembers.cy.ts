@@ -8,7 +8,7 @@ describe('Team members', () => {
 
     createUser({}, ['withOwnedTeam', 'withMemberTeam']).then((user) => {
       cy.create({
-        model: 'App\\Domain\\Team\\Models\\Team',
+        model: 'Domain\\Team\\Models\\Team',
         attributes: {
           name: 'Empty Team',
           owner_id: user.id,
@@ -26,7 +26,7 @@ describe('Team members', () => {
       teamId = user.current_team_id
 
       cy.php(
-        `App\\Domain\\Team\\Models\\Team::find('${teamId}')->members()->attach(App\\Domain\\User\\Models\\User::factory(15)->create()); return true;`
+        `Domain\\Team\\Models\\Team::find('${teamId}')->members()->attach(Domain\\User\\Models\\User::factory(15)->create()); return true;`
       ).then(() => {
         cy.reload()
       })
