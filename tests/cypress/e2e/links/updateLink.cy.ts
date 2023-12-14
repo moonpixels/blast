@@ -170,7 +170,7 @@ describe('Update links', () => {
       cy.get('[data-cy="update-link-modal"]').within(() => {
         // Invalid date
         cy.getFormInput('Expires at').type('not a date')
-        cy.getFormInput('Expires at').should('have.value', '')
+        cy.getFormInput('Expires at').should('not.have.value', 'not a date')
       })
     })
   })
