@@ -29,8 +29,8 @@
     "spatie/laravel-query-builder": "^5.6",
     "spatie/laravel-typescript-transformer": "^2.3",
     "spatie/security-advisories-health-check": "^1.1",
-    "symfony/http-client": "^6.3",
-    "symfony/postmark-mailer": "^6.3",
+    "symfony/http-client": "^v7.0.0",
+    "symfony/postmark-mailer": "^v7.0.0",
     "tightenco/ziggy": "^1.5"
   },
   "require-dev": {
@@ -42,7 +42,7 @@
     "laravel/telescope": "^4.14",
     "mockery/mockery": "^1.4.4",
     "nunomaduro/collision": "^7.0",
-    "nunomaduro/larastan": "^2.0",
+    "larastan/larastan": "^2.0",
     "pestphp/pest": "^2.5",
     "pestphp/pest-plugin-laravel": "^2.0",
     "phpstan/phpstan": "^1.10",
@@ -75,6 +75,9 @@
     ],
     "post-create-project-cmd": [
       "@php artisan key:generate --ansi"
+    ],
+    "phpstan": [
+      "vendor/bin/phpstan analyse --memory-limit=2G"
     ]
   },
   "extra": {
