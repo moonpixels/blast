@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.1.3 - 2023-12-15
+
+### What's Changed
+
+* Update monitoring settings by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/169
+
+**Full Changelog**: https://github.com/moonpixels/blast/compare/v2.1.2...v2.1.3
+
 ## v2.1.2 - 2023-12-14
 
 ### What's Changed
