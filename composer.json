@@ -21,6 +21,7 @@
     "laravel/sanctum": "^3.2",
     "laravel/tinker": "^2.8",
     "lemonsqueezy/laravel": "^1.2",
+    "logtail/monolog-logtail": "^3.0",
     "lorisleiva/laravel-actions": "^2.6",
     "spatie/laravel-data": "^3.7",
     "spatie/laravel-query-builder": "^5.6",
