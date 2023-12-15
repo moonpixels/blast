@@ -35,10 +35,8 @@ return [
         'sub_variant_id' => env('LEMON_SQUEEZY_SUB_VARIANT_ID'),
     ],
 
-    'oh_dear' => [
-        'schedule_monitors' => [
-            'horizon' => env('OH_DEAR_SCHEDULE_MONITOR_HORIZON'),
-        ],
+    'heartbeats' => [
+        'horizon' => env('HEARTBEATS_HORIZON_URL'),
     ],
 
 ];

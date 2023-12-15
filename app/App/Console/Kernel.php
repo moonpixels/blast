@@ -14,7 +14,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('horizon:snapshot')
             ->everyFiveMinutes()
-            ->thenPingIf(app()->environment('production'), config('services.oh_dear.schedule_monitors.horizon'));
+            ->thenPingIf(app()->environment('production'), config('services.heartbeats.horizon'));
     }
 
     /**

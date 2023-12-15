@@ -185,7 +185,6 @@ return [
         /*
          * Package Service Providers...
          */
-        Support\Providers\HealthCheckServiceProvider::class,
 
         /*
          * Application Service Providers...
