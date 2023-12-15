@@ -22,13 +22,9 @@
     "laravel/tinker": "^2.8",
     "lemonsqueezy/laravel": "^1.2",
     "lorisleiva/laravel-actions": "^2.6",
-    "meilisearch/meilisearch-php": "^1.2",
-    "spatie/cpu-load-health-check": "^1.0",
     "spatie/laravel-data": "^3.7",
-    "spatie/laravel-health": "^1.23",
     "spatie/laravel-query-builder": "^5.6",
     "spatie/laravel-typescript-transformer": "^2.3",
-    "spatie/security-advisories-health-check": "^1.1",
     "symfony/http-client": "^v7.0.0",
     "symfony/postmark-mailer": "^v7.0.0",
     "tightenco/ziggy": "^1.5"
