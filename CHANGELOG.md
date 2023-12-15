@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### What's Changed
 
-* Update dependencies by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/168
+- Update dependencies by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/168
 
 **Full Changelog**: https://github.com/moonpixels/blast/compare/v2.1.1...v2.1.2
 
