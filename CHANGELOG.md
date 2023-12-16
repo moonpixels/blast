@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.1.4 - 2023-12-16
+
+### What's Changed
+
+* Remove health check queue by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/170
+
+**Full Changelog**: https://github.com/moonpixels/blast/compare/v2.1.3...v2.1.4
+
 ## v2.1.3 - 2023-12-15
 
 ### What's Changed
