@@ -100,7 +100,6 @@ return [
 
     'waits' => [
         'redis:default' => 60,
-        'redis:health-checks' => 30,
     ],
 
     /*
@@ -198,7 +197,7 @@ return [
     'defaults' => [
         'supervisor-1' => [
             'connection' => 'redis',
-            'queue' => ['default', 'health-checks'],
+            'queue' => ['default'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'time',
             'maxProcesses' => 1,

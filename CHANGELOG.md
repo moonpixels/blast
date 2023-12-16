@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### What's Changed
 
-* Update monitoring settings by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/169
+- Update monitoring settings by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/169
 
 **Full Changelog**: https://github.com/moonpixels/blast/compare/v2.1.2...v2.1.3
 
