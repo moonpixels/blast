@@ -9,7 +9,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
 import { i18nVue } from 'laravel-vue-i18n'
 import VueTippy from 'vue-tippy'
-import { DatePicker, setupCalendar } from 'v-calendar'
+import VCalendar from 'v-calendar'
 
 createInertiaApp({
   resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
@@ -33,8 +33,7 @@ createInertiaApp({
           animation: 'scale-subtle',
         },
       })
-      .use(setupCalendar, {})
-      .component('VDatePicker', DatePicker)
+      .use(VCalendar, {})
       .mount(el)
   },
   progress: {
