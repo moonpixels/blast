@@ -26,23 +26,25 @@
               leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <DialogPanel
-                class="relative transform overflow-hidden rounded-lg border border-zinc-900/20 bg-white text-left shadow-lg transition-all dark:border-white/20 dark:bg-zinc-950 sm:my-8 sm:w-full sm:max-w-lg"
+                class="relative transform rounded-lg border border-zinc-900/20 text-left shadow-lg transition-all dark:border-white/20 sm:my-8 sm:w-full sm:max-w-lg"
                 v-bind="{ ...attrs }"
               >
-                <div class="absolute right-0 top-0 hidden pr-3 pt-3 sm:block">
-                  <ButtonDismiss @click="$emit('close')" />
-                </div>
+                <div class="overflow-hidden rounded-lg bg-white dark:bg-zinc-950">
+                  <div class="absolute right-0 top-0 hidden pr-3 pt-3 sm:block">
+                    <ButtonDismiss @click="$emit('close')" />
+                  </div>
 
-                <div class="bg-white p-4 dark:bg-zinc-950 sm:p-6">
-                  <DialogTitle as="h3" class="mb-4 text-base font-semibold leading-7 text-zinc-900 dark:text-white">
-                    {{ title }}
-                  </DialogTitle>
+                  <div class="bg-white p-4 dark:bg-zinc-950 sm:p-6">
+                    <DialogTitle as="h3" class="mb-4 text-base font-semibold leading-7 text-zinc-900 dark:text-white">
+                      {{ title }}
+                    </DialogTitle>
 
-                  <slot name="body" />
-                </div>
+                    <slot name="body" />
+                  </div>
 
-                <div class="flex flex-row-reverse gap-3 bg-zinc-50 px-4 py-3 dark:bg-zinc-900 sm:px-6">
-                  <slot name="footer" />
+                  <div class="flex flex-row-reverse gap-3 bg-zinc-50 px-4 py-3 dark:bg-zinc-900 sm:px-6">
+                    <slot name="footer" />
+                  </div>
                 </div>
               </DialogPanel>
             </TransitionChild>

@@ -47,7 +47,7 @@ defineOptions({
   inheritAttrs: false,
 })
 
-type Props = {
+export type InputProps = {
   id?: string
   type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url'
   error?: string
@@ -57,7 +57,7 @@ type Props = {
   inverse?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<InputProps>(), {
   id: () => {
     return `text-input-${nanoid()}`
   },

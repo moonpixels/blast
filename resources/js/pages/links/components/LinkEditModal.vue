@@ -87,7 +87,6 @@ import InputSelect from '@/components/InputSelect.vue'
 import InputDate from '@/components/InputDate.vue'
 import { computed, ref } from 'vue'
 import { PageProps } from '@/types'
-import dayjs from 'dayjs'
 import InputCheckbox from '@/components/InputCheckbox.vue'
 import BaseModal from '@/components/BaseModal.vue'
 import BaseButton from '@/components/BaseButton.vue'
@@ -114,7 +113,7 @@ const form = useForm<LinkData>({
   destination_url: props.link.destination_url,
   alias: props.link.alias,
   password: undefined,
-  expires_at: props.link.expires_at ? dayjs(props.link.expires_at).format() : undefined,
+  expires_at: props.link.expires_at,
   visit_limit: props.link.visit_limit || undefined,
   team_id: props.link.team?.id || undefined,
 })

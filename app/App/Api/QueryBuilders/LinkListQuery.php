@@ -13,7 +13,8 @@ class LinkListQuery extends QueryBuilder
     public function __construct(Request $request)
     {
         $query = Link::query()
-            ->forUser($request->user());
+            ->forUser($request->user())
+            ->latest();
 
         parent::__construct($query, $request);
 

@@ -30,7 +30,7 @@ class LinkUpdateRequest extends FormRequest
                 'string',
                 'alpha_num:ascii',
                 'max:20',
-                'unique:links,alias,{link->id}',
+                "unique:links,alias,{$link->id}",
                 new NotReservedAliasRule,
             ],
             'password' => ['sometimes', 'nullable', 'string'],
