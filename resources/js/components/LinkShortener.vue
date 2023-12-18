@@ -1,7 +1,7 @@
 <template>
   <div class="lg:sticky lg:top-8">
     <form
-      class="relative z-10 w-full divide-y divide-zinc-900/10 overflow-hidden rounded-md border border-zinc-900/20 bg-white shadow-sm dark:divide-white/10 dark:border-white/20 dark:bg-zinc-950 sm:w-96"
+      class="relative z-10 w-full divide-y divide-zinc-900/10 rounded-md border border-zinc-900/20 bg-white shadow-sm dark:divide-white/10 dark:border-white/20 dark:bg-zinc-950 sm:w-96"
       data-cy="link-shortener-form"
       @submit.prevent="submit"
     >
@@ -41,20 +41,20 @@
             </Tippy>
 
             <PopoverOverlay
-              class="absolute inset-0 z-10 bg-white/50 backdrop-blur transition-opacity dark:bg-zinc-900/50"
+              class="absolute inset-0 z-10 rounded-md bg-white/50 backdrop-blur transition-opacity dark:bg-zinc-900/50"
             />
 
-            <Transition
-              enter-active-class="ease-in-out duration-300"
-              enter-from-class="opacity-0 translate-y-full"
-              enter-to-class="opacity-100 translate-y-0"
-              leave-active-class="ease-in-out duration-200"
-              leave-from-class="opacity-100 translate-y-0"
-              leave-to-class="opacity-0 translate-y-full"
+            <transition
+              enter-active-class="transition duration-200 ease-out"
+              enter-from-class="translate-y-1 opacity-0"
+              enter-to-class="translate-y-0 opacity-100"
+              leave-active-class="transition duration-150 ease-in"
+              leave-from-class="translate-y-0 opacity-100"
+              leave-to-class="translate-y-1 opacity-0"
             >
               <PopoverPanel
                 v-slot="{ close }"
-                class="absolute bottom-0 left-0 right-0 z-10 mt-6 border-t border-zinc-900/20 bg-white/90 p-3 backdrop-blur dark:border-white/20 dark:bg-zinc-950/90"
+                class="absolute bottom-0 left-0 right-0 z-10 mt-6 rounded-bl-md rounded-br-md border-t border-zinc-900/20 bg-white/90 p-3 backdrop-blur dark:border-white/20 dark:bg-zinc-950/90"
                 data-cy="link-options-popover"
               >
                 <div class="absolute right-0 top-0 pr-2 pt-2">
@@ -127,7 +127,7 @@
                   </InputSelect>
                 </div>
               </PopoverPanel>
-            </Transition>
+            </transition>
           </Popover>
         </div>
 

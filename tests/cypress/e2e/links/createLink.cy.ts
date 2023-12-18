@@ -209,14 +209,6 @@ describe('Create link', () => {
     cy.get('@linkShortenerForm').within(() => {
       cy.getFormInput('URL').type('https://blst.to')
 
-      // Invalid date
-      cy.get('[data-cy="set-expires_at-button"]').click()
-      cy.get('[data-cy="link-options-popover"]').within(() => {
-        cy.getFormInput('Expires at').type('invalid date')
-        cy.getFormInput('Expires at').should('not.have.value', 'invalid date')
-        cy.get('[data-cy="dismiss-options-popover-button"]').click()
-      })
-
       // Date in the past
       cy.get('[data-cy="set-expires_at-button"]').click()
       cy.get('[data-cy="link-options-popover"]').within(() => {

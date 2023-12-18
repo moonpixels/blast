@@ -1,0 +1,36 @@
+.vc-blast {
+  --vc-font-family: 'Plus Jakarta Sans', sans-serif;
+  --vc-text-2xs: 8px;
+  --vc-text-xs: 10px;
+  --vc-text-sm: 12px;
+  --vc-text-base: 14px;
+  --vc-text-lg: 14px;
+  --vc-text-xl: 18px;
+  --vc-text-2xl: 22px;
+  --vc-bg: #09090b;
+  --vc-border: rgba(255, 255, 255, 0.2);
+  --vc-accent-50: #f5f3ff;
+  --vc-accent-100: #ede9fe;
+  --vc-accent-200: #ddd6fe;
+  --vc-accent-300: #c4b5fd;
+  --vc-accent-400: #a78bfa;
+  --vc-accent-500: #8b5cf6;
+  --vc-accent-600: #7c3aed;
+  --vc-accent-700: #6d28d9;
+  --vc-accent-800: #5b21b6;
+  --vc-accent-900: #4c1d95;
+  /* Popover content */
+  --vc-popover-content-color: var(--vc-white);
+  --vc-popover-content-bg: #18181b;
+  --vc-popover-content-border: var(--vc-border);
+  /* Time picker */
+  --vc-time-picker-border: var(--vc-border);
+  --vc-time-weekday-color: var(--vc-gray-400);
+  --vc-time-month-color: var(--vc-accent-400);
+  --vc-time-day-color: var(--vc-accent-400);
+  --vc-time-year-color: var(--vc-gray-500);
+  /* Time select group */
+  --vc-time-select-group-bg: var(--vc-bg);
+  --vc-time-select-group-border: var(--vc-border);
+  --vc-time-select-group-icon-color: var(--vc-accent-400);
+}

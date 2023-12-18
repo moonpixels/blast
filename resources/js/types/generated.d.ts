@@ -8,7 +8,7 @@ declare namespace App.Domain.Link.Data {
     alias?: string
     password?: string | null
     visit_limit?: number | null
-    expires_at?: string | null
+    expires_at: string | null
   }
 }
 

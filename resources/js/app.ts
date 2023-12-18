@@ -1,5 +1,6 @@
 import './bootstrap'
 import 'tippy.js/animations/scale-subtle.css'
+import 'v-calendar/style.css'
 import '../css/app.css'
 
 import { createApp, DefineComponent, h } from 'vue'
@@ -8,6 +9,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m'
 import { i18nVue } from 'laravel-vue-i18n'
 import VueTippy from 'vue-tippy'
+import { DatePicker, setupCalendar } from 'v-calendar'
 
 createInertiaApp({
   resolve: (name) => resolvePageComponent(`./pages/${name}.vue`, import.meta.glob<DefineComponent>('./pages/**/*.vue')),
@@ -31,6 +33,8 @@ createInertiaApp({
           animation: 'scale-subtle',
         },
       })
+      .use(setupCalendar, {})
+      .component('VDatePicker', DatePicker)
       .mount(el)
   },
   progress: {

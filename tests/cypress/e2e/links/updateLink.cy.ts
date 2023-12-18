@@ -150,31 +150,6 @@ describe('Update links', () => {
     })
   })
 
-  it('should not allow an invalid expires at date to be entered', () => {
-    cy.create({
-      model: 'Domain\\Link\\Models\\Link',
-      attributes: {
-        team_id: teamId,
-      },
-      count: 1,
-    }).then(() => {
-      cy.reload()
-
-      cy.get('[data-cy="links-list"]').children().should('have.length', 1)
-
-      cy.get('[data-cy="link-options-menu-button"]').click()
-      cy.get('[data-cy="link-options-menu"]').within(() => {
-        cy.get('[data-cy="update-link-button"]').click()
-      })
-
-      cy.get('[data-cy="update-link-modal"]').within(() => {
-        // Invalid date
-        cy.getFormInput('Expires at').type('not a date')
-        cy.getFormInput('Expires at').should('not.have.value', 'not a date')
-      })
-    })
-  })
-
   it('should show an error if the visit limit is invalid', () => {
     cy.create({
       model: 'Domain\\Link\\Models\\Link',
