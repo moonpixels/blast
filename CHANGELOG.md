@@ -6,9 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### What's Changed
 
-* Date input improvements by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/172
-* Bump actions/upload-artifact from 3 to 4 by [@dependabot](https://github.com/dependabot) in https://github.com/moonpixels/blast/pull/171
-* Update dependencies by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/173
+- Date input improvements by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/172
+- Bump actions/upload-artifact from 3 to 4 by [@dependabot](https://github.com/dependabot) in https://github.com/moonpixels/blast/pull/171
+- Update dependencies by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/173
 
 **Full Changelog**: https://github.com/moonpixels/blast/compare/v2.1.4...v2.1.5
 
