@@ -12,7 +12,7 @@ jobs:
       - name: Deploy production
         uses: fjogeleit/http-request-action@v1
         with:
-          url: ${{ secrets.ENVOYER_DEPLOYMENT_HOOK }}
+          url: ${{ secrets.DEPLOYMENT_HOOK }}
           method: 'POST'
           contentType: 'application/x-www-form-urlencoded'
           data: '{"sha": "${{ github.event.release.target_commitish }}"}'
