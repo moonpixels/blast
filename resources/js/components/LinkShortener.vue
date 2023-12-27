@@ -1,7 +1,7 @@
 <template>
   <div class="lg:sticky lg:top-8">
     <form
-      class="relative z-10 w-full divide-y divide-zinc-900/10 rounded-md border border-zinc-900/20 bg-white shadow-sm dark:divide-white/10 dark:border-white/20 dark:bg-zinc-950 sm:w-96"
+      class="relative z-10 w-full divide-y divide-zinc-900/10 rounded-md border border-zinc-900/20 bg-white shadow-sm sm:w-96 dark:divide-white/10 dark:border-white/20 dark:bg-zinc-950"
       data-cy="link-shortener-form"
       @submit.prevent="submit"
     >
@@ -157,7 +157,7 @@
     >
       <div
         v-if="shortenedLink && !form.processing"
-        class="z-0 mt-6 flex w-full items-center justify-between gap-4 overflow-hidden rounded-md border border-zinc-900/20 bg-white p-3 shadow-sm dark:border-white/20 dark:bg-zinc-950 sm:w-96"
+        class="z-0 mt-6 flex w-full items-center justify-between gap-4 overflow-hidden rounded-md border border-zinc-900/20 bg-white p-3 shadow-sm sm:w-96 dark:border-white/20 dark:bg-zinc-950"
         data-cy="shortened-link-card"
       >
         <div class="min-w-0 flex-1">
