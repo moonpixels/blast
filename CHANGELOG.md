@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.1.5 - 2023-12-27
+
+### What's Changed
+
+* Date input improvements by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/172
+* Bump actions/upload-artifact from 3 to 4 by [@dependabot](https://github.com/dependabot) in https://github.com/moonpixels/blast/pull/171
+* Update dependencies by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/173
+
+**Full Changelog**: https://github.com/moonpixels/blast/compare/v2.1.4...v2.1.5
+
 ## v2.1.4 - 2023-12-16
 
 ### What's Changed
