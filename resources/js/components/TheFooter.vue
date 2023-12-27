@@ -1,7 +1,7 @@
 <template>
   <footer class="relative mx-auto mt-32 max-w-7xl px-4 sm:px-6 lg:px-8">
     <div
-      class="flex-row-reverse items-center justify-between gap-6 space-y-6 border-t border-zinc-900/10 py-6 text-zinc-600/[.85] dark:border-white/10 dark:text-zinc-400/80 sm:flex"
+      class="flex-row-reverse items-center justify-between gap-6 space-y-6 border-t border-zinc-900/10 py-6 text-zinc-600/[.85] sm:flex dark:border-white/10 dark:text-zinc-400/80"
     >
       <div></div>
 
