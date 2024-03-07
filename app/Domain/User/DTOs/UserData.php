@@ -2,9 +2,9 @@
 
 namespace Domain\User\DTOs;
 
-use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Dto;
 
-class UserData extends Data
+class UserData extends Dto
 {
     public function __construct(
         public string $name,

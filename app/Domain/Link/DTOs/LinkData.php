@@ -5,9 +5,9 @@ namespace Domain\Link\DTOs;
 use Carbon\CarbonImmutable;
 use Spatie\LaravelData\Attributes\WithCast;
 use Spatie\LaravelData\Casts\DateTimeInterfaceCast;
-use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Dto;
 
-class LinkData extends Data
+class LinkData extends Dto
 {
     public function __construct(
         public string $team_id,

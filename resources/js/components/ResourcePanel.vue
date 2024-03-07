@@ -2,7 +2,7 @@
   <div class="w-full rounded-md border border-zinc-900/20 bg-white shadow-sm dark:border-white/20 dark:bg-zinc-950">
     <div
       v-if="$slots.header"
-      class="gap-3 border-b border-zinc-900/20 p-3 lg:flex lg:items-center lg:justify-between dark:border-white/20"
+      class="gap-3 border-b border-zinc-900/20 p-3 dark:border-white/20 lg:flex lg:items-center lg:justify-between"
     >
       <slot name="header" />
     </div>
