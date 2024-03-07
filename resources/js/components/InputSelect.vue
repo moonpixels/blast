@@ -16,7 +16,7 @@
       ref="input"
       :class="[
         disabledClasses,
-        'block w-full truncate border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-400 focus:ring-0 sm:text-sm dark:text-zinc-100 dark:placeholder-zinc-500',
+        'block w-full truncate border-0 bg-transparent p-0 text-zinc-900 placeholder-zinc-400 focus:ring-0 dark:text-zinc-100 dark:placeholder-zinc-500 sm:text-sm',
       ]"
       :value="modelValue"
       v-bind="{ ...attrs }"

@@ -22,7 +22,7 @@
         :class="[
           disabledClasses,
           $slots.icon ? 'p-0 pl-4' : 'p-0',
-          'block w-full truncate border-0 bg-transparent text-zinc-900 placeholder-zinc-400 focus:ring-0 sm:text-sm dark:text-zinc-100 dark:placeholder-zinc-500',
+          'block w-full truncate border-0 bg-transparent text-zinc-900 placeholder-zinc-400 focus:ring-0 dark:text-zinc-100 dark:placeholder-zinc-500 sm:text-sm',
         ]"
         :inputmode="inputMode"
         :type="type"
