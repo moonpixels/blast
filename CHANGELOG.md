@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## v2.1.6 - 2024-03-07
+
+### What's Changed
+
+* Stop browser tests running when changelog updated by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/174
+* Bump Vue to 3.4 by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/175
+* Bump follow-redirects from 1.15.3 to 1.15.4 by [@dependabot](https://github.com/dependabot) in https://github.com/moonpixels/blast/pull/176
+* Fix issue causing integrity constraint violation when storing visits by [@adamwhp](https://github.com/adamwhp) in https://github.com/moonpixels/blast/pull/178
+
+**Full Changelog**: https://github.com/moonpixels/blast/compare/v2.1.5...v2.1.6
+
 ## v2.1.5 - 2023-12-27
 
 ### What's Changed
