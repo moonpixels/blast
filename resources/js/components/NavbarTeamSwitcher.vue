@@ -6,8 +6,9 @@
           class="focus-ring flex w-40 rounded-md border border-zinc-900/20 bg-zinc-50 py-1.5 pl-3 pr-10 text-sm shadow-sm transition-all ease-in-out dark:border-white/20 dark:bg-zinc-900"
           data-cy="team-switcher-button"
         >
-          <span class="block truncate text-zinc-900 dark:text-white">{{ currentTeamName }}</span>
-          <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+          <span class="block grow truncate text-zinc-900 dark:text-white">{{ currentTeamName }}</span>
+
+          <span class="pointer-events-none absolute inset-y-0 right-0 flex shrink-0 items-center pr-2">
             <ChevronUpDownIcon aria-hidden="true" class="h-5 w-5" />
           </span>
         </MenuButton>

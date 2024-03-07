@@ -58,7 +58,7 @@ class CreateVisitAction
             'browser_version' => null,
             'platform' => null,
             'platform_version' => null,
-            'is_robot' => null,
+            'is_robot' => false,
             'robot_name' => null,
         ];
 

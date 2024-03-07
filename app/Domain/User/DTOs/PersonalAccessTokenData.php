@@ -2,9 +2,9 @@
 
 namespace Domain\User\DTOs;
 
-use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Dto;
 
-class PersonalAccessTokenData extends Data
+class PersonalAccessTokenData extends Dto
 {
     public function __construct(
         public string $name

@@ -10,7 +10,7 @@
   "require": {
     "php": "^8.2",
     "ext-pdo": "*",
-    "doctrine/dbal": "^3.6",
+    "doctrine/dbal": "^4.0.1",
     "guzzlehttp/guzzle": "^7.2",
     "http-interop/http-factory-guzzle": "^1.2",
     "inertiajs/inertia-laravel": "^0.6.9",
@@ -23,12 +23,12 @@
     "lemonsqueezy/laravel": "^1.2",
     "logtail/monolog-logtail": "^3.0",
     "lorisleiva/laravel-actions": "^2.6",
-    "spatie/laravel-data": "^3.7",
+    "spatie/laravel-data": "^4.2.0",
     "spatie/laravel-query-builder": "^5.6",
     "spatie/laravel-typescript-transformer": "^2.3",
     "symfony/http-client": "^v7.0.0",
     "symfony/postmark-mailer": "^v7.0.0",
-    "tightenco/ziggy": "^1.5"
+    "tightenco/ziggy": "^v2.0.4"
   },
   "require-dev": {
     "fakerphp/faker": "^1.9.1",

@@ -2,9 +2,9 @@
 
 namespace Domain\Team\DTOs;
 
-use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Dto;
 
-class TeamInvitationData extends Data
+class TeamInvitationData extends Dto
 {
     public function __construct(
         public string $email,

@@ -2,9 +2,9 @@
 
 namespace Domain\Redirect\DTOs;
 
-use Spatie\LaravelData\Data;
+use Spatie\LaravelData\Dto;
 
-class VisitData extends Data
+class VisitData extends Dto
 {
     public function __construct(
         public ?string $user_agent,
