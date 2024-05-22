@@ -10,10 +10,6 @@ you wish.
 Version 2 of Blast is a complete rewrite of the original. It's easier to use, and with a solid foundation, it's more
 extensible than ever. It's built with [Laravel](https://laravel.com) and [Vue.js](https://vuejs.org).
 
-We offer a hosted version of Blast at [blst.to](https://blst.to). This is the simplest way to use Blast, and there's
-a generous free tier that's perfect to get started with. You can support the project by signing up for a paid plan,
-which enables a higher rate limit.
-
 ## Installation
 
 You can install Blast in a few simple steps, this applies to both self-hosting and contributing to the project.
@@ -23,9 +19,6 @@ You can install Blast in a few simple steps, this applies to both self-hosting a
 3. Install dependencies: `composer install && npm install && npm run prod`
 4. Generate app key: `php artisan key:generate`
 5. Run database migrations: `php artisan migrate`
-
-> If you are choosing to self-host Blast, we recommend that you familiarise yourself with the Laravel framework and
-> ecosystem first.
 
 ## Contributing
 
